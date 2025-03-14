@@ -74,6 +74,38 @@ const BiblicalConnectionsApp = () => {
     { id: "revelation", name: "Revelation", chapters: 22, testament: "new" }
   ];
 
+  // Define Bible narrative sections
+  const bibleSections = [
+    // Genesis narrative arc
+    { id: "creation", reference: "Genesis 1", title: "Creation", book: "genesis", chapter: 1 },
+    { id: "eden", reference: "Genesis 2", title: "Eden", book: "genesis", chapter: 2 },
+    { id: "fall", reference: "Genesis 3", title: "Fall", book: "genesis", chapter: 3 },
+    { id: "flood", reference: "Genesis 6-9", title: "Flood", book: "genesis", chapter: 6 },
+    { id: "babel", reference: "Genesis 11", title: "Babel", book: "genesis", chapter: 11 },
+    { id: "abraham", reference: "Genesis 12", title: "Abraham", book: "genesis", chapter: 12 },
+    // Exodus to Deuteronomy
+    { id: "exodus", reference: "Exodus 1", title: "Exodus", book: "exodus", chapter: 1 },
+    { id: "sinai", reference: "Exodus 19", title: "Sinai", book: "exodus", chapter: 19 },
+    { id: "tabernacle", reference: "Exodus 25", title: "Tabernacle", book: "exodus", chapter: 25 },
+    { id: "wilderness", reference: "Numbers 10", title: "Wilderness", book: "numbers", chapter: 10 },
+    // Historical books
+    { id: "conquest", reference: "Joshua 1", title: "Conquest", book: "joshua", chapter: 1 },
+    { id: "judges", reference: "Judges 1", title: "Judges", book: "judges", chapter: 1 },
+    { id: "kingdom", reference: "1 Samuel 8", title: "Kingdom", book: "1samuel", chapter: 8 },
+    { id: "exile", reference: "2 Kings 25", title: "Exile", book: "2kings", chapter: 25 },
+    { id: "return", reference: "Ezra 1", title: "Return", book: "ezra", chapter: 1 },
+    // Gospels
+    { id: "incarnation", reference: "Matthew 1", title: "Incarnation", book: "matthew", chapter: 1 },
+    { id: "ministry", reference: "Mark 1", title: "Ministry", book: "mark", chapter: 1 },
+    { id: "passion", reference: "John 18", title: "Passion", book: "john", chapter: 18 },
+    { id: "resurrection", reference: "Matthew 28", title: "Resurrection", book: "matthew", chapter: 28 },
+    // Acts to Revelation
+    { id: "church", reference: "Acts 2", title: "Church", book: "acts", chapter: 2 },
+    { id: "mission", reference: "Acts 13", title: "Mission", book: "acts", chapter: 13 },
+    { id: "letters", reference: "Romans 1", title: "Letters", book: "romans", chapter: 1 },
+    { id: "revelation", reference: "Revelation 1", title: "Revelation", book: "revelation", chapter: 1 }
+  ];
+
   // Define API key and settings
   const ESV_API_KEY = 'c3be9ae20e39bd6637c709cd2e94fd42135764d1'; // Your ESV API key
   const ESV_API_URL = 'https://api.esv.org/v3/passage/text/';
@@ -85,6 +117,7 @@ const BiblicalConnectionsApp = () => {
   const [activeTestament, setActiveTestament] = useState("old");
   const [activeBook, setActiveBook] = useState("genesis");
   const [activeChapter, setActiveChapter] = useState(1);
+  const [activeNarrativeSection, setActiveNarrativeSection] = useState("creation"); // Current narrative section
   const [bookSearch, setBookSearch] = useState("");
   const [showBookSelector, setShowBookSelector] = useState(false);
   const [chapterSections, setChapterSections] = useState([]);
@@ -140,6 +173,24 @@ const BiblicalConnectionsApp = () => {
     
     return []; // Return empty array for books/chapters without defined sections
   };
+  
+  // Effect to scroll the active narrative section into view
+  useEffect(() => {
+    // Allow the DOM to update first
+    setTimeout(() => {
+      const sectionButton = document.getElementById(`section-${activeNarrativeSection}`);
+      const container = document.getElementById('sections-container');
+      
+      if (sectionButton && container) {
+        // Calculate the position to scroll to (centered)
+        const buttonRect = sectionButton.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        const scrollLeft = sectionButton.offsetLeft - (containerRect.width / 2) + (buttonRect.width / 2);
+        
+        container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+      }
+    }, 100);
+  }, [activeNarrativeSection]);
 
   // Update sections when book or chapter changes
   useEffect(() => {
@@ -152,6 +203,30 @@ const BiblicalConnectionsApp = () => {
     } else {
       setActiveSectionsList([]);
       setActiveSection(null);
+    }
+    
+    // Update active narrative section based on book and chapter
+    const matchingSection = bibleSections.find(
+      section => section.book === activeBook && section.chapter === activeChapter
+    );
+    if (matchingSection) {
+      setActiveNarrativeSection(matchingSection.id);
+    } else {
+      // Find the closest section that comes before this book/chapter
+      const bookIndex = bibleStructure.findIndex(b => b.id === activeBook);
+      if (bookIndex >= 0) {
+        const sectionsBefore = bibleSections.filter(section => {
+          const sectionBookIndex = bibleStructure.findIndex(b => b.id === section.book);
+          return (sectionBookIndex < bookIndex) || 
+                 (sectionBookIndex === bookIndex && section.chapter <= activeChapter);
+        });
+        
+        if (sectionsBefore.length > 0) {
+          // Get the latest section before current position
+          const closestSection = sectionsBefore[sectionsBefore.length - 1];
+          setActiveNarrativeSection(closestSection.id);
+        }
+      }
     }
     
     // Reset visualization
@@ -994,6 +1069,20 @@ const BiblicalConnectionsApp = () => {
     setShowBookSelector(false);
   };
   
+  // Handle narrative section selection
+  const handleSectionSelect = (sectionId) => {
+    // Find the selected section
+    const section = bibleSections.find(s => s.id === sectionId);
+    if (section) {
+      // Update active narrative section
+      setActiveNarrativeSection(sectionId);
+      
+      // Navigate to the corresponding book and chapter
+      setActiveBook(section.book);
+      setActiveChapter(section.chapter);
+    }
+  };
+  
   const handleChapterChange = (chapterNum) => {
     setActiveChapter(chapterNum);
   };
@@ -1196,6 +1285,68 @@ const BiblicalConnectionsApp = () => {
               <ChevronRight size={20} className="text-slate-600" />
             </button>
           </div>
+        </div>
+      </div>
+      
+      {/* Bible narrative sections navigation */}
+      <div className="bg-white border-b border-slate-200 relative">
+        {/* Section flow indicator line */}
+        <div className="absolute h-1 bottom-0 left-0 right-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-60"></div>
+        
+        <div className="flex items-center">
+          {/* Left scroll button */}
+          <button 
+            className="sticky left-0 px-2 py-3 bg-gradient-to-r from-white to-transparent z-10 hover:bg-slate-50"
+            onClick={() => {
+              const container = document.getElementById('sections-container');
+              if (container) {
+                container.scrollBy({ left: -200, behavior: 'smooth' });
+              }
+            }}
+          >
+            <ChevronLeft size={16} className="text-slate-600" />
+          </button>
+          
+          {/* Scrollable sections */}
+          <div 
+            id="sections-container"
+            className="flex-1 overflow-x-auto py-2 px-2 flex space-x-2 scrollbar-hide"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {bibleSections.map((section) => (
+              <button
+                key={section.id}
+                id={`section-${section.id}`}
+                onClick={() => handleSectionSelect(section.id)}
+                className={`py-1 px-3 text-sm font-medium rounded-full transition-colors whitespace-nowrap relative ${
+                  activeNarrativeSection === section.id 
+                    ? 'bg-indigo-100 text-indigo-800 border border-indigo-200' 
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-indigo-600'
+                }`}
+              >
+                {section.title}
+                <span className="ml-1 text-xs text-slate-400 hidden sm:inline">{section.reference}</span>
+                
+                {/* Active indicator dot */}
+                {activeNarrativeSection === section.id && (
+                  <span className="absolute left-1/2 transform -translate-x-1/2 bottom-0 w-1.5 h-1.5 bg-indigo-600 rounded-full"></span>
+                )}
+              </button>
+            ))}
+          </div>
+          
+          {/* Right scroll button */}
+          <button 
+            className="sticky right-0 px-2 py-3 bg-gradient-to-l from-white to-transparent z-10 hover:bg-slate-50"
+            onClick={() => {
+              const container = document.getElementById('sections-container');
+              if (container) {
+                container.scrollBy({ left: 200, behavior: 'smooth' });
+              }
+            }}
+          >
+            <ChevronRight size={16} className="text-slate-600" />
+          </button>
         </div>
       </div>
       
@@ -1749,7 +1900,8 @@ const BiblicalConnectionsApp = () => {
                           )}
                           
                           {/* Level number indicator */}
-                          {level > 1 && (
+                        {/* Level number indicator */}
+                        {level > 1 && (
                             <text
                               x={node.x + node.size - 5}
                               y={node.y - node.size + 5}
