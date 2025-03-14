@@ -1,17 +1,18 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
-// Biblical events data structure with chronological positioning
+// Biblical events data
 const bibleEvents = [
   {
     id: 'creation',
     name: 'Creation',
     description: 'God creates the heavens and earth in six days',
-    height: 0.9,
+    height: 0.85,
     position: [-18, -10],
     color: '#2a9d8f',
     year: 'Beginning',
+    era: 'early',
     scripture: 'Genesis 1-2',
     keyFigures: ['God', 'Adam', 'Eve'],
     connections: ['fall', 'flood']
@@ -20,10 +21,11 @@ const bibleEvents = [
     id: 'fall',
     name: 'The Fall',
     description: 'Adam and Eve disobey God and sin enters the world',
-    height: 0.85,
+    height: 0.8,
     position: [-16, -8],
     color: '#e63946',
     year: 'Beginning',
+    era: 'early',
     scripture: 'Genesis 3',
     keyFigures: ['Adam', 'Eve', 'Serpent'],
     connections: ['cain_abel', 'flood']
@@ -36,6 +38,7 @@ const bibleEvents = [
     position: [-14, -9],
     color: '#6a040f',
     year: 'Early history',
+    era: 'early',
     scripture: 'Genesis 4',
     keyFigures: ['Cain', 'Abel'],
     connections: ['flood']
@@ -48,6 +51,7 @@ const bibleEvents = [
     position: [-12, -6],
     color: '#457b9d',
     year: 'c. 2350 BC',
+    era: 'early',
     scripture: 'Genesis 6-9',
     keyFigures: ['Noah', 'God'],
     connections: ['babel', 'abraham_call']
@@ -60,6 +64,7 @@ const bibleEvents = [
     position: [-10, -7],
     color: '#e9c46a',
     year: 'c. 2200 BC',
+    era: 'early',
     scripture: 'Genesis 11:1-9',
     keyFigures: ['Nimrod'],
     connections: ['abraham_call']
@@ -72,6 +77,7 @@ const bibleEvents = [
     position: [-8, -4],
     color: '#f4a261',
     year: 'c. 2000 BC',
+    era: 'early',
     scripture: 'Genesis 12',
     keyFigures: ['Abraham', 'Sarah'],
     connections: ['isaac_birth', 'sodom', 'isaac_sacrifice']
@@ -84,6 +90,7 @@ const bibleEvents = [
     position: [-7, -6],
     color: '#e76f51',
     year: 'c. 1900 BC',
+    era: 'early',
     scripture: 'Genesis 19',
     keyFigures: ['Lot', 'Abraham'],
     connections: ['isaac_birth']
@@ -96,6 +103,7 @@ const bibleEvents = [
     position: [-6, -4],
     color: '#f4a261',
     year: 'c. 1900 BC',
+    era: 'early',
     scripture: 'Genesis 21',
     keyFigures: ['Isaac', 'Abraham', 'Sarah'],
     connections: ['isaac_sacrifice', 'jacob_esau']
@@ -108,6 +116,7 @@ const bibleEvents = [
     position: [-5, -5],
     color: '#bc6c25',
     year: 'c. 1875 BC',
+    era: 'early',
     scripture: 'Genesis 22',
     keyFigures: ['Abraham', 'Isaac'],
     connections: ['jacob_esau']
@@ -120,30 +129,33 @@ const bibleEvents = [
     position: [-4, -3],
     color: '#a8dadc',
     year: 'c. 1850 BC',
+    era: 'early',
     scripture: 'Genesis 25-27',
     keyFigures: ['Jacob', 'Esau', 'Isaac', 'Rebekah'],
     connections: ['jacobs_ladder', 'joseph_coat']
   },
   {
     id: 'jacobs_ladder',
-    name: 'Jacob\'s Ladder',
+    name: "Jacob's Ladder",
     description: 'Jacob dreams of a ladder to heaven with angels',
     height: 0.7,
     position: [-3, -4],
     color: '#219ebc',
     year: 'c. 1800 BC',
+    era: 'early',
     scripture: 'Genesis 28',
     keyFigures: ['Jacob'],
     connections: ['joseph_coat']
   },
   {
     id: 'joseph_coat',
-    name: 'Joseph\'s Coat',
+    name: "Joseph's Coat",
     description: 'Joseph receives a coat of many colors and is sold into slavery',
     height: 0.8,
     position: [-2, -2],
     color: '#ffb703',
     year: 'c. 1750 BC',
+    era: 'early',
     scripture: 'Genesis 37',
     keyFigures: ['Joseph', 'Jacob'],
     connections: ['joseph_egypt', 'moses_birth']
@@ -156,6 +168,7 @@ const bibleEvents = [
     position: [-1, -3],
     color: '#ffb703',
     year: 'c. 1700 BC',
+    era: 'early',
     scripture: 'Genesis 39-47',
     keyFigures: ['Joseph', 'Pharaoh'],
     connections: ['moses_birth']
@@ -163,13 +176,14 @@ const bibleEvents = [
   {
     id: 'moses_birth',
     name: 'Birth of Moses',
-    description: 'Moses is born and saved from Pharaoh\'s decree',
+    description: "Moses is born and saved from Pharaoh's decree",
     height: 0.7,
     position: [0, -1],
     color: '#8a5a44',
     year: 'c. 1525 BC',
+    era: 'exodus',
     scripture: 'Exodus 2',
-    keyFigures: ['Moses', 'Pharaoh\'s Daughter'],
+    keyFigures: ['Moses', "Pharaoh's Daughter"],
     connections: ['burning_bush', 'plagues']
   },
   {
@@ -180,6 +194,7 @@ const bibleEvents = [
     position: [1, -2],
     color: '#e63946',
     year: 'c. 1445 BC',
+    era: 'exodus',
     scripture: 'Exodus 3-4',
     keyFigures: ['Moses', 'God'],
     connections: ['plagues', 'exodus']
@@ -192,6 +207,7 @@ const bibleEvents = [
     position: [2, 0],
     color: '#1d3557',
     year: 'c. 1445 BC',
+    era: 'exodus',
     scripture: 'Exodus 7-12',
     keyFigures: ['Moses', 'Aaron', 'Pharaoh'],
     connections: ['exodus', 'red_sea']
@@ -204,6 +220,7 @@ const bibleEvents = [
     position: [3, -1],
     color: '#457b9d',
     year: 'c. 1445 BC',
+    era: 'exodus',
     scripture: 'Exodus 12-13',
     keyFigures: ['Moses', 'Israelites'],
     connections: ['red_sea', 'ten_commandments']
@@ -216,6 +233,7 @@ const bibleEvents = [
     position: [4, 0],
     color: '#219ebc',
     year: 'c. 1445 BC',
+    era: 'exodus',
     scripture: 'Exodus 14',
     keyFigures: ['Moses', 'Israelites', 'Egyptian Army'],
     connections: ['ten_commandments', 'wilderness']
@@ -228,6 +246,7 @@ const bibleEvents = [
     position: [5, 1],
     color: '#e9c46a',
     year: 'c. 1445 BC',
+    era: 'exodus',
     scripture: 'Exodus 20',
     keyFigures: ['Moses', 'God'],
     connections: ['wilderness', 'promised_land']
@@ -240,6 +259,7 @@ const bibleEvents = [
     position: [6, 0],
     color: '#f4a261',
     year: 'c. 1445-1405 BC',
+    era: 'exodus',
     scripture: 'Numbers',
     keyFigures: ['Moses', 'Aaron', 'Israelites'],
     connections: ['promised_land']
@@ -252,6 +272,7 @@ const bibleEvents = [
     position: [7, 2],
     color: '#2a9d8f',
     year: 'c. 1405 BC',
+    era: 'exodus',
     scripture: 'Joshua 1-4',
     keyFigures: ['Joshua', 'Israelites'],
     connections: ['judges', 'davidking']
@@ -264,6 +285,7 @@ const bibleEvents = [
     position: [8, 3],
     color: '#8a5a44',
     year: 'c. 1375-1050 BC',
+    era: 'kingdom',
     scripture: 'Judges',
     keyFigures: ['Deborah', 'Gideon', 'Samson'],
     connections: ['saul_king', 'davidking']
@@ -271,35 +293,38 @@ const bibleEvents = [
   {
     id: 'saul_king',
     name: 'Saul Becomes King',
-    description: 'Israel\'s first king is anointed',
+    description: "Israel's first king is anointed",
     height: 0.75,
     position: [9, 4],
     color: '#6a040f',
     year: 'c. 1050 BC',
+    era: 'kingdom',
     scripture: '1 Samuel 9-10',
     keyFigures: ['Saul', 'Samuel'],
     connections: ['davidking']
   },
   {
     id: 'davidking',
-    name: 'David\'s Reign',
+    name: "David's Reign",
     description: 'David becomes king and establishes Jerusalem',
     height: 0.85,
     position: [10, 5],
     color: '#1d3557',
     year: 'c. 1010-970 BC',
+    era: 'kingdom',
     scripture: '2 Samuel',
     keyFigures: ['David'],
     connections: ['solomon_temple', 'divided_kingdom']
   },
   {
     id: 'solomon_temple',
-    name: 'Solomon\'s Temple',
+    name: "Solomon's Temple",
     description: 'King Solomon builds the first temple',
     height: 0.8,
     position: [11, 6],
     color: '#e9c46a',
     year: 'c. 966 BC',
+    era: 'kingdom',
     scripture: '1 Kings 6-8',
     keyFigures: ['Solomon'],
     connections: ['divided_kingdom']
@@ -312,6 +337,7 @@ const bibleEvents = [
     position: [12, 5],
     color: '#e76f51',
     year: 'c. 930 BC',
+    era: 'kingdom',
     scripture: '1 Kings 12',
     keyFigures: ['Rehoboam', 'Jeroboam'],
     connections: ['israel_exile', 'judah_exile']
@@ -324,6 +350,7 @@ const bibleEvents = [
     position: [13, 6],
     color: '#6a040f',
     year: 'c. 722 BC',
+    era: 'exile',
     scripture: '2 Kings 17',
     keyFigures: ['Hoshea', 'Shalmaneser'],
     connections: ['judah_exile']
@@ -336,18 +363,20 @@ const bibleEvents = [
     position: [14, 7],
     color: '#6a040f',
     year: 'c. 586 BC',
+    era: 'exile',
     scripture: '2 Kings 25',
     keyFigures: ['Nebuchadnezzar', 'Zedekiah'],
     connections: ['return_exile', 'daniel_lions']
   },
   {
     id: 'daniel_lions',
-    name: 'Daniel in Lion\'s Den',
+    name: "Daniel in Lion's Den",
     description: 'Daniel is thrown into a den of lions but is saved',
     height: 0.7,
     position: [14, 9],
     color: '#457b9d',
     year: 'c. 539 BC',
+    era: 'exile',
     scripture: 'Daniel 6',
     keyFigures: ['Daniel', 'Darius'],
     connections: ['return_exile']
@@ -360,6 +389,7 @@ const bibleEvents = [
     position: [15, 8],
     color: '#2a9d8f',
     year: 'c. 538-445 BC',
+    era: 'exile',
     scripture: 'Ezra, Nehemiah',
     keyFigures: ['Zerubbabel', 'Ezra', 'Nehemiah'],
     connections: ['jesus_birth', 'john_baptist']
@@ -372,6 +402,7 @@ const bibleEvents = [
     position: [16, 9],
     color: '#219ebc',
     year: 'c. 27 AD',
+    era: 'jesus',
     scripture: 'Luke 3',
     keyFigures: ['John the Baptist'],
     connections: ['jesus_birth', 'jesus_baptism']
@@ -384,6 +415,7 @@ const bibleEvents = [
     position: [16, 7],
     color: '#ffb703',
     year: 'c. 4-6 BC',
+    era: 'jesus',
     scripture: 'Matthew 1-2, Luke 2',
     keyFigures: ['Jesus', 'Mary', 'Joseph'],
     connections: ['jesus_baptism', 'jesus_ministry']
@@ -396,18 +428,20 @@ const bibleEvents = [
     position: [17, 8],
     color: '#219ebc',
     year: 'c. 27 AD',
+    era: 'jesus',
     scripture: 'Matthew 3:13-17',
     keyFigures: ['Jesus', 'John the Baptist'],
     connections: ['jesus_ministry']
   },
   {
     id: 'jesus_ministry',
-    name: 'Jesus\' Ministry',
+    name: "Jesus' Ministry",
     description: 'Jesus teaches, performs miracles, and calls disciples',
     height: 0.9,
     position: [18, 9],
     color: '#1d3557',
     year: 'c. 27-30 AD',
+    era: 'jesus',
     scripture: 'Gospels',
     keyFigures: ['Jesus', 'Disciples'],
     connections: ['crucifixion']
@@ -415,11 +449,12 @@ const bibleEvents = [
   {
     id: 'crucifixion',
     name: 'Crucifixion',
-    description: 'Jesus dies on the cross for humanity\'s sins',
+    description: "Jesus dies on the cross for humanity's sins",
     height: 0.95,
     position: [19, 10],
     color: '#e63946',
     year: 'c. 30 AD',
+    era: 'jesus',
     scripture: 'Matthew 27, Mark 15, Luke 23, John 19',
     keyFigures: ['Jesus', 'Pilate'],
     connections: ['resurrection']
@@ -432,6 +467,7 @@ const bibleEvents = [
     position: [20, 11],
     color: '#f4a261',
     year: 'c. 30 AD',
+    era: 'jesus',
     scripture: 'Matthew 28, Mark 16, Luke 24, John 20',
     keyFigures: ['Jesus', 'Mary Magdalene'],
     connections: ['pentecost', 'ascension']
@@ -444,6 +480,7 @@ const bibleEvents = [
     position: [20, 9],
     color: '#457b9d',
     year: 'c. 30 AD',
+    era: 'jesus',
     scripture: 'Acts 1:1-11',
     keyFigures: ['Jesus', 'Disciples'],
     connections: ['pentecost']
@@ -456,6 +493,7 @@ const bibleEvents = [
     position: [21, 10],
     color: '#e76f51',
     year: 'c. 30 AD',
+    era: 'church',
     scripture: 'Acts 2',
     keyFigures: ['Apostles', 'Holy Spirit'],
     connections: ['church_begins', 'paul_conversion']
@@ -468,30 +506,33 @@ const bibleEvents = [
     position: [22, 11],
     color: '#2a9d8f',
     year: 'c. 30-35 AD',
+    era: 'church',
     scripture: 'Acts 2-7',
     keyFigures: ['Peter', 'Stephen', 'Apostles'],
     connections: ['paul_conversion', 'paul_missionary']
   },
   {
     id: 'paul_conversion',
-    name: 'Paul\'s Conversion',
+    name: "Paul's Conversion",
     description: 'Saul (Paul) meets Jesus on the road to Damascus',
     height: 0.8,
     position: [23, 10],
     color: '#f4a261',
     year: 'c. 35 AD',
+    era: 'church',
     scripture: 'Acts 9',
     keyFigures: ['Paul'],
     connections: ['paul_missionary']
   },
   {
     id: 'paul_missionary',
-    name: 'Paul\'s Journeys',
+    name: "Paul's Journeys",
     description: 'Paul spreads the gospel throughout the Roman Empire',
     height: 0.8,
     position: [24, 12],
     color: '#1d3557',
     year: 'c. 46-58 AD',
+    era: 'church',
     scripture: 'Acts 13-28',
     keyFigures: ['Paul', 'Barnabas', 'Silas'],
     connections: ['revelation']
@@ -504,716 +545,911 @@ const bibleEvents = [
     position: [25, 11],
     color: '#e63946',
     year: 'c. 95 AD',
+    era: 'church',
     scripture: 'Revelation',
     keyFigures: ['John', 'Jesus'],
     connections: []
   }
 ];
 
-const BibleEventsLandscape = () => {
-  const containerRef = useRef();
-  const [hoveredEvent, setHoveredEvent] = useState(null);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [showAllLabels, setShowAllLabels] = useState(false);
-  const [miniMapActive, setMiniMapActive] = useState(true);
-  const [currentEra, setCurrentEra] = useState('overview');
+// Define era information
+const eraInfo = {
+  'all': { name: 'All Biblical History', color: '#4a9eff', position: [0, 0] },
+  'early': { name: 'Early History', color: '#2a9d8f', position: [-8, -5] },
+  'exodus': { name: 'Exodus & Wilderness', color: '#457b9d', position: [4, 0] },
+  'kingdom': { name: 'Kingdom Period', color: '#1d3557', position: [10, 5] },
+  'exile': { name: 'Exile', color: '#e63946', position: [14, 7] },
+  'jesus': { name: "Jesus' Life & Ministry", color: '#f4a261', position: [18, 9] },
+  'church': { name: 'Early Church', color: '#4caf50', position: [22, 11] }
+};
+
+// Main component
+const BibleEvents3DSimplified = () => {
+  const containerRef = useRef(null);
   const sceneRef = useRef(null);
   const cameraRef = useRef(null);
   const rendererRef = useRef(null);
-  const miniMapRendererRef = useRef(null);
-  const miniMapCameraRef = useRef(null);
   const controlsRef = useRef(null);
   const raycasterRef = useRef(new THREE.Raycaster());
   const mouseRef = useRef(new THREE.Vector2());
-  const terrainRef = useRef(null);
-  const labelGroupRef = useRef(null);
-  const connectionsRef = useRef(null);
-  const markersRef = useRef([]);
+  const objectsToRaycastRef = useRef([]);
+  
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [hoveredEvent, setHoveredEvent] = useState(null);
+  const [selectedEra, setSelectedEra] = useState('all');
+  const [isLoading, setIsLoading] = useState(true);
+  const [showAllLabels, setShowAllLabels] = useState(false);
 
+  // Initialize 3D scene
   useEffect(() => {
+    if (!containerRef.current) return;
+    
     // Scene setup
     const scene = new THREE.Scene();
     sceneRef.current = scene;
     scene.background = new THREE.Color(0xf0f8ff);
-
-    // Add ambient light
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);
-
-    // Add directional light (sun-like)
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(10, 20, 10);
-    directionalLight.castShadow = true;
-    scene.add(directionalLight);
-
-    // Camera setup
-    const aspectRatio = containerRef.current.clientWidth / containerRef.current.clientHeight;
-    const camera = new THREE.PerspectiveCamera(50, aspectRatio, 0.1, 1000);
-    camera.position.set(0, 25, 30);
-    camera.lookAt(0, 0, 0);
+    
+    // Camera setup - use perspective camera for 3D view
+    const aspect = containerRef.current.clientWidth / containerRef.current.clientHeight;
+    const camera = new THREE.PerspectiveCamera(50, aspect, 0.1, 1000);
+    camera.position.set(0, 20, 30); // Initial position
     cameraRef.current = camera;
-
+    
     // Renderer setup
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
     renderer.shadowMap.enabled = true;
-    if (containerRef.current) {
-      containerRef.current.appendChild(renderer.domElement);
-    }
+    containerRef.current.appendChild(renderer.domElement);
     rendererRef.current = renderer;
-
-    // Mini-map setup (top-down view)
-    if (containerRef.current) {
-      const miniMapSize = Math.min(200, containerRef.current.clientWidth * 0.2);
-      const miniMapCamera = new THREE.OrthographicCamera(
-        -30, 30, 20, -20, 1, 1000
-      );
-      miniMapCamera.position.set(0, 50, 0);
-      miniMapCamera.lookAt(0, 0, 0);
-      miniMapCamera.up.set(0, 0, -1); // Adjust the up direction for proper orientation
-      miniMapCameraRef.current = miniMapCamera;
-      
-      const miniMapRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      miniMapRenderer.setSize(miniMapSize, miniMapSize);
-      miniMapRenderer.domElement.style.position = 'absolute';
-      miniMapRenderer.domElement.style.bottom = '20px';
-      miniMapRenderer.domElement.style.right = '20px';
-      miniMapRenderer.domElement.style.border = '2px solid rgba(255, 255, 255, 0.7)';
-      miniMapRenderer.domElement.style.borderRadius = '5px';
-      miniMapRenderer.domElement.style.zIndex = '100';
-      miniMapRenderer.domElement.style.backgroundColor = 'rgba(240, 248, 255, 0.7)';
-      containerRef.current.appendChild(miniMapRenderer.domElement);
-      miniMapRendererRef.current = miniMapRenderer;
-    }
-
-    // Controls setup
+    
+    // Controls setup - simplified for ease of use
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.maxPolarAngle = Math.PI / 2.2; // Prevent going below the ground
-    controls.minDistance = 8;
-    controls.maxDistance = 60;
-    
-    // Add helpful constraints and improvements
-    controls.enablePan = true;     // Allow panning
-    controls.panSpeed = 0.5;       // Slower panning for more control
-    controls.rotateSpeed = 0.5;    // Slower rotation for more control
-    controls.zoomSpeed = 0.8;      // Adjusted zoom speed
-    controls.autoRotate = false;   // No auto-rotation, but user can enable it if desired
-    
+    controls.rotateSpeed = 0.5; // Slower rotation for better control
+    controls.zoomSpeed = 0.7; // Moderate zoom speed
+    controls.panSpeed = 0.5; // Moderate pan speed
+    controls.maxPolarAngle = Math.PI / 2.2; // Prevent going below ground
+    controls.minDistance = 5; // Don't zoom in too close
+    controls.maxDistance = 60; // Don't zoom out too far
     controlsRef.current = controls;
-
-    // Create terrain
-    createTerrain(scene);
     
-    // Create event connections
+    // Add lights
+    addLights(scene);
+    
+    // Create the landscape
+    createLandscape(scene);
+    
+    // Create event markers and connections
+    createEventMarkers(scene);
     createConnections(scene);
-
-    // Create event labels
-    createLabels(scene);
-
-    // Handle window resize
-    const handleResize = () => {
-      camera.aspect = containerRef.current.clientWidth / containerRef.current.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
-    };
+    
+    // Initialize raycaster for interaction
+    raycasterRef.current = new THREE.Raycaster();
+    mouseRef.current = new THREE.Vector2();
+    
+    // Add event listeners
     window.addEventListener('resize', handleResize);
-
-    // Mouse event listeners
-    const handleMouseMove = (event) => {
-      // Calculate mouse position in normalized device coordinates (-1 to +1) for both components
-      const rect = rendererRef.current.domElement.getBoundingClientRect();
-      mouseRef.current.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-      mouseRef.current.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-    };
-
-    const handleClick = () => {
-      if (hoveredEvent) {
-        setSelectedEvent(hoveredEvent === selectedEvent ? null : hoveredEvent);
-      } else {
-        setSelectedEvent(null);
-      }
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('click', handleClick);
-
-    // Add visual navigation aids
-    addNavigationAids(scene);
+    containerRef.current.addEventListener('mousemove', handleMouseMove);
+    containerRef.current.addEventListener('click', handleClick);
     
     // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
-      controls.update();
-
-      // Raycasting for hover effects
-      checkIntersections();
-
-      // Main view rendering
-      renderer.render(scene, camera);
       
-      // Mini-map rendering
-      if (miniMapActive && miniMapRendererRef.current && miniMapCameraRef.current) {
-        miniMapRendererRef.current.render(scene, miniMapCameraRef.current);
-        
-        // Update user position indicator on mini-map
-        if (cameraRef.current) {
-          // Calculate user position as a marker on the mini-map
-          // This would be a more advanced feature to implement
-        }
-      }
+      // Update controls
+      controls.update();
+      
+      // Update interaction
+      checkIntersections();
+      
+      // Render scene
+      renderer.render(scene, camera);
     };
     animate();
-
-    // Cleanup
+    
+    // Set loading to false
+    setIsLoading(false);
+    
+    // Store current container reference for cleanup
+    const currentContainer = containerRef.current;
+    
+    // Cleanup on unmount
     return () => {
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('click', handleClick);
       
-      // Safely dispose main renderer
+      // Safely remove event listeners only if container still exists
+      if (currentContainer) {
+        currentContainer.removeEventListener('mousemove', handleMouseMove);
+        currentContainer.removeEventListener('click', handleClick);
+      }
+      
+      // Clean up renderer and DOM elements
       if (rendererRef.current) {
         rendererRef.current.dispose();
+        
+        // Only try to remove child if both container and renderer exist
+        if (currentContainer && rendererRef.current.domElement && 
+            currentContainer.contains(rendererRef.current.domElement)) {
+          currentContainer.removeChild(rendererRef.current.domElement);
+        }
       }
       
-      // Safely remove main renderer DOM element if it exists and is still attached
-      if (containerRef.current && rendererRef.current && rendererRef.current.domElement && 
-          containerRef.current.contains(rendererRef.current.domElement)) {
-        containerRef.current.removeChild(rendererRef.current.domElement);
-      }
-      
-      // Safely dispose mini-map renderer
-      if (miniMapRendererRef.current) {
-        miniMapRendererRef.current.dispose();
-      }
-      
-      // Safely remove mini-map renderer DOM element if it exists and is still attached
-      if (containerRef.current && miniMapRendererRef.current && miniMapRendererRef.current.domElement && 
-          containerRef.current.contains(miniMapRendererRef.current.domElement)) {
-        containerRef.current.removeChild(miniMapRendererRef.current.domElement);
+      if (sceneRef.current) {
+        // Dispose of all geometries and materials
+        sceneRef.current.traverse((object) => {
+          if (object instanceof THREE.Mesh) {
+            if (object.geometry) object.geometry.dispose();
+            if (object.material) {
+              if (Array.isArray(object.material)) {
+                object.material.forEach(material => material.dispose());
+              } else {
+                object.material.dispose();
+              }
+            }
+          }
+        });
       }
     };
   }, []);
-
-  // Create the 3D terrain
-  const createTerrain = (scene) => {
-    const terrainSize = 60;
-    const resolution = 120;
-    const geometry = new THREE.PlaneGeometry(terrainSize, terrainSize, resolution, resolution);
+  
+  // Update when selected era changes
+  useEffect(() => {
+    if (selectedEra && selectedEra !== 'all') {
+      navigateToEra(selectedEra);
+    }
+  }, [selectedEra]);
+  
+  // Handle window resize
+  const handleResize = () => {
+    if (!containerRef.current || !cameraRef.current || !rendererRef.current) return;
     
-    // Define how large the influence of each event should be
-    const influenceRadius = 6;
+    const width = containerRef.current.clientWidth;
+    const height = containerRef.current.clientHeight;
     
-    // Map vertices to create mountains and valleys
-    const vertices = geometry.attributes.position.array;
+    cameraRef.current.aspect = width / height;
+    cameraRef.current.updateProjectionMatrix();
+    rendererRef.current.setSize(width, height);
+  };
+  
+  // Handle mouse move for hovering
+  const handleMouseMove = (event) => {
+    if (!containerRef.current) return;
+    
+    const rect = containerRef.current.getBoundingClientRect();
+    mouseRef.current.x = ((event.clientX - rect.left) / containerRef.current.clientWidth) * 2 - 1;
+    mouseRef.current.y = -((event.clientY - rect.top) / containerRef.current.clientHeight) * 2 + 1;
+  };
+  
+  // Handle click to select events
+  const handleClick = () => {
+    if (hoveredEvent) {
+      setSelectedEvent(hoveredEvent === selectedEvent ? null : hoveredEvent);
+    }
+  };
+  
+  // Check for intersections with event markers
+  const checkIntersections = () => {
+    if (!raycasterRef.current || !cameraRef.current || !objectsToRaycastRef.current.length) return;
+    
+    raycasterRef.current.setFromCamera(mouseRef.current, cameraRef.current);
+    const intersects = raycasterRef.current.intersectObjects(objectsToRaycastRef.current);
+    
+    if (intersects.length > 0) {
+      const eventId = intersects[0].object.userData.eventId;
+      if (eventId && eventId !== hoveredEvent) {
+        setHoveredEvent(eventId);
+        document.body.style.cursor = 'pointer';
+        updateLabels(eventId);
+      }
+    } else if (hoveredEvent) {
+      setHoveredEvent(null);
+      document.body.style.cursor = 'default';
+      updateLabels(null);
+    }
+  };
+  
+  // Add lights to the scene
+  const addLights = (scene) => {
+    // Ambient light for overall illumination
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+    
+    // Main directional light (sun-like)
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(10, 20, 10);
+    directionalLight.castShadow = true;
+    
+    // Improve shadow quality
+    directionalLight.shadow.mapSize.width = 2048;
+    directionalLight.shadow.mapSize.height = 2048;
+    directionalLight.shadow.camera.near = 0.5;
+    directionalLight.shadow.camera.far = 50;
+    
+    // Set shadow boundaries
+    const d = 30;
+    directionalLight.shadow.camera.left = -d;
+    directionalLight.shadow.camera.right = d;
+    directionalLight.shadow.camera.top = d;
+    directionalLight.shadow.camera.bottom = -d;
+    
+    scene.add(directionalLight);
+    
+    // Add a secondary light from another angle
+    const secondaryLight = new THREE.DirectionalLight(0xffffff, 0.3);
+    secondaryLight.position.set(-5, 10, -10);
+    scene.add(secondaryLight);
+  };
+  
+  // Create the base landscape
+  const createLandscape = (scene) => {
+    // Ground plane
+    const groundGeometry = new THREE.PlaneGeometry(80, 40, 100, 60);
+    
+    // Create terrain with gentle hills and valleys
+    // Apply height variations based on event positions
+    const vertices = groundGeometry.attributes.position.array;
+    const influenceRadius = 6; // How far each event affects the terrain
+    
     for (let i = 0; i < vertices.length; i += 3) {
       const x = vertices[i];
       const z = vertices[i + 2];
       
-      // Calculate height based on distance to event "mountains"
-      let totalHeight = 0;
+      // Base height with slight variation for visual interest
+      let baseHeight = Math.sin(x * 0.1) * Math.sin(z * 0.1) * 0.2;
+      
+      // Calculate event influence on terrain height
+      let totalHeight = baseHeight;
       let totalInfluence = 0;
       
-      // Add base terrain with some randomness
-      const baseNoise = Math.sin(x * 0.1) * Math.sin(z * 0.1) * 0.05;
-      
+      // Each event creates a hill or mountain
       bibleEvents.forEach(event => {
         const dx = x - event.position[0];
         const dz = z - event.position[1];
         const distance = Math.sqrt(dx * dx + dz * dz);
         
         if (distance < influenceRadius) {
-          // Use inverse square for more natural mountain shape
+          // Use inverse square for natural mountain shape
           const influence = Math.pow(1 - distance / influenceRadius, 2);
-          const height = event.height * 8; // Scale height
+          const height = event.height * 3; // Scale height
           totalHeight += height * influence;
           totalInfluence += influence;
         }
       });
       
       // Apply height to vertex
-      if (totalInfluence > 0) {
-        vertices[i + 1] = totalHeight / totalInfluence + baseNoise;
-      } else {
-        vertices[i + 1] = baseNoise;
-      }
+      vertices[i + 1] = totalHeight;
     }
     
     // Update normals for proper lighting
-    geometry.computeVertexNormals();
+    groundGeometry.computeVertexNormals();
     
-    // Create terrain material with color gradient based on height
-    const material = new THREE.MeshStandardMaterial({
+    // Create gradient material for terrain
+    const groundMaterial = new THREE.MeshStandardMaterial({
       vertexColors: true,
-      flatShading: false,
-      side: THREE.DoubleSide
+      roughness: 0.8,
+      metalness: 0.1
     });
     
-    // Add colors based on height and chronology
+    // Add colors based on position and height for beautiful terrain
     const colors = [];
     for (let i = 0; i < vertices.length; i += 3) {
-      const height = vertices[i + 1];
       const x = vertices[i];
+      const y = vertices[i + 1];
+      const z = vertices[i + 2];
       
-      // Base color based on chronology (position along x-axis)
-      // Transition from green (early) to blue (middle) to purple (late)
-      let baseColor;
-      const normalizedX = (x + terrainSize/2) / terrainSize; // 0 to 1
+      // Base color gradient from green to sandy
+      const normalizedX = (x + 40) / 80; // 0 to 1
       
-      if (normalizedX < 0.33) {
-        // Early biblical history - green to teal
-        baseColor = new THREE.Color(0x2a9d8f).lerp(new THREE.Color(0x457b9d), normalizedX * 3);
-      } else if (normalizedX < 0.66) {
-        // Middle biblical history - teal to blue
-        baseColor = new THREE.Color(0x457b9d).lerp(new THREE.Color(0x1d3557), (normalizedX - 0.33) * 3);
+      // Create a beautiful color gradient across the timeline
+      let color;
+      if (normalizedX < 0.2) {
+        // Early history - greens
+        color = new THREE.Color(0x2a9d8f).lerp(new THREE.Color(0x95d5b2), y / 3);
+      } else if (normalizedX < 0.4) {
+        // Exodus period - blues and tans
+        color = new THREE.Color(0x457b9d).lerp(new THREE.Color(0xa8dadc), y / 3);
+      } else if (normalizedX < 0.6) {
+        // Kingdom period - deeper blues and purples
+        color = new THREE.Color(0x1d3557).lerp(new THREE.Color(0x6c5b7b), y / 3);
+      } else if (normalizedX < 0.8) {
+        // Exile and return - reds and ambers
+        color = new THREE.Color(0xe63946).lerp(new THREE.Color(0xf4a261), y / 3);
       } else {
-        // Later biblical history - blue to purple
-        baseColor = new THREE.Color(0x1d3557).lerp(new THREE.Color(0x7209b7), (normalizedX - 0.66) * 3);
+        // Jesus and church - gold to white
+        color = new THREE.Color(0xffb703).lerp(new THREE.Color(0xffffff), y / 3);
       }
       
-      // Find closest event for coloring
-      let closestEvent = null;
-      let closestDistance = Infinity;
-      
-      bibleEvents.forEach(event => {
-        const dx = vertices[i] - event.position[0];
-        const dz = vertices[i + 2] - event.position[1];
-        const distance = Math.sqrt(dx * dx + dz * dz);
-        
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestEvent = event;
-        }
-      });
-      
-      let color;
-      if (closestEvent && closestDistance < influenceRadius) {
-        // Use event color with intensity based on height
-        const eventColor = new THREE.Color(closestEvent.color);
-        const intensity = Math.min(1, Math.max(0.4, height / 4 + 0.5));
-        color = eventColor.clone().multiplyScalar(intensity);
-      } else {
-        // Default terrain color
-        const intensity = Math.min(1, Math.max(0.4, height / 8 + 0.5));
-        color = baseColor.clone().multiplyScalar(intensity);
+      // Heighten color intensity for peaks
+      if (y > 1) {
+        color.multiplyScalar(1 + (y - 1) * 0.1);
       }
       
       colors.push(color.r, color.g, color.b);
     }
     
     // Add colors to geometry
-    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+    groundGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
     
-    // Create mesh and add to scene
-    const terrain = new THREE.Mesh(geometry, material);
-    terrain.rotation.x = -Math.PI / 2; // Rotate to be horizontal
-    terrain.receiveShadow = true;
-    terrain.castShadow = true;
-    terrain.userData.isInteractive = true;
+    // Create and add ground mesh
+    const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+    ground.rotation.x = -Math.PI / 2; // Make it horizontal
+    ground.receiveShadow = true;
+    ground.castShadow = true;
+    scene.add(ground);
     
-    scene.add(terrain);
-    terrainRef.current = terrain;
-    
-    // Add event markers on the terrain
-    const markerGeometry = new THREE.CylinderGeometry(0.15, 0.15, 0.4, 8);
-    
-    bibleEvents.forEach(event => {
-      const markerMaterial = new THREE.MeshStandardMaterial({ 
-        color: event.color,
-        emissive: event.color,
-        emissiveIntensity: 0.3
-      });
-      const marker = new THREE.Mesh(markerGeometry, markerMaterial);
-      
-      // Calculate position on the terrain
-      const x = event.position[0];
-      const z = event.position[1];
-      
-      // Find height at this position
-      let height = 0;
-      let influence = 0;
-      
-      bibleEvents.forEach(e => {
-        const dx = x - e.position[0];
-        const dz = z - e.position[1];
-        const distance = Math.sqrt(dx * dx + dz * dz);
-        
-        if (distance < influenceRadius) {
-          const i = Math.pow(1 - distance / influenceRadius, 2);
-          height += e.height * 8 * i;
-          influence += i;
-        }
-      });
-      
-      if (influence > 0) {
-        height = height / influence;
-      }
-      
-      marker.position.set(x, height + 0.2, z);
-      marker.userData = { 
-        eventId: event.id,
-        isMarker: true
-      };
-      
-      scene.add(marker);
-    });
-  };
-
-  // Add visual navigation aids to the scene
-  const addNavigationAids = (scene) => {
-    // Add a compass
-    const compassGroup = new THREE.Group();
-    
-    // Compass circle
-    const compassRingGeometry = new THREE.RingGeometry(1.8, 2, 32);
-    const compassRingMaterial = new THREE.MeshBasicMaterial({ 
-      color: 0x333333, 
-      side: THREE.DoubleSide,
+    // Add water
+    const waterGeometry = new THREE.PlaneGeometry(100, 60);
+    const waterMaterial = new THREE.MeshStandardMaterial({
+      color: 0x219ebc,
       transparent: true,
-      opacity: 0.7
+      opacity: 0.7,
+      metalness: 0.9,
+      roughness: 0.1
     });
-    const compassRing = new THREE.Mesh(compassRingGeometry, compassRingMaterial);
-    compassRing.rotation.x = -Math.PI / 2;
-    compassGroup.add(compassRing);
     
-    // Direction markers
-    const markerGeometry = new THREE.ConeGeometry(0.3, 0.8, 16);
-    const markerMaterial = new THREE.MeshBasicMaterial({ color: 0xe63946 });
+    const water = new THREE.Mesh(waterGeometry, waterMaterial);
+    water.rotation.x = -Math.PI / 2;
+    water.position.y = -0.5; // Just below ground level
+    scene.add(water);
     
-    // North marker
-    const northMarker = new THREE.Mesh(markerGeometry, markerMaterial);
-    northMarker.position.set(0, 0, -2.5);
-    northMarker.rotation.x = Math.PI;
-    compassGroup.add(northMarker);
+    // Add sky gradient
+    const skyGeometry = new THREE.SphereGeometry(50, 32, 32);
+    const skyMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        topColor: { value: new THREE.Color(0x0077ff) },
+        bottomColor: { value: new THREE.Color(0xffffff) },
+        offset: { value: 40 },
+        exponent: { value: 0.8 }
+      },
+      vertexShader: `
+        varying vec3 vWorldPosition;
+        void main() {
+          vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+          vWorldPosition = worldPosition.xyz;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 topColor;
+        uniform vec3 bottomColor;
+        uniform float offset;
+        uniform float exponent;
+        varying vec3 vWorldPosition;
+        void main() {
+          float h = normalize(vWorldPosition + offset).y;
+          gl_FragColor = vec4(mix(bottomColor, topColor, max(pow(max(h, 0.0), exponent), 0.0)), 1.0);
+        }
+      `,
+      side: THREE.BackSide
+    });
     
-    // Add N label
-    const northCanvas = document.createElement('canvas');
-    northCanvas.width = 64;
-    northCanvas.height = 64;
-    const northCtx = northCanvas.getContext('2d');
-    northCtx.fillStyle = 'white';
-    northCtx.font = 'bold 40px Arial';
-    northCtx.textAlign = 'center';
-    northCtx.textBaseline = 'middle';
-    northCtx.fillText('N', 32, 32);
+    const sky = new THREE.Mesh(skyGeometry, skyMaterial);
+    scene.add(sky);
     
-    const northTexture = new THREE.CanvasTexture(northCanvas);
-    const northLabelMaterial = new THREE.SpriteMaterial({ map: northTexture });
-    const northLabel = new THREE.Sprite(northLabelMaterial);
-    northLabel.position.set(0, 0.5, -3);
-    northLabel.scale.set(1.5, 1.5, 1);
-    compassGroup.add(northLabel);
+    // Add timeline path
+    addTimelinePath(scene);
+  };
+  
+  // Add a visible timeline path connecting all events
+  const addTimelinePath = (scene) => {
+    // Sort events chronologically
+    const sortedEvents = [...bibleEvents].sort((a, b) => {
+      // First sort by x position (chronology)
+      return a.position[0] - b.position[0];
+    });
     
-    // Position compass in corner of scene
-    compassGroup.position.set(-25, 0.2, -15);
-    scene.add(compassGroup);
-    
-    // Add a path highlighting the biblical timeline
-    const timelinePath = new THREE.CurvePath();
-    
-    // Create a smooth curve through all events in chronological order
-    const sortedEvents = [...bibleEvents].sort((a, b) => a.position[0] - b.position[0]);
-    
-    // Generate control points for a smooth path
-    const controlPoints = [];
+    // Create a smooth path through all events
+    const timelinePoints = [];
     sortedEvents.forEach(event => {
-      controlPoints.push(new THREE.Vector3(
-        event.position[0],
-        event.height * 8 * 0.2, // Keep it low to the ground
-        event.position[1]
-      ));
+      const height = event.height * 3 + 0.2; // Slightly above the terrain
+      timelinePoints.push(new THREE.Vector3(event.position[0], height, event.position[1]));
     });
     
-    // Create a smooth spline through the points
-    for (let i = 0; i < controlPoints.length - 1; i++) {
-      const startPoint = controlPoints[i];
-      const endPoint = controlPoints[i + 1];
-      
-      // Calculate a control point for a curved path
-      const midPoint = new THREE.Vector3().addVectors(startPoint, endPoint).multiplyScalar(0.5);
-      midPoint.y += 0.3; // Slight elevation
-      
-      // Create a quadratic curve
-      const curve = new THREE.QuadraticBezierCurve3(startPoint, midPoint, endPoint);
-      timelinePath.add(curve);
-    }
+    // Create a smooth curve through the points
+    const curve = new THREE.CatmullRomCurve3(timelinePoints);
+    curve.tension = 0.3; // Adjust curve smoothness
     
-    // Create the timeline visual
-    const timelineGeometry = new THREE.TubeGeometry(
-      timelinePath, 
-      150,  // tubular segments
-      0.15, // radius
-      8,    // radial segments
-      false // closed
-    );
+    // Create a tube geometry along the curve
+    const tubeGeometry = new THREE.TubeGeometry(curve, 200, 0.1, 8, false);
     
-    // Create a glowing material for the timeline
-    const timelineMaterial = new THREE.MeshStandardMaterial({
+    // Use a glowing material
+    const tubeMaterial = new THREE.MeshStandardMaterial({
       color: 0x4a9eff,
       emissive: 0x4a9eff,
       emissiveIntensity: 0.5,
       transparent: true,
-      opacity: 0.7
+      opacity: 0.8
     });
     
-    const timelineMesh = new THREE.Mesh(timelineGeometry, timelineMaterial);
-    scene.add(timelineMesh);
+    const timelineTube = new THREE.Mesh(tubeGeometry, tubeMaterial);
+    scene.add(timelineTube);
     
-    // Add era markers (vertical columns of light)
-    const eraMarkers = [
-      { position: [-14, -8], label: 'Early History', color: 0x2a9d8f },
-      { position: [3, 0], label: 'Exodus & Wilderness', color: 0x457b9d },
-      { position: [10, 5], label: 'Kingdom Period', color: 0x1d3557 },
-      { position: [14, 7], label: 'Exile', color: 0x6a040f },
-      { position: [18, 9], label: "Jesus' Ministry", color: 0xf4a261 },
-      { position: [23, 11], label: 'Early Church', color: 0x2a9d8f }
-    ];
-    
-    eraMarkers.forEach(marker => {
-      // Create a cylindrical light beam
-      const beamGeometry = new THREE.CylinderGeometry(0.15, 0.15, 15, 8);
+    // Add era markers
+    Object.entries(eraInfo).forEach(([eraId, data]) => {
+      if (eraId === 'all') return; // Skip the "all" category
+      
+      const { position, color, name } = data;
+      
+      // Create a vertical beam at each era's position
+      const beamGeometry = new THREE.CylinderGeometry(0.1, 0.1, 8, 8);
       const beamMaterial = new THREE.MeshBasicMaterial({
-        color: marker.color,
+        color: color,
         transparent: true,
-        opacity: 0.3
+        opacity: 0.7
       });
       
       const beam = new THREE.Mesh(beamGeometry, beamMaterial);
-      beam.position.set(marker.position[0], 7.5, marker.position[1]);
+      beam.position.set(position[0], 4, position[1]);
       scene.add(beam);
       
-      // Add label above the beam
-      const labelCanvas = document.createElement('canvas');
-      labelCanvas.width = 256;
-      labelCanvas.height = 64;
-      const labelCtx = labelCanvas.getContext('2d');
-      
-      labelCtx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-      labelCtx.fillRect(0, 0, labelCanvas.width, labelCanvas.height);
-      
-      labelCtx.strokeStyle = new THREE.Color(marker.color).getStyle();
-      labelCtx.lineWidth = 4;
-      labelCtx.strokeRect(2, 2, labelCanvas.width - 4, labelCanvas.height - 4);
-      
-      labelCtx.font = 'bold 20px Arial';
-      labelCtx.fillStyle = '#000000';
-      labelCtx.textAlign = 'center';
-      labelCtx.textBaseline = 'middle';
-      labelCtx.fillText(marker.label, labelCanvas.width / 2, labelCanvas.height / 2);
-      
-      const labelTexture = new THREE.CanvasTexture(labelCanvas);
-      const labelMaterial = new THREE.MeshBasicMaterial({
-        map: labelTexture,
-        transparent: true,
-        side: THREE.DoubleSide
-      });
-      
-      const labelGeometry = new THREE.PlaneGeometry(4, 1);
-      const label = new THREE.Mesh(labelGeometry, labelMaterial);
-      label.position.set(marker.position[0], 18, marker.position[1]);
-      label.rotation.x = -Math.PI / 4; // Angle for better visibility
-      scene.add(label);
+      // Add floating era label
+      addFloatingLabel(scene, name, position[0], 8.5, position[1], color, 1.5);
     });
   };
-
-  // Create connections between related events
-  const createConnections = (scene) => {
-    const connectionsGroup = new THREE.Group();
-    scene.add(connectionsGroup);
-    connectionsRef.current = connectionsGroup;
-    
-    // Create paths between connected events
-    const lineMaterial = new THREE.LineBasicMaterial({
-      color: 0x888888,
-      opacity: 0.7,
-      transparent: true,
-      linewidth: 2
-    });
+  
+  // Create markers for each biblical event
+  const createEventMarkers = (scene) => {
+    objectsToRaycastRef.current = []; // Clear the array
     
     bibleEvents.forEach(event => {
-      if (event.connections && event.connections.length > 0) {
-        event.connections.forEach(connectedId => {
-          const connectedEvent = bibleEvents.find(e => e.id === connectedId);
-          if (connectedEvent) {
-            // Calculate positions including heights
-            const startX = event.position[0];
-            const startZ = event.position[1];
-            const endX = connectedEvent.position[0];
-            const endZ = connectedEvent.position[1];
-            
-            // Find heights at these positions
-            let startHeight = event.height * 8;
-            let endHeight = connectedEvent.height * 8;
-            
-            // Create a curved path for better visualization
-            const midX = (startX + endX) / 2;
-            const midZ = (startZ + endZ) / 2;
-            const midHeight = (startHeight + endHeight) / 2 + 0.5; // Slightly elevated midpoint
-            
-            // Add points for the curve
-            const lineGeometry = new THREE.BufferGeometry();
-            
-            // Create a curve with multiple points
-            const curve = new THREE.QuadraticBezierCurve3(
-              new THREE.Vector3(startX, startHeight + 0.2, startZ),
-              new THREE.Vector3(midX, midHeight, midZ),
-              new THREE.Vector3(endX, endHeight + 0.2, endZ)
-            );
-            
-            const points = curve.getPoints(20);
-            lineGeometry.setFromPoints(points);
-            
-            const line = new THREE.Line(lineGeometry, lineMaterial);
-            connectionsGroup.add(line);
-            
-            // Add direction indicators (small spheres along the path)
-            const arrowMaterial = new THREE.MeshBasicMaterial({ 
-              color: 0xffffff, 
-              transparent: true,
-              opacity: 0.8
-            });
-            
-            // Add multiple small spheres along the path
-            for (let i = 0.3; i < 0.9; i += 0.2) {
-              const point = curve.getPoint(i);
-              const arrowGeometry = new THREE.SphereGeometry(0.1, 8, 8);
-              const arrow = new THREE.Mesh(arrowGeometry, arrowMaterial);
-              arrow.position.copy(point);
-              connectionsGroup.add(arrow);
-            }
-          }
-        });
-      }
-    });
-  };
-
-  // Create event labels that float above the terrain
-  const createLabels = (scene) => {
-    // Create a group to hold all labels
-    const labelGroup = new THREE.Group();
-    scene.add(labelGroup);
-    labelGroupRef.current = labelGroup;
-    
-    // For each event, create a floating text label
-    bibleEvents.forEach(event => {
-      // Create canvas for text rendering
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d');
-      canvas.width = 256;
-      canvas.height = 128;
-      
-      // Fill background
-      context.fillStyle = 'rgba(255, 255, 255, 0.8)';
-      context.fillRect(0, 0, canvas.width, canvas.height);
-      
-      // Draw border
-      context.strokeStyle = event.color;
-      context.lineWidth = 4;
-      context.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
-      
-      // Write event name
-      context.font = 'bold 24px Arial';
-      context.fillStyle = '#000000';
-      context.textAlign = 'center';
-      context.textBaseline = 'middle';
-      context.fillText(event.name, canvas.width / 2, 30);
-      
-      // Write year
-      context.font = '16px Arial';
-      context.fillText(event.year, canvas.width / 2, 60);
-      
-      // Write scripture reference
-      context.font = '14px Arial';
-      context.fillText(event.scripture, canvas.width / 2, 85);
-      
-      // Create texture from canvas
-      const texture = new THREE.CanvasTexture(canvas);
-      
-      // Create label material and geometry
-      const labelMaterial = new THREE.MeshBasicMaterial({
-        map: texture,
-        transparent: true,
-        opacity: 0.95,
-        side: THREE.DoubleSide
-      });
-      
-      const labelGeometry = new THREE.PlaneGeometry(2, 1);
-      const label = new THREE.Mesh(labelGeometry, labelMaterial);
-      
-      // Set label position above the event peak
+      // Calculate height at this position
+      const height = event.height * 3;
       const x = event.position[0];
       const z = event.position[1];
       
-      // Calculate height at this position
-      let height = event.height * 8 + 1.5; // Position above the peak
+      // Create an attractive monument/pillar for each event
+      const baseHeight = height;
+      const baseRadius = 0.3;
       
-      label.position.set(x, height, z);
-      label.userData = { 
-        eventId: event.id,
-        isLabel: true
-      };
+      // Create a beacon/monument for each event
+      const pillarGeometry = new THREE.CylinderGeometry(baseRadius * 0.7, baseRadius, baseHeight, 8);
+      const pillarMaterial = new THREE.MeshStandardMaterial({
+        color: event.color,
+        metalness: 0.3,
+        roughness: 0.4,
+        emissive: event.color,
+        emissiveIntensity: 0.2
+      });
       
-      // Make label always face camera
-      label.lookAt(cameraRef.current.position);
+      const pillar = new THREE.Mesh(pillarGeometry, pillarMaterial);
+      pillar.position.set(x, baseHeight / 2, z);
+      pillar.castShadow = true;
+      pillar.userData = { eventId: event.id };
+      scene.add(pillar);
       
-      // Initially hide detailed labels
-      label.visible = false;
+      // Add to objects for raycasting
+      objectsToRaycastRef.current.push(pillar);
       
-      // Add to label group
-      labelGroup.add(label);
+      // Add a glowing top to the pillar
+      const topGeometry = new THREE.SphereGeometry(baseRadius * 0.8, 12, 12);
+      const topMaterial = new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        emissive: event.color,
+        emissiveIntensity: 0.7,
+        transparent: true,
+        opacity: 0.9
+      });
+      
+      const top = new THREE.Mesh(topGeometry, topMaterial);
+      top.position.set(x, baseHeight, z);
+      top.castShadow = true;
+      top.userData = { eventId: event.id };
+      scene.add(top);
+      
+      // Add to objects for raycasting
+      objectsToRaycastRef.current.push(top);
+      
+      // Add a base platform
+      const baseGeometry = new THREE.CylinderGeometry(baseRadius * 1.5, baseRadius * 2, 0.2, 8);
+      const baseMaterial = new THREE.MeshStandardMaterial({
+        color: event.color,
+        metalness: 0.2,
+        roughness: 0.8
+      });
+      
+      const base = new THREE.Mesh(baseGeometry, baseMaterial);
+      base.position.set(x, 0.1, z);
+      base.castShadow = true;
+      base.receiveShadow = true;
+      base.userData = { eventId: event.id };
+      scene.add(base);
+      
+      // Add to objects for raycasting
+      objectsToRaycastRef.current.push(base);
+      
+      // Add floating label above the pillar
+      addFloatingLabel(scene, event.name, x, baseHeight + 0.5, z, event.color, 1, event.id);
     });
   };
-
-  // Check for ray intersections with interactive objects
-  const checkIntersections = () => {
-    if (!sceneRef.current || !cameraRef.current) return;
+  
+  // Add floating text labels
+  const addFloatingLabel = (scene, text, x, y, z, color, scale = 1, eventId = null) => {
+    // Create canvas for text
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    canvas.width = 256;
+    canvas.height = 128;
     
-    raycasterRef.current.setFromCamera(mouseRef.current, cameraRef.current);
+    // Fill canvas with semi-transparent background
+    context.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    context.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Get all objects in the scene that could be intersected
-    const intersectableObjects = [];
-    sceneRef.current.traverse(object => {
-      if (object.userData && (object.userData.isMarker || object.userData.isLabel)) {
-        intersectableObjects.push(object);
+    // Draw border
+    context.strokeStyle = color;
+    context.lineWidth = 4;
+    context.strokeRect(4, 4, canvas.width - 8, canvas.height - 8);
+    
+    // Draw text
+    context.font = 'bold 32px Arial';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillStyle = '#000000';
+    
+    // If text is too long, split it
+    if (text.length > 20) {
+      const words = text.split(' ');
+      let line1 = '';
+      let line2 = '';
+      let currentLine = line1;
+      
+      for (const word of words) {
+        if ((currentLine + word).length <= 20) {
+          currentLine += (currentLine.length ? ' ' : '') + word;
+          if (currentLine === line1) {
+            line1 = currentLine;
+          } else {
+            line2 = currentLine;
+          }
+        } else {
+          if (currentLine === line1) {
+            currentLine = line2;
+            currentLine += (currentLine.length ? ' ' : '') + word;
+            line2 = currentLine;
+          } else {
+            break; // Can't fit more
+          }
+        }
       }
-    });
-    
-    const intersects = raycasterRef.current.intersectObjects(intersectableObjects);
-    
-    if (intersects.length > 0) {
-      const eventId = intersects[0].object.userData.eventId;
-      if (eventId && eventId !== hoveredEvent) {
-        setHoveredEvent(eventId);
-        updateLabelVisibility(eventId);
-      }
-    } else if (hoveredEvent) {
-      setHoveredEvent(null);
-      updateLabelVisibility(null);
+      
+      context.font = 'bold 24px Arial';
+      context.fillText(line1, canvas.width / 2, canvas.height / 3);
+      context.fillText(line2, canvas.width / 2, canvas.height * 2 / 3);
+    } else {
+      context.fillText(text, canvas.width / 2, canvas.height / 2);
     }
-  };
-
-  // Navigation functions
-  const navigateToEvent = (eventId) => {
-    const event = getEventById(eventId);
-    if (!event || !cameraRef.current || !controlsRef.current) return;
     
-    // Set as selected event to show details
+    // Create texture
+    const texture = new THREE.CanvasTexture(canvas);
+    
+    // Create sprite material
+    const material = new THREE.SpriteMaterial({
+      map: texture,
+      transparent: true
+    });
+    
+    // Create sprite
+    const sprite = new THREE.Sprite(material);
+    sprite.position.set(x, y, z);
+    sprite.scale.set(2 * scale, 1 * scale, 1);
+    
+    // Store event ID for interaction
+    if (eventId) {
+      sprite.userData = { 
+        isLabel: true,
+        eventId: eventId
+      };
+    }
+    
+    // Initially hide most labels to reduce clutter
+    if (eventId && !showAllLabels) {
+      sprite.visible = false;
+    }
+    
+    scene.add(sprite);
+    
+    return sprite;
+  };
+  
+  // Create connections between related events
+  const createConnections = (scene) => {
+    bibleEvents.forEach(event => {
+      if (!event.connections || event.connections.length === 0) return;
+      
+      // Get event position with height
+      const startPos = new THREE.Vector3(
+        event.position[0],
+        event.height * 3, // Set to peak height
+        event.position[1]
+      );
+      
+      // Create connections to each related event
+      event.connections.forEach(targetId => {
+        const targetEvent = bibleEvents.find(e => e.id === targetId);
+        if (!targetEvent) return;
+        
+        // Get target position with height
+        const endPos = new THREE.Vector3(
+          targetEvent.position[0],
+          targetEvent.height * 3, // Set to peak height
+          targetEvent.position[1]
+        );
+        
+        // Calculate midpoint with some elevation for a nice arc
+        const midPoint = new THREE.Vector3()
+          .addVectors(startPos, endPos)
+          .multiplyScalar(0.5);
+        midPoint.y += 1.5; // Add some height for an arc
+        
+        // Create a quadratic curve
+        const curve = new THREE.QuadraticBezierCurve3(
+          startPos,
+          midPoint,
+          endPos
+        );
+        
+        // Store source and target event IDs in the curve for relationship labels
+        curve.sourceEvent = event.id;
+        curve.targetEvent = targetId;
+        
+        // Create geometry
+        const points = curve.getPoints(30);
+        const geometry = new THREE.BufferGeometry().setFromPoints(points);
+        
+        // Create material
+        const material = new THREE.LineBasicMaterial({
+          color: 0xffffff,
+          transparent: true,
+          opacity: 0.3,
+          linewidth: 1
+        });
+        
+        // Create the curve
+        const curveObject = new THREE.Line(geometry, material);
+        curveObject.userData = {
+          isConnection: true,
+          sourceId: event.id,
+          targetId: targetId
+        };
+        
+        scene.add(curveObject);
+        
+        // Add a small pulse effect along the connection
+        addConnectionPulse(scene, curve, event.color);
+      });
+    });
+  };
+  
+  // Add a pulse that travels along connections with a label
+  const addConnectionPulse = (scene, curve, color) => {
+    // Create a small sphere that will move along the curve
+    const pulseGeometry = new THREE.SphereGeometry(0.08, 8, 8);
+    const pulseMaterial = new THREE.MeshBasicMaterial({
+      color: color,
+      transparent: true,
+      opacity: 0.7
+    });
+    
+    const pulse = new THREE.Mesh(pulseGeometry, pulseMaterial);
+    scene.add(pulse);
+    
+    // Determine relationship type based on source and target events
+    const source = curve.sourceEvent;
+    const target = curve.targetEvent;
+    
+    let relationshipText = "Connected to";
+    
+    // Determine relationship type based on events
+    if (source && target) {
+      // Special case relationships based on biblical narrative
+      if (source === 'creation' && target === 'fall') {
+        relationshipText = "Leads to";
+      } else if (source === 'fall' && target === 'flood') {
+        relationshipText = "Results in";
+      } else if (source === 'abraham_call' && target === 'isaac_birth') {
+        relationshipText = "Father of";
+      } else if (source === 'moses_birth' && target === 'burning_bush') {
+        relationshipText = "Grows up to";
+      } else if (source === 'exodus' && target === 'red_sea') {
+        relationshipText = "Followed by";
+      } else if (source === 'jesus_birth' && target === 'jesus_ministry') {
+        relationshipText = "Grows to";
+      } else if (source === 'crucifixion' && target === 'resurrection') {
+        relationshipText = "Defeated by";
+      } else if (source === 'pentecost' && target === 'church_begins') {
+        relationshipText = "Establishes";
+      } else {
+        // Default relationships based on chronology
+        const sourceEvent = bibleEvents.find(e => e.id === source);
+        const targetEvent = bibleEvents.find(e => e.id === target);
+        
+        if (sourceEvent && targetEvent) {
+          if (sourceEvent.era === targetEvent.era) {
+            relationshipText = "Leads to";
+          } else {
+            relationshipText = "Precedes";
+          }
+        }
+      }
+    }
+    
+    // Create a text label for the connection
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    canvas.width = 128;
+    canvas.height = 64;
+    
+    // Fill with transparent background
+    context.fillStyle = 'rgba(255, 255, 255, 0.7)';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Add border with connection color
+    context.strokeStyle = new THREE.Color(color).getStyle();
+    context.lineWidth = 2;
+    context.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
+    
+    // Write relationship text
+    context.font = 'bold 18px Arial';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillStyle = '#000000';
+    context.fillText(relationshipText, canvas.width / 2, canvas.height / 2);
+    
+    // Create texture and sprite
+    const texture = new THREE.CanvasTexture(canvas);
+    const labelMaterial = new THREE.SpriteMaterial({
+      map: texture,
+      transparent: true,
+      opacity: 0.9
+    });
+    
+    const label = new THREE.Sprite(labelMaterial);
+    label.scale.set(0.8, 0.4, 1);
+    scene.add(label);
+    
+    // Start the pulse at a random position
+    let t = Math.random();
+    const speed = 0.001 + Math.random() * 0.001; // Random speed
+    
+    // Function to update pulse position
+    const updatePulse = () => {
+      // Update position along curve
+      t = (t + speed) % 1;
+      const position = curve.getPoint(t);
+      pulse.position.copy(position);
+      
+      // Position label slightly above pulse
+      label.position.set(position.x, position.y + 0.5, position.z);
+      
+      // Make label face the camera
+      if (cameraRef.current) {
+        const cameraPosition = cameraRef.current.position;
+        const labelPosition = label.position;
+        
+        // Calculate direction from label to camera
+        const direction = new THREE.Vector3()
+          .subVectors(cameraPosition, labelPosition)
+          .normalize();
+        
+        // Scale opacity based on angle to camera (fade out when seen edge-on)
+        const upVector = new THREE.Vector3(0, 1, 0);
+        const dot = direction.dot(upVector);
+        label.material.opacity = Math.pow(Math.abs(dot), 0.5) * 0.9;
+      }
+      
+      // Request the next update
+      requestAnimationFrame(updatePulse);
+    };
+    
+    // Start the animation
+    updatePulse();
+  };
+  
+  // Update label visibility
+  const updateLabels = (hoveredEventId) => {
+    if (!sceneRef.current) return;
+    
+    // Find all label sprites
+    sceneRef.current.traverse(object => {
+      if (object.userData && object.userData.isLabel) {
+        const isHovered = object.userData.eventId === hoveredEventId;
+        const isSelected = selectedEvent && object.userData.eventId === selectedEvent;
+        
+        // Show label if hovered, selected, or showAllLabels is true
+        object.visible = isHovered || isSelected || showAllLabels;
+      }
+      
+      // Highlight connections for hovered/selected event
+      if (object.userData && object.userData.isConnection) {
+        const isConnectedToHovered = hoveredEventId && 
+          (object.userData.sourceId === hoveredEventId || object.userData.targetId === hoveredEventId);
+        const isConnectedToSelected = selectedEvent && 
+          (object.userData.sourceId === selectedEvent || object.userData.targetId === selectedEvent);
+        
+        if (isConnectedToHovered || isConnectedToSelected) {
+          object.material.color.set(0xffcc00);
+          object.material.opacity = 0.8;
+          object.material.linewidth = 2;
+        } else {
+          object.material.color.set(0xffffff);
+          object.material.opacity = 0.3;
+          object.material.linewidth = 1;
+        }
+      }
+      
+      // Highlight event markers
+      if (object.userData && object.userData.eventId && object instanceof THREE.Mesh) {
+        const isHovered = object.userData.eventId === hoveredEventId;
+        const isSelected = selectedEvent && object.userData.eventId === selectedEvent;
+        
+        if (isHovered || isSelected) {
+          if (object.material.emissive) {
+            object.material.emissiveIntensity = 0.8;
+            object.material.emissive.set(0xffcc00);
+          }
+          // Make it slightly larger
+          if (!object._originalScale) {
+            object._originalScale = object.scale.clone();
+          }
+          object.scale.set(
+            object._originalScale.x * 1.2,
+            object._originalScale.y * 1.2,
+            object._originalScale.z * 1.2
+          );
+        } else {
+          if (object.material.emissive) {
+            object.material.emissiveIntensity = 0.2;
+            const eventObj = bibleEvents.find(e => e.id === object.userData.eventId);
+            if (eventObj) {
+              object.material.emissive.set(eventObj.color);
+            }
+          }
+          // Reset scale
+          if (object._originalScale) {
+            object.scale.copy(object._originalScale);
+          }
+        }
+      }
+    });
+  };
+  
+  // Navigate camera to focus on an event
+  const navigateToEvent = (eventId) => {
+    if (!controlsRef.current || !cameraRef.current) return;
+    
+    const event = bibleEvents.find(e => e.id === eventId);
+    if (!event) return;
+    
+    // Set the new selected event
     setSelectedEvent(eventId);
     
-    // Calculate target position for camera
+    // Calculate target position
     const targetX = event.position[0];
     const targetZ = event.position[1];
-    let targetHeight = event.height * 8 + 3; // Position above the peak
-    
-    // Animate camera movement to the event
-    const startPosition = cameraRef.current.position.clone();
-    const targetPosition = new THREE.Vector3(targetX, targetHeight + 5, targetZ + 8);
+    const targetY = event.height * 3;
     
     // Disable controls during animation
     controlsRef.current.enabled = false;
     
-    // Simple animation
+    // Save current camera position and target
+    const startPosition = cameraRef.current.position.clone();
+    const startTarget = controlsRef.current.target.clone();
+    const endTarget = new THREE.Vector3(targetX, targetY, targetZ);
+    
+    // Calculate a nice viewing position
+    // Position the camera at an angle to see the event
+    const cameraDistance = 8;
+    const cameraHeight = targetY + 3;
+    
+    // Look at the event from a slight angle
+    const angle = Math.PI / 4; // 45 degrees
+    const endPosition = new THREE.Vector3(
+      targetX - Math.sin(angle) * cameraDistance,
+      cameraHeight,
+      targetZ - Math.cos(angle) * cameraDistance
+    );
+    
+    // Animate the camera move
     let startTime = null;
     const duration = 1000; // 1 second
     
@@ -1222,24 +1458,29 @@ const BibleEventsLandscape = () => {
       const elapsed = timestamp - startTime;
       const progress = Math.min(elapsed / duration, 1);
       
-      // Smooth easing
-      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      // Ease function (smooth start and end)
+      const ease = t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+      const t = ease(progress);
       
       // Interpolate position
-      const newX = startPosition.x + (targetPosition.x - startPosition.x) * easeProgress;
-      const newY = startPosition.y + (targetPosition.y - startPosition.y) * easeProgress;
-      const newZ = startPosition.z + (targetPosition.z - startPosition.z) * easeProgress;
-      
+      const newX = startPosition.x + (endPosition.x - startPosition.x) * t;
+      const newY = startPosition.y + (endPosition.y - startPosition.y) * t;
+      const newZ = startPosition.z + (endPosition.z - startPosition.z) * t;
       cameraRef.current.position.set(newX, newY, newZ);
       
-      // Update look at target
-      cameraRef.current.lookAt(targetX, targetHeight, targetZ);
+      // Interpolate target
+      const newTargetX = startTarget.x + (endTarget.x - startTarget.x) * t;
+      const newTargetY = startTarget.y + (endTarget.y - startTarget.y) * t;
+      const newTargetZ = startTarget.z + (endTarget.z - startTarget.z) * t;
+      controlsRef.current.target.set(newTargetX, newTargetY, newTargetZ);
+      
+      // Update the camera to look at the new target
+      cameraRef.current.lookAt(controlsRef.current.target);
       
       if (progress < 1) {
         requestAnimationFrame(animateCamera);
       } else {
         // Animation complete, re-enable controls
-        controlsRef.current.target.set(targetX, targetHeight, targetZ);
         controlsRef.current.enabled = true;
         controlsRef.current.update();
       }
@@ -1248,61 +1489,86 @@ const BibleEventsLandscape = () => {
     requestAnimationFrame(animateCamera);
   };
   
-  const navigateToEra = (era) => {
-    setCurrentEra(era);
+  // Navigate to an era
+  const navigateToEra = (eraId) => {
+    if (!controlsRef.current || !cameraRef.current) return;
     
-    // Define camera positions for different eras
-    const eraPositions = {
-      'overview': { position: [0, 25, 30], target: [0, 0, 0] },
-      'early': { position: [-14, 15, 0], target: [-14, 0, -8] },
-      'exodus': { position: [3, 15, 5], target: [3, 0, 0] },
-      'kingdom': { position: [10, 15, 8], target: [10, 0, 5] },
-      'exile': { position: [14, 15, 10], target: [14, 0, 7] },
-      'jesus': { position: [18, 15, 12], target: [18, 0, 9] },
-      'church': { position: [23, 15, 12], target: [23, 0, 11] }
-    };
+    const era = eraInfo[eraId];
+    if (!era) return;
     
-    const settings = eraPositions[era] || eraPositions.overview;
+    // Clear selected event
+    if (selectedEvent) {
+      setSelectedEvent(null);
+    }
     
-    // Animate camera movement
-    const startPosition = cameraRef.current.position.clone();
-    const targetPosition = new THREE.Vector3(...settings.position);
-    const startTarget = controlsRef.current.target.clone();
-    const endTarget = new THREE.Vector3(...settings.target);
+    // Set the era
+    setSelectedEra(eraId);
+    
+    // Position based on era
+    const targetX = era.position[0];
+    const targetZ = era.position[1];
     
     // Disable controls during animation
     controlsRef.current.enabled = false;
     
-    // Simple animation
+    // Save current camera position and target
+    const startPosition = cameraRef.current.position.clone();
+    const startTarget = controlsRef.current.target.clone();
+    const endTarget = new THREE.Vector3(targetX, 0, targetZ);
+    
+    // Calculate viewing position based on era
+    let cameraDistance, cameraHeight;
+    
+    if (eraId === 'all') {
+      // Overview position
+      cameraDistance = 0;
+      cameraHeight = 30;
+    } else {
+      // Era-specific position
+      cameraDistance = 15;
+      cameraHeight = 12;
+    }
+    
+    // Look down at the area from a distance
+    const angle = Math.PI / 6; // 30 degrees
+    const endPosition = new THREE.Vector3(
+      targetX - Math.sin(angle) * cameraDistance,
+      cameraHeight,
+      targetZ - Math.cos(angle) * cameraDistance
+    );
+    
+    // Animate the camera move
     let startTime = null;
-    const duration = 1200; // 1.2 seconds
+    const duration = 1500; // 1.5 seconds
     
     const animateCamera = (timestamp) => {
       if (!startTime) startTime = timestamp;
       const elapsed = timestamp - startTime;
       const progress = Math.min(elapsed / duration, 1);
       
-      // Smooth easing
-      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      // Ease function (smooth start and end)
+      const ease = t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+      const t = ease(progress);
       
       // Interpolate position
-      const newX = startPosition.x + (targetPosition.x - startPosition.x) * easeProgress;
-      const newY = startPosition.y + (targetPosition.y - startPosition.y) * easeProgress;
-      const newZ = startPosition.z + (targetPosition.z - startPosition.z) * easeProgress;
+      const newX = startPosition.x + (endPosition.x - startPosition.x) * t;
+      const newY = startPosition.y + (endPosition.y - startPosition.y) * t;
+      const newZ = startPosition.z + (endPosition.z - startPosition.z) * t;
+      cameraRef.current.position.set(newX, newY, newZ);
       
       // Interpolate target
-      const newTargetX = startTarget.x + (endTarget.x - startTarget.x) * easeProgress;
-      const newTargetY = startTarget.y + (endTarget.y - startTarget.y) * easeProgress;
-      const newTargetZ = startTarget.z + (endTarget.z - startTarget.z) * easeProgress;
+      const newTargetX = startTarget.x + (endTarget.x - startTarget.x) * t;
+      const newTargetY = startTarget.y + (endTarget.y - startTarget.y) * t;
+      const newTargetZ = startTarget.z + (endTarget.z - startTarget.z) * t;
+      controlsRef.current.target.set(newTargetX, newTargetY, newTargetZ);
       
-      cameraRef.current.position.set(newX, newY, newZ);
-      cameraRef.current.lookAt(newTargetX, newTargetY, newTargetZ);
+      // Update the camera to look at the new target
+      cameraRef.current.lookAt(controlsRef.current.target);
       
       if (progress < 1) {
         requestAnimationFrame(animateCamera);
       } else {
         // Animation complete, re-enable controls
-        controlsRef.current.target.copy(endTarget);
         controlsRef.current.enabled = true;
         controlsRef.current.update();
       }
@@ -1311,297 +1577,532 @@ const BibleEventsLandscape = () => {
     requestAnimationFrame(animateCamera);
   };
   
-  const resetCamera = () => {
-    navigateToEra('overview');
-    setSelectedEvent(null);
+  // Look at the landscape from above
+  const viewFromAbove = () => {
+    if (!controlsRef.current || !cameraRef.current) return;
+    
+    // Disable controls during animation
+    controlsRef.current.enabled = false;
+    
+    // Save current camera position and target
+    const startPosition = cameraRef.current.position.clone();
+    const startTarget = controlsRef.current.target.clone();
+    
+    // Target the center
+    const endTarget = new THREE.Vector3(0, 0, 0);
+    
+    // Position high above
+    const endPosition = new THREE.Vector3(0, 40, 0);
+    
+    // Animate the camera move
+    let startTime = null;
+    const duration = 1000; // 1 second
+    
+    const animateCamera = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Ease function
+      const t = progress;
+      
+      // Interpolate position
+      const newX = startPosition.x + (endPosition.x - startPosition.x) * t;
+      const newY = startPosition.y + (endPosition.y - startPosition.y) * t;
+      const newZ = startPosition.z + (endPosition.z - startPosition.z) * t;
+      cameraRef.current.position.set(newX, newY, newZ);
+      
+      // Interpolate target
+      const newTargetX = startTarget.x + (endTarget.x - startTarget.x) * t;
+      const newTargetY = startTarget.y + (endTarget.y - startTarget.y) * t;
+      const newTargetZ = startTarget.z + (endTarget.z - startTarget.z) * t;
+      controlsRef.current.target.set(newTargetX, newTargetY, newTargetZ);
+      
+      if (progress < 1) {
+        requestAnimationFrame(animateCamera);
+      } else {
+        // Animation complete, re-enable controls
+        controlsRef.current.enabled = true;
+        controlsRef.current.update();
+      }
+    };
+    
+    requestAnimationFrame(animateCamera);
   };
   
-  const toggleLabels = () => {
+  // Toggle showing all labels
+  const toggleAllLabels = () => {
     setShowAllLabels(!showAllLabels);
-    updateLabelVisibility(hoveredEvent);
-  };
-
-  // Update which event labels are visible
-  const updateLabelVisibility = (hoveredEventId) => {
-    if (!labelGroupRef.current) return;
     
-    labelGroupRef.current.children.forEach(label => {
-      // Make labels face the camera
-      label.lookAt(cameraRef.current.position);
-      
-      // Show label if it's the hovered event, a selected event, or showAllLabels is true
-      const isHovered = label.userData.eventId === hoveredEventId;
-      const isSelected = selectedEvent && label.userData.eventId === selectedEvent;
-      
-      label.visible = isHovered || isSelected || showAllLabels;
-      
-      // Scale labels based on distance to camera for better readability
-      if (label.visible) {
-        const distance = label.position.distanceTo(cameraRef.current.position);
-        const scale = Math.max(0.8, Math.min(1.5, 20 / distance));
-        label.scale.set(scale, scale, 1);
-        
-        // Adjust opacity based on distance
-        const opacity = Math.min(1, Math.max(0.5, 30 / distance));
-        label.material.opacity = opacity;
-      }
-    });
-  };
-
-  // Find event details by ID
-  const getEventById = (id) => {
-    return bibleEvents.find(event => event.id === id);
-  };
-
-  return (
-    <div className="w-full h-screen flex flex-col bg-gray-100">
-      {/* Info panel */}
-      <div className="bg-white p-3 shadow-md">
-        <h1 className="text-2xl font-bold text-center text-blue-800">Biblical Events Landscape</h1>
-        <p className="text-center text-gray-600">
-          Explore biblical history visualized as a 3D topographical map.
-          Major events form peaks, with connections between related narratives.
-        </p>
-        <div className="flex justify-center space-x-4 mt-2 text-sm">
-          <div className="flex items-center">
-            <span className="w-3 h-3 rounded-full bg-blue-500 mr-1"></span>
-            <span>Mountains = Major Events</span>
-          </div>
-          <div className="flex items-center">
-            <span className="w-3 h-3 rounded-full bg-gray-400 mr-1"></span>
-            <span>Paths = Narrative Connections</span>
-          </div>
-          <div className="flex items-center">
-            <span className="w-3 h-3 rounded-full bg-green-500 mr-1"></span>
-            <span>Blue Line = Biblical Timeline</span>
-          </div>
-        </div>
-        <div className="text-center text-gray-600 mt-1 flex items-center justify-center">
-          <span className="font-semibold mr-1">Navigation:</span>
-          <span className="mx-1">Left-click+drag to rotate</span>•
-          <span className="mx-1">Right-click+drag to pan</span>•
-          <span className="mx-1">Scroll to zoom</span>•
-          <span className="ml-1">Click on events for details</span>
-        </div>
-      </div>
-      
-      {/* Interactive Timeline Navigation */}
-      <div className="bg-white px-4 py-3 shadow-md">
-        <div className="flex items-center mb-2">
-          <span className="text-sm text-gray-700 mr-2 w-20">Genesis</span>
-          <div className="h-2 bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 flex-grow rounded-full relative">
-            {bibleEvents.map((event, index) => (
-              <button 
-                key={index}
-                className="absolute w-3 h-3 rounded-full bg-white border-2 hover:w-4 hover:h-4 hover:mt-0 transition-all"
-                style={{ 
-                  borderColor: event.color,
-                  left: `${((event.position[0] + 18) / 43) * 100}%`,
-                  top: '-3px',
-                  transform: 'translateX(-50%)'
-                }}
-                title={`${event.name} (${event.year})`}
-                onClick={() => navigateToEvent(event.id)}
-              />
-            ))}
-          </div>
-          <span className="text-sm text-gray-700 ml-2 w-20 text-right">Revelation</span>
-        </div>
-        
-        <div className="flex justify-between">
-          <div className="flex space-x-1">
-            <button className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm"
-              onClick={() => navigateToEra('early')}>
-              Early History
-            </button>
-            <button className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm"
-              onClick={() => navigateToEra('exodus')}>
-              Exodus
-            </button>
-            <button className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm"
-              onClick={() => navigateToEra('kingdom')}>
-              Kingdom
-            </button>
-            <button className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm"
-              onClick={() => navigateToEra('exile')}>
-              Exile
-            </button>
-            <button className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm"
-              onClick={() => navigateToEra('jesus')}>
-              Jesus
-            </button>
-            <button className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm"
-              onClick={() => navigateToEra('church')}>
-              Early Church
-            </button>
-          </div>
+    // Update label visibility
+    if (sceneRef.current) {
+      sceneRef.current.traverse(object => {
+        if (object.userData && object.userData.isLabel) {
+          const isHovered = object.userData.eventId === hoveredEvent;
+          const isSelected = selectedEvent && object.userData.eventId === selectedEvent;
           
-          <div className="flex space-x-1">
-            <button className="px-2 py-1 bg-gray-100 text-gray-800 rounded hover:bg-gray-200 text-sm"
-              onClick={() => resetCamera()}>
-              Reset View
-            </button>
-            <button className="px-2 py-1 bg-gray-100 text-gray-800 rounded hover:bg-gray-200 text-sm"
-              onClick={() => toggleLabels()}>
-              {showAllLabels ? 'Hide Labels' : 'Show All Labels'}
-            </button>
-          </div>
+          // Show label if hovered, selected, or showAllLabels is true
+          object.visible = isHovered || isSelected || !showAllLabels;
+        }
+      });
+    }
+  };
+  
+  // Reset the view
+  const resetView = () => {
+    setSelectedEvent(null);
+    setSelectedEra('all');
+    navigateToEra('all');
+  };
+  
+  // Get the current event details
+  const getEventDetails = () => {
+    if (!selectedEvent) return null;
+    return bibleEvents.find(e => e.id === selectedEvent);
+  };
+  
+  // Render UI
+  return (
+    <div className="w-full h-screen flex flex-col">
+      {/* Header with title */}
+      <div className="bg-white shadow-md p-3">
+        <h1 className="text-2xl font-bold text-center text-blue-800">Biblical Events Timeline</h1>
+        <p className="text-center text-gray-600 text-sm">
+          Explore biblical events in an interactive 3D landscape
+        </p>
+      </div>
+      
+      {/* Simple control panel */}
+      <div className="bg-gray-100 p-2 flex items-center justify-between">
+        {/* Era selection dropdown */}
+        <div className="flex items-center">
+          <label className="mr-2 text-sm font-medium">View Era:</label>
+          <select 
+            className="px-3 py-1 border rounded-lg bg-white"
+            value={selectedEra}
+            onChange={(e) => setSelectedEra(e.target.value)}
+          >
+            <option value="all">All Biblical History</option>
+            <option value="early">Early History</option>
+            <option value="exodus">Exodus & Wilderness</option>
+            <option value="kingdom">Kingdom Period</option>
+            <option value="exile">Exile</option>
+            <option value="jesus">Jesus' Life & Ministry</option>
+            <option value="church">Early Church</option>
+          </select>
+        </div>
+        
+        {/* Center buttons */}
+        <div className="flex space-x-2">
+          <button 
+            className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center"
+            onClick={viewFromAbove}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+            </svg>
+            View All
+          </button>
+          <button 
+            className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded flex items-center"
+            onClick={resetView}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Reset
+          </button>
+          <button 
+            className={`px-3 py-1 ${showAllLabels ? 'bg-blue-500 text-white' : 'bg-gray-200'} rounded flex items-center`}
+            onClick={toggleAllLabels}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+            </svg>
+            {showAllLabels ? 'Hide Labels' : 'Show Labels'}
+          </button>
+        </div>
+        
+        {/* Quick jump buttons */}
+        <div className="flex space-x-1">
+          <select 
+            className="px-3 py-1 border rounded-lg bg-white text-sm"
+            value={selectedEvent || ''}
+            onChange={(e) => e.target.value && navigateToEvent(e.target.value)}
+          >
+            <option value="">Jump to Event...</option>
+            <option value="creation">Creation</option>
+            <option value="abraham_call">Abraham's Call</option>
+            <option value="exodus">The Exodus</option>
+            <option value="davidking">David's Reign</option>
+            <option value="jesus_birth">Birth of Jesus</option>
+            <option value="crucifixion">Crucifixion</option>
+            <option value="resurrection">Resurrection</option>
+            <option value="pentecost">Pentecost</option>
+            <option value="revelation">Revelation</option>
+          </select>
         </div>
       </div>
       
-      {/* 3D Visualization */}
-      <div ref={containerRef} className="flex-grow relative">
-        {/* Navigation help overlay */}
-        <div className="absolute bottom-4 left-4 bg-white p-3 rounded-lg shadow-md max-w-xs bg-opacity-90 z-10">
-          <div className="text-sm text-gray-800">
-            <div className="font-bold mb-1">Quick Navigation:</div>
-            <div className="grid grid-cols-2 gap-1">
-              <button 
-                className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm flex items-center"
-                onClick={() => navigateToEra('overview')}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-                Overview
-              </button>
-              <button 
-                className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm flex items-center"
-                onClick={() => navigateToEra('exodus')}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-                </svg>
-                Exodus
-              </button>
-              <button 
-                className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm flex items-center"
-                onClick={() => navigateToEra('kingdom')}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-                Kingdom
-              </button>
-              <button 
-                className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm flex items-center"
-                onClick={() => navigateToEra('jesus')}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                </svg>
-                Jesus
-              </button>
-            </div>
-            <div className="mt-2 flex justify-between">
-              <button 
-                className="px-2 py-1 bg-gray-100 text-gray-800 rounded hover:bg-gray-200 text-sm flex items-center"
-                onClick={() => toggleLabels()}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                </svg>
-                {showAllLabels ? 'Hide Labels' : 'Show All Labels'}
-              </button>
-              <button 
-                className="px-2 py-1 bg-gray-100 text-gray-800 rounded hover:bg-gray-200 text-sm flex items-center"
-                onClick={() => setMiniMapActive(!miniMapActive)}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                </svg>
-                {miniMapActive ? 'Hide Mini-Map' : 'Show Mini-Map'}
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        {/* Event details panel when an event is selected */}
-        {selectedEvent && (
-          <div className="absolute top-4 right-4 bg-white p-4 rounded-lg shadow-lg max-w-sm">
-            <h2 className="text-xl font-bold" style={{color: getEventById(selectedEvent).color}}>
-              {getEventById(selectedEvent).name}
-            </h2>
-            
-            <div className="mt-1 text-sm text-gray-500">
-              {getEventById(selectedEvent).year} • {getEventById(selectedEvent).scripture}
-            </div>
-            
-            <p className="my-2">{getEventById(selectedEvent).description}</p>
-            
-            <h3 className="font-bold mt-3">Key Figures:</h3>
-            <div className="flex flex-wrap mt-1 gap-1">
-              {getEventById(selectedEvent).keyFigures.map((figure, index) => (
-                <span 
-                  key={index} 
-                  className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
-                >
-                  {figure}
-                </span>
-              ))}
-            </div>
-            
-            {getEventById(selectedEvent).connections && getEventById(selectedEvent).connections.length > 0 && (
-              <>
-                <h3 className="font-bold mt-3">Connected Events:</h3>
-                <div className="flex flex-wrap mt-1 gap-1">
-                  {getEventById(selectedEvent).connections.map((conn, index) => {
-                    const connectedEvent = getEventById(conn);
-                    return (
-                      <span 
-                        key={index} 
-                        className="px-2 py-1 bg-gray-100 text-gray-800 rounded-full text-sm cursor-pointer hover:bg-gray-200"
-                        onClick={() => navigateToEvent(conn)}
-                        style={{borderLeft: `3px solid ${connectedEvent.color}`}}
-                      >
-                        {connectedEvent.name}
-                      </span>
-                    );
-                  })}
-                </div>
-              </>
-            )}
-            
-            <div className="mt-4 flex space-x-2">
-              <button 
-                className="flex-1 px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md flex items-center justify-center"
-                onClick={() => navigateToEvent(selectedEvent)}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-                Focus
-              </button>
-              <button 
-                className="flex-1 px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-md flex items-center justify-center"
-                onClick={() => setSelectedEvent(null)}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-                Close
-              </button>
-            </div>
+      {/* Main container */}
+      <div className="relative flex-grow">
+        {/* Loading indicator */}
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 z-50">
+            <div className="text-xl font-bold">Loading Biblical Landscape...</div>
           </div>
         )}
         
-        {/* Current view indicator */}
-        <div className="absolute top-4 left-4 bg-white px-3 py-1 rounded-full shadow-md text-sm text-gray-700 flex items-center">
-          <span className="font-semibold mr-1">Current View:</span>
-          <span>{
-            currentEra === 'overview' ? 'Full Timeline' :
-            currentEra === 'early' ? 'Early History' :
-            currentEra === 'exodus' ? 'Exodus & Wilderness' :
-            currentEra === 'kingdom' ? 'Kingdom Period' :
-            currentEra === 'exile' ? 'Exile' :
-            currentEra === 'jesus' ? "Jesus' Ministry" :
-            currentEra === 'church' ? 'Early Church' : 'Custom View'
-          }</span>
+        {/* 3D container */}
+        <div 
+          ref={containerRef} 
+          className="w-full h-full"
+        ></div>
+        
+        {/* Navigation controls */}
+        <div className="absolute bottom-4 left-4 bg-white bg-opacity-80 p-2 rounded-lg shadow-md">
+          <div className="flex flex-col space-y-2">
+            <div className="grid grid-cols-3 gap-1">
+              <button className="w-10 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded"
+                onClick={() => {
+                  if (cameraRef.current && controlsRef.current) {
+                    // Rotate camera left around the target
+                    const angle = Math.PI/8;
+                    const distance = cameraRef.current.position.distanceTo(controlsRef.current.target);
+                    
+                    // Calculate new position by rotating around target
+                    const currentAngle = Math.atan2(
+                      cameraRef.current.position.z - controlsRef.current.target.z,
+                      cameraRef.current.position.x - controlsRef.current.target.x
+                    );
+                    const newAngle = currentAngle + angle;
+                    
+                    cameraRef.current.position.x = controlsRef.current.target.x + distance * Math.cos(newAngle);
+                    cameraRef.current.position.z = controlsRef.current.target.z + distance * Math.sin(newAngle);
+                    
+                    cameraRef.current.lookAt(controlsRef.current.target);
+                    controlsRef.current.update();
+                  }
+                }}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+              </button>
+              <button className="w-10 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded"
+                onClick={() => {
+                  if (cameraRef.current && controlsRef.current) {
+                    // Move camera up (change elevation angle)
+                    const targetPosition = controlsRef.current.target;
+                    const cameraPosition = cameraRef.current.position;
+                    
+                    // Calculate horizontal distance from target to camera
+                    const horizontalDistance = Math.sqrt(
+                      Math.pow(cameraPosition.x - targetPosition.x, 2) +
+                      Math.pow(cameraPosition.z - targetPosition.z, 2)
+                    );
+                    
+                    // Calculate current elevation angle
+                    const currentElevation = Math.atan2(
+                      cameraPosition.y - targetPosition.y,
+                      horizontalDistance
+                    );
+                    
+                    // Increase elevation angle (but limit to avoid going upside down)
+                    const newElevation = Math.min(Math.PI/2 - 0.1, currentElevation + Math.PI/16);
+                    
+                    // Calculate new y position
+                    const distance = cameraPosition.distanceTo(targetPosition);
+                    const newY = targetPosition.y + Math.sin(newElevation) * distance;
+                    const newHorizontalDistance = Math.cos(newElevation) * distance;
+                    
+                    // Keep x and z direction the same, just adjust their distance
+                    const directionX = (cameraPosition.x - targetPosition.x) / horizontalDistance;
+                    const directionZ = (cameraPosition.z - targetPosition.z) / horizontalDistance;
+                    
+                    cameraPosition.x = targetPosition.x + directionX * newHorizontalDistance;
+                    cameraPosition.y = newY;
+                    cameraPosition.z = targetPosition.z + directionZ * newHorizontalDistance;
+                    
+                    cameraRef.current.lookAt(targetPosition);
+                    controlsRef.current.update();
+                  }
+                }}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                </svg>
+              </button>
+              <button className="w-10 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded"
+                onClick={() => {
+                  if (cameraRef.current && controlsRef.current) {
+                    // Rotate camera right around the target
+                    const angle = -Math.PI/8;
+                    const distance = cameraRef.current.position.distanceTo(controlsRef.current.target);
+                    
+                    // Calculate new position by rotating around target
+                    const currentAngle = Math.atan2(
+                      cameraRef.current.position.z - controlsRef.current.target.z,
+                      cameraRef.current.position.x - controlsRef.current.target.x
+                    );
+                    const newAngle = currentAngle + angle;
+                    
+                    cameraRef.current.position.x = controlsRef.current.target.x + distance * Math.cos(newAngle);
+                    cameraRef.current.position.z = controlsRef.current.target.z + distance * Math.sin(newAngle);
+                    
+                    cameraRef.current.lookAt(controlsRef.current.target);
+                    controlsRef.current.update();
+                  }
+                }}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </button>
+              <button className="w-10 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded"
+                onClick={() => {
+                  if (cameraRef.current && controlsRef.current) {
+                    // Rotate camera left around the target by a larger angle
+                    const angle = Math.PI/4;
+                    const distance = cameraRef.current.position.distanceTo(controlsRef.current.target);
+                    
+                    // Calculate new position by rotating around target
+                    const currentAngle = Math.atan2(
+                      cameraRef.current.position.z - controlsRef.current.target.z,
+                      cameraRef.current.position.x - controlsRef.current.target.x
+                    );
+                    const newAngle = currentAngle + angle;
+                    
+                    cameraRef.current.position.x = controlsRef.current.target.x + distance * Math.cos(newAngle);
+                    cameraRef.current.position.z = controlsRef.current.target.z + distance * Math.sin(newAngle);
+                    
+                    cameraRef.current.lookAt(controlsRef.current.target);
+                    controlsRef.current.update();
+                  }
+                }}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0019 16V8a1 1 0 00-1.6-.8l-5.333 4zM4.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0011 16V8a1 1 0 00-1.6-.8l-5.334 4z" />
+                </svg>
+              </button>
+              <button className="w-10 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded"
+                onClick={() => {
+                  if (cameraRef.current && controlsRef.current) {
+                    // Move camera down (change elevation angle)
+                    const targetPosition = controlsRef.current.target;
+                    const cameraPosition = cameraRef.current.position;
+                    
+                    // Calculate horizontal distance from target to camera
+                    const horizontalDistance = Math.sqrt(
+                      Math.pow(cameraPosition.x - targetPosition.x, 2) +
+                      Math.pow(cameraPosition.z - targetPosition.z, 2)
+                    );
+                    
+                    // Calculate current elevation angle
+                    const currentElevation = Math.atan2(
+                      cameraPosition.y - targetPosition.y,
+                      horizontalDistance
+                    );
+                    
+                    // Decrease elevation angle (but prevent going below ground)
+                    const newElevation = Math.max(0.1, currentElevation - Math.PI/16);
+                    
+                    // Calculate new y position
+                    const distance = cameraPosition.distanceTo(targetPosition);
+                    const newY = targetPosition.y + Math.sin(newElevation) * distance;
+                    const newHorizontalDistance = Math.cos(newElevation) * distance;
+                    
+                    // Keep x and z direction the same, just adjust their distance
+                    const directionX = (cameraPosition.x - targetPosition.x) / horizontalDistance;
+                    const directionZ = (cameraPosition.z - targetPosition.z) / horizontalDistance;
+                    
+                    cameraPosition.x = targetPosition.x + directionX * newHorizontalDistance;
+                    cameraPosition.y = newY;
+                    cameraPosition.z = targetPosition.z + directionZ * newHorizontalDistance;
+                    
+                    cameraRef.current.lookAt(targetPosition);
+                    controlsRef.current.update();
+                  }
+                }}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+              </button>
+              <button className="w-10 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded"
+                onClick={() => {
+                  if (cameraRef.current && controlsRef.current) {
+                    // Rotate camera right around the target by a larger angle
+                    const angle = -Math.PI/4;
+                    const distance = cameraRef.current.position.distanceTo(controlsRef.current.target);
+                    
+                    // Calculate new position by rotating around target
+                    const currentAngle = Math.atan2(
+                      cameraRef.current.position.z - controlsRef.current.target.z,
+                      cameraRef.current.position.x - controlsRef.current.target.x
+                    );
+                    const newAngle = currentAngle + angle;
+                    
+                    cameraRef.current.position.x = controlsRef.current.target.x + distance * Math.cos(newAngle);
+                    cameraRef.current.position.z = controlsRef.current.target.z + distance * Math.sin(newAngle);
+                    
+                    cameraRef.current.lookAt(controlsRef.current.target);
+                    controlsRef.current.update();
+                  }
+                }}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.933 12.8a1 1 0 000-1.6L6.6 7.2A1 1 0 005 8v8a1 1 0 001.6.8l5.333-4zM19.933 12.8a1 1 0 000-1.6l-5.333-4A1 1 0 0013 8v8a1 1 0 001.6.8l5.333-4z" />
+                </svg>
+              </button>
+            </div>
+            <div className="flex justify-between">
+              <button className="w-10 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded"
+                onClick={() => {
+                  if (cameraRef.current && controlsRef.current) {
+                    // Zoom in - move camera closer to target
+                    const direction = new THREE.Vector3()
+                      .subVectors(controlsRef.current.target, cameraRef.current.position)
+                      .normalize();
+                    
+                    // Move camera 20% closer to target
+                    const distance = cameraRef.current.position.distanceTo(controlsRef.current.target);
+                    const moveDist = Math.min(distance * 0.2, distance - controlsRef.current.minDistance);
+                    
+                    cameraRef.current.position.addScaledVector(direction, moveDist);
+                    controlsRef.current.update();
+                  }
+                }}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                </svg>
+              </button>
+              <button className="w-10 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded"
+                onClick={resetView}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
+                </svg>
+              </button>
+              <button className="w-10 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded"
+                onClick={() => {
+                  if (cameraRef.current && controlsRef.current) {
+                    // Zoom out - move camera away from target
+                    const direction = new THREE.Vector3()
+                      .subVectors(cameraRef.current.position, controlsRef.current.target)
+                      .normalize();
+                    
+                    // Move camera 20% farther from target
+                    const distance = cameraRef.current.position.distanceTo(controlsRef.current.target);
+                    const moveDist = Math.min(distance * 0.2, controlsRef.current.maxDistance - distance);
+                    
+                    cameraRef.current.position.addScaledVector(direction, moveDist);
+                    controlsRef.current.update();
+                  }
+                }}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        {/* Display current era */}
+        <div className="absolute top-4 left-4 bg-white bg-opacity-70 px-3 py-1 rounded-full shadow text-sm">
+          <span className="font-medium">Viewing: </span>
+          <span>{eraInfo[selectedEra].name}</span>
+        </div>
+        
+        {/* Event details panel (slides in when event selected) */}
+        <div 
+          className={`absolute top-0 right-0 h-full w-80 bg-white shadow-lg transform transition-transform duration-300 overflow-y-auto ${selectedEvent ? 'translate-x-0' : 'translate-x-full'}`}
+        >
+          {selectedEvent && getEventDetails() && (
+            <div className="p-4">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold" style={{ color: getEventDetails().color }}>
+                  {getEventDetails().name}
+                </h2>
+                <button 
+                  className="p-1 rounded-full hover:bg-gray-200"
+                  onClick={() => setSelectedEvent(null)}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              
+              <div className="text-sm text-gray-500 mb-4">
+                {getEventDetails().year} • {getEventDetails().scripture}
+              </div>
+              
+              <p className="mb-4">{getEventDetails().description}</p>
+              
+              <div className="mb-4">
+                <h3 className="font-bold mb-2">Key Figures</h3>
+                <div className="flex flex-wrap gap-1">
+                  {getEventDetails().keyFigures.map((figure, index) => (
+                    <span 
+                      key={index}
+                      className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
+                    >
+                      {figure}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              {getEventDetails().connections && getEventDetails().connections.length > 0 && (
+                <div>
+                  <h3 className="font-bold mb-2">Connected Events</h3>
+                  <div className="flex flex-col gap-2">
+                    {getEventDetails().connections.map((connId, index) => {
+                      const connectedEvent = bibleEvents.find(e => e.id === connId);
+                      if (!connectedEvent) return null;
+                      
+                      return (
+                        <button 
+                          key={index}
+                          className="flex items-center text-left p-2 rounded-lg hover:bg-gray-100"
+                          onClick={() => navigateToEvent(connId)}
+                        >
+                          <span 
+                            className="w-3 h-3 rounded-full mr-2"
+                            style={{ backgroundColor: connectedEvent.color }}
+                          ></span>
+                          <span>{connectedEvent.name}</span>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                          </svg>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        
+        {/* Help overlay (optional - can be toggled) */}
+        <div className="absolute bottom-4 right-4 bg-white bg-opacity-80 p-3 rounded-lg shadow-md max-w-xs">
+          <div className="text-sm">
+            <div className="font-bold mb-1">Navigation Tips:</div>
+            <ul className="list-disc pl-5">
+              <li>Click on any event to view details</li>
+              <li>Use controls on the left to rotate and zoom</li>
+              <li>Select eras from the dropdown above</li>
+              <li>Use "Jump to Event" to quickly navigate</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default BibleEventsLandscape;
+export default BibleEvents3DSimplified;
