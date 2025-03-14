@@ -1,1626 +1,1607 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Book, ZoomIn, ZoomOut, ChevronDown, ChevronUp, Info, Layers, ArrowRight, Search, ChevronLeft, ChevronRight, Eye, EyeOff, Maximize, Minimize } from 'lucide-react';
+import React, { useRef, useEffect, useState } from 'react';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
-const BiblicalConnectionsApp = () => {
-  // Complete Bible structure with book names and chapter counts
-  const bibleStructure = [
-    // Old Testament
-    { id: "genesis", name: "Genesis", chapters: 50, testament: "old" },
-    { id: "exodus", name: "Exodus", chapters: 40, testament: "old" },
-    { id: "leviticus", name: "Leviticus", chapters: 27, testament: "old" },
-    { id: "numbers", name: "Numbers", chapters: 36, testament: "old" },
-    { id: "deuteronomy", name: "Deuteronomy", chapters: 34, testament: "old" },
-    { id: "joshua", name: "Joshua", chapters: 24, testament: "old" },
-    { id: "judges", name: "Judges", chapters: 21, testament: "old" },
-    { id: "ruth", name: "Ruth", chapters: 4, testament: "old" },
-    { id: "1samuel", name: "1 Samuel", chapters: 31, testament: "old" },
-    { id: "2samuel", name: "2 Samuel", chapters: 24, testament: "old" },
-    { id: "1kings", name: "1 Kings", chapters: 22, testament: "old" },
-    { id: "2kings", name: "2 Kings", chapters: 25, testament: "old" },
-    { id: "1chronicles", name: "1 Chronicles", chapters: 29, testament: "old" },
-    { id: "2chronicles", name: "2 Chronicles", chapters: 36, testament: "old" },
-    { id: "ezra", name: "Ezra", chapters: 10, testament: "old" },
-    { id: "nehemiah", name: "Nehemiah", chapters: 13, testament: "old" },
-    { id: "esther", name: "Esther", chapters: 10, testament: "old" },
-    { id: "job", name: "Job", chapters: 42, testament: "old" },
-    { id: "psalms", name: "Psalms", chapters: 150, testament: "old" },
-    { id: "proverbs", name: "Proverbs", chapters: 31, testament: "old" },
-    { id: "ecclesiastes", name: "Ecclesiastes", chapters: 12, testament: "old" },
-    { id: "songofsolomon", name: "Song of Solomon", chapters: 8, testament: "old" },
-    { id: "isaiah", name: "Isaiah", chapters: 66, testament: "old" },
-    { id: "jeremiah", name: "Jeremiah", chapters: 52, testament: "old" },
-    { id: "lamentations", name: "Lamentations", chapters: 5, testament: "old" },
-    { id: "ezekiel", name: "Ezekiel", chapters: 48, testament: "old" },
-    { id: "daniel", name: "Daniel", chapters: 12, testament: "old" },
-    { id: "hosea", name: "Hosea", chapters: 14, testament: "old" },
-    { id: "joel", name: "Joel", chapters: 3, testament: "old" },
-    { id: "amos", name: "Amos", chapters: 9, testament: "old" },
-    { id: "obadiah", name: "Obadiah", chapters: 1, testament: "old" },
-    { id: "jonah", name: "Jonah", chapters: 4, testament: "old" },
-    { id: "micah", name: "Micah", chapters: 7, testament: "old" },
-    { id: "nahum", name: "Nahum", chapters: 3, testament: "old" },
-    { id: "habakkuk", name: "Habakkuk", chapters: 3, testament: "old" },
-    { id: "zephaniah", name: "Zephaniah", chapters: 3, testament: "old" },
-    { id: "haggai", name: "Haggai", chapters: 2, testament: "old" },
-    { id: "zechariah", name: "Zechariah", chapters: 14, testament: "old" },
-    { id: "malachi", name: "Malachi", chapters: 4, testament: "old" },
-    // New Testament
-    { id: "matthew", name: "Matthew", chapters: 28, testament: "new" },
-    { id: "mark", name: "Mark", chapters: 16, testament: "new" },
-    { id: "luke", name: "Luke", chapters: 24, testament: "new" },
-    { id: "john", name: "John", chapters: 21, testament: "new" },
-    { id: "acts", name: "Acts", chapters: 28, testament: "new" },
-    { id: "romans", name: "Romans", chapters: 16, testament: "new" },
-    { id: "1corinthians", name: "1 Corinthians", chapters: 16, testament: "new" },
-    { id: "2corinthians", name: "2 Corinthians", chapters: 13, testament: "new" },
-    { id: "galatians", name: "Galatians", chapters: 6, testament: "new" },
-    { id: "ephesians", name: "Ephesians", chapters: 6, testament: "new" },
-    { id: "philippians", name: "Philippians", chapters: 4, testament: "new" },
-    { id: "colossians", name: "Colossians", chapters: 4, testament: "new" },
-    { id: "1thessalonians", name: "1 Thessalonians", chapters: 5, testament: "new" },
-    { id: "2thessalonians", name: "2 Thessalonians", chapters: 3, testament: "new" },
-    { id: "1timothy", name: "1 Timothy", chapters: 6, testament: "new" },
-    { id: "2timothy", name: "2 Timothy", chapters: 4, testament: "new" },
-    { id: "titus", name: "Titus", chapters: 3, testament: "new" },
-    { id: "philemon", name: "Philemon", chapters: 1, testament: "new" },
-    { id: "hebrews", name: "Hebrews", chapters: 13, testament: "new" },
-    { id: "james", name: "James", chapters: 5, testament: "new" },
-    { id: "1peter", name: "1 Peter", chapters: 5, testament: "new" },
-    { id: "2peter", name: "2 Peter", chapters: 3, testament: "new" },
-    { id: "1john", name: "1 John", chapters: 5, testament: "new" },
-    { id: "2john", name: "2 John", chapters: 1, testament: "new" },
-    { id: "3john", name: "3 John", chapters: 1, testament: "new" },
-    { id: "jude", name: "Jude", chapters: 1, testament: "new" },
-    { id: "revelation", name: "Revelation", chapters: 22, testament: "new" }
-  ];
+// Biblical events data structure with chronological positioning
+const bibleEvents = [
+  {
+    id: 'creation',
+    name: 'Creation',
+    description: 'God creates the heavens and earth in six days',
+    height: 0.9,
+    position: [-18, -10],
+    color: '#2a9d8f',
+    year: 'Beginning',
+    scripture: 'Genesis 1-2',
+    keyFigures: ['God', 'Adam', 'Eve'],
+    connections: ['fall', 'flood']
+  },
+  {
+    id: 'fall',
+    name: 'The Fall',
+    description: 'Adam and Eve disobey God and sin enters the world',
+    height: 0.85,
+    position: [-16, -8],
+    color: '#e63946',
+    year: 'Beginning',
+    scripture: 'Genesis 3',
+    keyFigures: ['Adam', 'Eve', 'Serpent'],
+    connections: ['cain_abel', 'flood']
+  },
+  {
+    id: 'cain_abel',
+    name: 'Cain and Abel',
+    description: 'First murder as Cain kills his brother Abel',
+    height: 0.7,
+    position: [-14, -9],
+    color: '#6a040f',
+    year: 'Early history',
+    scripture: 'Genesis 4',
+    keyFigures: ['Cain', 'Abel'],
+    connections: ['flood']
+  },
+  {
+    id: 'flood',
+    name: 'Great Flood',
+    description: 'God sends a flood to cleanse the earth; Noah builds an ark',
+    height: 0.9,
+    position: [-12, -6],
+    color: '#457b9d',
+    year: 'c. 2350 BC',
+    scripture: 'Genesis 6-9',
+    keyFigures: ['Noah', 'God'],
+    connections: ['babel', 'abraham_call']
+  },
+  {
+    id: 'babel',
+    name: 'Tower of Babel',
+    description: 'People attempt to build a tower to heaven; God confuses languages',
+    height: 0.75,
+    position: [-10, -7],
+    color: '#e9c46a',
+    year: 'c. 2200 BC',
+    scripture: 'Genesis 11:1-9',
+    keyFigures: ['Nimrod'],
+    connections: ['abraham_call']
+  },
+  {
+    id: 'abraham_call',
+    name: 'Call of Abraham',
+    description: 'God calls Abraham to leave his home for the Promised Land',
+    height: 0.85,
+    position: [-8, -4],
+    color: '#f4a261',
+    year: 'c. 2000 BC',
+    scripture: 'Genesis 12',
+    keyFigures: ['Abraham', 'Sarah'],
+    connections: ['isaac_birth', 'sodom', 'isaac_sacrifice']
+  },
+  {
+    id: 'sodom',
+    name: 'Destruction of Sodom',
+    description: 'God destroys the wicked cities of Sodom and Gomorrah',
+    height: 0.7,
+    position: [-7, -6],
+    color: '#e76f51',
+    year: 'c. 1900 BC',
+    scripture: 'Genesis 19',
+    keyFigures: ['Lot', 'Abraham'],
+    connections: ['isaac_birth']
+  },
+  {
+    id: 'isaac_birth',
+    name: 'Birth of Isaac',
+    description: 'Abraham and Sarah have a son in their old age',
+    height: 0.7,
+    position: [-6, -4],
+    color: '#f4a261',
+    year: 'c. 1900 BC',
+    scripture: 'Genesis 21',
+    keyFigures: ['Isaac', 'Abraham', 'Sarah'],
+    connections: ['isaac_sacrifice', 'jacob_esau']
+  },
+  {
+    id: 'isaac_sacrifice',
+    name: 'Sacrifice of Isaac',
+    description: 'Abraham shows willingness to sacrifice his son Isaac',
+    height: 0.8,
+    position: [-5, -5],
+    color: '#bc6c25',
+    year: 'c. 1875 BC',
+    scripture: 'Genesis 22',
+    keyFigures: ['Abraham', 'Isaac'],
+    connections: ['jacob_esau']
+  },
+  {
+    id: 'jacob_esau',
+    name: 'Jacob and Esau',
+    description: 'Jacob receives the birthright and blessing instead of Esau',
+    height: 0.75,
+    position: [-4, -3],
+    color: '#a8dadc',
+    year: 'c. 1850 BC',
+    scripture: 'Genesis 25-27',
+    keyFigures: ['Jacob', 'Esau', 'Isaac', 'Rebekah'],
+    connections: ['jacobs_ladder', 'joseph_coat']
+  },
+  {
+    id: 'jacobs_ladder',
+    name: 'Jacob\'s Ladder',
+    description: 'Jacob dreams of a ladder to heaven with angels',
+    height: 0.7,
+    position: [-3, -4],
+    color: '#219ebc',
+    year: 'c. 1800 BC',
+    scripture: 'Genesis 28',
+    keyFigures: ['Jacob'],
+    connections: ['joseph_coat']
+  },
+  {
+    id: 'joseph_coat',
+    name: 'Joseph\'s Coat',
+    description: 'Joseph receives a coat of many colors and is sold into slavery',
+    height: 0.8,
+    position: [-2, -2],
+    color: '#ffb703',
+    year: 'c. 1750 BC',
+    scripture: 'Genesis 37',
+    keyFigures: ['Joseph', 'Jacob'],
+    connections: ['joseph_egypt', 'moses_birth']
+  },
+  {
+    id: 'joseph_egypt',
+    name: 'Joseph in Egypt',
+    description: 'Joseph rises to power in Egypt and saves his family',
+    height: 0.8,
+    position: [-1, -3],
+    color: '#ffb703',
+    year: 'c. 1700 BC',
+    scripture: 'Genesis 39-47',
+    keyFigures: ['Joseph', 'Pharaoh'],
+    connections: ['moses_birth']
+  },
+  {
+    id: 'moses_birth',
+    name: 'Birth of Moses',
+    description: 'Moses is born and saved from Pharaoh\'s decree',
+    height: 0.7,
+    position: [0, -1],
+    color: '#8a5a44',
+    year: 'c. 1525 BC',
+    scripture: 'Exodus 2',
+    keyFigures: ['Moses', 'Pharaoh\'s Daughter'],
+    connections: ['burning_bush', 'plagues']
+  },
+  {
+    id: 'burning_bush',
+    name: 'Burning Bush',
+    description: 'God speaks to Moses through a burning bush',
+    height: 0.75,
+    position: [1, -2],
+    color: '#e63946',
+    year: 'c. 1445 BC',
+    scripture: 'Exodus 3-4',
+    keyFigures: ['Moses', 'God'],
+    connections: ['plagues', 'exodus']
+  },
+  {
+    id: 'plagues',
+    name: 'Ten Plagues',
+    description: 'God sends ten plagues upon Egypt',
+    height: 0.85,
+    position: [2, 0],
+    color: '#1d3557',
+    year: 'c. 1445 BC',
+    scripture: 'Exodus 7-12',
+    keyFigures: ['Moses', 'Aaron', 'Pharaoh'],
+    connections: ['exodus', 'red_sea']
+  },
+  {
+    id: 'exodus',
+    name: 'The Exodus',
+    description: 'Israelites leave Egypt and slavery',
+    height: 0.9,
+    position: [3, -1],
+    color: '#457b9d',
+    year: 'c. 1445 BC',
+    scripture: 'Exodus 12-13',
+    keyFigures: ['Moses', 'Israelites'],
+    connections: ['red_sea', 'ten_commandments']
+  },
+  {
+    id: 'red_sea',
+    name: 'Red Sea Crossing',
+    description: 'God parts the Red Sea for the Israelites to escape',
+    height: 0.85,
+    position: [4, 0],
+    color: '#219ebc',
+    year: 'c. 1445 BC',
+    scripture: 'Exodus 14',
+    keyFigures: ['Moses', 'Israelites', 'Egyptian Army'],
+    connections: ['ten_commandments', 'wilderness']
+  },
+  {
+    id: 'ten_commandments',
+    name: 'Ten Commandments',
+    description: 'God gives the Law to Moses on Mount Sinai',
+    height: 0.9,
+    position: [5, 1],
+    color: '#e9c46a',
+    year: 'c. 1445 BC',
+    scripture: 'Exodus 20',
+    keyFigures: ['Moses', 'God'],
+    connections: ['wilderness', 'promised_land']
+  },
+  {
+    id: 'wilderness',
+    name: 'Wilderness Wandering',
+    description: '40 years of wandering in the desert',
+    height: 0.75,
+    position: [6, 0],
+    color: '#f4a261',
+    year: 'c. 1445-1405 BC',
+    scripture: 'Numbers',
+    keyFigures: ['Moses', 'Aaron', 'Israelites'],
+    connections: ['promised_land']
+  },
+  {
+    id: 'promised_land',
+    name: 'Entering Promised Land',
+    description: 'Joshua leads Israelites into Canaan',
+    height: 0.85,
+    position: [7, 2],
+    color: '#2a9d8f',
+    year: 'c. 1405 BC',
+    scripture: 'Joshua 1-4',
+    keyFigures: ['Joshua', 'Israelites'],
+    connections: ['judges', 'davidking']
+  },
+  {
+    id: 'judges',
+    name: 'Period of Judges',
+    description: 'Israel is ruled by judges before the monarchy',
+    height: 0.7,
+    position: [8, 3],
+    color: '#8a5a44',
+    year: 'c. 1375-1050 BC',
+    scripture: 'Judges',
+    keyFigures: ['Deborah', 'Gideon', 'Samson'],
+    connections: ['saul_king', 'davidking']
+  },
+  {
+    id: 'saul_king',
+    name: 'Saul Becomes King',
+    description: 'Israel\'s first king is anointed',
+    height: 0.75,
+    position: [9, 4],
+    color: '#6a040f',
+    year: 'c. 1050 BC',
+    scripture: '1 Samuel 9-10',
+    keyFigures: ['Saul', 'Samuel'],
+    connections: ['davidking']
+  },
+  {
+    id: 'davidking',
+    name: 'David\'s Reign',
+    description: 'David becomes king and establishes Jerusalem',
+    height: 0.85,
+    position: [10, 5],
+    color: '#1d3557',
+    year: 'c. 1010-970 BC',
+    scripture: '2 Samuel',
+    keyFigures: ['David'],
+    connections: ['solomon_temple', 'divided_kingdom']
+  },
+  {
+    id: 'solomon_temple',
+    name: 'Solomon\'s Temple',
+    description: 'King Solomon builds the first temple',
+    height: 0.8,
+    position: [11, 6],
+    color: '#e9c46a',
+    year: 'c. 966 BC',
+    scripture: '1 Kings 6-8',
+    keyFigures: ['Solomon'],
+    connections: ['divided_kingdom']
+  },
+  {
+    id: 'divided_kingdom',
+    name: 'Divided Kingdom',
+    description: 'Israel splits into two kingdoms after Solomon',
+    height: 0.7,
+    position: [12, 5],
+    color: '#e76f51',
+    year: 'c. 930 BC',
+    scripture: '1 Kings 12',
+    keyFigures: ['Rehoboam', 'Jeroboam'],
+    connections: ['israel_exile', 'judah_exile']
+  },
+  {
+    id: 'israel_exile',
+    name: 'Israel in Exile',
+    description: 'Northern kingdom falls to Assyria',
+    height: 0.75,
+    position: [13, 6],
+    color: '#6a040f',
+    year: 'c. 722 BC',
+    scripture: '2 Kings 17',
+    keyFigures: ['Hoshea', 'Shalmaneser'],
+    connections: ['judah_exile']
+  },
+  {
+    id: 'judah_exile',
+    name: 'Judah in Exile',
+    description: 'Southern kingdom falls to Babylon',
+    height: 0.75,
+    position: [14, 7],
+    color: '#6a040f',
+    year: 'c. 586 BC',
+    scripture: '2 Kings 25',
+    keyFigures: ['Nebuchadnezzar', 'Zedekiah'],
+    connections: ['return_exile', 'daniel_lions']
+  },
+  {
+    id: 'daniel_lions',
+    name: 'Daniel in Lion\'s Den',
+    description: 'Daniel is thrown into a den of lions but is saved',
+    height: 0.7,
+    position: [14, 9],
+    color: '#457b9d',
+    year: 'c. 539 BC',
+    scripture: 'Daniel 6',
+    keyFigures: ['Daniel', 'Darius'],
+    connections: ['return_exile']
+  },
+  {
+    id: 'return_exile',
+    name: 'Return from Exile',
+    description: 'Jews return to Jerusalem to rebuild',
+    height: 0.8,
+    position: [15, 8],
+    color: '#2a9d8f',
+    year: 'c. 538-445 BC',
+    scripture: 'Ezra, Nehemiah',
+    keyFigures: ['Zerubbabel', 'Ezra', 'Nehemiah'],
+    connections: ['jesus_birth', 'john_baptist']
+  },
+  {
+    id: 'john_baptist',
+    name: 'John the Baptist',
+    description: 'John prepares the way for Jesus',
+    height: 0.75,
+    position: [16, 9],
+    color: '#219ebc',
+    year: 'c. 27 AD',
+    scripture: 'Luke 3',
+    keyFigures: ['John the Baptist'],
+    connections: ['jesus_birth', 'jesus_baptism']
+  },
+  {
+    id: 'jesus_birth',
+    name: 'Birth of Jesus',
+    description: 'Jesus is born in Bethlehem',
+    height: 0.9,
+    position: [16, 7],
+    color: '#ffb703',
+    year: 'c. 4-6 BC',
+    scripture: 'Matthew 1-2, Luke 2',
+    keyFigures: ['Jesus', 'Mary', 'Joseph'],
+    connections: ['jesus_baptism', 'jesus_ministry']
+  },
+  {
+    id: 'jesus_baptism',
+    name: 'Baptism of Jesus',
+    description: 'Jesus is baptized by John in the Jordan',
+    height: 0.8,
+    position: [17, 8],
+    color: '#219ebc',
+    year: 'c. 27 AD',
+    scripture: 'Matthew 3:13-17',
+    keyFigures: ['Jesus', 'John the Baptist'],
+    connections: ['jesus_ministry']
+  },
+  {
+    id: 'jesus_ministry',
+    name: 'Jesus\' Ministry',
+    description: 'Jesus teaches, performs miracles, and calls disciples',
+    height: 0.9,
+    position: [18, 9],
+    color: '#1d3557',
+    year: 'c. 27-30 AD',
+    scripture: 'Gospels',
+    keyFigures: ['Jesus', 'Disciples'],
+    connections: ['crucifixion']
+  },
+  {
+    id: 'crucifixion',
+    name: 'Crucifixion',
+    description: 'Jesus dies on the cross for humanity\'s sins',
+    height: 0.95,
+    position: [19, 10],
+    color: '#e63946',
+    year: 'c. 30 AD',
+    scripture: 'Matthew 27, Mark 15, Luke 23, John 19',
+    keyFigures: ['Jesus', 'Pilate'],
+    connections: ['resurrection']
+  },
+  {
+    id: 'resurrection',
+    name: 'Resurrection',
+    description: 'Jesus rises from the dead on the third day',
+    height: 1.0,
+    position: [20, 11],
+    color: '#f4a261',
+    year: 'c. 30 AD',
+    scripture: 'Matthew 28, Mark 16, Luke 24, John 20',
+    keyFigures: ['Jesus', 'Mary Magdalene'],
+    connections: ['pentecost', 'ascension']
+  },
+  {
+    id: 'ascension',
+    name: 'Ascension',
+    description: 'Jesus ascends to heaven 40 days after resurrection',
+    height: 0.85,
+    position: [20, 9],
+    color: '#457b9d',
+    year: 'c. 30 AD',
+    scripture: 'Acts 1:1-11',
+    keyFigures: ['Jesus', 'Disciples'],
+    connections: ['pentecost']
+  },
+  {
+    id: 'pentecost',
+    name: 'Pentecost',
+    description: 'Holy Spirit comes to the disciples',
+    height: 0.85,
+    position: [21, 10],
+    color: '#e76f51',
+    year: 'c. 30 AD',
+    scripture: 'Acts 2',
+    keyFigures: ['Apostles', 'Holy Spirit'],
+    connections: ['church_begins', 'paul_conversion']
+  },
+  {
+    id: 'church_begins',
+    name: 'Early Church',
+    description: 'The first Christian church is established',
+    height: 0.8,
+    position: [22, 11],
+    color: '#2a9d8f',
+    year: 'c. 30-35 AD',
+    scripture: 'Acts 2-7',
+    keyFigures: ['Peter', 'Stephen', 'Apostles'],
+    connections: ['paul_conversion', 'paul_missionary']
+  },
+  {
+    id: 'paul_conversion',
+    name: 'Paul\'s Conversion',
+    description: 'Saul (Paul) meets Jesus on the road to Damascus',
+    height: 0.8,
+    position: [23, 10],
+    color: '#f4a261',
+    year: 'c. 35 AD',
+    scripture: 'Acts 9',
+    keyFigures: ['Paul'],
+    connections: ['paul_missionary']
+  },
+  {
+    id: 'paul_missionary',
+    name: 'Paul\'s Journeys',
+    description: 'Paul spreads the gospel throughout the Roman Empire',
+    height: 0.8,
+    position: [24, 12],
+    color: '#1d3557',
+    year: 'c. 46-58 AD',
+    scripture: 'Acts 13-28',
+    keyFigures: ['Paul', 'Barnabas', 'Silas'],
+    connections: ['revelation']
+  },
+  {
+    id: 'revelation',
+    name: 'Revelation',
+    description: 'John receives visions of the end times',
+    height: 0.9,
+    position: [25, 11],
+    color: '#e63946',
+    year: 'c. 95 AD',
+    scripture: 'Revelation',
+    keyFigures: ['John', 'Jesus'],
+    connections: []
+  }
+];
 
-  // Define Bible narrative sections
-  const bibleSections = [
-    // Genesis narrative arc
-    { id: "creation", reference: "Genesis 1", title: "Creation", book: "genesis", chapter: 1 },
-    { id: "eden", reference: "Genesis 2", title: "Eden", book: "genesis", chapter: 2 },
-    { id: "fall", reference: "Genesis 3", title: "Fall", book: "genesis", chapter: 3 },
-    { id: "flood", reference: "Genesis 6-9", title: "Flood", book: "genesis", chapter: 6 },
-    { id: "babel", reference: "Genesis 11", title: "Babel", book: "genesis", chapter: 11 },
-    { id: "abraham", reference: "Genesis 12", title: "Abraham", book: "genesis", chapter: 12 },
-    // Exodus to Deuteronomy
-    { id: "exodus", reference: "Exodus 1", title: "Exodus", book: "exodus", chapter: 1 },
-    { id: "sinai", reference: "Exodus 19", title: "Sinai", book: "exodus", chapter: 19 },
-    { id: "tabernacle", reference: "Exodus 25", title: "Tabernacle", book: "exodus", chapter: 25 },
-    { id: "wilderness", reference: "Numbers 10", title: "Wilderness", book: "numbers", chapter: 10 },
-    // Historical books
-    { id: "conquest", reference: "Joshua 1", title: "Conquest", book: "joshua", chapter: 1 },
-    { id: "judges", reference: "Judges 1", title: "Judges", book: "judges", chapter: 1 },
-    { id: "kingdom", reference: "1 Samuel 8", title: "Kingdom", book: "1samuel", chapter: 8 },
-    { id: "exile", reference: "2 Kings 25", title: "Exile", book: "2kings", chapter: 25 },
-    { id: "return", reference: "Ezra 1", title: "Return", book: "ezra", chapter: 1 },
-    // Gospels
-    { id: "incarnation", reference: "Matthew 1", title: "Incarnation", book: "matthew", chapter: 1 },
-    { id: "ministry", reference: "Mark 1", title: "Ministry", book: "mark", chapter: 1 },
-    { id: "passion", reference: "John 18", title: "Passion", book: "john", chapter: 18 },
-    { id: "resurrection", reference: "Matthew 28", title: "Resurrection", book: "matthew", chapter: 28 },
-    // Acts to Revelation
-    { id: "church", reference: "Acts 2", title: "Church", book: "acts", chapter: 2 },
-    { id: "mission", reference: "Acts 13", title: "Mission", book: "acts", chapter: 13 },
-    { id: "letters", reference: "Romans 1", title: "Letters", book: "romans", chapter: 1 },
-    { id: "revelation", reference: "Revelation 1", title: "Revelation", book: "revelation", chapter: 1 }
-  ];
+const BibleEventsLandscape = () => {
+  const containerRef = useRef();
+  const [hoveredEvent, setHoveredEvent] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [showAllLabels, setShowAllLabels] = useState(false);
+  const [miniMapActive, setMiniMapActive] = useState(true);
+  const [currentEra, setCurrentEra] = useState('overview');
+  const sceneRef = useRef(null);
+  const cameraRef = useRef(null);
+  const rendererRef = useRef(null);
+  const miniMapRendererRef = useRef(null);
+  const miniMapCameraRef = useRef(null);
+  const controlsRef = useRef(null);
+  const raycasterRef = useRef(new THREE.Raycaster());
+  const mouseRef = useRef(new THREE.Vector2());
+  const terrainRef = useRef(null);
+  const labelGroupRef = useRef(null);
+  const connectionsRef = useRef(null);
+  const markersRef = useRef([]);
 
-  // Define API key and settings
-  const ESV_API_KEY = 'c3be9ae20e39bd6637c709cd2e94fd42135764d1'; // Your ESV API key
-  const ESV_API_URL = 'https://api.esv.org/v3/passage/text/';
-
-  // State for Bible text and navigation
-  const [bibleText, setBibleText] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [activeTestament, setActiveTestament] = useState("old");
-  const [activeBook, setActiveBook] = useState("genesis");
-  const [activeChapter, setActiveChapter] = useState(1);
-  const [activeNarrativeSection, setActiveNarrativeSection] = useState("creation"); // Current narrative section
-  const [bookSearch, setBookSearch] = useState("");
-  const [showBookSelector, setShowBookSelector] = useState(false);
-  const [chapterSections, setChapterSections] = useState([]);
-  const [showChapterSelector, setShowChapterSelector] = useState(false);
-  // New states for layout control
-  const [showGraph, setShowGraph] = useState(true); // Toggle for graph visibility
-  const [isLargeScreen, setIsLargeScreen] = useState(false); // Track screen size for responsive layout
-
-  // Check screen size on mount and resize
   useEffect(() => {
-    const checkScreenSize = () => {
-      setIsLargeScreen(window.innerWidth >= 1024); // 1024px is typically 'lg' breakpoint
+    // Scene setup
+    const scene = new THREE.Scene();
+    sceneRef.current = scene;
+    scene.background = new THREE.Color(0xf0f8ff);
+
+    // Add ambient light
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+
+    // Add directional light (sun-like)
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(10, 20, 10);
+    directionalLight.castShadow = true;
+    scene.add(directionalLight);
+
+    // Camera setup
+    const aspectRatio = containerRef.current.clientWidth / containerRef.current.clientHeight;
+    const camera = new THREE.PerspectiveCamera(50, aspectRatio, 0.1, 1000);
+    camera.position.set(0, 25, 30);
+    camera.lookAt(0, 0, 0);
+    cameraRef.current = camera;
+
+    // Renderer setup
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
+    renderer.shadowMap.enabled = true;
+    if (containerRef.current) {
+      containerRef.current.appendChild(renderer.domElement);
+    }
+    rendererRef.current = renderer;
+
+    // Mini-map setup (top-down view)
+    if (containerRef.current) {
+      const miniMapSize = Math.min(200, containerRef.current.clientWidth * 0.2);
+      const miniMapCamera = new THREE.OrthographicCamera(
+        -30, 30, 20, -20, 1, 1000
+      );
+      miniMapCamera.position.set(0, 50, 0);
+      miniMapCamera.lookAt(0, 0, 0);
+      miniMapCamera.up.set(0, 0, -1); // Adjust the up direction for proper orientation
+      miniMapCameraRef.current = miniMapCamera;
+      
+      const miniMapRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      miniMapRenderer.setSize(miniMapSize, miniMapSize);
+      miniMapRenderer.domElement.style.position = 'absolute';
+      miniMapRenderer.domElement.style.bottom = '20px';
+      miniMapRenderer.domElement.style.right = '20px';
+      miniMapRenderer.domElement.style.border = '2px solid rgba(255, 255, 255, 0.7)';
+      miniMapRenderer.domElement.style.borderRadius = '5px';
+      miniMapRenderer.domElement.style.zIndex = '100';
+      miniMapRenderer.domElement.style.backgroundColor = 'rgba(240, 248, 255, 0.7)';
+      containerRef.current.appendChild(miniMapRenderer.domElement);
+      miniMapRendererRef.current = miniMapRenderer;
+    }
+
+    // Controls setup
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.maxPolarAngle = Math.PI / 2.2; // Prevent going below the ground
+    controls.minDistance = 8;
+    controls.maxDistance = 60;
+    
+    // Add helpful constraints and improvements
+    controls.enablePan = true;     // Allow panning
+    controls.panSpeed = 0.5;       // Slower panning for more control
+    controls.rotateSpeed = 0.5;    // Slower rotation for more control
+    controls.zoomSpeed = 0.8;      // Adjusted zoom speed
+    controls.autoRotate = false;   // No auto-rotation, but user can enable it if desired
+    
+    controlsRef.current = controls;
+
+    // Create terrain
+    createTerrain(scene);
+    
+    // Create event connections
+    createConnections(scene);
+
+    // Create event labels
+    createLabels(scene);
+
+    // Handle window resize
+    const handleResize = () => {
+      camera.aspect = containerRef.current.clientWidth / containerRef.current.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
     };
+    window.addEventListener('resize', handleResize);
+
+    // Mouse event listeners
+    const handleMouseMove = (event) => {
+      // Calculate mouse position in normalized device coordinates (-1 to +1) for both components
+      const rect = rendererRef.current.domElement.getBoundingClientRect();
+      mouseRef.current.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      mouseRef.current.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+    };
+
+    const handleClick = () => {
+      if (hoveredEvent) {
+        setSelectedEvent(hoveredEvent === selectedEvent ? null : hoveredEvent);
+      } else {
+        setSelectedEvent(null);
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('click', handleClick);
+
+    // Add visual navigation aids
+    addNavigationAids(scene);
     
-    checkScreenSize(); // Check on initial load
-    window.addEventListener('resize', checkScreenSize);
-    
+    // Animation loop
+    const animate = () => {
+      requestAnimationFrame(animate);
+      controls.update();
+
+      // Raycasting for hover effects
+      checkIntersections();
+
+      // Main view rendering
+      renderer.render(scene, camera);
+      
+      // Mini-map rendering
+      if (miniMapActive && miniMapRendererRef.current && miniMapCameraRef.current) {
+        miniMapRendererRef.current.render(scene, miniMapCameraRef.current);
+        
+        // Update user position indicator on mini-map
+        if (cameraRef.current) {
+          // Calculate user position as a marker on the mini-map
+          // This would be a more advanced feature to implement
+        }
+      }
+    };
+    animate();
+
+    // Cleanup
     return () => {
-      window.removeEventListener('resize', checkScreenSize);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('click', handleClick);
+      
+      // Safely dispose main renderer
+      if (rendererRef.current) {
+        rendererRef.current.dispose();
+      }
+      
+      // Safely remove main renderer DOM element if it exists and is still attached
+      if (containerRef.current && rendererRef.current && rendererRef.current.domElement && 
+          containerRef.current.contains(rendererRef.current.domElement)) {
+        containerRef.current.removeChild(rendererRef.current.domElement);
+      }
+      
+      // Safely dispose mini-map renderer
+      if (miniMapRendererRef.current) {
+        miniMapRendererRef.current.dispose();
+      }
+      
+      // Safely remove mini-map renderer DOM element if it exists and is still attached
+      if (containerRef.current && miniMapRendererRef.current && miniMapRendererRef.current.domElement && 
+          containerRef.current.contains(miniMapRendererRef.current.domElement)) {
+        containerRef.current.removeChild(miniMapRendererRef.current.domElement);
+      }
     };
   }, []);
 
-  // Generate section IDs based on book and chapter
-  const generateSectionIds = (book, chapter) => {
-    // Special handling for Genesis 1-3 (our visualization data)
-    if (book === "genesis" && chapter >= 1 && chapter <= 3) {
-      const sectionMapping = {
-        1: [
-          { id: "Genesis 1:1-2", title: "Creation Beginning" },
-          { id: "Genesis 1:3-25", title: "Six Days of Creation" },
-          { id: "Genesis 1:26-31", title: "Creation of Humanity" }
-        ],
-        2: [
-          { id: "Genesis 2:1-3", title: "Sabbath Rest" },
-          { id: "Genesis 2:4-17", title: "Garden of Eden" },
-          { id: "Genesis 2:18-25", title: "Creation of Woman" }
-        ],
-        3: [
-          { id: "Genesis 3:1-7", title: "The Temptation" },
-          { id: "Genesis 3:8-19", title: "The Judgment" },
-          { id: "Genesis 3:20-24", title: "Consequence and Promise" }
-        ]
-      };
+  // Create the 3D terrain
+  const createTerrain = (scene) => {
+    const terrainSize = 60;
+    const resolution = 120;
+    const geometry = new THREE.PlaneGeometry(terrainSize, terrainSize, resolution, resolution);
+    
+    // Define how large the influence of each event should be
+    const influenceRadius = 6;
+    
+    // Map vertices to create mountains and valleys
+    const vertices = geometry.attributes.position.array;
+    for (let i = 0; i < vertices.length; i += 3) {
+      const x = vertices[i];
+      const z = vertices[i + 2];
       
-      return sectionMapping[chapter] || [];
-    }
-    
-    // For other books/chapters, create a single section for the whole chapter
-    const book_obj = bibleStructure.find(b => b.id === book);
-    if (book_obj) {
-      return [{ id: `${book_obj.name} ${chapter}`, title: "Full Chapter" }];
-    }
-    
-    return []; // Return empty array for books/chapters without defined sections
-  };
-  
-  // Effect to scroll the active narrative section into view
-  useEffect(() => {
-    // Allow the DOM to update first
-    setTimeout(() => {
-      const sectionButton = document.getElementById(`section-${activeNarrativeSection}`);
-      const container = document.getElementById('sections-container');
+      // Calculate height based on distance to event "mountains"
+      let totalHeight = 0;
+      let totalInfluence = 0;
       
-      if (sectionButton && container) {
-        // Calculate the position to scroll to (centered)
-        const buttonRect = sectionButton.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
-        const scrollLeft = sectionButton.offsetLeft - (containerRect.width / 2) + (buttonRect.width / 2);
-        
-        container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
-      }
-    }, 100);
-  }, [activeNarrativeSection]);
-
-  // Update sections when book or chapter changes
-  useEffect(() => {
-    const newSections = generateSectionIds(activeBook, activeChapter);
-    setChapterSections(newSections);
-    
-    if (newSections.length > 0) {
-      setActiveSectionsList(newSections.map(section => section.id));
-      setActiveSection(newSections[0].id);
-    } else {
-      setActiveSectionsList([]);
-      setActiveSection(null);
-    }
-    
-    // Update active narrative section based on book and chapter
-    const matchingSection = bibleSections.find(
-      section => section.book === activeBook && section.chapter === activeChapter
-    );
-    if (matchingSection) {
-      setActiveNarrativeSection(matchingSection.id);
-    } else {
-      // Find the closest section that comes before this book/chapter
-      const bookIndex = bibleStructure.findIndex(b => b.id === activeBook);
-      if (bookIndex >= 0) {
-        const sectionsBefore = bibleSections.filter(section => {
-          const sectionBookIndex = bibleStructure.findIndex(b => b.id === section.book);
-          return (sectionBookIndex < bookIndex) || 
-                 (sectionBookIndex === bookIndex && section.chapter <= activeChapter);
-        });
-        
-        if (sectionsBefore.length > 0) {
-          // Get the latest section before current position
-          const closestSection = sectionsBefore[sectionsBefore.length - 1];
-          setActiveNarrativeSection(closestSection.id);
-        }
-      }
-    }
-    
-    // Reset visualization
-    setSelectedNode(null);
-    setPanOffset({ x: 0, y: 0 });
-    setDepthLevel(1);
-  }, [activeBook, activeChapter]);
-  
-  // State initialization for visualization
-  const [activeSectionsList, setActiveSectionsList] = useState([]);
-  const [activeSection, setActiveSection] = useState(null);
-
-  // Fetch ESV Bible text
-  useEffect(() => {
-    const fetchBibleText = async () => {
-      // Skip fetching if we don't have any sections defined
-      if (activeSectionsList.length === 0) {
-        setIsLoading(false);
-        return;
-      }
+      // Add base terrain with some randomness
+      const baseNoise = Math.sin(x * 0.1) * Math.sin(z * 0.1) * 0.05;
       
-      setIsLoading(true);
-      setError(null);
-      
-      try {
-        const results = {};
+      bibleEvents.forEach(event => {
+        const dx = x - event.position[0];
+        const dz = z - event.position[1];
+        const distance = Math.sqrt(dx * dx + dz * dz);
         
-        // Fetch each passage
-        for (const passage of activeSectionsList) {
-          const params = new URLSearchParams({
-            q: passage,
-            "include-passage-references": false,
-            "include-verse-numbers": true,
-            "include-first-verse-numbers": true,
-            "include-footnotes": false,
-            "include-headings": false,
-          });
-          
-          const response = await fetch(`${ESV_API_URL}?${params}`, {
-            headers: {
-              'Authorization': `Token ${ESV_API_KEY}`
-            }
-          });
-          
-          if (!response.ok) {
-            throw new Error(`Failed to fetch ${passage}: ${response.statusText}`);
-          }
-          
-          const data = await response.json();
-          results[passage] = data.passages[0].trim();
-        }
-        
-        setBibleText(results);
-      } catch (error) {
-        console.error("Error fetching Bible text:", error);
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    fetchBibleText();
-  }, [activeSectionsList]);
-
-  // Book selector functions
-  const filteredBooks = bookSearch
-    ? bibleStructure.filter(book => 
-        book.name.toLowerCase().includes(bookSearch.toLowerCase()) &&
-        (activeTestament === "all" || book.testament === activeTestament)
-      )
-    : bibleStructure.filter(book => 
-        activeTestament === "all" || book.testament === activeTestament
-      );
-
-  // Update section refs when chapter sections change
-  const textContainerRef = useRef(null);
-  const sectionRefs = useRef([]);
-  
-  useEffect(() => {
-    // Create new refs for each section
-    sectionRefs.current = chapterSections.map(() => React.createRef());
-  }, [chapterSections]);
-  
-  // Connections visualization data structure
-  // Genesis 1-3 connections (existing data from your original code)
-  const passageSections = {};
-
-  // Extra states for visualization and UI
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [zoomLevel, setZoomLevel] = useState(1);
-  const [selectedNode, setSelectedNode] = useState(null);
-  const [showInfo, setShowInfo] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
-  const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-  const [depthLevel, setDepthLevel] = useState(1);
-  const [showLevelInfo, setShowLevelInfo] = useState(false);
-  
-  // Max depth level available
-  const maxDepthLevel = 3;
-  
-  // Edge type styles
-  const edgeStyles = {
-    direct_reference: { color: "#6366F1", dash: "none", thickness: 3, label: "Direct Reference" },
-    thematic: { color: "#EC4899", dash: "5,5", thickness: 2, label: "Thematic Connection" },
-    symbolic: { color: "#10B981", dash: "10,5", thickness: 2, label: "Symbolic Echo" }
-  };
-  
-  // Handle scroll events to update active section
-  useEffect(() => {
-    const handleScroll = () => {
-      if (textContainerRef.current) {
-        setScrollY(textContainerRef.current.scrollTop);
-        
-        // Determine which section is most visible
-        const containerTop = textContainerRef.current.scrollTop;
-        const containerHeight = textContainerRef.current.clientHeight;
-        const containerBottom = containerTop + containerHeight;
-        
-        let maxVisibleArea = 0;
-        let mostVisibleSection = activeSection;
-        
-        sectionRefs.current.forEach((ref, index) => {
-          if (ref && ref.current) {
-            const sectionTop = ref.current.offsetTop;
-            const sectionHeight = ref.current.clientHeight;
-            const sectionBottom = sectionTop + sectionHeight;
-            
-            // Calculate visible area of this section
-            const visibleTop = Math.max(containerTop, sectionTop);
-            const visibleBottom = Math.min(containerBottom, sectionBottom);
-            const visibleArea = Math.max(0, visibleBottom - visibleTop);
-            
-            if (visibleArea > maxVisibleArea) {
-              maxVisibleArea = visibleArea;
-              mostVisibleSection = activeSectionsList[index];
-            }
-          }
-        });
-        
-        if (mostVisibleSection !== activeSection && mostVisibleSection) {
-          console.log('Changing active section to:', mostVisibleSection);
-          setActiveSection(mostVisibleSection);
-          // Reset depth level when changing sections
-          setDepthLevel(1);
-          // Reset selected node when changing sections
-          setSelectedNode(null);
-        }
-      }
-    };
-    
-    const container = textContainerRef.current;
-    if (container) {
-      container.addEventListener('scroll', handleScroll);
-      return () => container.removeEventListener('scroll', handleScroll);
-    }
-  }, [activeSection, activeSectionsList]);
-  
-  // Get all connections for current section based on depth level
-  const getAllConnections = () => {
-    if (!passageSections[activeSection]) return [];
-    
-    const primaryNodes = passageSections[activeSection].connections;
-    
-    if (depthLevel === 1) {
-      return primaryNodes;
-    }
-    
-    // Add deeper connections based on depth level
-    let allConnections = [...primaryNodes];
-    
-    // Add level 2 connections if depth level is at least 2
-    if (depthLevel >= 2) {
-      primaryNodes.forEach(node => {
-        if (node.deeperConnections) {
-          const level2Connections = node.deeperConnections.filter(conn => conn.level === 2);
-          allConnections = [...allConnections, ...level2Connections];
+        if (distance < influenceRadius) {
+          // Use inverse square for more natural mountain shape
+          const influence = Math.pow(1 - distance / influenceRadius, 2);
+          const height = event.height * 8; // Scale height
+          totalHeight += height * influence;
+          totalInfluence += influence;
         }
       });
+      
+      // Apply height to vertex
+      if (totalInfluence > 0) {
+        vertices[i + 1] = totalHeight / totalInfluence + baseNoise;
+      } else {
+        vertices[i + 1] = baseNoise;
+      }
     }
     
-    // Add level 3 connections if depth level is 3
-    if (depthLevel >= 3) {
-      primaryNodes.forEach(node => {
-        if (node.deeperConnections) {
-          const level3Connections = node.deeperConnections.filter(conn => conn.level === 3);
-          allConnections = [...allConnections, ...level3Connections];
-        }
-      });
-    }
+    // Update normals for proper lighting
+    geometry.computeVertexNormals();
     
-    return allConnections;
-  };
-  
-  // Get connection lines to draw
-  const getConnectionLines = () => {
-    if (!passageSections[activeSection]) return [];
-    
-    const connections = [];
-    const allNodes = getAllConnections();
-    
-    // First level connections (explicitly defined in the data structure)
-    passageSections[activeSection].connections.forEach(node => {
-      node.connections.forEach(conn => {
-        // Only include if target exists and is within current depth level
-        const target = allNodes.find(n => n.id === conn.targetId);
-        if (target && conn.level <= depthLevel) {
-          connections.push({
-            sourceId: node.id,
-            targetId: conn.targetId,
-            sourceNode: node,
-            targetNode: target,
-            type: conn.type,
-            strength: conn.strength,
-            level: conn.level
-          });
-        }
-      });
+    // Create terrain material with color gradient based on height
+    const material = new THREE.MeshStandardMaterial({
+      vertexColors: true,
+      flatShading: false,
+      side: THREE.DoubleSide
     });
     
-    // For deeper connections, create implicit connections to their "parent" nodes
-    if (depthLevel >= 2) {
-      passageSections[activeSection].connections.forEach(node => {
-        if (node.deeperConnections) {
-          node.deeperConnections.forEach(deepNode => {
-            if (deepNode.level <= depthLevel) {
-              // Determine connection type based on node's level
-              const deepConnectionType = deepNode.level === 2 ? "thematic" : "symbolic";
-              const deepConnectionStrength = 0.6 - ((deepNode.level - 2) * 0.1); // Weaker the deeper it goes
-              
-              connections.push({
-                sourceId: node.id,
-                targetId: deepNode.id,
-                sourceNode: node,
-                targetNode: deepNode,
-                type: deepConnectionType,
-                strength: deepConnectionStrength,
-                level: deepNode.level
-              });
-            }
-          });
+    // Add colors based on height and chronology
+    const colors = [];
+    for (let i = 0; i < vertices.length; i += 3) {
+      const height = vertices[i + 1];
+      const x = vertices[i];
+      
+      // Base color based on chronology (position along x-axis)
+      // Transition from green (early) to blue (middle) to purple (late)
+      let baseColor;
+      const normalizedX = (x + terrainSize/2) / terrainSize; // 0 to 1
+      
+      if (normalizedX < 0.33) {
+        // Early biblical history - green to teal
+        baseColor = new THREE.Color(0x2a9d8f).lerp(new THREE.Color(0x457b9d), normalizedX * 3);
+      } else if (normalizedX < 0.66) {
+        // Middle biblical history - teal to blue
+        baseColor = new THREE.Color(0x457b9d).lerp(new THREE.Color(0x1d3557), (normalizedX - 0.33) * 3);
+      } else {
+        // Later biblical history - blue to purple
+        baseColor = new THREE.Color(0x1d3557).lerp(new THREE.Color(0x7209b7), (normalizedX - 0.66) * 3);
+      }
+      
+      // Find closest event for coloring
+      let closestEvent = null;
+      let closestDistance = Infinity;
+      
+      bibleEvents.forEach(event => {
+        const dx = vertices[i] - event.position[0];
+        const dz = vertices[i + 2] - event.position[1];
+        const distance = Math.sqrt(dx * dx + dz * dz);
+        
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestEvent = event;
         }
       });
+      
+      let color;
+      if (closestEvent && closestDistance < influenceRadius) {
+        // Use event color with intensity based on height
+        const eventColor = new THREE.Color(closestEvent.color);
+        const intensity = Math.min(1, Math.max(0.4, height / 4 + 0.5));
+        color = eventColor.clone().multiplyScalar(intensity);
+      } else {
+        // Default terrain color
+        const intensity = Math.min(1, Math.max(0.4, height / 8 + 0.5));
+        color = baseColor.clone().multiplyScalar(intensity);
+      }
+      
+      colors.push(color.r, color.g, color.b);
     }
     
-    return connections;
-  };
-  
-  // Handle node click
-  const handleNodeClick = (nodeId) => {
-    setSelectedNode(selectedNode === nodeId ? null : nodeId);
-  };
-  
-  // Get current section index and find sections for visualization
-  const currentSectionIndex = activeSectionsList.indexOf(activeSection);
-  
-  // Get previous and next sections if they exist
-  const prevSection = currentSectionIndex > 0 ? activeSectionsList[currentSectionIndex - 1] : null;
-  const nextSection = currentSectionIndex < activeSectionsList.length - 1 ? activeSectionsList[currentSectionIndex + 1] : null;
-  
-  // Zoom controls
-  const handleZoomIn = () => setZoomLevel(Math.min(zoomLevel + 0.2, 2));
-  const handleZoomOut = () => setZoomLevel(Math.max(zoomLevel - 0.2, 0.5));
-  
-  const toggleExpand = () => setIsExpanded(!isExpanded);
-  
-  // Jump to a specific section
-  const jumpToSection = (sectionId) => {
-    const index = activeSectionsList.indexOf(sectionId);
-    if (index >= 0 && sectionRefs.current[index] && sectionRefs.current[index].current) {
-      textContainerRef.current.scrollTo({
-        top: sectionRefs.current[index].current.offsetTop,
-        behavior: 'smooth'
+    // Add colors to geometry
+    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+    
+    // Create mesh and add to scene
+    const terrain = new THREE.Mesh(geometry, material);
+    terrain.rotation.x = -Math.PI / 2; // Rotate to be horizontal
+    terrain.receiveShadow = true;
+    terrain.castShadow = true;
+    terrain.userData.isInteractive = true;
+    
+    scene.add(terrain);
+    terrainRef.current = terrain;
+    
+    // Add event markers on the terrain
+    const markerGeometry = new THREE.CylinderGeometry(0.15, 0.15, 0.4, 8);
+    
+    bibleEvents.forEach(event => {
+      const markerMaterial = new THREE.MeshStandardMaterial({ 
+        color: event.color,
+        emissive: event.color,
+        emissiveIntensity: 0.3
       });
+      const marker = new THREE.Mesh(markerGeometry, markerMaterial);
+      
+      // Calculate position on the terrain
+      const x = event.position[0];
+      const z = event.position[1];
+      
+      // Find height at this position
+      let height = 0;
+      let influence = 0;
+      
+      bibleEvents.forEach(e => {
+        const dx = x - e.position[0];
+        const dz = z - e.position[1];
+        const distance = Math.sqrt(dx * dx + dz * dz);
+        
+        if (distance < influenceRadius) {
+          const i = Math.pow(1 - distance / influenceRadius, 2);
+          height += e.height * 8 * i;
+          influence += i;
+        }
+      });
+      
+      if (influence > 0) {
+        height = height / influence;
+      }
+      
+      marker.position.set(x, height + 0.2, z);
+      marker.userData = { 
+        eventId: event.id,
+        isMarker: true
+      };
+      
+      scene.add(marker);
+    });
+  };
+
+  // Add visual navigation aids to the scene
+  const addNavigationAids = (scene) => {
+    // Add a compass
+    const compassGroup = new THREE.Group();
+    
+    // Compass circle
+    const compassRingGeometry = new THREE.RingGeometry(1.8, 2, 32);
+    const compassRingMaterial = new THREE.MeshBasicMaterial({ 
+      color: 0x333333, 
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.7
+    });
+    const compassRing = new THREE.Mesh(compassRingGeometry, compassRingMaterial);
+    compassRing.rotation.x = -Math.PI / 2;
+    compassGroup.add(compassRing);
+    
+    // Direction markers
+    const markerGeometry = new THREE.ConeGeometry(0.3, 0.8, 16);
+    const markerMaterial = new THREE.MeshBasicMaterial({ color: 0xe63946 });
+    
+    // North marker
+    const northMarker = new THREE.Mesh(markerGeometry, markerMaterial);
+    northMarker.position.set(0, 0, -2.5);
+    northMarker.rotation.x = Math.PI;
+    compassGroup.add(northMarker);
+    
+    // Add N label
+    const northCanvas = document.createElement('canvas');
+    northCanvas.width = 64;
+    northCanvas.height = 64;
+    const northCtx = northCanvas.getContext('2d');
+    northCtx.fillStyle = 'white';
+    northCtx.font = 'bold 40px Arial';
+    northCtx.textAlign = 'center';
+    northCtx.textBaseline = 'middle';
+    northCtx.fillText('N', 32, 32);
+    
+    const northTexture = new THREE.CanvasTexture(northCanvas);
+    const northLabelMaterial = new THREE.SpriteMaterial({ map: northTexture });
+    const northLabel = new THREE.Sprite(northLabelMaterial);
+    northLabel.position.set(0, 0.5, -3);
+    northLabel.scale.set(1.5, 1.5, 1);
+    compassGroup.add(northLabel);
+    
+    // Position compass in corner of scene
+    compassGroup.position.set(-25, 0.2, -15);
+    scene.add(compassGroup);
+    
+    // Add a path highlighting the biblical timeline
+    const timelinePath = new THREE.CurvePath();
+    
+    // Create a smooth curve through all events in chronological order
+    const sortedEvents = [...bibleEvents].sort((a, b) => a.position[0] - b.position[0]);
+    
+    // Generate control points for a smooth path
+    const controlPoints = [];
+    sortedEvents.forEach(event => {
+      controlPoints.push(new THREE.Vector3(
+        event.position[0],
+        event.height * 8 * 0.2, // Keep it low to the ground
+        event.position[1]
+      ));
+    });
+    
+    // Create a smooth spline through the points
+    for (let i = 0; i < controlPoints.length - 1; i++) {
+      const startPoint = controlPoints[i];
+      const endPoint = controlPoints[i + 1];
+      
+      // Calculate a control point for a curved path
+      const midPoint = new THREE.Vector3().addVectors(startPoint, endPoint).multiplyScalar(0.5);
+      midPoint.y += 0.3; // Slight elevation
+      
+      // Create a quadratic curve
+      const curve = new THREE.QuadraticBezierCurve3(startPoint, midPoint, endPoint);
+      timelinePath.add(curve);
+    }
+    
+    // Create the timeline visual
+    const timelineGeometry = new THREE.TubeGeometry(
+      timelinePath, 
+      150,  // tubular segments
+      0.15, // radius
+      8,    // radial segments
+      false // closed
+    );
+    
+    // Create a glowing material for the timeline
+    const timelineMaterial = new THREE.MeshStandardMaterial({
+      color: 0x4a9eff,
+      emissive: 0x4a9eff,
+      emissiveIntensity: 0.5,
+      transparent: true,
+      opacity: 0.7
+    });
+    
+    const timelineMesh = new THREE.Mesh(timelineGeometry, timelineMaterial);
+    scene.add(timelineMesh);
+    
+    // Add era markers (vertical columns of light)
+    const eraMarkers = [
+      { position: [-14, -8], label: 'Early History', color: 0x2a9d8f },
+      { position: [3, 0], label: 'Exodus & Wilderness', color: 0x457b9d },
+      { position: [10, 5], label: 'Kingdom Period', color: 0x1d3557 },
+      { position: [14, 7], label: 'Exile', color: 0x6a040f },
+      { position: [18, 9], label: "Jesus' Ministry", color: 0xf4a261 },
+      { position: [23, 11], label: 'Early Church', color: 0x2a9d8f }
+    ];
+    
+    eraMarkers.forEach(marker => {
+      // Create a cylindrical light beam
+      const beamGeometry = new THREE.CylinderGeometry(0.15, 0.15, 15, 8);
+      const beamMaterial = new THREE.MeshBasicMaterial({
+        color: marker.color,
+        transparent: true,
+        opacity: 0.3
+      });
+      
+      const beam = new THREE.Mesh(beamGeometry, beamMaterial);
+      beam.position.set(marker.position[0], 7.5, marker.position[1]);
+      scene.add(beam);
+      
+      // Add label above the beam
+      const labelCanvas = document.createElement('canvas');
+      labelCanvas.width = 256;
+      labelCanvas.height = 64;
+      const labelCtx = labelCanvas.getContext('2d');
+      
+      labelCtx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+      labelCtx.fillRect(0, 0, labelCanvas.width, labelCanvas.height);
+      
+      labelCtx.strokeStyle = new THREE.Color(marker.color).getStyle();
+      labelCtx.lineWidth = 4;
+      labelCtx.strokeRect(2, 2, labelCanvas.width - 4, labelCanvas.height - 4);
+      
+      labelCtx.font = 'bold 20px Arial';
+      labelCtx.fillStyle = '#000000';
+      labelCtx.textAlign = 'center';
+      labelCtx.textBaseline = 'middle';
+      labelCtx.fillText(marker.label, labelCanvas.width / 2, labelCanvas.height / 2);
+      
+      const labelTexture = new THREE.CanvasTexture(labelCanvas);
+      const labelMaterial = new THREE.MeshBasicMaterial({
+        map: labelTexture,
+        transparent: true,
+        side: THREE.DoubleSide
+      });
+      
+      const labelGeometry = new THREE.PlaneGeometry(4, 1);
+      const label = new THREE.Mesh(labelGeometry, labelMaterial);
+      label.position.set(marker.position[0], 18, marker.position[1]);
+      label.rotation.x = -Math.PI / 4; // Angle for better visibility
+      scene.add(label);
+    });
+  };
+
+  // Create connections between related events
+  const createConnections = (scene) => {
+    const connectionsGroup = new THREE.Group();
+    scene.add(connectionsGroup);
+    connectionsRef.current = connectionsGroup;
+    
+    // Create paths between connected events
+    const lineMaterial = new THREE.LineBasicMaterial({
+      color: 0x888888,
+      opacity: 0.7,
+      transparent: true,
+      linewidth: 2
+    });
+    
+    bibleEvents.forEach(event => {
+      if (event.connections && event.connections.length > 0) {
+        event.connections.forEach(connectedId => {
+          const connectedEvent = bibleEvents.find(e => e.id === connectedId);
+          if (connectedEvent) {
+            // Calculate positions including heights
+            const startX = event.position[0];
+            const startZ = event.position[1];
+            const endX = connectedEvent.position[0];
+            const endZ = connectedEvent.position[1];
+            
+            // Find heights at these positions
+            let startHeight = event.height * 8;
+            let endHeight = connectedEvent.height * 8;
+            
+            // Create a curved path for better visualization
+            const midX = (startX + endX) / 2;
+            const midZ = (startZ + endZ) / 2;
+            const midHeight = (startHeight + endHeight) / 2 + 0.5; // Slightly elevated midpoint
+            
+            // Add points for the curve
+            const lineGeometry = new THREE.BufferGeometry();
+            
+            // Create a curve with multiple points
+            const curve = new THREE.QuadraticBezierCurve3(
+              new THREE.Vector3(startX, startHeight + 0.2, startZ),
+              new THREE.Vector3(midX, midHeight, midZ),
+              new THREE.Vector3(endX, endHeight + 0.2, endZ)
+            );
+            
+            const points = curve.getPoints(20);
+            lineGeometry.setFromPoints(points);
+            
+            const line = new THREE.Line(lineGeometry, lineMaterial);
+            connectionsGroup.add(line);
+            
+            // Add direction indicators (small spheres along the path)
+            const arrowMaterial = new THREE.MeshBasicMaterial({ 
+              color: 0xffffff, 
+              transparent: true,
+              opacity: 0.8
+            });
+            
+            // Add multiple small spheres along the path
+            for (let i = 0.3; i < 0.9; i += 0.2) {
+              const point = curve.getPoint(i);
+              const arrowGeometry = new THREE.SphereGeometry(0.1, 8, 8);
+              const arrow = new THREE.Mesh(arrowGeometry, arrowMaterial);
+              arrow.position.copy(point);
+              connectionsGroup.add(arrow);
+            }
+          }
+        });
+      }
+    });
+  };
+
+  // Create event labels that float above the terrain
+  const createLabels = (scene) => {
+    // Create a group to hold all labels
+    const labelGroup = new THREE.Group();
+    scene.add(labelGroup);
+    labelGroupRef.current = labelGroup;
+    
+    // For each event, create a floating text label
+    bibleEvents.forEach(event => {
+      // Create canvas for text rendering
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      canvas.width = 256;
+      canvas.height = 128;
+      
+      // Fill background
+      context.fillStyle = 'rgba(255, 255, 255, 0.8)';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw border
+      context.strokeStyle = event.color;
+      context.lineWidth = 4;
+      context.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
+      
+      // Write event name
+      context.font = 'bold 24px Arial';
+      context.fillStyle = '#000000';
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+      context.fillText(event.name, canvas.width / 2, 30);
+      
+      // Write year
+      context.font = '16px Arial';
+      context.fillText(event.year, canvas.width / 2, 60);
+      
+      // Write scripture reference
+      context.font = '14px Arial';
+      context.fillText(event.scripture, canvas.width / 2, 85);
+      
+      // Create texture from canvas
+      const texture = new THREE.CanvasTexture(canvas);
+      
+      // Create label material and geometry
+      const labelMaterial = new THREE.MeshBasicMaterial({
+        map: texture,
+        transparent: true,
+        opacity: 0.95,
+        side: THREE.DoubleSide
+      });
+      
+      const labelGeometry = new THREE.PlaneGeometry(2, 1);
+      const label = new THREE.Mesh(labelGeometry, labelMaterial);
+      
+      // Set label position above the event peak
+      const x = event.position[0];
+      const z = event.position[1];
+      
+      // Calculate height at this position
+      let height = event.height * 8 + 1.5; // Position above the peak
+      
+      label.position.set(x, height, z);
+      label.userData = { 
+        eventId: event.id,
+        isLabel: true
+      };
+      
+      // Make label always face camera
+      label.lookAt(cameraRef.current.position);
+      
+      // Initially hide detailed labels
+      label.visible = false;
+      
+      // Add to label group
+      labelGroup.add(label);
+    });
+  };
+
+  // Check for ray intersections with interactive objects
+  const checkIntersections = () => {
+    if (!sceneRef.current || !cameraRef.current) return;
+    
+    raycasterRef.current.setFromCamera(mouseRef.current, cameraRef.current);
+    
+    // Get all objects in the scene that could be intersected
+    const intersectableObjects = [];
+    sceneRef.current.traverse(object => {
+      if (object.userData && (object.userData.isMarker || object.userData.isLabel)) {
+        intersectableObjects.push(object);
+      }
+    });
+    
+    const intersects = raycasterRef.current.intersectObjects(intersectableObjects);
+    
+    if (intersects.length > 0) {
+      const eventId = intersects[0].object.userData.eventId;
+      if (eventId && eventId !== hoveredEvent) {
+        setHoveredEvent(eventId);
+        updateLabelVisibility(eventId);
+      }
+    } else if (hoveredEvent) {
+      setHoveredEvent(null);
+      updateLabelVisibility(null);
     }
   };
-  
-  // Depth level controls
-  const increaseDepthLevel = () => {
-    if (depthLevel < maxDepthLevel) {
-      setDepthLevel(depthLevel + 1);
-    }
-  };
-  
-  const decreaseDepthLevel = () => {
-    if (depthLevel > 1) {
-      setDepthLevel(depthLevel - 1);
-    }
-  };
-  
-  // Find the current chapter title
-  const getCurrentBookChapter = () => {
-    const book = bibleStructure.find(b => b.id === activeBook);
-    return book ? `${book.name} ${activeChapter}` : "";
-  };
-  
+
   // Navigation functions
-  const handleBookChange = (bookId) => {
-    setActiveBook(bookId);
-    // Set to chapter 1 when changing books
-    setActiveChapter(1);
-    // Hide book selector after selection
-    setShowBookSelector(false);
-  };
-  
-  // Handle narrative section selection
-  const handleSectionSelect = (sectionId) => {
-    // Find the selected section
-    const section = bibleSections.find(s => s.id === sectionId);
-    if (section) {
-      // Update active narrative section
-      setActiveNarrativeSection(sectionId);
+  const navigateToEvent = (eventId) => {
+    const event = getEventById(eventId);
+    if (!event || !cameraRef.current || !controlsRef.current) return;
+    
+    // Set as selected event to show details
+    setSelectedEvent(eventId);
+    
+    // Calculate target position for camera
+    const targetX = event.position[0];
+    const targetZ = event.position[1];
+    let targetHeight = event.height * 8 + 3; // Position above the peak
+    
+    // Animate camera movement to the event
+    const startPosition = cameraRef.current.position.clone();
+    const targetPosition = new THREE.Vector3(targetX, targetHeight + 5, targetZ + 8);
+    
+    // Disable controls during animation
+    controlsRef.current.enabled = false;
+    
+    // Simple animation
+    let startTime = null;
+    const duration = 1000; // 1 second
+    
+    const animateCamera = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
       
-      // Navigate to the corresponding book and chapter
-      setActiveBook(section.book);
-      setActiveChapter(section.chapter);
-    }
+      // Smooth easing
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      
+      // Interpolate position
+      const newX = startPosition.x + (targetPosition.x - startPosition.x) * easeProgress;
+      const newY = startPosition.y + (targetPosition.y - startPosition.y) * easeProgress;
+      const newZ = startPosition.z + (targetPosition.z - startPosition.z) * easeProgress;
+      
+      cameraRef.current.position.set(newX, newY, newZ);
+      
+      // Update look at target
+      cameraRef.current.lookAt(targetX, targetHeight, targetZ);
+      
+      if (progress < 1) {
+        requestAnimationFrame(animateCamera);
+      } else {
+        // Animation complete, re-enable controls
+        controlsRef.current.target.set(targetX, targetHeight, targetZ);
+        controlsRef.current.enabled = true;
+        controlsRef.current.update();
+      }
+    };
+    
+    requestAnimationFrame(animateCamera);
   };
   
-  const handleChapterChange = (chapterNum) => {
-    setActiveChapter(chapterNum);
-  };
-
-  const navigateToNextChapter = () => {
-    const book = bibleStructure.find(b => b.id === activeBook);
-    if (book && activeChapter < book.chapters) {
-      setActiveChapter(activeChapter + 1);
-    } else {
-      // Move to next book
-      const currentBookIndex = bibleStructure.findIndex(b => b.id === activeBook);
-      if (currentBookIndex < bibleStructure.length - 1) {
-        setActiveBook(bibleStructure[currentBookIndex + 1].id);
-        setActiveChapter(1);
+  const navigateToEra = (era) => {
+    setCurrentEra(era);
+    
+    // Define camera positions for different eras
+    const eraPositions = {
+      'overview': { position: [0, 25, 30], target: [0, 0, 0] },
+      'early': { position: [-14, 15, 0], target: [-14, 0, -8] },
+      'exodus': { position: [3, 15, 5], target: [3, 0, 0] },
+      'kingdom': { position: [10, 15, 8], target: [10, 0, 5] },
+      'exile': { position: [14, 15, 10], target: [14, 0, 7] },
+      'jesus': { position: [18, 15, 12], target: [18, 0, 9] },
+      'church': { position: [23, 15, 12], target: [23, 0, 11] }
+    };
+    
+    const settings = eraPositions[era] || eraPositions.overview;
+    
+    // Animate camera movement
+    const startPosition = cameraRef.current.position.clone();
+    const targetPosition = new THREE.Vector3(...settings.position);
+    const startTarget = controlsRef.current.target.clone();
+    const endTarget = new THREE.Vector3(...settings.target);
+    
+    // Disable controls during animation
+    controlsRef.current.enabled = false;
+    
+    // Simple animation
+    let startTime = null;
+    const duration = 1200; // 1.2 seconds
+    
+    const animateCamera = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Smooth easing
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      
+      // Interpolate position
+      const newX = startPosition.x + (targetPosition.x - startPosition.x) * easeProgress;
+      const newY = startPosition.y + (targetPosition.y - startPosition.y) * easeProgress;
+      const newZ = startPosition.z + (targetPosition.z - startPosition.z) * easeProgress;
+      
+      // Interpolate target
+      const newTargetX = startTarget.x + (endTarget.x - startTarget.x) * easeProgress;
+      const newTargetY = startTarget.y + (endTarget.y - startTarget.y) * easeProgress;
+      const newTargetZ = startTarget.z + (endTarget.z - startTarget.z) * easeProgress;
+      
+      cameraRef.current.position.set(newX, newY, newZ);
+      cameraRef.current.lookAt(newTargetX, newTargetY, newTargetZ);
+      
+      if (progress < 1) {
+        requestAnimationFrame(animateCamera);
+      } else {
+        // Animation complete, re-enable controls
+        controlsRef.current.target.copy(endTarget);
+        controlsRef.current.enabled = true;
+        controlsRef.current.update();
       }
-    }
-  };
-
-  const navigateToPreviousChapter = () => {
-    if (activeChapter > 1) {
-      setActiveChapter(activeChapter - 1);
-    } else {
-      // Move to previous book
-      const currentBookIndex = bibleStructure.findIndex(b => b.id === activeBook);
-      if (currentBookIndex > 0) {
-        const prevBook = bibleStructure[currentBookIndex - 1];
-        setActiveBook(prevBook.id);
-        setActiveChapter(prevBook.chapters);
-      }
-    }
-  };
-
-  // Toggle graph visibility
-  const toggleGraphVisibility = () => {
-    setShowGraph(!showGraph);
+    };
+    
+    requestAnimationFrame(animateCamera);
   };
   
+  const resetCamera = () => {
+    navigateToEra('overview');
+    setSelectedEvent(null);
+  };
+  
+  const toggleLabels = () => {
+    setShowAllLabels(!showAllLabels);
+    updateLabelVisibility(hoveredEvent);
+  };
+
+  // Update which event labels are visible
+  const updateLabelVisibility = (hoveredEventId) => {
+    if (!labelGroupRef.current) return;
+    
+    labelGroupRef.current.children.forEach(label => {
+      // Make labels face the camera
+      label.lookAt(cameraRef.current.position);
+      
+      // Show label if it's the hovered event, a selected event, or showAllLabels is true
+      const isHovered = label.userData.eventId === hoveredEventId;
+      const isSelected = selectedEvent && label.userData.eventId === selectedEvent;
+      
+      label.visible = isHovered || isSelected || showAllLabels;
+      
+      // Scale labels based on distance to camera for better readability
+      if (label.visible) {
+        const distance = label.position.distanceTo(cameraRef.current.position);
+        const scale = Math.max(0.8, Math.min(1.5, 20 / distance));
+        label.scale.set(scale, scale, 1);
+        
+        // Adjust opacity based on distance
+        const opacity = Math.min(1, Math.max(0.5, 30 / distance));
+        label.material.opacity = opacity;
+      }
+    });
+  };
+
+  // Find event details by ID
+  const getEventById = (id) => {
+    return bibleEvents.find(event => event.id === id);
+  };
+
   return (
-    <div className="flex flex-col h-screen bg-slate-50 text-slate-800 font-sans">
-      {/* Header */}
-      <header className="p-4 bg-white shadow-sm border-b border-slate-200 flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <Book className="text-indigo-600" size={24} />
-          <h1 className="text-xl font-semibold text-indigo-700">Echoes</h1>
-        </div>
-        <div className="flex items-center space-x-4">
-          <button 
-            onClick={toggleGraphVisibility}
-            className="p-2 rounded-full hover:bg-slate-100"
-            title={showGraph ? "Hide connections" : "Show connections"}
-          >
-            {showGraph ? <EyeOff size={20} className="text-slate-600" /> : <Eye size={20} className="text-slate-600" />}
-          </button>
-          <button 
-            onClick={() => setShowInfo(!showInfo)}
-            className="p-2 rounded-full hover:bg-slate-100"
-            title="Show info"
-          >
-            <Info size={20} className="text-slate-600" />
-          </button>
-          <div className="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm font-medium">
-            {getCurrentBookChapter()}
+    <div className="w-full h-screen flex flex-col bg-gray-100">
+      {/* Info panel */}
+      <div className="bg-white p-3 shadow-md">
+        <h1 className="text-2xl font-bold text-center text-blue-800">Biblical Events Landscape</h1>
+        <p className="text-center text-gray-600">
+          Explore biblical history visualized as a 3D topographical map.
+          Major events form peaks, with connections between related narratives.
+        </p>
+        <div className="flex justify-center space-x-4 mt-2 text-sm">
+          <div className="flex items-center">
+            <span className="w-3 h-3 rounded-full bg-blue-500 mr-1"></span>
+            <span>Mountains = Major Events</span>
+          </div>
+          <div className="flex items-center">
+            <span className="w-3 h-3 rounded-full bg-gray-400 mr-1"></span>
+            <span>Paths = Narrative Connections</span>
+          </div>
+          <div className="flex items-center">
+            <span className="w-3 h-3 rounded-full bg-green-500 mr-1"></span>
+            <span>Blue Line = Biblical Timeline</span>
           </div>
         </div>
-      </header>
-      
-{/* 
-        NOTE: Add this state variable to your component:
-        const [showChapterSelector, setShowChapterSelector] = useState(false);
-      */}
-      
-      {/* Book and chapter navigation */}
-      <div className="bg-white border-b border-slate-200 px-4 py-2">
-        <div className="max-w-4xl mx-auto flex justify-between items-center">
-          {/* Book selector button */}
-          <div className="relative">
-            <button
-              onClick={() => setShowBookSelector(!showBookSelector)}
-              className="flex items-center space-x-2 py-2 px-4 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors"
-            >
-              <span className="font-medium">{bibleStructure.find(b => b.id === activeBook)?.name || "Select Book"}</span>
-              <ChevronDown size={16} />
-            </button>
-            
-            {/* Book selector dropdown */}
-            {showBookSelector && (
-              <div className="absolute top-12 left-0 w-72 max-h-96 overflow-y-auto bg-white shadow-lg rounded-lg border border-slate-200 z-30">
-                <div className="p-3 border-b border-slate-200">
-                  <div className="flex items-center space-x-2 px-2 py-1 bg-slate-100 rounded">
-                    <Search size={16} className="text-slate-500" />
-                    <input
-                      type="text"
-                      placeholder="Search books..."
-                      value={bookSearch}
-                      onChange={(e) => setBookSearch(e.target.value)}
-                      className="w-full bg-transparent border-none outline-none text-sm"
-                    />
-                  </div>
-                  <div className="flex space-x-1 mt-2">
-                    <button
-                      onClick={() => setActiveTestament("all")}
-                      className={`text-xs px-2 py-1 rounded ${activeTestament === "all" ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600"}`}
-                    >
-                      All
-                    </button>
-                    <button
-                      onClick={() => setActiveTestament("old")}
-                      className={`text-xs px-2 py-1 rounded ${activeTestament === "old" ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600"}`}
-                    >
-                      Old Testament
-                    </button>
-                    <button
-                      onClick={() => setActiveTestament("new")}
-                      className={`text-xs px-2 py-1 rounded ${activeTestament === "new" ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600"}`}
-                    >
-                      New Testament
-                    </button>
-                  </div>
-                </div>
-                
-                <div className="p-2">
-                  {filteredBooks.length === 0 ? (
-                    <div className="text-center py-4 text-slate-500">No books found</div>
-                  ) : (
-                    <div className="grid grid-cols-2 gap-1">
-                      {filteredBooks.map(book => (
-                        <button
-                          key={book.id}
-                          onClick={() => handleBookChange(book.id)}
-                          className={`text-left px-3 py-2 rounded text-sm ${
-                            activeBook === book.id
-                              ? "bg-indigo-100 text-indigo-700 font-medium"
-                              : "hover:bg-slate-100"
-                          }`}
-                        >
-                          {book.name}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-          
-          {/* Chapter navigation - Updated to use dropdown */}
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={navigateToPreviousChapter}
-              className="p-1 rounded-full hover:bg-slate-100"
-              aria-label="Previous chapter"
-            >
-              <ChevronLeft size={20} className="text-slate-600" />
-            </button>
-            
-            <div className="relative">
-              <button
-                onClick={() => setShowChapterSelector(prev => !prev)}
-                className="flex items-center space-x-2 py-1.5 px-3 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors"
-              >
-                <span className="font-medium">Chapter {activeChapter}</span>
-                <ChevronDown size={16} />
-              </button>
-              
-              {/* Chapter selector dropdown */}
-              {showChapterSelector && (
-                <div className="absolute top-10 left-0 w-64 max-h-80 overflow-y-auto bg-white shadow-lg rounded-lg border border-slate-200 z-30">
-                  <div className="p-2">
-                    <div className="grid grid-cols-5 gap-1">
-                      {Array.from({ length: bibleStructure.find(b => b.id === activeBook)?.chapters || 0 }, (_, i) => (
-                        <button
-                          key={`chapter-${i+1}`}
-                          onClick={() => {
-                            handleChapterChange(i+1);
-                            setShowChapterSelector(false);
-                          }}
-                          className={`h-8 w-8 text-xs rounded-full flex items-center justify-center ${
-                            activeChapter === i+1
-                              ? 'bg-indigo-600 text-white'
-                              : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                          }`}
-                        >
-                          {i+1}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            <button
-              onClick={navigateToNextChapter}
-              className="p-1 rounded-full hover:bg-slate-100"
-              aria-label="Next chapter"
-            >
-              <ChevronRight size={20} className="text-slate-600" />
-            </button>
-          </div>
+        <div className="text-center text-gray-600 mt-1 flex items-center justify-center">
+          <span className="font-semibold mr-1">Navigation:</span>
+          <span className="mx-1">Left-click+drag to rotate</span>•
+          <span className="mx-1">Right-click+drag to pan</span>•
+          <span className="mx-1">Scroll to zoom</span>•
+          <span className="ml-1">Click on events for details</span>
         </div>
       </div>
       
-      {/* Bible narrative sections navigation */}
-      <div className="bg-white border-b border-slate-200 relative">
-        {/* Section flow indicator line */}
-        <div className="absolute h-1 bottom-0 left-0 right-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-60"></div>
-        
-        <div className="flex items-center">
-          {/* Left scroll button */}
-          <button 
-            className="sticky left-0 px-2 py-3 bg-gradient-to-r from-white to-transparent z-10 hover:bg-slate-50"
-            onClick={() => {
-              const container = document.getElementById('sections-container');
-              if (container) {
-                container.scrollBy({ left: -200, behavior: 'smooth' });
-              }
-            }}
-          >
-            <ChevronLeft size={16} className="text-slate-600" />
-          </button>
-          
-          {/* Scrollable sections */}
-          <div 
-            id="sections-container"
-            className="flex-1 overflow-x-auto py-2 px-2 flex space-x-2 scrollbar-hide"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {bibleSections.map((section) => (
-              <button
-                key={section.id}
-                id={`section-${section.id}`}
-                onClick={() => handleSectionSelect(section.id)}
-                className={`py-1 px-3 text-sm font-medium rounded-full transition-colors whitespace-nowrap relative ${
-                  activeNarrativeSection === section.id 
-                    ? 'bg-indigo-100 text-indigo-800 border border-indigo-200' 
-                    : 'text-slate-600 hover:bg-slate-100 hover:text-indigo-600'
-                }`}
-              >
-                {section.title}
-                <span className="ml-1 text-xs text-slate-400 hidden sm:inline">{section.reference}</span>
-                
-                {/* Active indicator dot */}
-                {activeNarrativeSection === section.id && (
-                  <span className="absolute left-1/2 transform -translate-x-1/2 bottom-0 w-1.5 h-1.5 bg-indigo-600 rounded-full"></span>
-                )}
-              </button>
+      {/* Interactive Timeline Navigation */}
+      <div className="bg-white px-4 py-3 shadow-md">
+        <div className="flex items-center mb-2">
+          <span className="text-sm text-gray-700 mr-2 w-20">Genesis</span>
+          <div className="h-2 bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 flex-grow rounded-full relative">
+            {bibleEvents.map((event, index) => (
+              <button 
+                key={index}
+                className="absolute w-3 h-3 rounded-full bg-white border-2 hover:w-4 hover:h-4 hover:mt-0 transition-all"
+                style={{ 
+                  borderColor: event.color,
+                  left: `${((event.position[0] + 18) / 43) * 100}%`,
+                  top: '-3px',
+                  transform: 'translateX(-50%)'
+                }}
+                title={`${event.name} (${event.year})`}
+                onClick={() => navigateToEvent(event.id)}
+              />
             ))}
           </div>
+          <span className="text-sm text-gray-700 ml-2 w-20 text-right">Revelation</span>
+        </div>
+        
+        <div className="flex justify-between">
+          <div className="flex space-x-1">
+            <button className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm"
+              onClick={() => navigateToEra('early')}>
+              Early History
+            </button>
+            <button className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm"
+              onClick={() => navigateToEra('exodus')}>
+              Exodus
+            </button>
+            <button className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm"
+              onClick={() => navigateToEra('kingdom')}>
+              Kingdom
+            </button>
+            <button className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm"
+              onClick={() => navigateToEra('exile')}>
+              Exile
+            </button>
+            <button className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm"
+              onClick={() => navigateToEra('jesus')}>
+              Jesus
+            </button>
+            <button className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm"
+              onClick={() => navigateToEra('church')}>
+              Early Church
+            </button>
+          </div>
           
-          {/* Right scroll button */}
-          <button 
-            className="sticky right-0 px-2 py-3 bg-gradient-to-l from-white to-transparent z-10 hover:bg-slate-50"
-            onClick={() => {
-              const container = document.getElementById('sections-container');
-              if (container) {
-                container.scrollBy({ left: 200, behavior: 'smooth' });
-              }
-            }}
-          >
-            <ChevronRight size={16} className="text-slate-600" />
-          </button>
+          <div className="flex space-x-1">
+            <button className="px-2 py-1 bg-gray-100 text-gray-800 rounded hover:bg-gray-200 text-sm"
+              onClick={() => resetCamera()}>
+              Reset View
+            </button>
+            <button className="px-2 py-1 bg-gray-100 text-gray-800 rounded hover:bg-gray-200 text-sm"
+              onClick={() => toggleLabels()}>
+              {showAllLabels ? 'Hide Labels' : 'Show All Labels'}
+            </button>
+          </div>
         </div>
       </div>
       
-      {/* Info modal */}
-      {showInfo && (
-        <div className="absolute top-16 right-4 z-20 bg-white rounded-lg shadow-lg p-4 w-72 border border-slate-200">
-          <h3 className="font-semibold text-indigo-700 mb-2">Connection Types</h3>
-          <div className="space-y-2">
-            <div className="flex items-center">
-              <div className="w-6 h-1 bg-indigo-600 mr-2"></div>
-              <span>Direct Reference</span>
+      {/* 3D Visualization */}
+      <div ref={containerRef} className="flex-grow relative">
+        {/* Navigation help overlay */}
+        <div className="absolute bottom-4 left-4 bg-white p-3 rounded-lg shadow-md max-w-xs bg-opacity-90 z-10">
+          <div className="text-sm text-gray-800">
+            <div className="font-bold mb-1">Quick Navigation:</div>
+            <div className="grid grid-cols-2 gap-1">
+              <button 
+                className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm flex items-center"
+                onClick={() => navigateToEra('overview')}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                Overview
+              </button>
+              <button 
+                className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm flex items-center"
+                onClick={() => navigateToEra('exodus')}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                </svg>
+                Exodus
+              </button>
+              <button 
+                className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm flex items-center"
+                onClick={() => navigateToEra('kingdom')}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Kingdom
+              </button>
+              <button 
+                className="px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 text-sm flex items-center"
+                onClick={() => navigateToEra('jesus')}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                </svg>
+                Jesus
+              </button>
             </div>
-            <div className="flex items-center">
-              <div className="w-6 h-1 bg-pink-500 mr-2 border-dashed border-t-2"></div>
-              <span>Thematic Connection</span>
-            </div>
-            <div className="flex items-center">
-              <div className="w-6 h-1 bg-emerald-500 mr-2 border-dotted border-t-2"></div>
-              <span>Symbolic Echo</span>
-            </div>
-          </div>
-          
-          <h3 className="font-semibold text-indigo-700 mt-4 mb-2">Depth Levels</h3>
-          <div className="space-y-2">
-            <div className="flex items-center">
-              <div className="w-4 h-4 rounded-full bg-indigo-600 mr-2"></div>
-              <span>Level 1: Direct connections</span>
-            </div>
-            <div className="flex items-center">
-              <div className="w-4 h-4 rounded-full bg-violet-500 mr-2"></div>
-              <span>Level 2: Secondary connections</span>
-            </div>
-            <div className="flex items-center">
-              <div className="w-4 h-4 rounded-full bg-purple-500 mr-2"></div>
-              <span>Level 3: Tertiary connections</span>
+            <div className="mt-2 flex justify-between">
+              <button 
+                className="px-2 py-1 bg-gray-100 text-gray-800 rounded hover:bg-gray-200 text-sm flex items-center"
+                onClick={() => toggleLabels()}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                </svg>
+                {showAllLabels ? 'Hide Labels' : 'Show All Labels'}
+              </button>
+              <button 
+                className="px-2 py-1 bg-gray-100 text-gray-800 rounded hover:bg-gray-200 text-sm flex items-center"
+                onClick={() => setMiniMapActive(!miniMapActive)}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                </svg>
+                {miniMapActive ? 'Hide Mini-Map' : 'Show Mini-Map'}
+              </button>
             </div>
           </div>
         </div>
-      )}
-      
-      {/* Depth level info modal */}
-      {showLevelInfo && (
-        <div className="absolute top-16 left-20 z-20 bg-white rounded-lg shadow-lg p-4 w-72 border border-slate-200">
-          <h3 className="font-semibold text-indigo-700 mb-2">Depth Levels Explained</h3>
-          <div className="space-y-3 text-sm">
-            <p><span className="font-semibold">Level 1:</span> Direct connections to the primary passage.</p>
-            <p><span className="font-semibold">Level 2:</span> Secondary connections that are one step removed but share important theological themes.</p>
-            <p><span className="font-semibold">Level 3:</span> Tertiary connections that reveal deeper biblical patterns and motifs.</p>
-            <div className="mt-2 text-slate-500 italic">
-              Increase the depth level to explore deeper relationships between passages.
+        
+        {/* Event details panel when an event is selected */}
+        {selectedEvent && (
+          <div className="absolute top-4 right-4 bg-white p-4 rounded-lg shadow-lg max-w-sm">
+            <h2 className="text-xl font-bold" style={{color: getEventById(selectedEvent).color}}>
+              {getEventById(selectedEvent).name}
+            </h2>
+            
+            <div className="mt-1 text-sm text-gray-500">
+              {getEventById(selectedEvent).year} • {getEventById(selectedEvent).scripture}
             </div>
-          </div>
-        </div>
-      )}
-      
-      {/* Main content - responsive layout */}
-      <div className={`flex-1 ${isLargeScreen ? 'flex flex-row' : 'flex flex-col'} overflow-hidden`}>
-        {/* Scripture reading section */}
-        <div 
-          className={`
-            bg-white overflow-y-auto transition-all duration-300
-            ${isLargeScreen ? (showGraph ? 'w-1/2' : 'w-full') : (isExpanded ? 'h-1/5' : showGraph ? 'h-2/5' : 'h-full')}
-          `}
-          ref={textContainerRef}
-        >
-          {isLoading ? (
-            <div className="flex flex-col items-center justify-center h-full">
-              <div className="w-12 h-12 border-t-2 border-b-2 border-indigo-500 rounded-full animate-spin"></div>
-              <p className="mt-4 text-slate-600">Loading Bible text...</p>
-            </div>
-          ) : error ? (
-            <div className="max-w-2xl mx-auto px-8 py-6">
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-                <p className="font-medium">Error loading Bible text</p>
-                <p className="text-sm mt-1">{error}</p>
-              </div>
-            </div>
-          ) : (
-            <div className="max-w-2xl mx-auto px-8 py-6">
-              <h2 className="text-2xl font-serif mb-4 text-slate-800">{getCurrentBookChapter()}</h2>
-              
-              {/* Section navigation tabs */}
-              <div className="flex mb-4 border-b border-slate-200">
-                {chapterSections.map((section, index) => (
-                  <button
-                    key={section.id}
-                    onClick={() => jumpToSection(section.id)}
-                    className={`py-2 px-4 font-medium text-sm ${
-                      activeSection === section.id 
-                        ? 'text-indigo-600 border-b-2 border-indigo-600' 
-                        : 'text-slate-600 hover:text-indigo-500'
-                    }`}
-                  >
-                    {section.id}
-                    {section.title && <span className="ml-1 text-xs text-slate-500">({section.title})</span>}
-                  </button>
-                ))}
-              </div>
-              
-              {/* Scripture sections */}
-              {activeSectionsList.map((section, index) => (
-                <div 
-                  key={section}
-                  ref={sectionRefs.current[index]}
-                  className="mb-8"
+            
+            <p className="my-2">{getEventById(selectedEvent).description}</p>
+            
+            <h3 className="font-bold mt-3">Key Figures:</h3>
+            <div className="flex flex-wrap mt-1 gap-1">
+              {getEventById(selectedEvent).keyFigures.map((figure, index) => (
+                <span 
+                  key={index} 
+                  className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
                 >
-                  <h3 className="text-lg font-medium mb-2 text-indigo-700">{section}</h3>
-                  <p className="text-lg leading-relaxed font-serif text-slate-700">
-                    {bibleText[section]}
-                  </p>
-                </div>
+                  {figure}
+                </span>
               ))}
-              
-              {/* Show Text/Graph toggle button for small screens */}
-              {!isLargeScreen && showGraph && (
-                <button 
-                  onClick={toggleExpand}
-                  className="mt-4 flex items-center text-indigo-600 hover:text-indigo-800"
-                >
-                  {isExpanded ? (
-                    <>Show more text <ChevronDown size={16} className="ml-1" /></>
-                  ) : (
-                    <>Show less text <ChevronUp size={16} className="ml-1" /></>
-                  )}
-                </button>
-              )}
             </div>
-          )}
+            
+            {getEventById(selectedEvent).connections && getEventById(selectedEvent).connections.length > 0 && (
+              <>
+                <h3 className="font-bold mt-3">Connected Events:</h3>
+                <div className="flex flex-wrap mt-1 gap-1">
+                  {getEventById(selectedEvent).connections.map((conn, index) => {
+                    const connectedEvent = getEventById(conn);
+                    return (
+                      <span 
+                        key={index} 
+                        className="px-2 py-1 bg-gray-100 text-gray-800 rounded-full text-sm cursor-pointer hover:bg-gray-200"
+                        onClick={() => navigateToEvent(conn)}
+                        style={{borderLeft: `3px solid ${connectedEvent.color}`}}
+                      >
+                        {connectedEvent.name}
+                      </span>
+                    );
+                  })}
+                </div>
+              </>
+            )}
+            
+            <div className="mt-4 flex space-x-2">
+              <button 
+                className="flex-1 px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md flex items-center justify-center"
+                onClick={() => navigateToEvent(selectedEvent)}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                Focus
+              </button>
+              <button 
+                className="flex-1 px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-md flex items-center justify-center"
+                onClick={() => setSelectedEvent(null)}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+        
+        {/* Current view indicator */}
+        <div className="absolute top-4 left-4 bg-white px-3 py-1 rounded-full shadow-md text-sm text-gray-700 flex items-center">
+          <span className="font-semibold mr-1">Current View:</span>
+          <span>{
+            currentEra === 'overview' ? 'Full Timeline' :
+            currentEra === 'early' ? 'Early History' :
+            currentEra === 'exodus' ? 'Exodus & Wilderness' :
+            currentEra === 'kingdom' ? 'Kingdom Period' :
+            currentEra === 'exile' ? 'Exile' :
+            currentEra === 'jesus' ? "Jesus' Ministry" :
+            currentEra === 'church' ? 'Early Church' : 'Custom View'
+          }</span>
         </div>
-        
-        {/* Divider for vertical layout */}
-        {!isLargeScreen && showGraph && (
-          <div className="h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
-        )}
-        
-        {/* Divider for horizontal layout */}
-        {isLargeScreen && showGraph && (
-          <div className="w-2 bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500"></div>
-        )}
-        
-        {/* Connections visualization - only show if enabled and we have data for the current section */}
-        {showGraph && (
-          <div className={`
-            bg-slate-50 relative overflow-hidden transition-all duration-300
-            ${isLargeScreen ? 'w-1/2' : (isExpanded ? 'h-4/5' : 'h-3/5')}
-          `}>
-            {/* Add CSS animations */}
-            <style>
-              {`
-                @keyframes appear {
-                  from { opacity: 0; transform: scale(0.8); }
-                  to { opacity: 1; transform: scale(1); }
-                }
-                
-                @keyframes slideUp {
-                  from { transform: translateY(20px); opacity: 0; }
-                  to { transform: translateY(0); opacity: 1; }
-                }
-                
-                @keyframes pulse {
-                  0% { transform: scale(1); opacity: 0.8; }
-                  50% { transform: scale(1.05); opacity: 1; }
-                  100% { transform: scale(1); opacity: 0.8; }
-                }
-                
-                .node-enter {
-                  animation: appear 0.5s forwards;
-                }
-                
-                .connection-line {
-                  transition: opacity 0.3s, stroke-width 0.3s;
-                }
-                
-                .grab-cursor {
-                  cursor: grab;
-                }
-                
-                .grabbing-cursor {
-                  cursor: grabbing;
-                }
-                
-                .depth-indicator {
-                  animation: pulse 2s infinite ease-in-out;
-                }
-                
-                .level-change {
-                  transition: all 0.5s ease-in-out;
-                }
-                
-                .depth-level-badge {
-                  transition: background-color 0.3s;
-                }
-              `}
-            </style>
-            
-            {/* Visualization section header */}
-            <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10 bg-white px-4 py-2 rounded-full shadow-md text-sm">
-              <span className="text-indigo-700 font-medium">{activeSection || "Select a section"}</span>
-            </div>
-            
-            {/* Zoom controls */}
-            <div className="absolute top-4 left-4 z-10 flex flex-col space-y-2">
-              <button 
-                onClick={handleZoomIn}
-                className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
-                aria-label="Zoom in"
-              >
-                <ZoomIn size={20} className="text-slate-700" />
-              </button>
-              <button 
-                onClick={handleZoomOut}
-                className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
-                aria-label="Zoom out"
-              >
-                <ZoomOut size={20} className="text-slate-700" />
-              </button>
-            </div>
-            
-            {/* Depth level controls */}
-            <div className="absolute top-4 right-4 z-10 flex flex-col space-y-2 bg-white p-3 rounded-lg shadow-md">
-              <div className="flex justify-between items-center">
-                <span className="text-xs font-medium text-slate-700">Connection Depth</span>
-                <button
-                  onClick={() => setShowLevelInfo(!showLevelInfo)}
-                  className="p-1 rounded hover:bg-slate-100"
-                >
-                  <Info size={14} className="text-slate-500" />
-                </button>
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <button
-                  onClick={decreaseDepthLevel}
-                  className="p-1 rounded hover:bg-slate-100 disabled:opacity-50"
-                  disabled={depthLevel <= 1}
-                >
-                  <ChevronDown size={18} className="text-slate-700" />
-                </button>
-                
-                <div className="flex space-x-1">
-                  {[1, 2, 3].map((level) => (
-                    <div
-                      key={level}
-                      className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium cursor-pointer transition-colors duration-300 ${
-                        depthLevel >= level 
-                          ? level === 1 
-                            ? 'bg-indigo-600 text-white' 
-                            : level === 2 
-                              ? 'bg-violet-500 text-white'
-                              : 'bg-purple-500 text-white'
-                          : 'bg-slate-200 text-slate-500'
-                      }`}
-                      onClick={() => setDepthLevel(level)}
-                    >
-                      {level}
-                    </div>
-                  ))}
-                </div>
-                
-                <button
-                  onClick={increaseDepthLevel}
-                  className="p-1 rounded hover:bg-slate-100 disabled:opacity-50"
-                  disabled={depthLevel >= maxDepthLevel}
-                >
-                  <ChevronUp size={18} className="text-slate-700" />
-                </button>
-              </div>
-            </div>
-            
-            {/* Visualization controls */}
-            <div className="absolute bottom-4 left-4 z-10 bg-white p-2 rounded-lg shadow-md">
-              <div className="text-xs text-slate-500 mb-1 font-medium">Visualization Controls</div>
-              <div className="flex items-center mb-2">
-                <button 
-                  className="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-100"
-                  onClick={() => setZoomLevel(Math.max(zoomLevel - 0.1, 0.5))}
-                  aria-label="Zoom out"
-                >
-                  -
-                </button>
-                <div className="w-12 text-center text-sm">{Math.round(zoomLevel * 100)}%</div>
-                <button 
-                  className="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-100"
-                  onClick={() => setZoomLevel(Math.min(zoomLevel + 0.1, 2))}
-                  aria-label="Zoom in"
-                >
-                  +
-                </button>
-              </div>
-              <button
-                className="w-full py-1 px-2 text-xs bg-slate-100 rounded hover:bg-slate-200 text-slate-700"
-                onClick={() => setPanOffset({ x: 0, y: 0 })}
-              >
-                Reset View
-              </button>
-            </div>
-            
-            {/* Depth level indicator */}
-            <div className="absolute bottom-4 right-4 z-10 bg-white p-2 rounded-lg shadow-md transition-all duration-300">
-              <div className="text-xs text-slate-500 mb-1 font-medium">Current Depth Level</div>
-              <div className="flex items-center space-x-2">
-                <div className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  depthLevel === 1 
-                    ? 'bg-indigo-100 text-indigo-800' 
-                    : depthLevel === 2 
-                      ? 'bg-violet-100 text-violet-800'
-                      : 'bg-purple-100 text-purple-800'
-                }`}>
-                  Level {depthLevel}
-                </div>
-                <div className="text-xs text-slate-600">
-                  {depthLevel === 1 
-                    ? 'Direct connections' 
-                    : depthLevel === 2 
-                      ? 'Secondary themes'
-                      : 'Deep theological patterns'}
-                </div>
-              </div>
-            </div>
-            
-            {passageSections[activeSection] ? (
-              /* SVG Connections Graph */
-              <svg 
-                width="100%" 
-                height="100%" 
-                style={{ 
-                  transform: `scale(${zoomLevel})`, 
-                  transformOrigin: 'center',
-                  cursor: isDragging ? 'grabbing' : 'grab'
-                }}
-                viewBox="0 0 600 300"
-                className="transition-transform duration-200"
-                onMouseDown={(e) => {
-                  setIsDragging(true);
-                  setDragStart({ x: e.clientX, y: e.clientY });
-                }}
-                onMouseMove={(e) => {
-                  if (isDragging) {
-                    const dx = e.clientX - dragStart.x;
-                    const dy = e.clientY - dragStart.y;
-                    setPanOffset({
-                      x: panOffset.x + dx/zoomLevel,
-                      y: panOffset.y + dy/zoomLevel
-                    });
-                    setDragStart({ x: e.clientX, y: e.clientY });
-                  }
-                }}
-                onMouseUp={() => setIsDragging(false)}
-                onMouseLeave={() => setIsDragging(false)}
-              >
-                <g transform={`translate(${panOffset.x}, ${panOffset.y})`}>
-                  {/* Previous section (ghosted to the left) */}
-                  {prevSection && passageSections[prevSection] && (
-                    <g transform={`translate(-200, 0)`} opacity="0.3">
-                      {/* Render edges */}
-                      {passageSections[prevSection].connections.map(node => 
-                        node.connections.map((conn, idx) => {
-                          const target = passageSections[prevSection].connections.find(n => n.id === conn.targetId);
-                          const edgeStyle = edgeStyles[conn.type];
-                          
-                          if (!target) return null;
-                          
-                          // Calculate control point for curved lines
-                          const dx = target.x - node.x;
-                          const dy = target.y - node.y;
-                          const dist = Math.sqrt(dx * dx + dy * dy);
-                          const midX = (node.x + target.x) / 2;
-                          const curveMagnitude = Math.min(dist * 0.3, 60);
-                          const midY = (node.y + target.y) / 2 - curveMagnitude;
-                          
-                          return (
-                            <g key={`prev-edge-${node.id}-${conn.targetId}`}>
-                              <path 
-                                d={`M ${node.x} ${node.y} Q ${midX} ${midY} ${target.x} ${target.y}`}
-                                stroke={edgeStyle.color}
-                                strokeWidth={edgeStyle.thickness * (conn.strength || 1)}
-                                strokeDasharray={edgeStyle.dash}
-                                fill="none"
-                              />
-                            </g>
-                          );
-                        })
-                      )}
-                      
-                      {/* Render nodes */}
-                      {passageSections[prevSection].connections.map(node => (
-                        <g key={`prev-node-${node.id}`}>
-                          <circle
-                            cx={node.x}
-                            cy={node.y}
-                            r={node.size}
-                            fill={node.id === 1 ? "#4F46E5" : "#FFFFFF"}
-                            stroke="#6366F1"
-                            strokeWidth={1.5}
-                          />
-                          
-                          <text
-                            x={node.x}
-                            y={node.y}
-                            textAnchor="middle"
-                            dominantBaseline="middle"
-                            fontSize="10"
-                            fill={node.id === 1 ? "#FFFFFF" : "#6366F1"}
-                            fontWeight="bold"
-                          >
-                            {node.theme}
-                          </text>
-                        </g>
-                      ))}
-                    </g>
-                  )}
-                  
-                  {/* Active section (center, fully visible) */}
-                  <g transform="translate(0, 0)">
-                    {/* Render connection lines */}
-                    {getConnectionLines().map((conn, idx) => {
-                      const edgeStyle = edgeStyles[conn.type];
-                      
-                      // Calculate control point for curved lines
-                      const dx = conn.targetNode.x - conn.sourceNode.x;
-                      const dy = conn.targetNode.y - conn.sourceNode.y;
-                      const dist = Math.sqrt(dx * dx + dy * dy);
-                      const midX = (conn.sourceNode.x + conn.targetNode.x) / 2;
-                      const curveMagnitude = Math.min(dist * 0.3, 60);
-                      const midY = (conn.sourceNode.y + conn.targetNode.y) / 2 - curveMagnitude;
-                      
-                      // Adjust opacity and style based on connection level
-                      const levelOpacity = 1 - ((conn.level - 1) * 0.15);
-                      
-                      return (
-                        <g key={`edge-${conn.sourceId}-${conn.targetId}-${idx}`}>
-                          <path 
-                            d={`M ${conn.sourceNode.x} ${conn.sourceNode.y} Q ${midX} ${midY} ${conn.targetNode.x} ${conn.targetNode.y}`}
-                            stroke={conn.level === 1 ? edgeStyle.color : conn.level === 2 ? "#A78BFA" : "#C084FC"}
-                            strokeWidth={edgeStyle.thickness * (conn.strength || 1)}
-                            strokeDasharray={conn.level === 1 ? edgeStyle.dash : conn.level === 2 ? "5,5" : "8,3,2,3"}
-                            fill="none"
-                            opacity={
-                              selectedNode 
-                                ? (selectedNode === conn.sourceId || selectedNode === conn.targetId ? 1 : 0.2) 
-                                : levelOpacity
-                            }
-                            className={`connection-line transition-opacity duration-300 level-change ${
-                              conn.level > 1 ? "depth-level-" + conn.level : ""
-                            }`}
-                          />
-                          
-                          {/* Edge label - only show for selected node connections */}
-                          {selectedNode === conn.sourceId && (
-                            <text
-                              x={midX}
-                              y={midY - 10}
-                              textAnchor="middle"
-                              fontSize="10"
-                              fill={conn.level === 1 ? edgeStyle.color : conn.level === 2 ? "#A78BFA" : "#C084FC"}
-                              className="transition-opacity duration-300"
-                            >
-                              {conn.level === 1 
-                                ? edgeStyle.label 
-                                : conn.level === 2 
-                                  ? "Secondary Connection" 
-                                  : "Deep Connection"}
-                            </text>
-                          )}
-                        </g>
-                      );
-                    })}
-                    
-                    {/* Render all visible nodes based on current depth level */}
-                    {getAllConnections().map((node) => {
-                      // For primary nodes in the data
-                      const isPrimary = passageSections[activeSection].connections.some(n => n.id === node.id);
-                      // For nodes that are from deeper levels
-                      const level = isPrimary ? 1 : node.level || 2;
-                      
-                      // Determine node appearance based on level
-                      const nodeFill = level === 1 
-                        ? (node.id === 1 ? "#4F46E5" : "#FFFFFF")
-                        : level === 2 
-                          ? "#F5F3FF" 
-                          : "#F3E8FF";
-                          
-                      const nodeStroke = level === 1 
-                        ? "#6366F1" 
-                        : level === 2 
-                          ? "#8B5CF6" 
-                          : "#A855F7";
-                      
-                      const textFill = level === 1 
-                        ? (node.id === 1 ? "#FFFFFF" : "#6366F1")
-                        : level === 2 
-                          ? "#7C3AED" 
-                          : "#9333EA";
-                          
-                      // Animation delay based on level
-                      const animationDelay = (level - 1) * 0.2;
-                      
-                      return (
-                        <g 
-                          key={`node-${node.id}-${level}`}
-                          onClick={() => handleNodeClick(node.id)}
-                          className={`cursor-pointer node-enter ${level > 1 ? "level-change" : ""}`}
-                          style={{ animationDelay: `${animationDelay}s` }}
-                          opacity={level === 1 ? 1 : level === 2 ? 0.95 : 0.9}
-                        >
-                          {/* Node highlight aura for deeper connections */}
-                          {level > 1 && (
-                            <circle
-                              cx={node.x}
-                              cy={node.y}
-                              r={node.size + 4}
-                              fill="none"
-                              stroke={level === 2 ? "#A78BFA" : "#C084FC"}
-                              strokeWidth={1}
-                              opacity={0.5}
-                              className={level === 3 ? "depth-indicator" : ""}
-                            />
-                          )}
-                        
-                          <circle
-                            cx={node.x}
-                            cy={node.y}
-                            r={node.size}
-                            fill={nodeFill}
-                            stroke={node.id === selectedNode ? "#F59E0B" : nodeStroke}
-                            strokeWidth={node.id === selectedNode ? 3 : 1.5}
-                            opacity={
-                              selectedNode 
-                                ? (selectedNode === node.id || getConnectionLines().some(c => 
-                                    (c.sourceId === selectedNode && c.targetId === node.id) || 
-                                    (c.targetId === selectedNode && c.sourceId === node.id)
-                                  ) ? 1 : 0.4) 
-                                : 1
-                            }
-                            className="transition-all duration-300"
-                          />
-                          
-                          {/* Level indicator for deeper connections */}
-                          {level > 1 && (
-                            <circle
-                              cx={node.x + node.size - 5}
-                              cy={node.y - node.size + 5}
-                              r={8}
-                              fill={level === 2 ? "#8B5CF6" : "#A855F7"}
-                              stroke="#FFFFFF"
-                              strokeWidth={1.5}
-                              className="level-indicator"
-                            >
-                              <title>Level {level} Connection</title>
-                            </circle>
-                          )}
-                          
-                          {/* Level number indicator */}
-                        {/* Level number indicator */}
-                        {level > 1 && (
-                            <text
-                              x={node.x + node.size - 5}
-                              y={node.y - node.size + 5}
-                              textAnchor="middle"
-                              dominantBaseline="middle"
-                              fontSize="8"
-                              fill="#FFFFFF"
-                              fontWeight="bold"
-                            >
-                              {level}
-                            </text>
-                          )}
-                          
-                          {/* Node verse reference with dynamic width background */}
-                          <g>
-                            <rect 
-                              x={node.x - (node.verse.length * 3.5) / 2}
-                              y={node.y + node.size + 5}
-                              width={node.verse.length * 3.5}
-                              height={20}
-                              rx={4}
-                              fill={node.id === selectedNode ? "#EEF2FF" : "white"}
-                              opacity={0.8}
-                            />
-                            <text
-                              x={node.x}
-                              y={node.y + node.size + 19}
-                              textAnchor="middle"
-                              fontSize="12"
-                              fontWeight={node.id === selectedNode ? "bold" : "normal"}
-                              fill={node.id === selectedNode ? "#4F46E5" : level === 1 ? "#64748B" : level === 2 ? "#7C3AED" : "#9333EA"}
-                              className="transition-all duration-300"
-                            >
-                              {node.verse}
-                            </text>
-                          </g>
-                          
-                          {/* Theme text inside node */}
-                          <text
-                            x={node.x}
-                            y={node.y}
-                            textAnchor="middle"
-                            dominantBaseline="middle"
-                            fontSize="10"
-                            fill={textFill}
-                            fontWeight="bold"
-                          >
-                            {node.theme}
-                          </text>
-                          
-                          {/* Label displayed only when node is selected */}
-                          {selectedNode === node.id && (
-                            <g>
-                              <rect 
-                                x={node.x - (node.label.length * 2.8) / 2}
-                                y={node.y + node.size + 29}
-                                width={node.label.length * 2.8}
-                                height={18}
-                                rx={4}
-                                fill="#F3F4F6"
-                                opacity={0.9}
-                              />
-                              <text
-                                x={node.x}
-                                y={node.y + node.size + 42}
-                                textAnchor="middle"
-                                fontSize="11"
-                                fill="#64748B"
-                              >
-                                {node.label}
-                              </text>
-                              
-                              {/* Level indicator badge for selected nodes */}
-                              {level > 1 && (
-                                <g>
-                                  <rect
-                                    x={node.x - 30}
-                                    y={node.y + node.size + 50}
-                                    width={60}
-                                    height={16}
-                                    rx={8}
-                                    fill={level === 2 ? "#A78BFA" : "#C084FC"}
-                                    className="depth-level-badge"
-                                  />
-                                  <text
-                                    x={node.x}
-                                    y={node.y + node.size + 60}
-                                    textAnchor="middle"
-                                    fontSize="9"
-                                    fill="white"
-                                    fontWeight="medium"
-                                  >
-                                    Level {level} Connection
-                                  </text>
-                                </g>
-                              )}
-                            </g>
-                          )}
-                        </g>
-                      );
-                    })}
-                  </g>
-                  
-                  {/* Next section (ghosted to the right) */}
-                  {nextSection && passageSections[nextSection] && (
-                    <g transform={`translate(400, 0)`} opacity="0.3">
-                      {/* Render edges */}
-                      {passageSections[nextSection].connections.map(node => 
-                        node.connections.map((conn, idx) => {
-                          const target = passageSections[nextSection].connections.find(n => n.id === conn.targetId);
-                          const edgeStyle = edgeStyles[conn.type];
-                          
-                          if (!target) return null;
-                          
-                          // Calculate control point for curved lines
-                          const dx = target.x - node.x;
-                          const dy = target.y - node.y;
-                          const dist = Math.sqrt(dx * dx + dy * dy);
-                          const midX = (node.x + target.x) / 2;
-                          const curveMagnitude = Math.min(dist * 0.3, 60);
-                          const midY = (node.y + target.y) / 2 - curveMagnitude;
-                          
-                          return (
-                            <g key={`next-edge-${node.id}-${conn.targetId}`}>
-                              <path 
-                                d={`M ${node.x} ${node.y} Q ${midX} ${midY} ${target.x} ${target.y}`}
-                                stroke={edgeStyle.color}
-                                strokeWidth={edgeStyle.thickness * (conn.strength || 1)}
-                                strokeDasharray={edgeStyle.dash}
-                                fill="none"
-                              />
-                            </g>
-                          );
-                        })
-                      )}
-                      
-                      {/* Render nodes */}
-                      {passageSections[nextSection].connections.map(node => (
-                        <g key={`next-node-${node.id}`}>
-                          <circle
-                            cx={node.x}
-                            cy={node.y}
-                            r={node.size}
-                            fill={node.id === 1 ? "#4F46E5" : "#FFFFFF"}
-                            stroke="#6366F1"
-                            strokeWidth={1.5}
-                          />
-                          
-                          <text
-                            x={node.x}
-                            y={node.y}
-                            textAnchor="middle"
-                            dominantBaseline="middle"
-                            fontSize="10"
-                            fill={node.id === 1 ? "#FFFFFF" : "#6366F1"}
-                            fontWeight="bold"
-                          >
-                            {node.theme}
-                          </text>
-                        </g>
-                      ))}
-                    </g>
-                  )}
-                </g>
-              </svg>
-            ) : (
-              <div className="flex items-center justify-center h-full">
-                <div className="text-center">
-                  <div className="text-indigo-500 text-xl mb-2">No visualization data available</div>
-                  <p className="text-slate-600">Connection data is only available for Genesis 1-3 in this demo.</p>
-                </div>
-              </div>
-            )}
-            
-            {/* Node details panel - appears when node is selected */}
-            {selectedNode && (
-              <div 
-                className="absolute bottom-20 right-4 bg-white p-4 rounded-lg shadow-lg border border-slate-200 w-72 transition-all duration-300"
-                style={{ 
-                  transform: 'translateY(0)', 
-                  opacity: 1,
-                  animation: 'slideUp 0.3s ease-out'
-                }}
-              >
-                {/* Find the selected node */}
-                {(() => {
-                  const allNodes = getAllConnections();
-                  const selectedNodeData = allNodes.find(n => n.id === selectedNode);
-                  
-                  if (!selectedNodeData) return null;
-                  
-                  // Determine if it's a primary or deeper connection
-                  const isPrimary = passageSections[activeSection].connections.some(n => n.id === selectedNode);
-                  const level = isPrimary ? 1 : selectedNodeData.level || 2;
-                  
-                  return (
-                    <>
-                      <div className="flex justify-between items-center mb-1">
-                        <h3 className="font-semibold text-lg text-indigo-700">
-                          {selectedNodeData.verse}
-                        </h3>
-                        
-                        {level > 1 && (
-                          <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
-                            level === 2 ? "bg-violet-100 text-violet-800" : "bg-purple-100 text-purple-800"
-                          }`}>
-                            Level {level}
-                          </span>
-                        )}
-                      </div>
-                      
-                      <div className="text-sm text-slate-600 mb-3">
-                        Theme: <span className="font-medium">{selectedNodeData.theme}</span>
-                      </div>
-                      
-                      <p className="text-sm text-slate-700 mb-3">
-                        {selectedNodeData.label}
-                      </p>
-                      
-                      {/* Connection information */}
-                      {level > 1 && (
-                        <div className="mt-2 pt-2 border-t border-slate-200">
-                          <div className="text-xs text-slate-500 mb-1">
-                            Connected to primary passage through:
-                          </div>
-                          <div className="flex items-center text-sm">
-                            <ArrowRight size={14} className="text-indigo-500 mr-1" />
-                            <span className="text-indigo-700 font-medium">
-                              {passageSections[activeSection].connections.find(n => 
-                                n.deeperConnections && n.deeperConnections.some(d => d.id === selectedNode)
-                              )?.verse || "Multiple passages"}
-                            </span>
-                          </div>
-                        </div>
-                      )}
-                    </>
-                  );
-                })()}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Show Graph button when graph is hidden */}
-        {!showGraph && (
-          <div className="fixed bottom-4 right-4 z-20">
-            <button
-              onClick={toggleGraphVisibility}
-              className="bg-indigo-600 text-white p-3 rounded-full shadow-lg hover:bg-indigo-700 transition-colors"
-              title="Show connections"
-            >
-              <Eye size={24} />
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
 };
 
-export default BiblicalConnectionsApp;
+export default BibleEventsLandscape;
