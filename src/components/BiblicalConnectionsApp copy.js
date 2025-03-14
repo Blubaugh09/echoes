@@ -1,168 +1,61 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Book, ZoomIn, ZoomOut, ChevronDown, ChevronUp, Info, Layers, ArrowRight, Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Book, ZoomIn, ZoomOut, ChevronDown, ChevronUp, Info, Layers, ArrowRight } from 'lucide-react';
 
 const BiblicalConnectionsApp = () => {
-  // Complete Bible structure with book names and chapter counts
-  const bibleStructure = [
-    // Old Testament
-    { id: "genesis", name: "Genesis", chapters: 50, testament: "old" },
-    { id: "exodus", name: "Exodus", chapters: 40, testament: "old" },
-    { id: "leviticus", name: "Leviticus", chapters: 27, testament: "old" },
-    { id: "numbers", name: "Numbers", chapters: 36, testament: "old" },
-    { id: "deuteronomy", name: "Deuteronomy", chapters: 34, testament: "old" },
-    { id: "joshua", name: "Joshua", chapters: 24, testament: "old" },
-    { id: "judges", name: "Judges", chapters: 21, testament: "old" },
-    { id: "ruth", name: "Ruth", chapters: 4, testament: "old" },
-    { id: "1samuel", name: "1 Samuel", chapters: 31, testament: "old" },
-    { id: "2samuel", name: "2 Samuel", chapters: 24, testament: "old" },
-    { id: "1kings", name: "1 Kings", chapters: 22, testament: "old" },
-    { id: "2kings", name: "2 Kings", chapters: 25, testament: "old" },
-    { id: "1chronicles", name: "1 Chronicles", chapters: 29, testament: "old" },
-    { id: "2chronicles", name: "2 Chronicles", chapters: 36, testament: "old" },
-    { id: "ezra", name: "Ezra", chapters: 10, testament: "old" },
-    { id: "nehemiah", name: "Nehemiah", chapters: 13, testament: "old" },
-    { id: "esther", name: "Esther", chapters: 10, testament: "old" },
-    { id: "job", name: "Job", chapters: 42, testament: "old" },
-    { id: "psalms", name: "Psalms", chapters: 150, testament: "old" },
-    { id: "proverbs", name: "Proverbs", chapters: 31, testament: "old" },
-    { id: "ecclesiastes", name: "Ecclesiastes", chapters: 12, testament: "old" },
-    { id: "songofsolomon", name: "Song of Solomon", chapters: 8, testament: "old" },
-    { id: "isaiah", name: "Isaiah", chapters: 66, testament: "old" },
-    { id: "jeremiah", name: "Jeremiah", chapters: 52, testament: "old" },
-    { id: "lamentations", name: "Lamentations", chapters: 5, testament: "old" },
-    { id: "ezekiel", name: "Ezekiel", chapters: 48, testament: "old" },
-    { id: "daniel", name: "Daniel", chapters: 12, testament: "old" },
-    { id: "hosea", name: "Hosea", chapters: 14, testament: "old" },
-    { id: "joel", name: "Joel", chapters: 3, testament: "old" },
-    { id: "amos", name: "Amos", chapters: 9, testament: "old" },
-    { id: "obadiah", name: "Obadiah", chapters: 1, testament: "old" },
-    { id: "jonah", name: "Jonah", chapters: 4, testament: "old" },
-    { id: "micah", name: "Micah", chapters: 7, testament: "old" },
-    { id: "nahum", name: "Nahum", chapters: 3, testament: "old" },
-    { id: "habakkuk", name: "Habakkuk", chapters: 3, testament: "old" },
-    { id: "zephaniah", name: "Zephaniah", chapters: 3, testament: "old" },
-    { id: "haggai", name: "Haggai", chapters: 2, testament: "old" },
-    { id: "zechariah", name: "Zechariah", chapters: 14, testament: "old" },
-    { id: "malachi", name: "Malachi", chapters: 4, testament: "old" },
-    // New Testament
-    { id: "matthew", name: "Matthew", chapters: 28, testament: "new" },
-    { id: "mark", name: "Mark", chapters: 16, testament: "new" },
-    { id: "luke", name: "Luke", chapters: 24, testament: "new" },
-    { id: "john", name: "John", chapters: 21, testament: "new" },
-    { id: "acts", name: "Acts", chapters: 28, testament: "new" },
-    { id: "romans", name: "Romans", chapters: 16, testament: "new" },
-    { id: "1corinthians", name: "1 Corinthians", chapters: 16, testament: "new" },
-    { id: "2corinthians", name: "2 Corinthians", chapters: 13, testament: "new" },
-    { id: "galatians", name: "Galatians", chapters: 6, testament: "new" },
-    { id: "ephesians", name: "Ephesians", chapters: 6, testament: "new" },
-    { id: "philippians", name: "Philippians", chapters: 4, testament: "new" },
-    { id: "colossians", name: "Colossians", chapters: 4, testament: "new" },
-    { id: "1thessalonians", name: "1 Thessalonians", chapters: 5, testament: "new" },
-    { id: "2thessalonians", name: "2 Thessalonians", chapters: 3, testament: "new" },
-    { id: "1timothy", name: "1 Timothy", chapters: 6, testament: "new" },
-    { id: "2timothy", name: "2 Timothy", chapters: 4, testament: "new" },
-    { id: "titus", name: "Titus", chapters: 3, testament: "new" },
-    { id: "philemon", name: "Philemon", chapters: 1, testament: "new" },
-    { id: "hebrews", name: "Hebrews", chapters: 13, testament: "new" },
-    { id: "james", name: "James", chapters: 5, testament: "new" },
-    { id: "1peter", name: "1 Peter", chapters: 5, testament: "new" },
-    { id: "2peter", name: "2 Peter", chapters: 3, testament: "new" },
-    { id: "1john", name: "1 John", chapters: 5, testament: "new" },
-    { id: "2john", name: "2 John", chapters: 1, testament: "new" },
-    { id: "3john", name: "3 John", chapters: 1, testament: "new" },
-    { id: "jude", name: "Jude", chapters: 1, testament: "new" },
-    { id: "revelation", name: "Revelation", chapters: 22, testament: "new" }
-  ];
-
   // Define API key and settings
-  const ESV_API_KEY = 'c3be9ae20e39bd6637c709cd2e94fd42135764d1'; // Your ESV API key
+  const ESV_API_KEY = 'c3be9ae20e39bd6637c709cd2e94fd42135764d1'; // Your provided ESV API key
   const ESV_API_URL = 'https://api.esv.org/v3/passage/text/';
 
-  // State for Bible text and navigation
+  // State for Bible text
   const [bibleText, setBibleText] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeTestament, setActiveTestament] = useState("old");
-  const [activeBook, setActiveBook] = useState("genesis");
-  const [activeChapter, setActiveChapter] = useState(1);
-  const [bookSearch, setBookSearch] = useState("");
-  const [showBookSelector, setShowBookSelector] = useState(false);
-  const [chapterSections, setChapterSections] = useState([]);
-
-  // Generate section IDs based on book and chapter
-  const generateSectionIds = (book, chapter) => {
-    // Special handling for Genesis 1-3 (our visualization data)
-    if (book === "genesis" && chapter >= 1 && chapter <= 3) {
-      const sectionMapping = {
-        1: [
-          { id: "Genesis 1:1-2", title: "Creation Beginning" },
-          { id: "Genesis 1:3-25", title: "Six Days of Creation" },
-          { id: "Genesis 1:26-31", title: "Creation of Humanity" }
-        ],
-        2: [
-          { id: "Genesis 2:1-3", title: "Sabbath Rest" },
-          { id: "Genesis 2:4-17", title: "Garden of Eden" },
-          { id: "Genesis 2:18-25", title: "Creation of Woman" }
-        ],
-        3: [
-          { id: "Genesis 3:1-7", title: "The Temptation" },
-          { id: "Genesis 3:8-19", title: "The Judgment" },
-          { id: "Genesis 3:20-24", title: "Consequence and Promise" }
-        ]
-      };
-      
-      return sectionMapping[chapter] || [];
-    }
-    
-    // For other books/chapters, create a single section for the whole chapter
-    const book_obj = bibleStructure.find(b => b.id === book);
-    if (book_obj) {
-      return [{ id: `${book_obj.name} ${chapter}`, title: "Full Chapter" }];
-    }
-    
-    return []; // Return empty array for books/chapters without defined sections
-  };
-
-  // Update sections when book or chapter changes
-  useEffect(() => {
-    const newSections = generateSectionIds(activeBook, activeChapter);
-    setChapterSections(newSections);
-    
-    if (newSections.length > 0) {
-      setActiveSectionsList(newSections.map(section => section.id));
-      setActiveSection(newSections[0].id);
-    } else {
-      setActiveSectionsList([]);
-      setActiveSection(null);
-    }
-    
-    // Reset visualization
-    setSelectedNode(null);
-    setPanOffset({ x: 0, y: 0 });
-    setDepthLevel(1);
-  }, [activeBook, activeChapter]);
   
-  // State initialization for visualization
-  const [activeSectionsList, setActiveSectionsList] = useState([]);
-  const [activeSection, setActiveSection] = useState(null);
+  // Define Bible sections we want to fetch and display
+  const bibleSections = [
+    { id: "genesis-1", reference: "Genesis 1", title: "Creation" },
+    { id: "genesis-2", reference: "Genesis 2", title: "Eden" },
+    { id: "genesis-3", reference: "Genesis 3", title: "Fall" },
+  ];
+  
+  // More detailed passage sections within each chapter
+  const passageSectionMapping = {
+    "genesis-1": [
+      { id: "Genesis 1:1-2", title: "Creation Beginning" },
+      { id: "Genesis 1:3-25", title: "Six Days of Creation" },
+      { id: "Genesis 1:26-31", title: "Creation of Humanity" }
+    ],
+    "genesis-2": [
+      { id: "Genesis 2:1-3", title: "Sabbath Rest" },
+      { id: "Genesis 2:4-17", title: "Garden of Eden" },
+      { id: "Genesis 2:18-25", title: "Creation of Woman" }
+    ],
+    "genesis-3": [
+      { id: "Genesis 3:1-7", title: "The Temptation" },
+      { id: "Genesis 3:8-19", title: "The Judgment" },
+      { id: "Genesis 3:20-24", title: "Consequence and Promise" }
+    ]
+  };
 
   // Fetch ESV Bible text
   useEffect(() => {
     const fetchBibleText = async () => {
-      // Skip fetching if we don't have any sections defined
-      if (activeSectionsList.length === 0) {
-        setIsLoading(false);
-        return;
-      }
-      
       setIsLoading(true);
       setError(null);
       
       try {
+        // Collect all passages we need to fetch
+        const allPassages = [];
+        Object.values(passageSectionMapping).forEach(sections => {
+          sections.forEach(section => {
+            allPassages.push(section.id);
+          });
+        });
+        
         const results = {};
         
-        // Fetch each passage
-        for (const passage of activeSectionsList) {
+        // Fetch each passage separately to maintain the sectional structure
+        for (const passage of allPassages) {
           const params = new URLSearchParams({
             q: passage,
             "include-passage-references": false,
@@ -190,35 +83,32 @@ const BiblicalConnectionsApp = () => {
       } catch (error) {
         console.error("Error fetching Bible text:", error);
         setError(error.message);
+        
+        // Provide fallback text for development/demo
+        const fallbackText = {
+          "Genesis 1:1-2": "In the beginning God created the heavens and the earth. Now the earth was formless and empty, darkness was over the surface of the deep, and the Spirit of God was hovering over the waters.",
+          "Genesis 1:3-25": "And God said, \"Let there be light,\" and there was light. God saw that the light was good, and he separated the light from the darkness. God called the light \"day,\" and the darkness he called \"night.\" And there was evening, and there was morning—the first day.\n\nAnd God said, \"Let there be a vault between the waters to separate water from water.\" So God made the vault and separated the water under the vault from the water above it. And it was so. God called the vault \"sky.\" And there was evening, and there was morning—the second day.\n\n[...more content about days 3-5...]\n\nAnd God said, \"Let the land produce living creatures according to their kinds: the livestock, the creatures that move along the ground, and the wild animals, each according to its kind.\" And it was so. God made the wild animals according to their kinds, the livestock according to their kinds, and all the creatures that move along the ground according to their kinds. And God saw that it was good.",
+          "Genesis 1:26-31": "Then God said, \"Let us make mankind in our image, in our likeness, so that they may rule over the fish in the sea and the birds in the sky, over the livestock and all the wild animals, and over all the creatures that move along the ground.\"\n\nSo God created mankind in his own image, in the image of God he created them; male and female he created them.\n\nGod blessed them and said to them, \"Be fruitful and increase in number; fill the earth and subdue it. Rule over the fish in the sea and the birds in the sky and over every living creature that moves on the ground.\"\n\nThen God said, \"I give you every seed-bearing plant on the face of the whole earth and every tree that has fruit with seed in it. They will be yours for food. And to all the beasts of the earth and all the birds in the sky and all the creatures that move along the ground—everything that has the breath of life in it—I give every green plant for food.\" And it was so.\n\nGod saw all that he had made, and it was very good. And there was evening, and there was morning—the sixth day.",
+          // Add fallback texts for Genesis 2 and 3 sections
+          "Genesis 2:1-3": "Thus the heavens and the earth were completed in all their vast array. By the seventh day God had finished the work he had been doing; so on the seventh day he rested from all his work. Then God blessed the seventh day and made it holy, because on it he rested from all the work of creating that he had done.",
+          "Genesis 2:4-17": "This is the account of the heavens and the earth when they were created, when the LORD God made the earth and the heavens. Now no shrub had yet appeared on the earth and no plant had yet sprung up, for the LORD God had not sent rain on the earth and there was no one to work the ground, but streams came up from the earth and watered the whole surface of the ground. Then the LORD God formed a man from the dust of the ground and breathed into his nostrils the breath of life, and the man became a living being. Now the LORD God had planted a garden in the east, in Eden; and there he put the man he had formed...",
+          "Genesis 2:18-25": "The LORD God said, \"It is not good for the man to be alone. I will make a helper suitable for him.\" Now the LORD God had formed out of the ground all the wild animals and all the birds in the sky. He brought them to the man to see what he would name them; and whatever the man called each living creature, that was its name. So the man gave names to all the livestock, the birds in the sky and all the wild animals. But for Adam no suitable helper was found...",
+          "Genesis 3:1-7": "Now the serpent was more crafty than any of the wild animals the LORD God had made. He said to the woman, \"Did God really say, 'You must not eat from any tree in the garden'?\" The woman said to the serpent, \"We may eat fruit from the trees in the garden, but God did say, 'You must not eat fruit from the tree that is in the middle of the garden, and you must not touch it, or you will die.'\"",
+          "Genesis 3:8-19": "Then the man and his wife heard the sound of the LORD God as he was walking in the garden in the cool of the day, and they hid from the LORD God among the trees of the garden. But the LORD God called to the man, \"Where are you?\" He answered, \"I heard you in the garden, and I was afraid because I was naked; so I hid.\"",
+          "Genesis 3:20-24": "Adam named his wife Eve, because she would become the mother of all the living. The LORD God made garments of skin for Adam and his wife and clothed them. And the LORD God said, \"The man has now become like one of us, knowing good and evil. He must not be allowed to reach out his hand and take also from the tree of life and eat, and live forever.\""
+        };
+        
+        setBibleText(fallbackText);
       } finally {
         setIsLoading(false);
       }
     };
     
     fetchBibleText();
-  }, [activeSectionsList]);
-
-  // Book selector functions
-  const filteredBooks = bookSearch
-    ? bibleStructure.filter(book => 
-        book.name.toLowerCase().includes(bookSearch.toLowerCase()) &&
-        (activeTestament === "all" || book.testament === activeTestament)
-      )
-    : bibleStructure.filter(book => 
-        activeTestament === "all" || book.testament === activeTestament
-      );
-
-  // Update section refs when chapter sections change
-  const textContainerRef = useRef(null);
-  const sectionRefs = useRef([]);
-  
-  useEffect(() => {
-    // Create new refs for each section
-    sectionRefs.current = chapterSections.map(() => React.createRef());
-  }, [chapterSections]);
+  }, []);
   
   // Connections visualization data structure
-  // Genesis 1-3 connections (existing data from your original code)
+  // Genesis 1 connections (existing data from your original code)
   const passageSections = {
     "Genesis 1:1-2": {
       connections: [
@@ -756,8 +646,11 @@ const BiblicalConnectionsApp = () => {
       ]
     }
   };
-
-  // Extra states for visualization and UI
+  
+  // State initialization
+  const [activeChapter, setActiveChapter] = useState(bibleSections[0].id);
+  const [activeSectionsList, setActiveSectionsList] = useState(passageSectionMapping[bibleSections[0].id].map(s => s.id));
+  const [activeSection, setActiveSection] = useState(activeSectionsList[0]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [selectedNode, setSelectedNode] = useState(null);
@@ -769,6 +662,29 @@ const BiblicalConnectionsApp = () => {
   const [depthLevel, setDepthLevel] = useState(1);
   const [showLevelInfo, setShowLevelInfo] = useState(false);
   
+  // Refs for scroll tracking
+  const textContainerRef = useRef(null);
+  const sectionRefs = useRef([]);
+  
+  // Set up section refs dynamically based on active chapter
+  useEffect(() => {
+    // Create new refs for each section
+    sectionRefs.current = passageSectionMapping[activeChapter].map(() => React.createRef());
+  }, [activeChapter]);
+  
+  // Update sections list when active chapter changes
+  useEffect(() => {
+    const newSectionsList = passageSectionMapping[activeChapter].map(s => s.id);
+    setActiveSectionsList(newSectionsList);
+    setActiveSection(newSectionsList[0]);
+    // Reset depth level when changing chapters
+    setDepthLevel(1);
+    // Reset selected node when changing chapters
+    setSelectedNode(null);
+    // Reset pan offset
+    setPanOffset({ x: 0, y: 0 });
+  }, [activeChapter]);
+  
   // Max depth level available
   const maxDepthLevel = 3;
   
@@ -778,56 +694,6 @@ const BiblicalConnectionsApp = () => {
     thematic: { color: "#EC4899", dash: "5,5", thickness: 2, label: "Thematic Connection" },
     symbolic: { color: "#10B981", dash: "10,5", thickness: 2, label: "Symbolic Echo" }
   };
-  
-  // Handle scroll events to update active section
-  useEffect(() => {
-    const handleScroll = () => {
-      if (textContainerRef.current) {
-        setScrollY(textContainerRef.current.scrollTop);
-        
-        // Determine which section is most visible
-        const containerTop = textContainerRef.current.scrollTop;
-        const containerHeight = textContainerRef.current.clientHeight;
-        const containerBottom = containerTop + containerHeight;
-        
-        let maxVisibleArea = 0;
-        let mostVisibleSection = activeSection;
-        
-        sectionRefs.current.forEach((ref, index) => {
-          if (ref && ref.current) {
-            const sectionTop = ref.current.offsetTop;
-            const sectionHeight = ref.current.clientHeight;
-            const sectionBottom = sectionTop + sectionHeight;
-            
-            // Calculate visible area of this section
-            const visibleTop = Math.max(containerTop, sectionTop);
-            const visibleBottom = Math.min(containerBottom, sectionBottom);
-            const visibleArea = Math.max(0, visibleBottom - visibleTop);
-            
-            if (visibleArea > maxVisibleArea) {
-              maxVisibleArea = visibleArea;
-              mostVisibleSection = activeSectionsList[index];
-            }
-          }
-        });
-        
-        if (mostVisibleSection !== activeSection && mostVisibleSection) {
-          console.log('Changing active section to:', mostVisibleSection);
-          setActiveSection(mostVisibleSection);
-          // Reset depth level when changing sections
-          setDepthLevel(1);
-          // Reset selected node when changing sections
-          setSelectedNode(null);
-        }
-      }
-    };
-    
-    const container = textContainerRef.current;
-    if (container) {
-      container.addEventListener('scroll', handleScroll);
-      return () => container.removeEventListener('scroll', handleScroll);
-    }
-  }, [activeSection, activeSectionsList]);
   
   // Get all connections for current section based on depth level
   const getAllConnections = () => {
@@ -919,12 +785,62 @@ const BiblicalConnectionsApp = () => {
     return connections;
   };
   
+  // Handle scroll events to update active section
+  useEffect(() => {
+    const handleScroll = () => {
+      if (textContainerRef.current) {
+        setScrollY(textContainerRef.current.scrollTop);
+        
+        // Determine which section is most visible
+        const containerTop = textContainerRef.current.scrollTop;
+        const containerHeight = textContainerRef.current.clientHeight;
+        const containerBottom = containerTop + containerHeight;
+        
+        let maxVisibleArea = 0;
+        let mostVisibleSection = activeSection;
+        
+        sectionRefs.current.forEach((ref, index) => {
+          if (ref && ref.current) {
+            const sectionTop = ref.current.offsetTop;
+            const sectionHeight = ref.current.clientHeight;
+            const sectionBottom = sectionTop + sectionHeight;
+            
+            // Calculate visible area of this section
+            const visibleTop = Math.max(containerTop, sectionTop);
+            const visibleBottom = Math.min(containerBottom, sectionBottom);
+            const visibleArea = Math.max(0, visibleBottom - visibleTop);
+            
+            if (visibleArea > maxVisibleArea) {
+              maxVisibleArea = visibleArea;
+              mostVisibleSection = activeSectionsList[index];
+            }
+          }
+        });
+        
+        if (mostVisibleSection !== activeSection && mostVisibleSection) {
+          console.log('Changing active section to:', mostVisibleSection);
+          setActiveSection(mostVisibleSection);
+          // Reset depth level when changing sections
+          setDepthLevel(1);
+          // Reset selected node when changing sections
+          setSelectedNode(null);
+        }
+      }
+    };
+    
+    const container = textContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+      return () => container.removeEventListener('scroll', handleScroll);
+    }
+  }, [activeSection, activeSectionsList]);
+  
   // Handle node click
   const handleNodeClick = (nodeId) => {
     setSelectedNode(selectedNode === nodeId ? null : nodeId);
   };
   
-  // Get current section index and find sections for visualization
+  // Get current section index
   const currentSectionIndex = activeSectionsList.indexOf(activeSection);
   
   // Get previous and next sections if they exist
@@ -938,8 +854,8 @@ const BiblicalConnectionsApp = () => {
   const toggleExpand = () => setIsExpanded(!isExpanded);
   
   // Jump to a specific section
-  const jumpToSection = (sectionId) => {
-    const index = activeSectionsList.indexOf(sectionId);
+  const jumpToSection = (section) => {
+    const index = activeSectionsList.indexOf(section);
     if (index >= 0 && sectionRefs.current[index] && sectionRefs.current[index].current) {
       textContainerRef.current.scrollTo({
         top: sectionRefs.current[index].current.offsetTop,
@@ -962,50 +878,14 @@ const BiblicalConnectionsApp = () => {
   };
   
   // Find the current chapter title
-  const getCurrentBookChapter = () => {
-    const book = bibleStructure.find(b => b.id === activeBook);
-    return book ? `${book.name} ${activeChapter}` : "";
+  const getCurrentChapterTitle = () => {
+    const chapter = bibleSections.find(section => section.id === activeChapter);
+    return chapter ? chapter.reference : "Genesis";
   };
   
-  // Navigation functions
-  const handleBookChange = (bookId) => {
-    setActiveBook(bookId);
-    // Set to chapter 1 when changing books
-    setActiveChapter(1);
-    // Hide book selector after selection
-    setShowBookSelector(false);
-  };
-  
-  const handleChapterChange = (chapterNum) => {
-    setActiveChapter(chapterNum);
-  };
-
-  const navigateToNextChapter = () => {
-    const book = bibleStructure.find(b => b.id === activeBook);
-    if (book && activeChapter < book.chapters) {
-      setActiveChapter(activeChapter + 1);
-    } else {
-      // Move to next book
-      const currentBookIndex = bibleStructure.findIndex(b => b.id === activeBook);
-      if (currentBookIndex < bibleStructure.length - 1) {
-        setActiveBook(bibleStructure[currentBookIndex + 1].id);
-        setActiveChapter(1);
-      }
-    }
-  };
-
-  const navigateToPreviousChapter = () => {
-    if (activeChapter > 1) {
-      setActiveChapter(activeChapter - 1);
-    } else {
-      // Move to previous book
-      const currentBookIndex = bibleStructure.findIndex(b => b.id === activeBook);
-      if (currentBookIndex > 0) {
-        const prevBook = bibleStructure[currentBookIndex - 1];
-        setActiveBook(prevBook.id);
-        setActiveChapter(prevBook.chapters);
-      }
-    }
+  // Change active chapter
+  const handleChapterChange = (chapterId) => {
+    setActiveChapter(chapterId);
   };
   
   return (
@@ -1024,149 +904,10 @@ const BiblicalConnectionsApp = () => {
             <Info size={20} className="text-slate-600" />
           </button>
           <div className="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm font-medium">
-            {getCurrentBookChapter()}
+            {getCurrentChapterTitle()}
           </div>
         </div>
       </header>
-      
-      {/* Book and chapter navigation */}
-      <div className="bg-white border-b border-slate-200 px-4 py-2">
-        <div className="max-w-4xl mx-auto flex justify-between items-center">
-          {/* Book selector button */}
-          <div className="relative">
-            <button
-              onClick={() => setShowBookSelector(!showBookSelector)}
-              className="flex items-center space-x-2 py-2 px-4 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors"
-            >
-              <span className="font-medium">{bibleStructure.find(b => b.id === activeBook)?.name || "Select Book"}</span>
-              <ChevronDown size={16} />
-            </button>
-            
-            {/* Book selector dropdown */}
-            {showBookSelector && (
-              <div className="absolute top-12 left-0 w-72 max-h-96 overflow-y-auto bg-white shadow-lg rounded-lg border border-slate-200 z-30">
-                <div className="p-3 border-b border-slate-200">
-                  <div className="flex items-center space-x-2 px-2 py-1 bg-slate-100 rounded">
-                    <Search size={16} className="text-slate-500" />
-                    <input
-                      type="text"
-                      placeholder="Search books..."
-                      value={bookSearch}
-                      onChange={(e) => setBookSearch(e.target.value)}
-                      className="w-full bg-transparent border-none outline-none text-sm"
-                    />
-                  </div>
-                  <div className="flex space-x-1 mt-2">
-                    <button
-                      onClick={() => setActiveTestament("all")}
-                      className={`text-xs px-2 py-1 rounded ${activeTestament === "all" ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600"}`}
-                    >
-                      All
-                    </button>
-                    <button
-                      onClick={() => setActiveTestament("old")}
-                      className={`text-xs px-2 py-1 rounded ${activeTestament === "old" ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600"}`}
-                    >
-                      Old Testament
-                    </button>
-                    <button
-                      onClick={() => setActiveTestament("new")}
-                      className={`text-xs px-2 py-1 rounded ${activeTestament === "new" ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600"}`}
-                    >
-                      New Testament
-                    </button>
-                  </div>
-                </div>
-                
-                <div className="p-2">
-                  {filteredBooks.length === 0 ? (
-                    <div className="text-center py-4 text-slate-500">No books found</div>
-                  ) : (
-                    <div className="grid grid-cols-2 gap-1">
-                      {filteredBooks.map(book => (
-                        <button
-                          key={book.id}
-                          onClick={() => handleBookChange(book.id)}
-                          className={`text-left px-3 py-2 rounded text-sm ${
-                            activeBook === book.id
-                              ? "bg-indigo-100 text-indigo-700 font-medium"
-                              : "hover:bg-slate-100"
-                          }`}
-                        >
-                          {book.name}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-          
-          {/* Chapter navigation */}
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={navigateToPreviousChapter}
-              className="p-1 rounded-full hover:bg-slate-100"
-              aria-label="Previous chapter"
-            >
-              <ChevronLeft size={20} className="text-slate-600" />
-            </button>
-            
-            <div className="flex flex-wrap justify-center gap-1 max-w-md">
-              {Array.from({ length: Math.min(10, bibleStructure.find(b => b.id === activeBook)?.chapters || 0) }, (_, i) => (
-                <button
-                  key={`chapter-${i+1}`}
-                  onClick={() => handleChapterChange(i+1)}
-                  className={`h-7 w-7 text-xs rounded-full flex items-center justify-center ${
-                    activeChapter === i+1
-                      ? 'bg-indigo-600 text-white'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                  }`}
-                >
-                  {i+1}
-                </button>
-              ))}
-              
-              {(bibleStructure.find(b => b.id === activeBook)?.chapters || 0) > 10 && (
-                <div className="relative group">
-                  <button className="h-7 px-2 text-xs rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 flex items-center justify-center">
-                    ...
-                  </button>
-                  
-                  <div className="absolute left-0 top-full mt-1 bg-white shadow-lg rounded-lg border border-slate-200 p-2 hidden group-hover:block z-20">
-                    <div className="grid grid-cols-5 gap-1 w-48">
-                      {Array.from({ length: bibleStructure.find(b => b.id === activeBook)?.chapters || 0 }, (_, i) => (
-                        i >= 10 && (
-                          <button
-                            key={`chapter-dropdown-${i+1}`}
-                            onClick={() => handleChapterChange(i+1)}
-                            className={`h-7 w-7 text-xs rounded-full flex items-center justify-center ${
-                              activeChapter === i+1
-                                ? 'bg-indigo-600 text-white'
-                                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                            }`}
-                          >
-                            {i+1}
-                          </button>
-                        )
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            <button
-              onClick={navigateToNextChapter}
-              className="p-1 rounded-full hover:bg-slate-100"
-              aria-label="Next chapter"
-            >
-              <ChevronRight size={20} className="text-slate-600" />
-            </button>
-          </div>
-        </div>
-      </div>
       
       {/* Info modal */}
       {showInfo && (
@@ -1222,6 +963,25 @@ const BiblicalConnectionsApp = () => {
       
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Chapter navigation */}
+        <div className="bg-white border-b border-slate-200 px-8 py-2">
+          <div className="max-w-2xl mx-auto flex">
+            {bibleSections.map((section) => (
+              <button
+                key={section.id}
+                onClick={() => handleChapterChange(section.id)}
+                className={`py-2 px-4 font-medium ${
+                  activeChapter === section.id 
+                    ? 'text-indigo-600 border-b-2 border-indigo-600' 
+                    : 'text-slate-600 hover:text-indigo-500'
+                }`}
+              >
+                {section.title}
+              </button>
+            ))}
+          </div>
+        </div>
+        
         {/* Scripture reading section */}
         <div 
           className={`px-8 py-6 bg-white ${isExpanded ? 'h-1/5' : 'h-2/5'} overflow-y-auto transition-all duration-300`}
@@ -1237,28 +997,34 @@ const BiblicalConnectionsApp = () => {
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
                 <p className="font-medium">Error loading Bible text</p>
                 <p className="text-sm mt-1">{error}</p>
+                <p className="text-sm mt-2">Using fallback text for demonstration purposes.</p>
               </div>
             </div>
           ) : (
             <div className="max-w-2xl mx-auto">
-              <h2 className="text-2xl font-serif mb-4 text-slate-800">{getCurrentBookChapter()}</h2>
+              <h2 className="text-2xl font-serif mb-4 text-slate-800">{getCurrentChapterTitle()}</h2>
               
               {/* Section navigation tabs */}
               <div className="flex mb-4 border-b border-slate-200">
-                {chapterSections.map((section, index) => (
-                  <button
-                    key={section.id}
-                    onClick={() => jumpToSection(section.id)}
-                    className={`py-2 px-4 font-medium text-sm ${
-                      activeSection === section.id 
-                        ? 'text-indigo-600 border-b-2 border-indigo-600' 
-                        : 'text-slate-600 hover:text-indigo-500'
-                    }`}
-                  >
-                    {section.id}
-                    {section.title && <span className="ml-1 text-xs text-slate-500">({section.title})</span>}
-                  </button>
-                ))}
+                {activeSectionsList.map((section, index) => {
+                  // Find the section title
+                  const sectionInfo = passageSectionMapping[activeChapter].find(s => s.id === section);
+                  
+                  return (
+                    <button
+                      key={section}
+                      onClick={() => jumpToSection(section)}
+                      className={`py-2 px-4 font-medium text-sm ${
+                        activeSection === section 
+                          ? 'text-indigo-600 border-b-2 border-indigo-600' 
+                          : 'text-slate-600 hover:text-indigo-500'
+                      }`}
+                    >
+                      {section}
+                      {sectionInfo && sectionInfo.title && <span className="ml-1 text-xs text-slate-500">({sectionInfo.title})</span>}
+                    </button>
+                  );
+                })}
               </div>
               
               {/* Scripture sections */}
@@ -1343,9 +1109,9 @@ const BiblicalConnectionsApp = () => {
             `}
           </style>
           
-          {/* Visualization section header */}
+          {/* Current section indicator */}
           <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10 bg-white px-4 py-2 rounded-full shadow-md text-sm">
-            <span className="text-indigo-700 font-medium">{activeSection || "Select a section"}</span>
+            <span className="text-indigo-700 font-medium">{activeSection}</span>
           </div>
           
           {/* Zoom controls */}
@@ -1871,7 +1637,7 @@ const BiblicalConnectionsApp = () => {
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
                 <div className="text-indigo-500 text-xl mb-2">No visualization data available</div>
-                <p className="text-slate-600">Connection data is only available for Genesis 1-3 in this demo.</p>
+                <p className="text-slate-600">Connection data isn't available for this passage yet.</p>
               </div>
             </div>
           )}
