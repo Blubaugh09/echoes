@@ -121,7 +121,7 @@ const BiblicalConnectionsApp = () => {
   const [bookSearch, setBookSearch] = useState("");
   const [showBookSelector, setShowBookSelector] = useState(false);
   const [chapterSections, setChapterSections] = useState([]);
-  const [showChapterSelector, setShowChapterSelector] = useState(false);
+  
   // New states for layout control
   const [showGraph, setShowGraph] = useState(true); // Toggle for graph visibility
   const [isLargeScreen, setIsLargeScreen] = useState(false); // Track screen size for responsive layout
@@ -312,7 +312,543 @@ const BiblicalConnectionsApp = () => {
   
   // Connections visualization data structure
   // Genesis 1-3 connections (existing data from your original code)
-  const passageSections = {};
+  const passageSections = {
+    "Genesis 1:1-2": {
+      connections: [
+        { 
+          id: 1, 
+          verse: "Genesis 1:1-2", 
+          theme: "Creation Beginning", 
+          label: "God's initial creation",
+          x: 160, 
+          y: 60, 
+          size: 30,
+          connections: [
+            { targetId: 2, type: "direct_reference", strength: 0.9, level: 1 },
+            { targetId: 3, type: "thematic", strength: 0.7, level: 1 },
+          ],
+          deeperConnections: [
+            { id: 6, verse: "Hebrews 11:3", theme: "Faith in Creation", label: "By faith we understand the universe was formed", level: 2, x: 400, y: 200, size: 18 },
+            { id: 7, verse: "Revelation 4:11", theme: "Creator Worship", label: "Worthy to receive glory as Creator", level: 3, x: 440, y: 240, size: 16 }
+          ]
+        },
+        { 
+          id: 2, 
+          verse: "John 1:1-3", 
+          theme: "The Word", 
+          label: "In the beginning was the Word",
+          x: 300, 
+          y: 40, 
+          size: 25,
+          connections: [],
+          deeperConnections: [
+            { id: 8, verse: "Colossians 1:16-17", theme: "Christ's Preeminence", label: "All things created through and for Him", level: 2, x: 430, y: 30, size: 20 },
+            { id: 9, verse: "Hebrews 1:2", theme: "Son as Creator", label: "Through whom He made the universe", level: 2, x: 460, y: 70, size: 18 },
+            { id: 10, verse: "1 Corinthians 8:6", theme: "One Lord", label: "One Lord through whom all things came", level: 3, x: 520, y: 50, size: 16 }
+          ]
+        },
+        { 
+          id: 3, 
+          verse: "Psalm 33:6", 
+          theme: "Creation by Word", 
+          label: "By the word of the LORD",
+          x: 300, 
+          y: 130, 
+          size: 22,
+          connections: [],
+          deeperConnections: [
+            { id: 11, verse: "Psalm 148:5", theme: "Command to Exist", label: "He commanded and they were created", level: 2, x: 440, y: 140, size: 18 }
+          ]
+        }
+      ]
+    },
+    "Genesis 1:3-25": {
+      connections: [
+        { 
+          id: 1, 
+          verse: "Genesis 1:3-25", 
+          theme: "Creation Process", 
+          label: "Six days of creation",
+          x: 160, 
+          y: 60, 
+          size: 30,
+          connections: [
+            { targetId: 2, type: "direct_reference", strength: 0.9, level: 1 },
+            { targetId: 3, type: "thematic", strength: 0.7, level: 1 },
+            { targetId: 4, type: "symbolic", strength: 0.8, level: 1 }
+          ],
+          deeperConnections: [
+            { id: 12, verse: "Jeremiah 10:12", theme: "Wisdom in Creation", label: "God founded the world by His wisdom", level: 2, x: 100, y: 200, size: 18 },
+            { id: 13, verse: "Romans 1:20", theme: "Divine Revelation", label: "God's qualities seen in creation", level: 2, x: 200, y: 200, size: 19 },
+            { id: 14, verse: "2 Peter 3:5", theme: "Creation by Word", label: "Earth formed at God's command", level: 3, x: 150, y: 250, size: 16 }
+          ]
+        },
+        { 
+          id: 2, 
+          verse: "Psalm 104:1-30", 
+          theme: "God's Sovereignty", 
+          label: "Creation's diversity",
+          x: 300, 
+          y: 30, 
+          size: 25,
+          connections: [],
+          deeperConnections: [
+            { id: 15, verse: "Psalm 19:1-4", theme: "Heavens Declare", label: "Heavens declare God's glory", level: 2, x: 400, y: 20, size: 18 }
+          ]
+        },
+        { 
+          id: 3, 
+          verse: "Isaiah 45:7", 
+          theme: "Creator of All", 
+          label: "I form light and create darkness",
+          x: 280, 
+          y: 120, 
+          size: 22,
+          connections: [],
+          deeperConnections: [
+            { id: 16, verse: "Amos 4:13", theme: "Forms Mountains", label: "Forms mountains and creates wind", level: 2, x: 380, y: 130, size: 18 }
+          ]
+        },
+        { 
+          id: 4, 
+          verse: "Job 38:4-11", 
+          theme: "Divine Architecture", 
+          label: "God questions Job about creation",
+          x: 330, 
+          y: 190, 
+          size: 20,
+          connections: [],
+          deeperConnections: [
+            { id: 17, verse: "Proverbs 8:22-31", theme: "Wisdom Present", label: "Wisdom present at creation", level: 2, x: 420, y: 190, size: 18 },
+            { id: 18, verse: "Job 26:7-14", theme: "God's Power", label: "He suspends the earth over nothing", level: 3, x: 460, y: 220, size: 16 }
+          ]
+        }
+      ]
+    },
+    "Genesis 1:26-31": {
+      connections: [
+        { 
+          id: 1, 
+          verse: "Genesis 1:26-31", 
+          theme: "Imago Dei", 
+          label: "Humanity in God's image",
+          x: 160, 
+          y: 60, 
+          size: 30,
+          connections: [
+            { targetId: 2, type: "direct_reference", strength: 0.9, level: 1 },
+            { targetId: 3, type: "thematic", strength: 0.7, level: 1 },
+            { targetId: 4, type: "symbolic", strength: 0.8, level: 1 },
+            { targetId: 5, type: "thematic", strength: 0.6, level: 1 }
+          ],
+          deeperConnections: [
+            { id: 19, verse: "1 Corinthians 11:7", theme: "Man as Image", label: "Man is the image and glory of God", level: 2, x: 100, y: 180, size: 18 },
+            { id: 20, verse: "James 3:9", theme: "Human Dignity", label: "Humans made in God's likeness", level: 2, x: 180, y: 200, size: 17 },
+            { id: 21, verse: "Romans 8:29", theme: "Conforming to Image", label: "Conformed to the image of His Son", level: 3, x: 140, y: 230, size: 16 }
+          ]
+        },
+        { 
+          id: 2, 
+          verse: "Colossians 1:15", 
+          theme: "Image of God", 
+          label: "Christ is the image of God",
+          x: 320, 
+          y: 30, 
+          size: 25,
+          connections: [],
+          deeperConnections: [
+            { id: 22, verse: "2 Corinthians 4:4", theme: "Christ as Image", label: "Christ, who is the image of God", level: 2, x: 410, y: 20, size: 18 },
+            { id: 23, verse: "Hebrews 1:3", theme: "Exact Representation", label: "Exact representation of God's being", level: 3, x: 450, y: 50, size: 16 }
+          ]
+        },
+        { 
+          id: 3, 
+          verse: "Psalm 8:3-8", 
+          theme: "Human Dignity", 
+          label: "Crowned with glory and honor",
+          x: 290, 
+          y: 120, 
+          size: 22,
+          connections: [],
+          deeperConnections: [
+            { id: 24, verse: "Hebrews 2:6-8", theme: "Fulfillment in Christ", label: "Everything under human feet", level: 2, x: 390, y: 110, size: 18 }
+          ]
+        },
+        { 
+          id: 4, 
+          verse: "Matthew 28:18-20", 
+          theme: "Dominion Mandate", 
+          label: "Authority given to disciples",
+          x: 350, 
+          y: 180, 
+          size: 20,
+          connections: [],
+          deeperConnections: [
+            { id: 25, verse: "Acts 1:8", theme: "Empowered Witness", label: "Power to be witnesses", level: 2, x: 430, y: 190, size: 17 }
+          ]
+        },
+        { 
+          id: 5, 
+          verse: "Ephesians 4:24", 
+          theme: "New Creation", 
+          label: "New self created like God",
+          x: 380, 
+          y: 90, 
+          size: 18,
+          connections: [],
+          deeperConnections: [
+            { id: 26, verse: "2 Corinthians 5:17", theme: "New Creation", label: "New creation in Christ", level: 2, x: 460, y: 80, size: 17 },
+            { id: 27, verse: "Colossians 3:10", theme: "Renewed Knowledge", label: "Renewed in knowledge of Creator", level: 2, x: 480, y: 120, size: 16 }
+          ]
+        }
+      ]
+    },
+    
+    // Genesis 2 connections
+    "Genesis 2:1-3": {
+      connections: [
+        { 
+          id: 1, 
+          verse: "Genesis 2:1-3", 
+          theme: "Sabbath Rest", 
+          label: "God rested on the seventh day",
+          x: 160, 
+          y: 60, 
+          size: 30,
+          connections: [
+            { targetId: 2, type: "direct_reference", strength: 0.9, level: 1 },
+            { targetId: 3, type: "thematic", strength: 0.8, level: 1 },
+          ],
+          deeperConnections: [
+            { id: 28, verse: "Mark 2:27-28", theme: "Lord of Sabbath", label: "Son of Man is Lord of the Sabbath", level: 2, x: 400, y: 180, size: 18 },
+            { id: 29, verse: "Isaiah 58:13-14", theme: "Sabbath Delight", label: "Call the Sabbath a delight", level: 3, x: 440, y: 220, size: 16 }
+          ]
+        },
+        { 
+          id: 2, 
+          verse: "Exodus 20:8-11", 
+          theme: "Sabbath Command", 
+          label: "Remember the Sabbath day",
+          x: 300, 
+          y: 40, 
+          size: 25,
+          connections: [],
+          deeperConnections: [
+            { id: 30, verse: "Deuteronomy 5:12-15", theme: "Sabbath Liberation", label: "Observe the Sabbath", level: 2, x: 430, y: 30, size: 20 }
+          ]
+        },
+        { 
+          id: 3, 
+          verse: "Hebrews 4:1-11", 
+          theme: "Spiritual Rest", 
+          label: "A Sabbath-rest for the people of God",
+          x: 300, 
+          y: 130, 
+          size: 22,
+          connections: [],
+          deeperConnections: [
+            { id: 31, verse: "Matthew 11:28-30", theme: "Rest for Souls", label: "I will give you rest", level: 2, x: 440, y: 140, size: 18 }
+          ]
+        }
+      ]
+    },
+    "Genesis 2:4-17": {
+      connections: [
+        { 
+          id: 1, 
+          verse: "Genesis 2:4-17", 
+          theme: "Garden of Eden", 
+          label: "God plants a garden",
+          x: 160, 
+          y: 60, 
+          size: 30,
+          connections: [
+            { targetId: 2, type: "direct_reference", strength: 0.8, level: 1 },
+            { targetId: 3, type: "thematic", strength: 0.7, level: 1 },
+            { targetId: 4, type: "symbolic", strength: 0.9, level: 1 }
+          ],
+          deeperConnections: [
+            { id: 32, verse: "Ezekiel 36:35", theme: "Restored Garden", label: "Like the garden of Eden", level: 2, x: 100, y: 200, size: 18 },
+            { id: 33, verse: "Isaiah 51:3", theme: "Eden Comfort", label: "Her desert like Eden", level: 2, x: 200, y: 200, size: 19 }
+          ]
+        },
+        { 
+          id: 2, 
+          verse: "Ezekiel 28:13-14", 
+          theme: "Eden Perfection", 
+          label: "You were in Eden, the garden of God",
+          x: 300, 
+          y: 30, 
+          size: 25,
+          connections: [],
+          deeperConnections: []
+        },
+        { 
+          id: 3, 
+          verse: "Joel 2:3", 
+          theme: "Eden Contrast", 
+          label: "Like the garden of Eden before them",
+          x: 280, 
+          y: 120, 
+          size: 22,
+          connections: [],
+          deeperConnections: []
+        },
+        { 
+          id: 4, 
+          verse: "Revelation 22:1-5", 
+          theme: "New Eden", 
+          label: "Tree of life in paradise",
+          x: 330, 
+          y: 190, 
+          size: 20,
+          connections: [],
+          deeperConnections: [
+            { id: 34, verse: "Revelation 2:7", theme: "Eden Promise", label: "Right to eat from the tree of life", level: 2, x: 420, y: 190, size: 18 }
+          ]
+        }
+      ]
+    },
+    "Genesis 2:18-25": {
+      connections: [
+        { 
+          id: 1, 
+          verse: "Genesis 2:18-25", 
+          theme: "Marriage Origin", 
+          label: "One flesh union",
+          x: 160, 
+          y: 60, 
+          size: 30,
+          connections: [
+            { targetId: 2, type: "direct_reference", strength: 0.9, level: 1 },
+            { targetId: 3, type: "thematic", strength: 0.7, level: 1 },
+            { targetId: 4, type: "symbolic", strength: 0.8, level: 1 }
+          ],
+          deeperConnections: [
+            { id: 35, verse: "1 Timothy 2:13", theme: "Creation Order", label: "Adam was formed first", level: 2, x: 100, y: 180, size: 18 }
+          ]
+        },
+        { 
+          id: 2, 
+          verse: "Matthew 19:4-6", 
+          theme: "Marriage Permanence", 
+          label: "What God has joined together",
+          x: 320, 
+          y: 30, 
+          size: 25,
+          connections: [],
+          deeperConnections: [
+            { id: 36, verse: "Mark 10:6-9", theme: "Creation Design", label: "At the beginning of creation", level: 2, x: 410, y: 20, size: 18 }
+          ]
+        },
+        { 
+          id: 3, 
+          verse: "1 Corinthians 11:8-9", 
+          theme: "Creation Order", 
+          label: "Woman from man, for man",
+          x: 290, 
+          y: 120, 
+          size: 22,
+          connections: [],
+          deeperConnections: []
+        },
+        { 
+          id: 4, 
+          verse: "Ephesians 5:31-32", 
+          theme: "Marriage Mystery", 
+          label: "Christ and the church",
+          x: 350, 
+          y: 180, 
+          size: 20,
+          connections: [],
+          deeperConnections: [
+            { id: 37, verse: "Revelation 19:7-9", theme: "Marriage Supper", label: "Wedding of the Lamb", level: 2, x: 430, y: 190, size: 17 }
+          ]
+        }
+      ]
+    },
+    
+    // Genesis 3 connections
+    "Genesis 3:1-7": {
+      connections: [
+        { 
+          id: 1, 
+          verse: "Genesis 3:1-7", 
+          theme: "The Fall", 
+          label: "First temptation and sin",
+          x: 160, 
+          y: 60, 
+          size: 30,
+          connections: [
+            { targetId: 2, type: "direct_reference", strength: 0.9, level: 1 },
+            { targetId: 3, type: "thematic", strength: 0.8, level: 1 },
+            { targetId: 4, type: "symbolic", strength: 0.7, level: 1 }
+          ],
+          deeperConnections: [
+            { id: 38, verse: "James 1:14-15", theme: "Sin Process", label: "Desire gives birth to sin", level: 2, x: 100, y: 200, size: 18 },
+            { id: 39, verse: "1 John 2:16", theme: "Worldly Desires", label: "Lust of the flesh and eyes", level: 2, x: 200, y: 200, size: 19 }
+          ]
+        },
+        { 
+          id: 2, 
+          verse: "2 Corinthians 11:3", 
+          theme: "Serpent's Deception", 
+          label: "Eve was deceived by the serpent",
+          x: 300, 
+          y: 30, 
+          size: 25,
+          connections: [],
+          deeperConnections: [
+            { id: 40, verse: "1 Timothy 2:14", theme: "Deception", label: "The woman was deceived", level: 2, x: 430, y: 30, size: 20 }
+          ]
+        },
+        { 
+          id: 3, 
+          verse: "Romans 5:12", 
+          theme: "Sin's Entrance", 
+          label: "Sin entered through one man",
+          x: 280, 
+          y: 120, 
+          size: 22,
+          connections: [],
+          deeperConnections: [
+            { id: 41, verse: "1 Corinthians 15:21-22", theme: "Death Through Adam", label: "By a man came death", level: 2, x: 380, y: 130, size: 18 }
+          ]
+        },
+        { 
+          id: 4, 
+          verse: "Revelation 12:9", 
+          theme: "Ancient Serpent", 
+          label: "That ancient serpent called the devil",
+          x: 330, 
+          y: 190, 
+          size: 20,
+          connections: [],
+          deeperConnections: [
+            { id: 42, verse: "John 8:44", theme: "Father of Lies", label: "He was a murderer from the beginning", level: 2, x: 420, y: 190, size: 18 }
+          ]
+        }
+      ]
+    },
+    "Genesis 3:8-19": {
+      connections: [
+        { 
+          id: 1, 
+          verse: "Genesis 3:8-19", 
+          theme: "Divine Judgment", 
+          label: "Consequences of sin",
+          x: 160, 
+          y: 60, 
+          size: 30,
+          connections: [
+            { targetId: 2, type: "direct_reference", strength: 0.9, level: 1 },
+            { targetId: 3, type: "thematic", strength: 0.7, level: 1 },
+            { targetId: 4, type: "symbolic", strength: 0.8, level: 1 }
+          ],
+          deeperConnections: [
+            { id: 43, verse: "Romans 8:20-22", theme: "Creation Groans", label: "Creation subjected to frustration", level: 2, x: 100, y: 200, size: 18 },
+            { id: 44, verse: "Psalm 90:7-10", theme: "Human Frailty", label: "Our days pass under God's wrath", level: 3, x: 150, y: 250, size: 16 }
+          ]
+        },
+        { 
+          id: 2, 
+          verse: "Romans 8:1-4", 
+          theme: "No Condemnation", 
+          label: "No condemnation in Christ",
+          x: 300, 
+          y: 30, 
+          size: 25,
+          connections: [],
+          deeperConnections: [
+            { id: 45, verse: "Galatians 3:13", theme: "Curse Removed", label: "Christ redeemed us from the curse", level: 2, x: 400, y: 20, size: 18 }
+          ]
+        },
+        { 
+          id: 3, 
+          verse: "1 Timothy 2:11-15", 
+          theme: "Woman's Role", 
+          label: "Childbearing connection",
+          x: 280, 
+          y: 120, 
+          size: 22,
+          connections: [],
+          deeperConnections: []
+        },
+        { 
+          id: 4, 
+          verse: "Genesis 5:29", 
+          theme: "Rest from Toil", 
+          label: "Relief from painful toil",
+          x: 330, 
+          y: 190, 
+          size: 20,
+          connections: [],
+          deeperConnections: []
+        }
+      ]
+    },
+    "Genesis 3:20-24": {
+      connections: [
+        { 
+          id: 1, 
+          verse: "Genesis 3:20-24", 
+          theme: "Promise & Exile", 
+          label: "First promise and exile from Eden",
+          x: 160, 
+          y: 60, 
+          size: 30,
+          connections: [
+            { targetId: 2, type: "direct_reference", strength: 0.8, level: 1 },
+            { targetId: 3, type: "thematic", strength: 0.9, level: 1 },
+            { targetId: 4, type: "symbolic", strength: 0.7, level: 1 }
+          ],
+          deeperConnections: [
+            { id: 46, verse: "Hebrews 10:19-22", theme: "Access Restored", label: "Enter the Most Holy Place", level: 2, x: 100, y: 180, size: 18 },
+            { id: 47, verse: "1 Peter 1:3-5", theme: "Living Hope", label: "New birth into a living hope", level: 3, x: 140, y: 230, size: 16 }
+          ]
+        },
+        { 
+          id: 2, 
+          verse: "Romans 16:20", 
+          theme: "Serpent Crushed", 
+          label: "God will crush Satan",
+          x: 320, 
+          y: 30, 
+          size: 25,
+          connections: [],
+          deeperConnections: [
+            { id: 48, verse: "Revelation 20:1-3", theme: "Satan Bound", label: "Bound for a thousand years", level: 2, x: 410, y: 20, size: 18 }
+          ]
+        },
+        { 
+          id: 3, 
+          verse: "Hebrews 1:14", 
+          theme: "Angelic Protection", 
+          label: "Ministering spirits sent to serve",
+          x: 290, 
+          y: 120, 
+          size: 22,
+          connections: [],
+          deeperConnections: [
+            { id: 49, verse: "Psalm 91:11-12", theme: "Guardian Angels", label: "Angels to guard you", level: 2, x: 390, y: 110, size: 18 }
+          ]
+        },
+        { 
+          id: 4, 
+          verse: "John 14:1-6", 
+          theme: "Way Home", 
+          label: "I am the way, the truth, and the life",
+          x: 350, 
+          y: 180, 
+          size: 20,
+          connections: [],
+          deeperConnections: [
+            { id: 50, verse: "Revelation 21:1-4", theme: "New Heaven & Earth", label: "God's dwelling place with humans", level: 2, x: 430, y: 190, size: 17 }
+          ]
+        }
+      ]
+    }
+  };
 
   // Extra states for visualization and UI
   const [isExpanded, setIsExpanded] = useState(false);
@@ -613,11 +1149,6 @@ const BiblicalConnectionsApp = () => {
         </div>
       </header>
       
-{/* 
-        NOTE: Add this state variable to your component:
-        const [showChapterSelector, setShowChapterSelector] = useState(false);
-      */}
-      
       {/* Book and chapter navigation */}
       <div className="bg-white border-b border-slate-200 px-4 py-2">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
@@ -692,7 +1223,7 @@ const BiblicalConnectionsApp = () => {
             )}
           </div>
           
-          {/* Chapter navigation - Updated to use dropdown */}
+          {/* Chapter navigation */}
           <div className="flex items-center space-x-3">
             <button
               onClick={navigateToPreviousChapter}
@@ -702,35 +1233,43 @@ const BiblicalConnectionsApp = () => {
               <ChevronLeft size={20} className="text-slate-600" />
             </button>
             
-            <div className="relative">
-              <button
-                onClick={() => setShowChapterSelector(prev => !prev)}
-                className="flex items-center space-x-2 py-1.5 px-3 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors"
-              >
-                <span className="font-medium">Chapter {activeChapter}</span>
-                <ChevronDown size={16} />
-              </button>
+            <div className="flex flex-wrap justify-center gap-1 max-w-md">
+              {Array.from({ length: Math.min(10, bibleStructure.find(b => b.id === activeBook)?.chapters || 0) }, (_, i) => (
+                <button
+                  key={`chapter-${i+1}`}
+                  onClick={() => handleChapterChange(i+1)}
+                  className={`h-7 w-7 text-xs rounded-full flex items-center justify-center ${
+                    activeChapter === i+1
+                      ? 'bg-indigo-600 text-white'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  }`}
+                >
+                  {i+1}
+                </button>
+              ))}
               
-              {/* Chapter selector dropdown */}
-              {showChapterSelector && (
-                <div className="absolute top-10 left-0 w-64 max-h-80 overflow-y-auto bg-white shadow-lg rounded-lg border border-slate-200 z-30">
-                  <div className="p-2">
-                    <div className="grid grid-cols-5 gap-1">
+              {(bibleStructure.find(b => b.id === activeBook)?.chapters || 0) > 10 && (
+                <div className="relative group">
+                  <button className="h-7 px-2 text-xs rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 flex items-center justify-center">
+                    ...
+                  </button>
+                  
+                  <div className="absolute left-0 top-full mt-1 bg-white shadow-lg rounded-lg border border-slate-200 p-2 hidden group-hover:block z-20">
+                    <div className="grid grid-cols-5 gap-1 w-48">
                       {Array.from({ length: bibleStructure.find(b => b.id === activeBook)?.chapters || 0 }, (_, i) => (
-                        <button
-                          key={`chapter-${i+1}`}
-                          onClick={() => {
-                            handleChapterChange(i+1);
-                            setShowChapterSelector(false);
-                          }}
-                          className={`h-8 w-8 text-xs rounded-full flex items-center justify-center ${
-                            activeChapter === i+1
-                              ? 'bg-indigo-600 text-white'
-                              : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                          }`}
-                        >
-                          {i+1}
-                        </button>
+                        i >= 10 && (
+                          <button
+                            key={`chapter-dropdown-${i+1}`}
+                            onClick={() => handleChapterChange(i+1)}
+                            className={`h-7 w-7 text-xs rounded-full flex items-center justify-center ${
+                              activeChapter === i+1
+                                ? 'bg-indigo-600 text-white'
+                                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                            }`}
+                          >
+                            {i+1}
+                          </button>
+                        )
                       ))}
                     </div>
                   </div>
