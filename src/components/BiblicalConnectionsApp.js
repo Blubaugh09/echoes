@@ -22,6 +22,7 @@ const BiblicalConnectionsApp = () => {
   const [showBookSelector, setShowBookSelector] = useState(false);
   const [chapterSections, setChapterSections] = useState([]);
   const [showChapterSelector, setShowChapterSelector] = useState(false);
+  const [showSectionNav, setShowSectionNav] = useState(true);
   // New states for layout control
   const [showGraph, setShowGraph] = useState(true); // Toggle for graph visibility
   const [isLargeScreen, setIsLargeScreen] = useState(false); // Track screen size for responsive layout
@@ -41,24 +42,74 @@ const BiblicalConnectionsApp = () => {
   }, []);
 
 
+
   
-  // Effect to scroll the active narrative section into view
-  useEffect(() => {
-    // Allow the DOM to update first
-    setTimeout(() => {
-      const sectionButton = document.getElementById(`section-${activeNarrativeSection}`);
-      const container = document.getElementById('sections-container');
+// Effect to scroll the active narrative section into view
+useEffect(() => {
+  // Set first section as active when component mounts or sections change
+  if (chapterSections && chapterSections.length > 0 && !activeNarrativeSection) {
+    setActiveNarrativeSection(chapterSections[0].id);
+  }
+
+  // Allow the DOM to update first
+  setTimeout(() => {
+    const sectionButton = document.getElementById(`section-${activeNarrativeSection}`);
+    const container = document.getElementById('sections-container');
+    
+    if (sectionButton && container) {
+      // Calculate the position to scroll to (centered)
+      const buttonRect = sectionButton.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+      const scrollLeft = sectionButton.offsetLeft - (containerRect.width / 2) + (buttonRect.width / 2);
       
-      if (sectionButton && container) {
-        // Calculate the position to scroll to (centered)
-        const buttonRect = sectionButton.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
-        const scrollLeft = sectionButton.offsetLeft - (containerRect.width / 2) + (buttonRect.width / 2);
-        
-        container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+      container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+    }
+  }, 100);
+}, [activeNarrativeSection, chapterSections]);
+
+// Add Intersection Observer to detect which section is in view while scrolling
+useEffect(() => {
+  if (!chapterSections || chapterSections.length === 0) return;
+
+  const options = {
+    root: null, // viewport
+    rootMargin: '-10px 0px', // slight offset to improve detection
+    threshold: [0.1, 0.5] // detect at different visibility thresholds
+  };
+  
+  const handleIntersection = (entries) => {
+    // Get all entries that are currently intersecting
+    const visibleEntries = entries.filter(entry => entry.isIntersecting);
+    
+    if (visibleEntries.length > 0) {
+      // Sort by their position from top to bottom
+      const sortedEntries = [...visibleEntries].sort((a, b) => {
+        return a.boundingClientRect.top - b.boundingClientRect.top;
+      });
+      
+      // Get the topmost visible section
+      const sectionId = sortedEntries[0].target.getAttribute('data-section-id');
+      
+      if (sectionId && sectionId !== activeNarrativeSection) {
+        setActiveNarrativeSection(sectionId);
       }
-    }, 100);
-  }, [activeNarrativeSection]);
+    }
+  };
+  
+  const observer = new IntersectionObserver(handleIntersection, options);
+  
+  // Observe all section elements
+  chapterSections.forEach(section => {
+    const element = document.querySelector(`[data-section-id="${section.id}"]`);
+    if (element) {
+      observer.observe(element);
+    }
+  });
+  
+  return () => {
+    observer.disconnect();
+  };
+}, [chapterSections, activeNarrativeSection]);
 
   // Update sections when book or chapter changes
   useEffect(() => {
@@ -716,25 +767,48 @@ const BiblicalConnectionsApp = () => {
             </div>
           ) : (
             <div className="max-w-2xl mx-auto px-8 py-6">
-              <h2 className="text-2xl font-serif mb-4 text-slate-800">{getCurrentBookChapter()}</h2>
+             
               
-              {/* Section navigation tabs */}
-              <div className="flex mb-4 border-b border-slate-200">
-                {chapterSections.map((section, index) => (
-                  <button
-                    key={section.id}
-                    onClick={() => jumpToSection(section.id)}
-                    className={`py-2 px-4 font-medium text-sm ${
-                      activeSection === section.id 
-                        ? 'text-indigo-600 border-b-2 border-indigo-600' 
-                        : 'text-slate-600 hover:text-indigo-500'
-                    }`}
-                  >
-                    {section.id}
-                    {section.title && <span className="ml-1 text-xs text-slate-500">({section.title})</span>}
-                  </button>
-                ))}
-              </div>
+
+{/* Section navigation tabs - Sticky with toggle */}
+{showSectionNav ? (
+  <div className="sticky top-0 z-10 bg-white shadow-sm mb-6">
+    <div className="flex border-b border-slate-200 relative">
+      {chapterSections.map((section, index) => (
+        <button
+          key={section.id}
+          onClick={() => jumpToSection(section.id)}
+          className={`py-2 px-4 font-medium text-sm ${
+            activeSection === section.id 
+              ? 'text-indigo-600 border-b-2 border-indigo-600' 
+              : 'text-slate-600 hover:text-indigo-500'
+          }`}
+        >
+          {section.id}
+          {section.title && <span className="ml-1 text-xs text-slate-500">({section.title})</span>}
+        </button>
+      ))}
+      <button 
+        onClick={() => setShowSectionNav(false)}
+        className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full hover:bg-slate-100"
+        title="Hide navigation"
+      >
+        <ChevronUp size={16} className="text-slate-500" />
+      </button>
+    </div>
+  </div>
+) : (
+  <div className="sticky top-0 z-10 flex justify-center">
+    <button 
+      onClick={() => setShowSectionNav(true)}
+      className="bg-white rounded-b-lg shadow-md px-3 py-1 text-slate-500 hover:text-indigo-600 flex items-center space-x-1"
+      title="Show navigation"
+    >
+      <ChevronDown size={16} />
+      <span className="text-xs font-medium">Section Nav</span>
+    </button>
+  </div>
+)}
               
               {/* Scripture sections */}
               {activeSectionsList.map((section, index) => (
