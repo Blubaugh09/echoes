@@ -1,14 +1,114 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Book, ZoomIn, ZoomOut, ChevronDown, ChevronUp, Info, Layers, ArrowRight, Search, ChevronLeft, ChevronRight, Eye, EyeOff, Maximize, Minimize } from 'lucide-react';
-import { bibleStructure } from '../constants/bibleStructure';
-import { bibleSections } from '../constants/bibleSections';
-import { passageSections } from '../constants/passageSections';
-import { ESV_API_URL, ESV_API_KEY } from '../constants/apiConfig';
-import { generateSectionIds } from '../constants/sectionIds';
 
 const BiblicalConnectionsApp = () => {
+  // Complete Bible structure with book names and chapter counts
+  const bibleStructure = [
+    // Old Testament
+    { id: "genesis", name: "Genesis", chapters: 50, testament: "old" },
+    { id: "exodus", name: "Exodus", chapters: 40, testament: "old" },
+    { id: "leviticus", name: "Leviticus", chapters: 27, testament: "old" },
+    { id: "numbers", name: "Numbers", chapters: 36, testament: "old" },
+    { id: "deuteronomy", name: "Deuteronomy", chapters: 34, testament: "old" },
+    { id: "joshua", name: "Joshua", chapters: 24, testament: "old" },
+    { id: "judges", name: "Judges", chapters: 21, testament: "old" },
+    { id: "ruth", name: "Ruth", chapters: 4, testament: "old" },
+    { id: "1samuel", name: "1 Samuel", chapters: 31, testament: "old" },
+    { id: "2samuel", name: "2 Samuel", chapters: 24, testament: "old" },
+    { id: "1kings", name: "1 Kings", chapters: 22, testament: "old" },
+    { id: "2kings", name: "2 Kings", chapters: 25, testament: "old" },
+    { id: "1chronicles", name: "1 Chronicles", chapters: 29, testament: "old" },
+    { id: "2chronicles", name: "2 Chronicles", chapters: 36, testament: "old" },
+    { id: "ezra", name: "Ezra", chapters: 10, testament: "old" },
+    { id: "nehemiah", name: "Nehemiah", chapters: 13, testament: "old" },
+    { id: "esther", name: "Esther", chapters: 10, testament: "old" },
+    { id: "job", name: "Job", chapters: 42, testament: "old" },
+    { id: "psalms", name: "Psalms", chapters: 150, testament: "old" },
+    { id: "proverbs", name: "Proverbs", chapters: 31, testament: "old" },
+    { id: "ecclesiastes", name: "Ecclesiastes", chapters: 12, testament: "old" },
+    { id: "songofsolomon", name: "Song of Solomon", chapters: 8, testament: "old" },
+    { id: "isaiah", name: "Isaiah", chapters: 66, testament: "old" },
+    { id: "jeremiah", name: "Jeremiah", chapters: 52, testament: "old" },
+    { id: "lamentations", name: "Lamentations", chapters: 5, testament: "old" },
+    { id: "ezekiel", name: "Ezekiel", chapters: 48, testament: "old" },
+    { id: "daniel", name: "Daniel", chapters: 12, testament: "old" },
+    { id: "hosea", name: "Hosea", chapters: 14, testament: "old" },
+    { id: "joel", name: "Joel", chapters: 3, testament: "old" },
+    { id: "amos", name: "Amos", chapters: 9, testament: "old" },
+    { id: "obadiah", name: "Obadiah", chapters: 1, testament: "old" },
+    { id: "jonah", name: "Jonah", chapters: 4, testament: "old" },
+    { id: "micah", name: "Micah", chapters: 7, testament: "old" },
+    { id: "nahum", name: "Nahum", chapters: 3, testament: "old" },
+    { id: "habakkuk", name: "Habakkuk", chapters: 3, testament: "old" },
+    { id: "zephaniah", name: "Zephaniah", chapters: 3, testament: "old" },
+    { id: "haggai", name: "Haggai", chapters: 2, testament: "old" },
+    { id: "zechariah", name: "Zechariah", chapters: 14, testament: "old" },
+    { id: "malachi", name: "Malachi", chapters: 4, testament: "old" },
+    // New Testament
+    { id: "matthew", name: "Matthew", chapters: 28, testament: "new" },
+    { id: "mark", name: "Mark", chapters: 16, testament: "new" },
+    { id: "luke", name: "Luke", chapters: 24, testament: "new" },
+    { id: "john", name: "John", chapters: 21, testament: "new" },
+    { id: "acts", name: "Acts", chapters: 28, testament: "new" },
+    { id: "romans", name: "Romans", chapters: 16, testament: "new" },
+    { id: "1corinthians", name: "1 Corinthians", chapters: 16, testament: "new" },
+    { id: "2corinthians", name: "2 Corinthians", chapters: 13, testament: "new" },
+    { id: "galatians", name: "Galatians", chapters: 6, testament: "new" },
+    { id: "ephesians", name: "Ephesians", chapters: 6, testament: "new" },
+    { id: "philippians", name: "Philippians", chapters: 4, testament: "new" },
+    { id: "colossians", name: "Colossians", chapters: 4, testament: "new" },
+    { id: "1thessalonians", name: "1 Thessalonians", chapters: 5, testament: "new" },
+    { id: "2thessalonians", name: "2 Thessalonians", chapters: 3, testament: "new" },
+    { id: "1timothy", name: "1 Timothy", chapters: 6, testament: "new" },
+    { id: "2timothy", name: "2 Timothy", chapters: 4, testament: "new" },
+    { id: "titus", name: "Titus", chapters: 3, testament: "new" },
+    { id: "philemon", name: "Philemon", chapters: 1, testament: "new" },
+    { id: "hebrews", name: "Hebrews", chapters: 13, testament: "new" },
+    { id: "james", name: "James", chapters: 5, testament: "new" },
+    { id: "1peter", name: "1 Peter", chapters: 5, testament: "new" },
+    { id: "2peter", name: "2 Peter", chapters: 3, testament: "new" },
+    { id: "1john", name: "1 John", chapters: 5, testament: "new" },
+    { id: "2john", name: "2 John", chapters: 1, testament: "new" },
+    { id: "3john", name: "3 John", chapters: 1, testament: "new" },
+    { id: "jude", name: "Jude", chapters: 1, testament: "new" },
+    { id: "revelation", name: "Revelation", chapters: 22, testament: "new" }
+  ];
 
+  // Define Bible narrative sections
+  const bibleSections = [
+    // Genesis narrative arc
+    { id: "creation", reference: "Genesis 1", title: "Creation", book: "genesis", chapter: 1 },
+    { id: "eden", reference: "Genesis 2", title: "Eden", book: "genesis", chapter: 2 },
+    { id: "fall", reference: "Genesis 3", title: "Fall", book: "genesis", chapter: 3 },
+    { id: "flood", reference: "Genesis 6-9", title: "Flood", book: "genesis", chapter: 6 },
+    { id: "babel", reference: "Genesis 11", title: "Babel", book: "genesis", chapter: 11 },
+    { id: "abraham", reference: "Genesis 12", title: "Abraham", book: "genesis", chapter: 12 },
+    // Exodus to Deuteronomy
+    { id: "exodus", reference: "Exodus 1", title: "Exodus", book: "exodus", chapter: 1 },
+    { id: "sinai", reference: "Exodus 19", title: "Sinai", book: "exodus", chapter: 19 },
+    { id: "tabernacle", reference: "Exodus 25", title: "Tabernacle", book: "exodus", chapter: 25 },
+    { id: "wilderness", reference: "Numbers 10", title: "Wilderness", book: "numbers", chapter: 10 },
+    // Historical books
+    { id: "conquest", reference: "Joshua 1", title: "Conquest", book: "joshua", chapter: 1 },
+    { id: "judges", reference: "Judges 1", title: "Judges", book: "judges", chapter: 1 },
+    { id: "kingdom", reference: "1 Samuel 8", title: "Kingdom", book: "1samuel", chapter: 8 },
+    { id: "exile", reference: "2 Kings 25", title: "Exile", book: "2kings", chapter: 25 },
+    { id: "return", reference: "Ezra 1", title: "Return", book: "ezra", chapter: 1 },
+    // Gospels
+    { id: "incarnation", reference: "Matthew 1", title: "Incarnation", book: "matthew", chapter: 1 },
+    { id: "ministry", reference: "Mark 1", title: "Ministry", book: "mark", chapter: 1 },
+    { id: "passion", reference: "John 18", title: "Passion", book: "john", chapter: 18 },
+    { id: "resurrection", reference: "Matthew 28", title: "Resurrection", book: "matthew", chapter: 28 },
+    // Acts to Revelation
+    { id: "church", reference: "Acts 2", title: "Church", book: "acts", chapter: 2 },
+    { id: "mission", reference: "Acts 13", title: "Mission", book: "acts", chapter: 13 },
+    { id: "letters", reference: "Romans 1", title: "Letters", book: "romans", chapter: 1 },
+    { id: "revelation", reference: "Revelation 1", title: "Revelation", book: "revelation", chapter: 1 }
+  ];
 
+  // Define API key and settings
+  const ESV_API_KEY = 'c3be9ae20e39bd6637c709cd2e94fd42135764d1'; // Your ESV API key
+  const ESV_API_URL = 'https://api.esv.org/v3/passage/text/';
 
   // State for Bible text and navigation
   const [bibleText, setBibleText] = useState({});
@@ -40,7 +140,39 @@ const BiblicalConnectionsApp = () => {
     };
   }, []);
 
-
+  // Generate section IDs based on book and chapter
+  const generateSectionIds = (book, chapter) => {
+    // Special handling for Genesis 1-3 (our visualization data)
+    if (book === "genesis" && chapter >= 1 && chapter <= 3) {
+      const sectionMapping = {
+        1: [
+          { id: "Genesis 1:1-2", title: "Creation Beginning" },
+          { id: "Genesis 1:3-25", title: "Six Days of Creation" },
+          { id: "Genesis 1:26-31", title: "Creation of Humanity" }
+        ],
+        2: [
+          { id: "Genesis 2:1-3", title: "Sabbath Rest" },
+          { id: "Genesis 2:4-17", title: "Garden of Eden" },
+          { id: "Genesis 2:18-25", title: "Creation of Woman" }
+        ],
+        3: [
+          { id: "Genesis 3:1-7", title: "The Temptation" },
+          { id: "Genesis 3:8-19", title: "The Judgment" },
+          { id: "Genesis 3:20-24", title: "Consequence and Promise" }
+        ]
+      };
+      
+      return sectionMapping[chapter] || [];
+    }
+    
+    // For other books/chapters, create a single section for the whole chapter
+    const book_obj = bibleStructure.find(b => b.id === book);
+    if (book_obj) {
+      return [{ id: `${book_obj.name} ${chapter}`, title: "Full Chapter" }];
+    }
+    
+    return []; // Return empty array for books/chapters without defined sections
+  };
   
   // Effect to scroll the active narrative section into view
   useEffect(() => {
@@ -178,7 +310,545 @@ const BiblicalConnectionsApp = () => {
     sectionRefs.current = chapterSections.map(() => React.createRef());
   }, [chapterSections]);
   
-
+  // Connections visualization data structure
+  // Genesis 1-3 connections (existing data from your original code)
+  const passageSections = {
+    "Genesis 1:1-2": {
+      connections: [
+        { 
+          id: 1, 
+          verse: "Genesis 1:1-2", 
+          theme: "Creation Beginning", 
+          label: "God's initial creation",
+          x: 160, 
+          y: 60, 
+          size: 60,
+          connections: [
+            { targetId: 2, type: "direct_reference", strength: 0.9, level: 1 },
+            { targetId: 3, type: "thematic", strength: 0.7, level: 1 },
+          ],
+          deeperConnections: [
+            { id: 6, verse: "Hebrews 11:3", theme: "Faith in Creation", label: "By faith we understand the universe was formed", level: 2, x: 400, y: 200, size: 18 },
+            { id: 7, verse: "Revelation 4:11", theme: "Creator Worship", label: "Worthy to receive glory as Creator", level: 3, x: 440, y: 240, size: 16 }
+          ]
+        },
+        { 
+          id: 2, 
+          verse: "John 1:1-3", 
+          theme: "The Word", 
+          label: "In the beginning was the Word",
+          x: 300, 
+          y: 40, 
+          size: 25,
+          connections: [],
+          deeperConnections: [
+            { id: 8, verse: "Colossians 1:16-17", theme: "Christ's Preeminence", label: "All things created through and for Him", level: 2, x: 430, y: 30, size: 20 },
+            { id: 9, verse: "Hebrews 1:2", theme: "Son as Creator", label: "Through whom He made the universe", level: 2, x: 460, y: 70, size: 18 },
+            { id: 10, verse: "1 Corinthians 8:6", theme: "One Lord", label: "One Lord through whom all things came", level: 3, x: 520, y: 50, size: 16 }
+          ]
+        },
+        { 
+          id: 3, 
+          verse: "Psalm 33:6", 
+          theme: "Creation by Word", 
+          label: "By the word of the LORD",
+          x: 300, 
+          y: 130, 
+          size: 22,
+          connections: [],
+          deeperConnections: [
+            { id: 11, verse: "Psalm 148:5", theme: "Command to Exist", label: "He commanded and they were created", level: 2, x: 440, y: 140, size: 18 }
+          ]
+        }
+      ]
+    },
+    "Genesis 1:3-25": {
+      connections: [
+        { 
+          id: 1, 
+          verse: "Genesis 1:3-25", 
+          theme: "Creation Process", 
+          label: "Six days of creation",
+          x: 160, 
+          y: 60, 
+          size: 30,
+          connections: [
+            { targetId: 2, type: "direct_reference", strength: 0.9, level: 1 },
+            { targetId: 3, type: "thematic", strength: 0.7, level: 1 },
+            { targetId: 4, type: "symbolic", strength: 0.8, level: 1 }
+          ],
+          deeperConnections: [
+            { id: 12, verse: "Jeremiah 10:12", theme: "Wisdom in Creation", label: "God founded the world by His wisdom", level: 2, x: 100, y: 200, size: 18 },
+            { id: 13, verse: "Romans 1:20", theme: "Divine Revelation", label: "God's qualities seen in creation", level: 2, x: 200, y: 200, size: 19 },
+            { id: 14, verse: "2 Peter 3:5", theme: "Creation by Word", label: "Earth formed at God's command", level: 3, x: 150, y: 250, size: 16 }
+          ]
+        },
+        { 
+          id: 2, 
+          verse: "Psalm 104:1-30", 
+          theme: "God's Sovereignty", 
+          label: "Creation's diversity",
+          x: 300, 
+          y: 30, 
+          size: 25,
+          connections: [],
+          deeperConnections: [
+            { id: 15, verse: "Psalm 19:1-4", theme: "Heavens Declare", label: "Heavens declare God's glory", level: 2, x: 400, y: 20, size: 18 }
+          ]
+        },
+        { 
+          id: 3, 
+          verse: "Isaiah 45:7", 
+          theme: "Creator of All", 
+          label: "I form light and create darkness",
+          x: 280, 
+          y: 120, 
+          size: 22,
+          connections: [],
+          deeperConnections: [
+            { id: 16, verse: "Amos 4:13", theme: "Forms Mountains", label: "Forms mountains and creates wind", level: 2, x: 380, y: 130, size: 18 }
+          ]
+        },
+        { 
+          id: 4, 
+          verse: "Job 38:4-11", 
+          theme: "Divine Architecture", 
+          label: "God questions Job about creation",
+          x: 330, 
+          y: 190, 
+          size: 20,
+          connections: [],
+          deeperConnections: [
+            { id: 17, verse: "Proverbs 8:22-31", theme: "Wisdom Present", label: "Wisdom present at creation", level: 2, x: 420, y: 190, size: 18 },
+            { id: 18, verse: "Job 26:7-14", theme: "God's Power", label: "He suspends the earth over nothing", level: 3, x: 460, y: 220, size: 16 }
+          ]
+        }
+      ]
+    },
+    "Genesis 1:26-31": {
+      connections: [
+        { 
+          id: 1, 
+          verse: "Genesis 1:26-31", 
+          theme: "Imago Dei", 
+          label: "Humanity in God's image",
+          x: 160, 
+          y: 60, 
+          size: 30,
+          connections: [
+            { targetId: 2, type: "direct_reference", strength: 0.9, level: 1 },
+            { targetId: 3, type: "thematic", strength: 0.7, level: 1 },
+            { targetId: 4, type: "symbolic", strength: 0.8, level: 1 },
+            { targetId: 5, type: "thematic", strength: 0.6, level: 1 }
+          ],
+          deeperConnections: [
+            { id: 19, verse: "1 Corinthians 11:7", theme: "Man as Image", label: "Man is the image and glory of God", level: 2, x: 100, y: 180, size: 18 },
+            { id: 20, verse: "James 3:9", theme: "Human Dignity", label: "Humans made in God's likeness", level: 2, x: 180, y: 200, size: 17 },
+            { id: 21, verse: "Romans 8:29", theme: "Conforming to Image", label: "Conformed to the image of His Son", level: 3, x: 140, y: 230, size: 16 }
+          ]
+        },
+        { 
+          id: 2, 
+          verse: "Colossians 1:15", 
+          theme: "Image of God", 
+          label: "Christ is the image of God",
+          x: 320, 
+          y: 30, 
+          size: 25,
+          connections: [],
+          deeperConnections: [
+            { id: 22, verse: "2 Corinthians 4:4", theme: "Christ as Image", label: "Christ, who is the image of God", level: 2, x: 410, y: 20, size: 18 },
+            { id: 23, verse: "Hebrews 1:3", theme: "Exact Representation", label: "Exact representation of God's being", level: 3, x: 450, y: 50, size: 16 }
+          ]
+        },
+        { 
+          id: 3, 
+          verse: "Psalm 8:3-8", 
+          theme: "Human Dignity", 
+          label: "Crowned with glory and honor",
+          x: 290, 
+          y: 120, 
+          size: 22,
+          connections: [],
+          deeperConnections: [
+            { id: 24, verse: "Hebrews 2:6-8", theme: "Fulfillment in Christ", label: "Everything under human feet", level: 2, x: 390, y: 110, size: 18 }
+          ]
+        },
+        { 
+          id: 4, 
+          verse: "Matthew 28:18-20", 
+          theme: "Dominion Mandate", 
+          label: "Authority given to disciples",
+          x: 350, 
+          y: 180, 
+          size: 20,
+          connections: [],
+          deeperConnections: [
+            { id: 25, verse: "Acts 1:8", theme: "Empowered Witness", label: "Power to be witnesses", level: 2, x: 430, y: 190, size: 17 }
+          ]
+        },
+        { 
+          id: 5, 
+          verse: "Ephesians 4:24", 
+          theme: "New Creation", 
+          label: "New self created like God",
+          x: 380, 
+          y: 90, 
+          size: 18,
+          connections: [],
+          deeperConnections: [
+            { id: 26, verse: "2 Corinthians 5:17", theme: "New Creation", label: "New creation in Christ", level: 2, x: 460, y: 80, size: 17 },
+            { id: 27, verse: "Colossians 3:10", theme: "Renewed Knowledge", label: "Renewed in knowledge of Creator", level: 2, x: 480, y: 120, size: 16 }
+          ]
+        }
+      ]
+    },
+    
+    // Genesis 2 connections
+    "Genesis 2:1-3": {
+      connections: [
+        { 
+          id: 1, 
+          verse: "Genesis 2:1-3", 
+          theme: "Sabbath Rest", 
+          label: "God rested on the seventh day",
+          x: 160, 
+          y: 60, 
+          size: 30,
+          connections: [
+            { targetId: 2, type: "direct_reference", strength: 0.9, level: 1 },
+            { targetId: 3, type: "thematic", strength: 0.8, level: 1 },
+          ],
+          deeperConnections: [
+            { id: 28, verse: "Mark 2:27-28", theme: "Lord of Sabbath", label: "Son of Man is Lord of the Sabbath", level: 2, x: 400, y: 180, size: 18 },
+            { id: 29, verse: "Isaiah 58:13-14", theme: "Sabbath Delight", label: "Call the Sabbath a delight", level: 3, x: 440, y: 220, size: 16 }
+          ]
+        },
+        { 
+          id: 2, 
+          verse: "Exodus 20:8-11", 
+          theme: "Sabbath Command", 
+          label: "Remember the Sabbath day",
+          x: 300, 
+          y: 40, 
+          size: 25,
+          connections: [],
+          deeperConnections: [
+            { id: 30, verse: "Deuteronomy 5:12-15", theme: "Sabbath Liberation", label: "Observe the Sabbath", level: 2, x: 430, y: 30, size: 20 }
+          ]
+        },
+        { 
+          id: 3, 
+          verse: "Hebrews 4:1-11", 
+          theme: "Spiritual Rest", 
+          label: "A Sabbath-rest for the people of God",
+          x: 300, 
+          y: 130, 
+          size: 22,
+          connections: [],
+          deeperConnections: [
+            { id: 31, verse: "Matthew 11:28-30", theme: "Rest for Souls", label: "I will give you rest", level: 2, x: 440, y: 140, size: 18 }
+          ]
+        }
+      ]
+    },
+    "Genesis 2:4-17": {
+      connections: [
+        { 
+          id: 1, 
+          verse: "Genesis 2:4-17", 
+          theme: "Garden of Eden", 
+          label: "God plants a garden",
+          x: 160, 
+          y: 60, 
+          size: 30,
+          connections: [
+            { targetId: 2, type: "direct_reference", strength: 0.8, level: 1 },
+            { targetId: 3, type: "thematic", strength: 0.7, level: 1 },
+            { targetId: 4, type: "symbolic", strength: 0.9, level: 1 }
+          ],
+          deeperConnections: [
+            { id: 32, verse: "Ezekiel 36:35", theme: "Restored Garden", label: "Like the garden of Eden", level: 2, x: 100, y: 200, size: 18 },
+            { id: 33, verse: "Isaiah 51:3", theme: "Eden Comfort", label: "Her desert like Eden", level: 2, x: 200, y: 200, size: 19 }
+          ]
+        },
+        { 
+          id: 2, 
+          verse: "Ezekiel 28:13-14", 
+          theme: "Eden Perfection", 
+          label: "You were in Eden, the garden of God",
+          x: 300, 
+          y: 30, 
+          size: 25,
+          connections: [],
+          deeperConnections: []
+        },
+        { 
+          id: 3, 
+          verse: "Joel 2:3", 
+          theme: "Eden Contrast", 
+          label: "Like the garden of Eden before them",
+          x: 280, 
+          y: 120, 
+          size: 22,
+          connections: [],
+          deeperConnections: []
+        },
+        { 
+          id: 4, 
+          verse: "Revelation 22:1-5", 
+          theme: "New Eden", 
+          label: "Tree of life in paradise",
+          x: 330, 
+          y: 190, 
+          size: 20,
+          connections: [],
+          deeperConnections: [
+            { id: 34, verse: "Revelation 2:7", theme: "Eden Promise", label: "Right to eat from the tree of life", level: 2, x: 420, y: 190, size: 18 }
+          ]
+        }
+      ]
+    },
+    "Genesis 2:18-25": {
+      connections: [
+        { 
+          id: 1, 
+          verse: "Genesis 2:18-25", 
+          theme: "Marriage Origin", 
+          label: "One flesh union",
+          x: 160, 
+          y: 60, 
+          size: 30,
+          connections: [
+            { targetId: 2, type: "direct_reference", strength: 0.9, level: 1 },
+            { targetId: 3, type: "thematic", strength: 0.7, level: 1 },
+            { targetId: 4, type: "symbolic", strength: 0.8, level: 1 }
+          ],
+          deeperConnections: [
+            { id: 35, verse: "1 Timothy 2:13", theme: "Creation Order", label: "Adam was formed first", level: 2, x: 100, y: 180, size: 18 }
+          ]
+        },
+        { 
+          id: 2, 
+          verse: "Matthew 19:4-6", 
+          theme: "Marriage Permanence", 
+          label: "What God has joined together",
+          x: 320, 
+          y: 30, 
+          size: 25,
+          connections: [],
+          deeperConnections: [
+            { id: 36, verse: "Mark 10:6-9", theme: "Creation Design", label: "At the beginning of creation", level: 2, x: 410, y: 20, size: 18 }
+          ]
+        },
+        { 
+          id: 3, 
+          verse: "1 Corinthians 11:8-9", 
+          theme: "Creation Order", 
+          label: "Woman from man, for man",
+          x: 290, 
+          y: 120, 
+          size: 22,
+          connections: [],
+          deeperConnections: []
+        },
+        { 
+          id: 4, 
+          verse: "Ephesians 5:31-32", 
+          theme: "Marriage Mystery", 
+          label: "Christ and the church",
+          x: 350, 
+          y: 180, 
+          size: 20,
+          connections: [],
+          deeperConnections: [
+            { id: 37, verse: "Revelation 19:7-9", theme: "Marriage Supper", label: "Wedding of the Lamb", level: 2, x: 430, y: 190, size: 17 }
+          ]
+        }
+      ]
+    },
+    
+    // Genesis 3 connections
+    "Genesis 3:1-7": {
+      connections: [
+        { 
+          id: 1, 
+          verse: "Genesis 3:1-7", 
+          theme: "The Fall", 
+          label: "First temptation and sin",
+          x: 160, 
+          y: 60, 
+          size: 30,
+          connections: [
+            { targetId: 2, type: "direct_reference", strength: 0.9, level: 1 },
+            { targetId: 3, type: "thematic", strength: 0.8, level: 1 },
+            { targetId: 4, type: "symbolic", strength: 0.7, level: 1 }
+          ],
+          deeperConnections: [
+            { id: 38, verse: "James 1:14-15", theme: "Sin Process", label: "Desire gives birth to sin", level: 2, x: 100, y: 200, size: 18 },
+            { id: 39, verse: "1 John 2:16", theme: "Worldly Desires", label: "Lust of the flesh and eyes", level: 2, x: 200, y: 200, size: 19 }
+          ]
+        },
+        { 
+          id: 2, 
+          verse: "2 Corinthians 11:3", 
+          theme: "Serpent's Deception", 
+          label: "Eve was deceived by the serpent",
+          x: 300, 
+          y: 30, 
+          size: 25,
+          connections: [],
+          deeperConnections: [
+            { id: 40, verse: "1 Timothy 2:14", theme: "Deception", label: "The woman was deceived", level: 2, x: 430, y: 30, size: 20 }
+          ]
+        },
+        { 
+          id: 3, 
+          verse: "Romans 5:12", 
+          theme: "Sin's Entrance", 
+          label: "Sin entered through one man",
+          x: 280, 
+          y: 120, 
+          size: 22,
+          connections: [],
+          deeperConnections: [
+            { id: 41, verse: "1 Corinthians 15:21-22", theme: "Death Through Adam", label: "By a man came death", level: 2, x: 380, y: 130, size: 18 }
+          ]
+        },
+        { 
+          id: 4, 
+          verse: "Revelation 12:9", 
+          theme: "Ancient Serpent", 
+          label: "That ancient serpent called the devil",
+          x: 330, 
+          y: 190, 
+          size: 20,
+          connections: [],
+          deeperConnections: [
+            { id: 42, verse: "John 8:44", theme: "Father of Lies", label: "He was a murderer from the beginning", level: 2, x: 420, y: 190, size: 18 }
+          ]
+        }
+      ]
+    },
+    "Genesis 3:8-19": {
+      connections: [
+        { 
+          id: 1, 
+          verse: "Genesis 3:8-19", 
+          theme: "Divine Judgment", 
+          label: "Consequences of sin",
+          x: 160, 
+          y: 60, 
+          size: 30,
+          connections: [
+            { targetId: 2, type: "direct_reference", strength: 0.9, level: 1 },
+            { targetId: 3, type: "thematic", strength: 0.7, level: 1 },
+            { targetId: 4, type: "symbolic", strength: 0.8, level: 1 }
+          ],
+          deeperConnections: [
+            { id: 43, verse: "Romans 8:20-22", theme: "Creation Groans", label: "Creation subjected to frustration", level: 2, x: 100, y: 200, size: 18 },
+            { id: 44, verse: "Psalm 90:7-10", theme: "Human Frailty", label: "Our days pass under God's wrath", level: 3, x: 150, y: 250, size: 16 }
+          ]
+        },
+        { 
+          id: 2, 
+          verse: "Romans 8:1-4", 
+          theme: "No Condemnation", 
+          label: "No condemnation in Christ",
+          x: 300, 
+          y: 30, 
+          size: 25,
+          connections: [],
+          deeperConnections: [
+            { id: 45, verse: "Galatians 3:13", theme: "Curse Removed", label: "Christ redeemed us from the curse", level: 2, x: 400, y: 20, size: 18 }
+          ]
+        },
+        { 
+          id: 3, 
+          verse: "1 Timothy 2:11-15", 
+          theme: "Woman's Role", 
+          label: "Childbearing connection",
+          x: 280, 
+          y: 120, 
+          size: 22,
+          connections: [],
+          deeperConnections: []
+        },
+        { 
+          id: 4, 
+          verse: "Genesis 5:29", 
+          theme: "Rest from Toil", 
+          label: "Relief from painful toil",
+          x: 330, 
+          y: 190, 
+          size: 20,
+          connections: [],
+          deeperConnections: []
+        }
+      ]
+    },
+    "Genesis 3:20-24": {
+      connections: [
+        { 
+          id: 1, 
+          verse: "Genesis 3:20-24", 
+          theme: "Promise & Exile", 
+          label: "First promise and exile from Eden",
+          x: 160, 
+          y: 60, 
+          size: 30,
+          connections: [
+            { targetId: 2, type: "direct_reference", strength: 0.8, level: 1 },
+            { targetId: 3, type: "thematic", strength: 0.9, level: 1 },
+            { targetId: 4, type: "symbolic", strength: 0.7, level: 1 }
+          ],
+          deeperConnections: [
+            { id: 46, verse: "Hebrews 10:19-22", theme: "Access Restored", label: "Enter the Most Holy Place", level: 2, x: 100, y: 180, size: 18 },
+            { id: 47, verse: "1 Peter 1:3-5", theme: "Living Hope", label: "New birth into a living hope", level: 3, x: 140, y: 230, size: 16 }
+          ]
+        },
+        { 
+          id: 2, 
+          verse: "Romans 16:20", 
+          theme: "Serpent Crushed", 
+          label: "God will crush Satan",
+          x: 320, 
+          y: 30, 
+          size: 25,
+          connections: [],
+          deeperConnections: [
+            { id: 48, verse: "Revelation 20:1-3", theme: "Satan Bound", label: "Bound for a thousand years", level: 2, x: 410, y: 20, size: 18 }
+          ]
+        },
+        { 
+          id: 3, 
+          verse: "Hebrews 1:14", 
+          theme: "Angelic Protection", 
+          label: "Ministering spirits sent to serve",
+          x: 290, 
+          y: 120, 
+          size: 22,
+          connections: [],
+          deeperConnections: [
+            { id: 49, verse: "Psalm 91:11-12", theme: "Guardian Angels", label: "Angels to guard you", level: 2, x: 390, y: 110, size: 18 }
+          ]
+        },
+        { 
+          id: 4, 
+          verse: "John 14:1-6", 
+          theme: "Way Home", 
+          label: "I am the way, the truth, and the life",
+          x: 350, 
+          y: 180, 
+          size: 20,
+          connections: [],
+          deeperConnections: [
+            { id: 50, verse: "Revelation 21:1-4", theme: "New Heaven & Earth", label: "God's dwelling place with humans", level: 2, x: 430, y: 190, size: 17 }
+          ]
+        }
+      ]
+    }
+  };
 
   // Extra states for visualization and UI
   const [isExpanded, setIsExpanded] = useState(false);
@@ -199,8 +869,7 @@ const BiblicalConnectionsApp = () => {
   const edgeStyles = {
     direct_reference: { color: "#6366F1", dash: "none", thickness: 3, label: "Direct Reference" },
     thematic: { color: "#EC4899", dash: "5,5", thickness: 2, label: "Thematic Connection" },
-    symbolic: { color: "#10B981", dash: "10,5", thickness: 2, label: "Symbolic Echo" },
-    prophetic: { color: "#10B981", dash: "10,5", thickness: 2, label: "Prophetic Echo" }
+    symbolic: { color: "#10B981", dash: "10,5", thickness: 2, label: "Symbolic Echo" }
   };
   
   // Handle scroll events to update active section
