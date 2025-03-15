@@ -454,170 +454,167 @@ const BiblicalConnectionsApp = () => {
   return (
     <div className="flex flex-col h-screen bg-slate-50 text-slate-800 font-sans">
       {/* Header */}
-      <header className="p-4 bg-white shadow-sm border-b border-slate-200">
-  <div className="max-w-7xl mx-auto flex items-center justify-between">
-    {/* Left side - Logo and book selector */}
-    <div className="flex items-center space-x-4">
-      {/* Logo */}
-      <div className="flex items-center space-x-2">
-        <Book className="text-indigo-600" size={24} />
-        <h1 className="text-xl font-semibold text-indigo-700">Echoes</h1>
-      </div>
-      
-      {/* Book selector */}
-      <div className="relative">
-        <button
-          onClick={() => setShowBookSelector(!showBookSelector)}
-          className="flex items-center space-x-2 py-2 px-4 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors"
-        >
-          <span className="font-medium">{bibleStructure.find(b => b.id === activeBook)?.name || "Select Book"}</span>
-          <ChevronDown size={16} />
-        </button>
-        
-        {/* Book selector dropdown */}
-        {showBookSelector && (
-          <div className="absolute top-12 left-0 w-72 max-h-96 overflow-y-auto bg-white shadow-lg rounded-lg border border-slate-200 z-30">
-            <div className="p-3 border-b border-slate-200">
-              <div className="flex items-center space-x-2 px-2 py-1 bg-slate-100 rounded">
-                <Search size={16} className="text-slate-500" />
-                <input
-                  type="text"
-                  placeholder="Search books..."
-                  value={bookSearch}
-                  onChange={(e) => setBookSearch(e.target.value)}
-                  className="w-full bg-transparent border-none outline-none text-sm"
-                />
-              </div>
-              <div className="flex space-x-1 mt-2">
-                <button
-                  onClick={() => setActiveTestament("all")}
-                  className={`text-xs px-2 py-1 rounded ${activeTestament === "all" ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600"}`}
-                >
-                  All
-                </button>
-                <button
-                  onClick={() => setActiveTestament("old")}
-                  className={`text-xs px-2 py-1 rounded ${activeTestament === "old" ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600"}`}
-                >
-                  Old Testament
-                </button>
-                <button
-                  onClick={() => setActiveTestament("new")}
-                  className={`text-xs px-2 py-1 rounded ${activeTestament === "new" ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600"}`}
-                >
-                  New Testament
-                </button>
-              </div>
-            </div>
-            
-            <div className="p-2">
-              {filteredBooks.length === 0 ? (
-                <div className="text-center py-4 text-slate-500">No books found</div>
-              ) : (
-                <div className="grid grid-cols-2 gap-1">
-                  {filteredBooks.map(book => (
-                    <button
-                      key={book.id}
-                      onClick={() => handleBookChange(book.id)}
-                      className={`text-left px-3 py-2 rounded text-sm ${
-                        activeBook === book.id
-                          ? "bg-indigo-100 text-indigo-700 font-medium"
-                          : "hover:bg-slate-100"
-                      }`}
-                    >
-                      {book.name}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+      <header className="p-4 bg-white shadow-sm border-b border-slate-200 flex items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <Book className="text-indigo-600" size={24} />
+          <h1 className="text-xl font-semibold text-indigo-700">Echoes</h1>
+        </div>
+        <div className="flex items-center space-x-4">
+          <button 
+            onClick={toggleGraphVisibility}
+            className="p-2 rounded-full hover:bg-slate-100"
+            title={showGraph ? "Hide connections" : "Show connections"}
+          >
+            {showGraph ? <EyeOff size={20} className="text-slate-600" /> : <Eye size={20} className="text-slate-600" />}
+          </button>
+          <button 
+            onClick={() => setShowInfo(!showInfo)}
+            className="p-2 rounded-full hover:bg-slate-100"
+            title="Show info"
+          >
+            <Info size={20} className="text-slate-600" />
+          </button>
+          <div className="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm font-medium">
+            {getCurrentBookChapter()}
           </div>
-        )}
-      </div>
-    </div>
-    
-    {/* Center - Chapter navigation */}
-    <div className="flex items-center space-x-3">
-      <button
-        onClick={navigateToPreviousChapter}
-        className="p-1 rounded-full hover:bg-slate-100"
-        aria-label="Previous chapter"
-      >
-        <ChevronLeft size={20} className="text-slate-600" />
-      </button>
-      
-      <div className="relative">
-        <button
-          onClick={() => setShowChapterSelector(prev => !prev)}
-          className="flex items-center space-x-2 py-1.5 px-3 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors"
-        >
-          <span className="font-medium">Chapter {activeChapter}</span>
-          <ChevronDown size={16} />
-        </button>
-        
-        {/* Chapter selector dropdown */}
-        {showChapterSelector && (
-          <div className="absolute top-10 left-0 w-64 max-h-80 overflow-y-auto bg-white shadow-lg rounded-lg border border-slate-200 z-30">
-            <div className="p-2">
-              <div className="grid grid-cols-5 gap-1">
-                {Array.from({ length: bibleStructure.find(b => b.id === activeBook)?.chapters || 0 }, (_, i) => (
-                  <button
-                    key={`chapter-${i+1}`}
-                    onClick={() => {
-                      handleChapterChange(i+1);
-                      setShowChapterSelector(false);
-                    }}
-                    className={`h-8 w-8 text-xs rounded-full flex items-center justify-center ${
-                      activeChapter === i+1
-                        ? 'bg-indigo-600 text-white'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                    }`}
-                  >
-                    {i+1}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-      
-      <button
-        onClick={navigateToNextChapter}
-        className="p-1 rounded-full hover:bg-slate-100"
-        aria-label="Next chapter"
-      >
-        <ChevronRight size={20} className="text-slate-600" />
-      </button>
-    </div>
-    
-    {/* Right side - Control buttons */}
-    <div className="flex items-center space-x-4">
-      <button 
-        onClick={toggleGraphVisibility}
-        className="p-2 rounded-full hover:bg-slate-100"
-        title={showGraph ? "Hide connections" : "Show connections"}
-      >
-        {showGraph ? <EyeOff size={20} className="text-slate-600" /> : <Eye size={20} className="text-slate-600" />}
-      </button>
-      <button 
-        onClick={() => setShowInfo(!showInfo)}
-        className="p-2 rounded-full hover:bg-slate-100"
-        title="Show info"
-      >
-        <Info size={20} className="text-slate-600" />
-      </button>
-
-    </div>
-  </div>
-</header>
+        </div>
+      </header>
       
 {/* 
         NOTE: Add this state variable to your component:
         const [showChapterSelector, setShowChapterSelector] = useState(false);
       */}
       
-
+      {/* Book and chapter navigation */}
+      <div className="bg-white border-b border-slate-200 px-4 py-2">
+        <div className="max-w-4xl mx-auto flex justify-between items-center">
+          {/* Book selector button */}
+          <div className="relative">
+            <button
+              onClick={() => setShowBookSelector(!showBookSelector)}
+              className="flex items-center space-x-2 py-2 px-4 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors"
+            >
+              <span className="font-medium">{bibleStructure.find(b => b.id === activeBook)?.name || "Select Book"}</span>
+              <ChevronDown size={16} />
+            </button>
+            
+            {/* Book selector dropdown */}
+            {showBookSelector && (
+              <div className="absolute top-12 left-0 w-72 max-h-96 overflow-y-auto bg-white shadow-lg rounded-lg border border-slate-200 z-30">
+                <div className="p-3 border-b border-slate-200">
+                  <div className="flex items-center space-x-2 px-2 py-1 bg-slate-100 rounded">
+                    <Search size={16} className="text-slate-500" />
+                    <input
+                      type="text"
+                      placeholder="Search books..."
+                      value={bookSearch}
+                      onChange={(e) => setBookSearch(e.target.value)}
+                      className="w-full bg-transparent border-none outline-none text-sm"
+                    />
+                  </div>
+                  <div className="flex space-x-1 mt-2">
+                    <button
+                      onClick={() => setActiveTestament("all")}
+                      className={`text-xs px-2 py-1 rounded ${activeTestament === "all" ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600"}`}
+                    >
+                      All
+                    </button>
+                    <button
+                      onClick={() => setActiveTestament("old")}
+                      className={`text-xs px-2 py-1 rounded ${activeTestament === "old" ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600"}`}
+                    >
+                      Old Testament
+                    </button>
+                    <button
+                      onClick={() => setActiveTestament("new")}
+                      className={`text-xs px-2 py-1 rounded ${activeTestament === "new" ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600"}`}
+                    >
+                      New Testament
+                    </button>
+                  </div>
+                </div>
+                
+                <div className="p-2">
+                  {filteredBooks.length === 0 ? (
+                    <div className="text-center py-4 text-slate-500">No books found</div>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-1">
+                      {filteredBooks.map(book => (
+                        <button
+                          key={book.id}
+                          onClick={() => handleBookChange(book.id)}
+                          className={`text-left px-3 py-2 rounded text-sm ${
+                            activeBook === book.id
+                              ? "bg-indigo-100 text-indigo-700 font-medium"
+                              : "hover:bg-slate-100"
+                          }`}
+                        >
+                          {book.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+          
+          {/* Chapter navigation - Updated to use dropdown */}
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={navigateToPreviousChapter}
+              className="p-1 rounded-full hover:bg-slate-100"
+              aria-label="Previous chapter"
+            >
+              <ChevronLeft size={20} className="text-slate-600" />
+            </button>
+            
+            <div className="relative">
+              <button
+                onClick={() => setShowChapterSelector(prev => !prev)}
+                className="flex items-center space-x-2 py-1.5 px-3 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors"
+              >
+                <span className="font-medium">Chapter {activeChapter}</span>
+                <ChevronDown size={16} />
+              </button>
+              
+              {/* Chapter selector dropdown */}
+              {showChapterSelector && (
+                <div className="absolute top-10 left-0 w-64 max-h-80 overflow-y-auto bg-white shadow-lg rounded-lg border border-slate-200 z-30">
+                  <div className="p-2">
+                    <div className="grid grid-cols-5 gap-1">
+                      {Array.from({ length: bibleStructure.find(b => b.id === activeBook)?.chapters || 0 }, (_, i) => (
+                        <button
+                          key={`chapter-${i+1}`}
+                          onClick={() => {
+                            handleChapterChange(i+1);
+                            setShowChapterSelector(false);
+                          }}
+                          className={`h-8 w-8 text-xs rounded-full flex items-center justify-center ${
+                            activeChapter === i+1
+                              ? 'bg-indigo-600 text-white'
+                              : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                          }`}
+                        >
+                          {i+1}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            <button
+              onClick={navigateToNextChapter}
+              className="p-1 rounded-full hover:bg-slate-100"
+              aria-label="Next chapter"
+            >
+              <ChevronRight size={20} className="text-slate-600" />
+            </button>
+          </div>
+        </div>
+      </div>
       
       {/* Bible narrative sections navigation */}
       <div className="bg-white border-b border-slate-200 relative">
