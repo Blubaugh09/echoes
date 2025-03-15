@@ -456,14 +456,13 @@ const BiblicalConnectionsApp = () => {
       {/* Header */}
       <header className="p-4 bg-white shadow-sm border-b border-slate-200">
   <div className="max-w-7xl mx-auto flex items-center justify-between">
-    {/* Left side - Logo and book selector */}
-    <div className="flex items-center space-x-4">
-      {/* Logo */}
-      <div className="flex items-center space-x-2">
-        <Book className="text-indigo-600" size={24} />
-        <h1 className="text-xl font-semibold text-indigo-700">Echoes</h1>
-      </div>
-      
+    {/* Left side - Logo or other elements */}
+    <div className="w-1/3 flex justify-start">
+      {/* This space can be used for a logo or left-aligned elements */}
+    </div>
+    
+    {/* Center - Book and chapter navigation */}
+    <div className="w-1/3 flex items-center justify-center space-x-3">
       {/* Book selector */}
       <div className="relative">
         <button
@@ -534,24 +533,14 @@ const BiblicalConnectionsApp = () => {
           </div>
         )}
       </div>
-    </div>
-    
-    {/* Center - Chapter navigation */}
-    <div className="flex items-center space-x-3">
-      <button
-        onClick={navigateToPreviousChapter}
-        className="p-1 rounded-full hover:bg-slate-100"
-        aria-label="Previous chapter"
-      >
-        <ChevronLeft size={20} className="text-slate-600" />
-      </button>
       
+      {/* Chapter selector */}
       <div className="relative">
         <button
           onClick={() => setShowChapterSelector(prev => !prev)}
           className="flex items-center space-x-2 py-1.5 px-3 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors"
         >
-          <span className="font-medium">Chapter {activeChapter}</span>
+          <span className="font-medium">{activeChapter}</span>
           <ChevronDown size={16} />
         </button>
         
@@ -581,18 +570,10 @@ const BiblicalConnectionsApp = () => {
           </div>
         )}
       </div>
-      
-      <button
-        onClick={navigateToNextChapter}
-        className="p-1 rounded-full hover:bg-slate-100"
-        aria-label="Next chapter"
-      >
-        <ChevronRight size={20} className="text-slate-600" />
-      </button>
     </div>
     
     {/* Right side - Control buttons */}
-    <div className="flex items-center space-x-4">
+    <div className="w-1/3 flex items-center justify-end space-x-4">
       <button 
         onClick={toggleGraphVisibility}
         className="p-2 rounded-full hover:bg-slate-100"
@@ -600,14 +581,6 @@ const BiblicalConnectionsApp = () => {
       >
         {showGraph ? <EyeOff size={20} className="text-slate-600" /> : <Eye size={20} className="text-slate-600" />}
       </button>
-      <button 
-        onClick={() => setShowInfo(!showInfo)}
-        className="p-2 rounded-full hover:bg-slate-100"
-        title="Show info"
-      >
-        <Info size={20} className="text-slate-600" />
-      </button>
-
     </div>
   </div>
 </header>
