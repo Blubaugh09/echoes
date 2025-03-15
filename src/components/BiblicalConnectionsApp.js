@@ -690,21 +690,7 @@ const BiblicalConnectionsApp = () => {
           </div>
         </div>
       )}
-      
-      {/* Depth level info modal */}
-      {showLevelInfo && (
-        <div className="absolute top-16 left-20 z-20 bg-white rounded-lg shadow-lg p-4 w-72 border border-slate-200">
-          <h3 className="font-semibold text-indigo-700 mb-2">Depth Levels Explained</h3>
-          <div className="space-y-3 text-sm">
-            <p><span className="font-semibold">Level 1:</span> Direct connections to the primary passage.</p>
-            <p><span className="font-semibold">Level 2:</span> Secondary connections that are one step removed but share important theological themes.</p>
-            <p><span className="font-semibold">Level 3:</span> Tertiary connections that reveal deeper biblical patterns and motifs.</p>
-            <div className="mt-2 text-slate-500 italic">
-              Increase the depth level to explore deeper relationships between passages.
-            </div>
-          </div>
-        </div>
-      )}
+     
       
       {/* Main content - responsive layout */}
       <div className={`flex-1 ${isLargeScreen ? 'flex flex-row' : 'flex flex-col'} overflow-hidden`}>
@@ -870,25 +856,11 @@ const BiblicalConnectionsApp = () => {
             </div>
             
             {/* Depth level controls */}
-            <div className="absolute top-4 right-4 z-10 flex flex-col space-y-2 bg-white p-3 rounded-lg shadow-md">
-              <div className="flex justify-between items-center">
-                <span className="text-xs font-medium text-slate-700">Connection Depth</span>
-                <button
-                  onClick={() => setShowLevelInfo(!showLevelInfo)}
-                  className="p-1 rounded hover:bg-slate-100"
-                >
-                  <Info size={14} className="text-slate-500" />
-                </button>
-              </div>
+            <div className="absolute top-4 right-4 z-10 flex flex-col space-y-2 ">
+              
               
               <div className="flex items-center justify-between">
-                <button
-                  onClick={decreaseDepthLevel}
-                  className="p-1 rounded hover:bg-slate-100 disabled:opacity-50"
-                  disabled={depthLevel <= 1}
-                >
-                  <ChevronDown size={18} className="text-slate-700" />
-                </button>
+                
                 
                 <div className="flex space-x-1">
                   {[1, 2, 3].map((level) => (
@@ -910,13 +882,7 @@ const BiblicalConnectionsApp = () => {
                   ))}
                 </div>
                 
-                <button
-                  onClick={increaseDepthLevel}
-                  className="p-1 rounded hover:bg-slate-100 disabled:opacity-50"
-                  disabled={depthLevel >= maxDepthLevel}
-                >
-                  <ChevronUp size={18} className="text-slate-700" />
-                </button>
+              
               </div>
             </div>
             
