@@ -18,17 +18,6 @@ import {
   BookOpen
 } from 'lucide-react';
 
-// Custom CSS for animations that aren't in Tailwind by default
-const animationStyles = `
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .animate-fade-in {
-    animation: fadeIn 0.3s ease-out forwards;
-  }
-`;
-
 const BibleBookConnections = () => {
   // Original state from your application
   const [selectedPassage, setSelectedPassage] = useState(null);
@@ -39,7 +28,6 @@ const BibleBookConnections = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollTop, setLastScrollTop] = useState(0);
-  const [headerVisible, setHeaderVisible] = useState(true);
   const [expandedSections, setExpandedSections] = useState({
     pentateuch: true,
     historical: false,
@@ -92,34 +80,6 @@ const BibleBookConnections = () => {
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
-  
-  // Handle scroll events for header visibility
-  useEffect(() => {
-    const handleScroll = () => {
-      // Only apply the hide/show behavior on smaller screens
-      if (isLargeScreen) {
-        setHeaderVisible(true);
-        return;
-      }
-      
-      const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      
-      // Show header when scrolling up, hide when scrolling down
-      if (currentScrollTop > lastScrollTop && currentScrollTop > 60) {
-        // Scrolling down & past header height
-        setHeaderVisible(false);
-      } else {
-        // Scrolling up or at the top
-        setHeaderVisible(true);
-      }
-      
-      // Update scroll position
-      setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
-    };
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollTop, isLargeScreen]);
   
   const bibleBookChapterCounts = {
     Genesis: 50, Exodus: 40, Leviticus: 27, Numbers: 36, Deuteronomy: 34,
@@ -1725,13 +1685,13 @@ const BibleBookConnections = () => {
             </div>
           ) : (
             <div className="max-w-3xl mx-auto px-8 py-8">
-              <div className="mb-6 pb-2 border-b border-indigo-100">
+              <div className="mb-3 pb-2 border-b border-indigo-100">
                 <h2 className="text-3xl font-serif font-bold text-indigo-900">{currentBibleReference}</h2>
               </div>
               
               {bibleSections.length > 0 ? (
                 bibleSections.map((section, index) => (
-                  <div key={index} className="mb-10">
+                  <div key={index} className="mb-5">
                     {section.title && section.title !== 'Introduction' && (
                       <h3 className="text-xl font-medium mb-4 text-indigo-800 pb-1 border-b border-indigo-50">{section.title}</h3>
                     )}
@@ -1754,16 +1714,10 @@ const BibleBookConnections = () => {
 
   return (
     <div className="flex flex-col h-screen bg-slate-50 text-slate-800 font-sans">
-      {/* Add custom animation styles */}
-      <style>{animationStyles}</style>
-      
-      <header className={`p-4 bg-white shadow-sm border-b border-slate-200 sticky top-0 z-40 transition-all duration-300 ${
-        !isLargeScreen && !headerVisible ? '-translate-y-full' : 'translate-y-0'
-      }`}>
+      <header className="p-3 bg-white shadow-sm border-b border-slate-200">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between gap-4 flex-wrap">
-            <h1 className="text-xl font-bold text-indigo-900">Echoes of Logos</h1>
-            
+         
             <div className="flex flex-1 items-center gap-3 justify-end">
               {/* Book selector */}
               <div className="relative">
@@ -1881,17 +1835,7 @@ const BibleBookConnections = () => {
                 </button>
               </div>
               
-              {/* Search field */}
-              <div className="relative flex-grow max-w-md">
-                <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search passages or themes..."
-                  className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
+           
               
               {/* Action buttons */}
               <div className="flex items-center gap-2">
@@ -1942,7 +1886,7 @@ const BibleBookConnections = () => {
         <div 
           className={`
             transition-all duration-300
-            ${isLargeScreen ? (showGraph ? 'w-1/2' : 'w-full') : (isExpanded ? 'h-1/5' : showGraph ? 'h-2/5' : 'h-full')}
+            ${isLargeScreen ? (showGraph ? 'w-1/2' : 'w-full') : (isExpanded ? 'h-1/5' : showGraph ? 'h-[65vh]' : 'h-full')}
           `}
         >
           {renderReadingPane()}
@@ -1951,23 +1895,22 @@ const BibleBookConnections = () => {
         {showGraph && (
           <div className={`
             transition-all duration-300 border-l border-indigo-100
-            ${isLargeScreen ? 'w-1/2' : (isExpanded ? 'h-4/5' : 'h-3/5')}
+            ${isLargeScreen ? 'w-1/2' : (isExpanded ? 'h-2/5' : 'h-1/5')}
           `}>
             {selectedPassage ? (
-              <div className="h-full flex flex-col">
-                <div className="bg-white py-3 px-4 border-b border-indigo-100 h-[56px] flex items-center">
-                  <div className="flex flex-col justify-center">
-                    <h2 className="text-lg font-bold text-indigo-900 leading-tight">{selectedPassage.title}</h2>
-                    <div className="flex items-center">
-                      <h3 className="text-sm text-indigo-600">{selectedPassage.reference}</h3>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex-1">
-                  {renderConnectionsVisualization()}
-                </div>
-              </div>
-            ) : (
+  <div className="h-full flex flex-col">
+    <div className="bg-white py-2 px-4 border-b border-indigo-100 h-[56px] flex items-center">
+      <div className="flex flex-row items-center justify-between w-full">
+        <h2 className="text-lg font-bold text-indigo-900 leading-tight">{selectedPassage.title}</h2>
+        <h3 className="text-sm text-indigo-600 ml-4">{selectedPassage.reference}</h3>
+      </div>
+    </div>
+    <div className="flex-1">
+      {renderConnectionsVisualization()}
+    </div>
+  </div>
+) : null}
+ : (
               <div className="h-full flex flex-col items-center justify-center text-center p-4">
                 <div className="w-24 h-24 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
                   <BookOpen size={48} className="text-indigo-600" />
@@ -2065,21 +2008,6 @@ const BibleBookConnections = () => {
             title="Show connections"
           >
             <Eye size={24} />
-          </button>
-        </div>
-      )}
-      
-      {/* Floating top button - only shown on small screens when header is hidden */}
-      {!isLargeScreen && !headerVisible && (
-        <div className="fixed top-4 right-4 z-50 animate-fade-in">
-          <button
-            onClick={() => {
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className="bg-indigo-600 text-white p-2 rounded-full shadow-lg hover:bg-indigo-700 transition-colors"
-            title="Scroll to top"
-          >
-            <ChevronUp size={20} />
           </button>
         </div>
       )}
