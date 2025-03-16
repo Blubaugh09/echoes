@@ -17,7 +17,8 @@ export const generateSectionIds = (book, chapter) => {
       3: [
         { id: "Genesis 3:1-7", title: "The Temptation" },
         { id: "Genesis 3:8-19", title: "The Judgment" },
-        { id: "Genesis 3:20-24", title: "Consequence and Promise" }
+        { id: "Genesis 3:20-22", title: "Consequence and Promise" },
+        { id: "Genesis 3:23-24", title: "2 extra Consequence and Promise" }
       ]
     },
     exodus: {
