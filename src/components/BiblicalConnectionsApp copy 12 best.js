@@ -56,17 +56,15 @@ const BibleBookConnections = () => {
   const [zoomLevel, setZoomLevel] = useState(1);
   const [showGraph, setShowGraph] = useState(true);
   const [nodeDragOffset, setNodeDragOffset] = useState({ x: 0, y: 0 });
-  const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [draggedNodeId, setDraggedNodeId] = useState(null);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-  const [isLargeScreen, setIsLargeScreen] = useState(false);
-  // State for connection type panel
-  const [showConnectionTypes, setShowConnectionTypes] = useState(false);
-  
-  // Responsive layout state
+  const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
   // Array to store section headings for the Bible text
   const [bibleSections, setBibleSections] = useState([]);
+  
+  // Responsive layout state
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
   const textContainerRef = useRef(null);
   
   // Check screen size
@@ -457,26 +455,8 @@ const BibleBookConnections = () => {
     }
   };
 
-  // Touch gesture state
-  const [touchDistance, setTouchDistance] = useState(null);
-  const [touchCenter, setTouchCenter] = useState(null);
-
-  // Calculate distance between two touch points
-  const getTouchDistance = (touches) => {
-    if (touches.length < 2) return null;
-    const dx = touches[0].clientX - touches[1].clientX;
-    const dy = touches[0].clientY - touches[1].clientY;
-    return Math.sqrt(dx * dx + dy * dy);
-  };
-
-  // Calculate center point between two touches
-  const getTouchCenter = (touches) => {
-    if (touches.length < 2) return null;
-    return {
-      x: (touches[0].clientX + touches[1].clientX) / 2,
-      y: (touches[0].clientY + touches[1].clientY) / 2
-    };
-  };
+  // State for connection type panel
+  const [showConnectionTypes, setShowConnectionTypes] = useState(false);
   
   const parseTextIntoSections = (text) => {
     if (!text) return [];
@@ -1342,16 +1322,13 @@ const BibleBookConnections = () => {
           style={{ 
             transform: `scale(${zoomLevel})`, 
             transformOrigin: 'center',
-            cursor: isDragging ? 'grabbing' : 'grab',
-            touchAction: 'none' // Prevent browser handling of touch gestures
+            cursor: isDragging ? 'grabbing' : 'grab'
           }}
           viewBox="0 0 800 600"
           className="transition-transform duration-200"
           onMouseDown={(e) => {
-            if (e.button === 0) { // Only handle left mouse button
-              setIsDragging(true);
-              setDragStart({ x: e.clientX, y: e.clientY });
-            }
+            setIsDragging(true);
+            setDragStart({ x: e.clientX, y: e.clientY });
           }}
           onMouseMove={(e) => {
             if (isDragging) {
@@ -1369,91 +1346,6 @@ const BibleBookConnections = () => {
           }}
           onMouseLeave={() => {
             setIsDragging(false);
-          }}
-          onTouchStart={(e) => {
-            e.preventDefault(); // Prevent default touch actions
-            if (e.touches.length === 1) {
-              // Single touch = panning
-              setIsDragging(true);
-              setDragStart({ 
-                x: e.touches[0].clientX, 
-                y: e.touches[0].clientY 
-              });
-              setTouchDistance(null);
-              setTouchCenter(null);
-            } else if (e.touches.length === 2) {
-              // Double touch = potential zoom gesture
-              setTouchDistance(getTouchDistance(e.touches));
-              setTouchCenter(getTouchCenter(e.touches));
-              setIsDragging(false);
-            }
-          }}
-          onTouchMove={(e) => {
-            e.preventDefault(); // Prevent default touch actions
-            if (e.touches.length === 1 && isDragging) {
-              // Single touch = panning
-              const dx = e.touches[0].clientX - dragStart.x;
-              const dy = e.touches[0].clientY - dragStart.y;
-              setPanOffset({
-                x: panOffset.x + dx/zoomLevel,
-                y: panOffset.y + dy/zoomLevel
-              });
-              setDragStart({ 
-                x: e.touches[0].clientX, 
-                y: e.touches[0].clientY 
-              });
-            } else if (e.touches.length === 2 && touchDistance) {
-              // Handle pinch zoom
-              const newDistance = getTouchDistance(e.touches);
-              const newCenter = getTouchCenter(e.touches);
-              
-              if (newDistance && touchDistance) {
-                // Calculate zoom factor
-                const zoomDelta = newDistance / touchDistance;
-                const newZoomLevel = Math.min(Math.max(zoomLevel * zoomDelta, 0.5), 2);
-                
-                // Update zoom
-                setZoomLevel(newZoomLevel);
-                
-                // Calculate pan adjustment for zoom around pinch center
-                if (touchCenter && newCenter) {
-                  const centerDeltaX = newCenter.x - touchCenter.x;
-                  const centerDeltaY = newCenter.y - touchCenter.y;
-                  
-                  // Adjust pan offset
-                  setPanOffset({
-                    x: panOffset.x + centerDeltaX/newZoomLevel,
-                    y: panOffset.y + centerDeltaY/newZoomLevel
-                  });
-                }
-                
-                // Update touch state
-                setTouchDistance(newDistance);
-                setTouchCenter(newCenter);
-              }
-            }
-          }}
-          onTouchEnd={(e) => {
-            // Reset touch states if no touches left
-            if (e.touches.length === 0) {
-              setIsDragging(false);
-              setTouchDistance(null);
-              setTouchCenter(null);
-            } else if (e.touches.length === 1) {
-              // Switched from pinch zoom to pan
-              setIsDragging(true);
-              setDragStart({ 
-                x: e.touches[0].clientX, 
-                y: e.touches[0].clientY 
-              });
-              setTouchDistance(null);
-              setTouchCenter(null);
-            }
-          }}
-          onTouchCancel={() => {
-            setIsDragging(false);
-            setTouchDistance(null);
-            setTouchCenter(null);
           }}
         >
           <rect width="800" height="600" fill="#f8fafc" rx="8" ry="8" />
@@ -1715,7 +1607,7 @@ const BibleBookConnections = () => {
       <header className="p-4 bg-white shadow-sm border-b border-slate-200">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between gap-4 flex-wrap">
-            <h1 className="text-xl font-bold text-indigo-900">Biblical Book Connections</h1>
+            <h1 className="text-xl font-bold text-indigo-900">Echoes of Logos</h1>
             
             <div className="flex flex-1 items-center gap-3 justify-end">
               {/* Book selector */}
@@ -1791,7 +1683,7 @@ const BibleBookConnections = () => {
                   onClick={() => setShowChapterSelector(prev => !prev)}
                   className="flex items-center space-x-2 py-2 px-3 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
                 >
-                  <span className="font-medium">Ch {currentChapter}</span>
+                  <span className="font-medium">{currentChapter}</span>
                   <ChevronDown size={16} />
                 </button>
                 {showChapterSelector && (
@@ -1927,7 +1819,7 @@ const BibleBookConnections = () => {
                 </div>
                 <h2 className="text-2xl font-bold mb-2 text-indigo-900">Select a Passage</h2>
                 <p className="text-gray-600 max-w-md">
-                  Click on "View Connections" when reading a passage to explore its links to other Scripture passages.
+                  We are still building the connections for this passage. Please select a passage from the reading pane to explore connections.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-4 justify-center max-w-xl">
                   {narrativeSections.slice(0, 3).map(section => (
