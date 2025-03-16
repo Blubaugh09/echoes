@@ -18,17 +18,6 @@ import {
   BookOpen
 } from 'lucide-react';
 
-// Custom CSS for animations that aren't in Tailwind by default
-const animationStyles = `
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .animate-fade-in {
-    animation: fadeIn 0.3s ease-out forwards;
-  }
-`;
-
 const BibleBookConnections = () => {
   // Original state from your application
   const [selectedPassage, setSelectedPassage] = useState(null);
@@ -39,7 +28,6 @@ const BibleBookConnections = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollTop, setLastScrollTop] = useState(0);
-  const [headerVisible, setHeaderVisible] = useState(true);
   const [expandedSections, setExpandedSections] = useState({
     pentateuch: true,
     historical: false,
@@ -92,34 +80,6 @@ const BibleBookConnections = () => {
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
-  
-  // Handle scroll events for header visibility
-  useEffect(() => {
-    const handleScroll = () => {
-      // Only apply the hide/show behavior on smaller screens
-      if (isLargeScreen) {
-        setHeaderVisible(true);
-        return;
-      }
-      
-      const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      
-      // Show header when scrolling up, hide when scrolling down
-      if (currentScrollTop > lastScrollTop && currentScrollTop > 60) {
-        // Scrolling down & past header height
-        setHeaderVisible(false);
-      } else {
-        // Scrolling up or at the top
-        setHeaderVisible(true);
-      }
-      
-      // Update scroll position
-      setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
-    };
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollTop, isLargeScreen]);
   
   const bibleBookChapterCounts = {
     Genesis: 50, Exodus: 40, Leviticus: 27, Numbers: 36, Deuteronomy: 34,
@@ -1754,12 +1714,7 @@ const BibleBookConnections = () => {
 
   return (
     <div className="flex flex-col h-screen bg-slate-50 text-slate-800 font-sans">
-      {/* Add custom animation styles */}
-      <style>{animationStyles}</style>
-      
-      <header className={`p-4 bg-white shadow-sm border-b border-slate-200 sticky top-0 z-40 transition-all duration-300 ${
-        !isLargeScreen && !headerVisible ? '-translate-y-full' : 'translate-y-0'
-      }`}>
+      <header className="p-4 bg-white shadow-sm border-b border-slate-200">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <h1 className="text-xl font-bold text-indigo-900">Echoes of Logos</h1>
@@ -2065,21 +2020,6 @@ const BibleBookConnections = () => {
             title="Show connections"
           >
             <Eye size={24} />
-          </button>
-        </div>
-      )}
-      
-      {/* Floating top button - only shown on small screens when header is hidden */}
-      {!isLargeScreen && !headerVisible && (
-        <div className="fixed top-4 right-4 z-50 animate-fade-in">
-          <button
-            onClick={() => {
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className="bg-indigo-600 text-white p-2 rounded-full shadow-lg hover:bg-indigo-700 transition-colors"
-            title="Scroll to top"
-          >
-            <ChevronUp size={20} />
           </button>
         </div>
       )}
