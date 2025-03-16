@@ -1715,7 +1715,7 @@ const BibleBookConnections = () => {
       <header className="p-4 bg-white shadow-sm border-b border-slate-200">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between gap-4 flex-wrap">
-            <h1 className="text-xl font-bold text-indigo-900">Biblical Book Connections</h1>
+            <h1 className="text-xl font-bold text-indigo-900">Echoes of Logos</h1>
             
             <div className="flex flex-1 items-center gap-3 justify-end">
               {/* Book selector */}
@@ -1791,7 +1791,7 @@ const BibleBookConnections = () => {
                   onClick={() => setShowChapterSelector(prev => !prev)}
                   className="flex items-center space-x-2 py-2 px-3 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
                 >
-                  <span className="font-medium">Ch {currentChapter}</span>
+                  <span className="font-medium">{currentChapter}</span>
                   <ChevronDown size={16} />
                 </button>
                 {showChapterSelector && (
@@ -1927,7 +1927,7 @@ const BibleBookConnections = () => {
                 </div>
                 <h2 className="text-2xl font-bold mb-2 text-indigo-900">Select a Passage</h2>
                 <p className="text-gray-600 max-w-md">
-                  Click on "View Connections" when reading a passage to explore its links to other Scripture passages.
+                We are still building the connections for this passage. Please select a passage from the reading pane to explore connections.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-4 justify-center max-w-xl">
                   {narrativeSections.slice(0, 3).map(section => (
