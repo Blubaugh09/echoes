@@ -69,46 +69,14 @@ const BibleBookConnections = () => {
   const [bibleSections, setBibleSections] = useState([]);
   const textContainerRef = useRef(null);
   
-  /* Import beautiful font for Bible reading */
+  // Check screen size
   useEffect(() => {
-    // Load EB Garamond font for better Bible reading
-    const linkElement = document.createElement('link');
-    linkElement.rel = 'stylesheet';
-    linkElement.href = 'https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap';
-    document.head.appendChild(linkElement);
-    
-    // Add custom CSS for fonts
-    const styleElement = document.createElement('style');
-    styleElement.textContent = `
-      .bible-text {
-        font-family: 'EB Garamond', 'Noto Serif', Georgia, serif;
-        line-height: 1.7;
-        font-size: 1.2rem;
-        color: #1e293b;
-      }
-      
-      .verse-number {
-        font-family: 'Noto Serif', Georgia, serif;
-        font-weight: 600;
-      }
-      
-      h2, h3, h4 {
-        font-family: 'EB Garamond', 'Noto Serif', Georgia, serif;
-      }
-      
-      @media (max-width: 640px) {
-        .bible-text {
-          font-size: 1.1rem;
-          line-height: 1.6;
-        }
-      }
-    `;
-    document.head.appendChild(styleElement);
-    
-    return () => {
-      document.head.removeChild(linkElement);
-      document.head.removeChild(styleElement);
+    const checkScreenSize = () => {
+      setIsLargeScreen(window.innerWidth >= 1024);
     };
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
   
   const bibleBookChapterCounts = {
@@ -489,13 +457,6 @@ const BibleBookConnections = () => {
     }
   };
 
-  // Scroll state for hiding/showing UI elements
-  const [scrollDirection, setScrollDirection] = useState('up');
-  const [lastScrollTop, setLastScrollTop] = useState(0);
-  const [isLoadingNextChapter, setIsLoadingNextChapter] = useState(false);
-  const [nextChapterText, setNextChapterText] = useState('');
-  const [showScrollHint, setShowScrollHint] = useState(false);
-
   // Touch gesture state
   const [touchDistance, setTouchDistance] = useState(null);
   const [touchCenter, setTouchCenter] = useState(null);
@@ -515,100 +476,6 @@ const BibleBookConnections = () => {
       x: (touches[0].clientX + touches[1].clientX) / 2,
       y: (touches[0].clientY + touches[1].clientY) / 2
     };
-  };
-  
-  // Handle scroll events to track direction and position
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!textContainerRef.current) return;
-      
-      const scrollTop = textContainerRef.current.scrollTop;
-      // Determine scroll direction
-      if (scrollTop > lastScrollTop + 10) {
-        setScrollDirection('down');
-      } else if (scrollTop < lastScrollTop - 10) {
-        setScrollDirection('up');
-      }
-      setLastScrollTop(scrollTop);
-      
-      // Check if we're near the bottom
-      const scrollHeight = textContainerRef.current.scrollHeight;
-      const clientHeight = textContainerRef.current.clientHeight;
-      const scrollPosition = scrollTop + clientHeight;
-      
-      // If we're within 300px of the bottom
-      if (scrollHeight - scrollPosition < 300) {
-        if (!isLoadingNextChapter && !nextChapterText) {
-          // Preload next chapter
-          const nextChapterNum = currentChapter < chapterCount ? currentChapter + 1 : null;
-          const nextBook = nextChapterNum ? currentBook : 
-                          bibleBooks.indexOf(currentBook) < bibleBooks.length - 1 ? 
-                          bibleBooks[bibleBooks.indexOf(currentBook) + 1] : null;
-                          
-          if (nextBook) {
-            setShowScrollHint(true);
-            preloadNextChapter(nextBook, nextChapterNum || 1);
-          }
-        }
-      } else {
-        setShowScrollHint(false);
-      }
-    };
-    
-    const container = textContainerRef.current;
-    if (container) {
-      container.addEventListener('scroll', handleScroll);
-      return () => container.removeEventListener('scroll', handleScroll);
-    }
-  }, [lastScrollTop, currentBook, currentChapter, chapterCount, isLoadingNextChapter, nextChapterText, bibleBooks]);
-  
-  // Preload next chapter for seamless reading experience
-  const preloadNextChapter = async (book, chapter) => {
-    setIsLoadingNextChapter(true);
-    try {
-      const url = `https://api.esv.org/v3/passage/text/?q=${encodeURIComponent(`${book} ${chapter}`)}&include-passage-references=false&include-verse-numbers=true&include-footnotes=false&include-short-copyright=false&include-passage-horizontal-lines=false&include-heading-horizontal-lines=false`;
-      
-      const response = await fetch(url, {
-        headers: {
-          'Authorization': 'Token c3be9ae20e39bd6637c709cd2e94fd42135764d1'
-        }
-      });
-      
-      const data = await response.json();
-      
-      if (data.passages && data.passages.length > 0) {
-        setNextChapterText(data.passages[0]);
-      }
-    } catch (error) {
-      console.error('Error preloading next chapter:', error);
-    } finally {
-      setIsLoadingNextChapter(false);
-    }
-  };
-  
-  // Function to advance to next chapter
-  const loadNextChapter = () => {
-    if (nextChapterText) {
-      if (currentChapter < chapterCount) {
-        setCurrentChapter(currentChapter + 1);
-      } else if (bibleBooks.indexOf(currentBook) < bibleBooks.length - 1) {
-        setCurrentBook(bibleBooks[bibleBooks.indexOf(currentBook) + 1]);
-        setCurrentChapter(1);
-      }
-      
-      // Reset
-      setNextChapterText('');
-      setShowScrollHint(false);
-      
-      // Scroll to top of new chapter
-      if (textContainerRef.current) {
-        setTimeout(() => {
-          textContainerRef.current.scrollTop = 0;
-        }, 100);
-      }
-    } else {
-      nextChapter();
-    }
   };
   
   const parseTextIntoSections = (text) => {
@@ -1043,10 +910,6 @@ const BibleBookConnections = () => {
       const reference = `${currentBook} ${currentChapter}`;
       setCurrentBibleReference(reference);
       fetchBiblePassage(reference);
-      
-      // Reset states for next chapter
-      setNextChapterText('');
-      setShowScrollHint(false);
     }
   }, [currentBook, currentChapter, showReadingPane]);
 
@@ -1255,7 +1118,7 @@ const BibleBookConnections = () => {
           <button 
             key={index}
             className={`
-              inline-flex items-center justify-center w-7 h-7 rounded-full mx-1 font-bold text-sm verse-number
+              inline-flex items-center justify-center w-7 h-7 rounded-full mx-1 font-bold text-sm
               ${isHighlighted || (selectedPassage && isConnectionPoint)
                 ? 'bg-indigo-500 text-white hover:bg-indigo-600' 
                 : isConnectionPoint 
@@ -1300,7 +1163,7 @@ const BibleBookConnections = () => {
         }
         
         return (
-          <span key={index} className="bible-text">
+          <span key={index} className="text-gray-800">
             {' ' + paragraphText + ' '}
           </span>
         );
@@ -1763,7 +1626,7 @@ const BibleBookConnections = () => {
   const renderReadingPane = () => {
     return (
       <div className="h-full flex flex-col bg-white rounded-lg overflow-hidden">
-        <div className={`bg-white relative transition-transform duration-300 ${scrollDirection === 'down' && !isLargeScreen ? '-translate-y-full' : 'translate-y-0'} sticky top-0 z-10`}>
+        <div className="bg-white relative">
           <div className="absolute h-1 bottom-0 left-0 right-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-60"></div>
           <div className="flex items-center h-[56px]">
             <button 
@@ -1849,10 +1712,10 @@ const BibleBookConnections = () => {
 
   return (
     <div className="flex flex-col h-screen bg-slate-50 text-slate-800 font-sans">
-      <header className={`p-4 bg-white shadow-sm border-b border-slate-200 sticky top-0 z-20 transition-transform duration-300 ${scrollDirection === 'down' && !isLargeScreen ? '-translate-y-full' : 'translate-y-0'}`}>
+      <header className="p-4 bg-white shadow-sm border-b border-slate-200">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between gap-4 flex-wrap">
-            <h1 className="text-xl font-bold text-indigo-900">Biblical Book Connections</h1>
+            <h1 className="text-xl font-bold text-indigo-900">Echoes of Logos</h1>
             
             <div className="flex flex-1 items-center gap-3 justify-end">
               {/* Book selector */}
@@ -1928,7 +1791,7 @@ const BibleBookConnections = () => {
                   onClick={() => setShowChapterSelector(prev => !prev)}
                   className="flex items-center space-x-2 py-2 px-3 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
                 >
-                  <span className="font-medium">Ch {currentChapter}</span>
+                  <span className="font-medium">{currentChapter}</span>
                   <ChevronDown size={16} />
                 </button>
                 {showChapterSelector && (
@@ -2064,7 +1927,7 @@ const BibleBookConnections = () => {
                 </div>
                 <h2 className="text-2xl font-bold mb-2 text-indigo-900">Select a Passage</h2>
                 <p className="text-gray-600 max-w-md">
-                  Click on "View Connections" when reading a passage to explore its links to other Scripture passages.
+                We are still building the connections for this passage. Please select a passage from the reading pane to explore connections.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-4 justify-center max-w-xl">
                   {narrativeSections.slice(0, 3).map(section => (
