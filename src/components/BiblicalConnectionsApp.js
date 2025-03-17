@@ -16,6 +16,9 @@ import {
   Maximize2, 
   Minimize2,
   BookOpen,
+  // Breadcrumb navigation
+  History,
+  CornerDownLeft,
   // Resize controls
   GripHorizontal
 } from 'lucide-react';
@@ -49,6 +52,26 @@ export const narrativeSections = [
   { id: 'word', title: 'The Word', reference: 'Genesis 1:1-3', book: 'genesis', chapter: 1 },
   { id: 'creation', title: '6 Day\'s', reference: 'Genesis 1:3-31', book: 'genesis', chapter: 1 },
   { id: 'noahArk', title: 'Noah\'s Ark', reference: 'Genesis 6-9', book: 'genesis', chapter: 6 },
+];
+
+const oldTestamentBooks = [
+  'Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy',
+  'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel',
+  '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles',
+  'Ezra', 'Nehemiah', 'Esther', 'Job', 'Psalms',
+  'Proverbs', 'Ecclesiastes', 'Song of Solomon', 'Isaiah',
+  'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea',
+  'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum',
+  'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi'
+];
+
+const newTestamentBooks = [
+  'Matthew', 'Mark', 'Luke', 'John', 'Acts',
+  'Romans', '1 Corinthians', '2 Corinthians', 'Galatians',
+  'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians',
+  '2 Thessalonians', '1 Timothy', '2 Timothy', 'Titus',
+  'Philemon', 'Hebrews', 'James', '1 Peter', '2 Peter',
+  '1 John', '2 John', '3 John', 'Jude', 'Revelation'
 ];
 
 // All utility functions stay the same
@@ -154,6 +177,15 @@ const BibleBookConnections = () => {
   const [panelSize, setPanelSize] = useState(isLargeScreen ? 50 : 60); // Default: 50% width or 60% height
   const resizeRef = useRef(null);
   const containerRef = useRef(null);
+  
+  // *** NEW STATE FOR BREADCRUMBS ***
+  const [breadcrumbs, setBreadcrumbs] = useState([]);
+  const [showBreadcrumbs, setShowBreadcrumbs] = useState(false);
+  const [breadcrumbSessionName, setBreadcrumbSessionName] = useState("Study Session");
+  const [breadcrumbNotes, setBreadcrumbNotes] = useState({});
+  const [editingNoteFor, setEditingNoteFor] = useState(null);
+  const [showBreadcrumbTimeline, setShowBreadcrumbTimeline] = useState(false);
+  const [breadcrumbSessionStartTime, setBreadcrumbSessionStartTime] = useState(new Date().toISOString());
 
   // Check screen size
   useEffect(() => {
@@ -509,6 +541,41 @@ const BibleBookConnections = () => {
       setNodePositions({});
     }
   }, [currentBook, currentChapter, showReadingPane]);
+  
+  // Load breadcrumbs from localStorage on initial load
+  useEffect(() => {
+    try {
+      const savedBreadcrumbs = localStorage.getItem('bibleBreadcrumbs');
+      const savedNotes = localStorage.getItem('bibleBreadcrumbNotes');
+      const savedSessionName = localStorage.getItem('bibleBreadcrumbSessionName');
+      const savedSessionStartTime = localStorage.getItem('bibleBreadcrumbSessionStartTime');
+      
+      if (savedBreadcrumbs) {
+        setBreadcrumbs(JSON.parse(savedBreadcrumbs));
+      }
+      
+      if (savedNotes) {
+        setBreadcrumbNotes(JSON.parse(savedNotes));
+      }
+      
+      if (savedSessionName) {
+        setBreadcrumbSessionName(savedSessionName);
+      }
+      
+      if (savedSessionStartTime) {
+        setBreadcrumbSessionStartTime(savedSessionStartTime);
+      }
+    } catch (error) {
+      console.error('Error loading breadcrumbs from localStorage:', error);
+    }
+  }, []);
+  
+  // Save breadcrumbs to localStorage whenever they change
+  useEffect(() => {
+    if (breadcrumbs.length > 0) {
+      saveBreadcrumbsToLocalStorage();
+    }
+  }, [breadcrumbs, breadcrumbNotes, breadcrumbSessionName]);
 
   const getAllPassages = () => {
     const passages = [];
@@ -551,8 +618,28 @@ const BibleBookConnections = () => {
     }
   };
 
-  // Enhanced handlePassageClick function with support for verse-level connections
+  // *** MODIFIED FUNCTION TO ADD BREADCRUMB TRACKING ***
   const handlePassageClick = (passage) => {
+    // Only add to breadcrumbs if it's a new passage
+    if (selectedPassage?.id !== passage.id) {
+      // Add current passage to breadcrumbs before changing
+      if (selectedPassage) {
+        // Generate a unique ID for this breadcrumb instance (allows revisiting same passage)
+        const breadcrumbId = `${selectedPassage.id}-${Date.now()}`;
+        
+        // Add to breadcrumbs with additional metadata
+        setBreadcrumbs(prev => [...prev, {
+          ...selectedPassage,
+          breadcrumbId, // Unique ID for this breadcrumb instance
+          bookName: currentBook,
+          chapterNum: currentChapter,
+          timestamp: new Date().toISOString(),
+          sessionName: breadcrumbSessionName,
+          sessionStartTime: breadcrumbSessionStartTime
+        }]);
+      }
+    }
+    
     setSelectedPassage(passage);
     const passageConnections = allConnections.filter(
       conn => conn.from === passage.id || conn.to === passage.id
@@ -607,6 +694,89 @@ const BibleBookConnections = () => {
     
     // Close navigator after selection
     setShowNavigator(false);
+  };
+
+  // *** NEW FUNCTION FOR BREADCRUMB NAVIGATION ***
+  const handleBreadcrumbClick = (breadcrumb, index) => {
+    // Navigate to this breadcrumb
+    if (breadcrumb.bookName && breadcrumb.chapterNum) {
+      // First set book and chapter to trigger text loading
+      setCurrentBook(breadcrumb.bookName);
+      setCurrentChapter(breadcrumb.chapterNum);
+      
+      // Then select the passage
+      setTimeout(() => {
+        handlePassageClick(breadcrumb);
+      }, 100);
+      
+      // Optionally, truncate breadcrumbs to this point
+      setBreadcrumbs(prev => prev.slice(0, index + 1));
+    }
+  };
+
+  // *** NEW FUNCTION TO CLEAR BREADCRUMBS ***
+  const clearBreadcrumbs = () => {
+    setBreadcrumbs([]);
+    setBreadcrumbNotes({});
+    // Clear breadcrumbs from localStorage
+    localStorage.removeItem('bibleBreadcrumbs');
+    localStorage.removeItem('bibleBreadcrumbNotes');
+    // Reset session start time
+    setBreadcrumbSessionStartTime(new Date().toISOString());
+  };
+  
+  // *** NEW FUNCTION TO SAVE BREADCRUMBS TO LOCAL STORAGE ***
+  const saveBreadcrumbsToLocalStorage = () => {
+    try {
+      localStorage.setItem('bibleBreadcrumbs', JSON.stringify(breadcrumbs));
+      localStorage.setItem('bibleBreadcrumbNotes', JSON.stringify(breadcrumbNotes));
+      localStorage.setItem('bibleBreadcrumbSessionName', breadcrumbSessionName);
+      localStorage.setItem('bibleBreadcrumbSessionStartTime', breadcrumbSessionStartTime);
+    } catch (error) {
+      console.error('Error saving breadcrumbs to localStorage:', error);
+    }
+  };
+  
+  // *** NEW FUNCTION TO ADD NOTE TO BREADCRUMB ***
+  const addNoteToBreadcrumb = (breadcrumbId, note) => {
+    const updatedNotes = {
+      ...breadcrumbNotes,
+      [breadcrumbId]: note
+    };
+    setBreadcrumbNotes(updatedNotes);
+    setEditingNoteFor(null);
+    
+    // Save to localStorage
+    try {
+      localStorage.setItem('bibleBreadcrumbNotes', JSON.stringify(updatedNotes));
+    } catch (error) {
+      console.error('Error saving breadcrumb notes to localStorage:', error);
+    }
+  };
+  
+  // *** FUNCTION TO START A NEW STUDY SESSION ***
+  const startNewStudySession = (sessionName = "New Study Session") => {
+    const currentTime = new Date().toISOString();
+    setBreadcrumbSessionName(sessionName);
+    setBreadcrumbSessionStartTime(currentTime);
+    
+    // Save to localStorage
+    localStorage.setItem('bibleBreadcrumbSessionName', sessionName);
+    localStorage.setItem('bibleBreadcrumbSessionStartTime', currentTime);
+    
+    // Add a session marker to breadcrumbs if there are existing breadcrumbs
+    if (breadcrumbs.length > 0) {
+      const sessionMarker = {
+        id: `session-${Date.now()}`,
+        title: "--- New Session: " + sessionName + " ---",
+        isSessionMarker: true,
+        timestamp: currentTime
+      };
+      
+      const updatedBreadcrumbs = [...breadcrumbs, sessionMarker];
+      setBreadcrumbs(updatedBreadcrumbs);
+      localStorage.setItem('bibleBreadcrumbs', JSON.stringify(updatedBreadcrumbs));
+    }
   };
 
   const handleBookClick = (bookId) => {
@@ -864,6 +1034,286 @@ const BibleBookConnections = () => {
     );
   };
 
+  // *** ENHANCED COMPONENT TO RENDER BREADCRUMBS ***
+  const renderBreadcrumbs = () => {
+    if (breadcrumbs.length === 0) {
+      return (
+        <div className="py-6 px-4 text-center">
+          <div className="w-16 h-16 mx-auto bg-indigo-50 rounded-full flex items-center justify-center mb-3">
+            <History size={28} className="text-indigo-400" />
+          </div>
+          <p className="text-gray-500 text-sm">
+            Your navigation history will appear here as you explore passages
+          </p>
+          <button 
+            className="mt-4 px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-sm rounded-md"
+            onClick={() => startNewStudySession("My Bible Study")}
+          >
+            Start a new study session
+          </button>
+        </div>
+      );
+    }
+    
+    // Group breadcrumbs by session
+    const groupedBySession = {};
+    let currentSession = null;
+    
+    breadcrumbs.forEach(crumb => {
+      if (crumb.isSessionMarker) {
+        // This is a session marker, create a new session
+        currentSession = crumb.title;
+        if (!groupedBySession[currentSession]) {
+          groupedBySession[currentSession] = [];
+        }
+      } else {
+        // Group by sessionStartTime or use "Current Session" for ungrouped items
+        const sessionKey = crumb.sessionStartTime || breadcrumbSessionStartTime;
+        const sessionName = crumb.sessionName || breadcrumbSessionName;
+        const sessionDisplay = `Session: ${sessionName}`;
+        
+        if (!groupedBySession[sessionDisplay]) {
+          groupedBySession[sessionDisplay] = [];
+        }
+        
+        // Add to the appropriate session group
+        groupedBySession[sessionDisplay].push(crumb);
+      }
+    });
+
+    // Determine if we should show timeline or list view
+    if (showBreadcrumbTimeline) {
+      return renderBreadcrumbTimeline();
+    }
+    
+    return (
+      <div className="flex flex-col h-full">
+        <div className="px-4 py-2 bg-indigo-50 flex justify-between items-center">
+          <span className="text-xs font-medium text-indigo-800">NAVIGATION HISTORY</span>
+          <div className="flex space-x-2">
+            <button
+              className={`p-1 rounded ${showBreadcrumbTimeline ? 'bg-indigo-200 text-indigo-700' : 'text-indigo-600 hover:bg-indigo-100'}`}
+              onClick={() => setShowBreadcrumbTimeline(!showBreadcrumbTimeline)}
+              title={showBreadcrumbTimeline ? "Switch to list view" : "Switch to timeline view"}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="22 12 18 8 14 12 10 8 6 12 2 8"></polyline>
+                <path d="M2 22 L22 22"></path>
+              </svg>
+            </button>
+            <button
+              className="p-1 text-indigo-600 hover:bg-indigo-100 rounded"
+              onClick={() => startNewStudySession()}
+              title="Start new session"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 5v14M5 12h14"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <div className="flex-1 overflow-y-auto">
+          {Object.entries(groupedBySession).map(([sessionName, sessionCrumbs]) => (
+            <div key={sessionName} className="mb-2">
+              <div className="sticky top-0 z-10 px-4 py-1 bg-gray-100 text-xs font-medium text-gray-700">
+                {sessionName}
+              </div>
+              <div className="divide-y divide-gray-100">
+                {sessionCrumbs.map((crumb, index) => {
+                  // Skip rendering session markers in the list itself
+                  if (crumb.isSessionMarker) return null;
+                  
+                  const crumbId = crumb.breadcrumbId || `${crumb.id}-${index}`;
+                  const hasNote = breadcrumbNotes[crumbId];
+                  
+                  return (
+                    <div key={crumbId} className="relative group">
+                      <button
+                        className="w-full text-left px-4 py-2 hover:bg-indigo-50 transition-colors flex items-start"
+                        onClick={() => handleBreadcrumbClick(crumb, index)}
+                      >
+                        <div className="mr-2 mt-0.5">
+                          <div 
+                            className="w-3 h-3 rounded-full mt-1"
+                            style={{ backgroundColor: crumb.bookColor || '#6366f1' }}
+                          ></div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-medium text-indigo-900 truncate">{crumb.title}</div>
+                          <div className="text-xs text-gray-500 flex justify-between">
+                            <span>{crumb.reference}</span>
+                            <span className="text-gray-400">
+                              {new Date(crumb.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                          </div>
+                          
+                          {/* Display note if exists */}
+                          {hasNote && (
+                            <div className="mt-1 text-xs bg-yellow-50 p-1.5 rounded text-yellow-800 border-l-2 border-yellow-300">
+                              {breadcrumbNotes[crumbId]}
+                            </div>
+                          )}
+                        </div>
+                      </button>
+                      
+                      {/* Add note button (shown on hover) */}
+                      <button
+                        className="absolute top-2 right-2 p-1 text-gray-400 hover:text-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                        onClick={() => setEditingNoteFor(crumbId)}
+                        title={hasNote ? "Edit note" : "Add note"}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M12 20h9"></path>
+                          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                        </svg>
+                      </button>
+                      
+                      {/* Note editing form */}
+                      {editingNoteFor === crumbId && (
+                        <div className="p-3 bg-yellow-50 border-t border-yellow-100">
+                          <textarea
+                            className="w-full p-2 border border-yellow-300 rounded text-sm"
+                            rows="2"
+                            placeholder="Add your notes about this passage..."
+                            defaultValue={breadcrumbNotes[crumbId] || ''}
+                            autoFocus
+                          ></textarea>
+                          <div className="flex justify-end mt-2 space-x-2">
+                            <button 
+                              className="px-2 py-1 text-xs text-gray-600 hover:text-gray-800"
+                              onClick={() => setEditingNoteFor(null)}
+                            >
+                              Cancel
+                            </button>
+                            <button 
+                              className="px-2 py-1 text-xs bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                              onClick={(e) => {
+                                const noteText = e.target.parentNode.parentNode.querySelector('textarea').value.trim();
+                                addNoteToBreadcrumb(crumbId, noteText);
+                              }}
+                            >
+                              Save Note
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        <div className="border-t border-gray-200 p-3 bg-gray-50 flex justify-between">
+          <button 
+            className="text-xs text-gray-500 hover:text-red-500"
+            onClick={clearBreadcrumbs}
+          >
+            Clear History
+          </button>
+          <div className="text-xs text-gray-500">
+            {breadcrumbs.filter(b => !b.isSessionMarker).length} passages
+          </div>
+        </div>
+      </div>
+    );
+  };
+  
+  // *** NEW COMPONENT TO RENDER BREADCRUMB TIMELINE ***
+  const renderBreadcrumbTimeline = () => {
+    // Filter out session markers
+    const timelineCrumbs = breadcrumbs.filter(crumb => !crumb.isSessionMarker);
+    
+    if (timelineCrumbs.length === 0) {
+      return (
+        <div className="py-6 px-4 text-center">
+          <p className="text-gray-500 text-sm">No passages to display in timeline</p>
+        </div>
+      );
+    }
+    
+    // Group by date
+    const groupedByDate = {};
+    timelineCrumbs.forEach(crumb => {
+      const date = new Date(crumb.timestamp).toLocaleDateString();
+      if (!groupedByDate[date]) {
+        groupedByDate[date] = [];
+      }
+      groupedByDate[date].push(crumb);
+    });
+    
+    return (
+      <div className="flex flex-col h-full">
+        <div className="px-4 py-2 bg-indigo-50 flex justify-between items-center">
+          <span className="text-xs font-medium text-indigo-800">TIMELINE VIEW</span>
+          <button
+            className="p-1 text-indigo-600 hover:bg-indigo-100 rounded"
+            onClick={() => setShowBreadcrumbTimeline(false)}
+            title="Switch to list view"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="8" y1="6" x2="21" y2="6"></line>
+              <line x1="8" y1="12" x2="21" y2="12"></line>
+              <line x1="8" y1="18" x2="21" y2="18"></line>
+              <line x1="3" y1="6" x2="3.01" y2="6"></line>
+              <line x1="3" y1="12" x2="3.01" y2="12"></line>
+              <line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        
+        <div className="flex-1 overflow-y-auto p-4">
+          {Object.entries(groupedByDate).map(([date, dateCrumbs]) => (
+            <div key={date} className="mb-6">
+              <div className="text-sm font-medium text-gray-700 mb-2">{date}</div>
+              <div className="ml-4 border-l-2 border-indigo-200 pl-4 space-y-4">
+                {dateCrumbs.map((crumb, index) => {
+                  const crumbId = crumb.breadcrumbId || `${crumb.id}-${index}`;
+                  const time = new Date(crumb.timestamp).toLocaleTimeString([], { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                  });
+                  
+                  return (
+                    <div 
+                      key={crumbId} 
+                      className="relative pb-4"
+                    >
+                      <div className="absolute -left-[22px] mt-1 w-4 h-4 rounded-full bg-indigo-500 border-2 border-white"></div>
+                      <div className="text-xs text-gray-500 mb-1">{time}</div>
+                      <button
+                        className="block w-full text-left mb-1"
+                        onClick={() => handleBreadcrumbClick(crumb, index)}
+                      >
+                        <div className="font-medium text-indigo-900">{crumb.title}</div>
+                        <div className="text-xs text-indigo-600">{crumb.reference}</div>
+                      </button>
+                      
+                      {/* Display note if exists */}
+                      {breadcrumbNotes[crumbId] && (
+                        <div className="mt-1 text-xs bg-yellow-50 p-2 rounded text-yellow-800 border-l-2 border-yellow-300">
+                          {breadcrumbNotes[crumbId]}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        <div className="border-t border-gray-200 p-3 bg-gray-50 flex justify-end">
+          <div className="text-xs text-gray-500">
+            {timelineCrumbs.length} passages
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const renderBibleSections = () => {
     return Object.entries(bibleStructure).map(([sectionId, section]) => (
       <div key={sectionId} id={`section-${sectionId}`} className="mb-4">
@@ -995,7 +1445,15 @@ const BibleBookConnections = () => {
           </button>
         </div>
         
-        <div className="absolute top-4 right-4 z-10">
+        <div className="absolute top-4 right-4 z-10 flex space-x-2">
+          <button
+            onClick={() => setShowBreadcrumbs(!showBreadcrumbs)}
+            className={`p-2 ${showBreadcrumbs ? 'bg-indigo-100 text-indigo-700' : 'bg-white text-slate-700'} rounded-full shadow-md hover:bg-slate-100`}
+            aria-label="Breadcrumbs"
+            title="View navigation history"
+          >
+            <History size={20} />
+          </button>
           <button
             onClick={() => setShowConnectionTypes(!showConnectionTypes)}
             className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
@@ -1004,6 +1462,81 @@ const BibleBookConnections = () => {
             <Info size={20} className="text-slate-700" />
           </button>
         </div>
+        
+        {/* Breadcrumbs Panel */}
+        {showBreadcrumbs && (
+          <div className="absolute top-16 right-4 z-20 bg-white rounded-lg shadow-lg w-96 max-h-96 overflow-hidden flex flex-col">
+            <div className="flex items-center justify-between p-3 border-b">
+              <div className="flex items-center">
+                <h3 className="font-medium text-indigo-900">Exploration Journey</h3>
+                <div className="ml-2 px-1.5 py-0.5 text-xs bg-indigo-100 text-indigo-800 rounded-full">
+                  {breadcrumbs.filter(b => !b.isSessionMarker).length}
+                </div>
+              </div>
+              <div className="flex space-x-1">
+                <button
+                  onClick={() => {
+                    // Save current study session
+                    const name = prompt("Enter a name for this study session:", breadcrumbSessionName);
+                    if (name) {
+                      setBreadcrumbSessionName(name);
+                      localStorage.setItem('bibleBreadcrumbSessionName', name);
+                    }
+                  }}
+                  className="p-1 text-gray-500 hover:text-indigo-600 rounded"
+                  title="Rename session"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon>
+                  </svg>
+                </button>
+                <button
+                  onClick={() => {
+                    // Export breadcrumbs as JSON
+                    const dataStr = JSON.stringify(breadcrumbs, null, 2);
+                    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                    
+                    const exportFileDefaultName = 'bible-study-journey.json';
+                    
+                    const linkElement = document.createElement('a');
+                    linkElement.setAttribute('href', dataUri);
+                    linkElement.setAttribute('download', exportFileDefaultName);
+                    linkElement.click();
+                  }}
+                  className="p-1 text-gray-500 hover:text-indigo-600 rounded"
+                  title="Export journey"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                </button>
+                <button 
+                  onClick={clearBreadcrumbs}
+                  className="p-1 text-gray-500 hover:text-red-500 rounded"
+                  title="Clear history"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 6h18"></path>
+                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                  </svg>
+                </button>
+                <button 
+                  onClick={() => setShowBreadcrumbs(false)}
+                  className="p-1 text-gray-500 hover:text-gray-700 rounded"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            {renderBreadcrumbs()}
+          </div>
+        )}
         
         {showConnectionTypes && (
           <div className="absolute top-16 right-4 z-20 bg-white p-3 rounded-lg shadow-lg">
@@ -1462,11 +1995,53 @@ const BibleBookConnections = () => {
           </g>
         </svg>
         
-        {selectedPassage && (
-          <div className="absolute bottom-4 left-4 p-3 bg-white rounded-lg shadow-lg">
+        {/* Bottom bar with breadcrumb trail indicator */}
+        <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
+          <div className="p-3 bg-white rounded-lg shadow-lg">
             <h3 className="font-medium text-indigo-800 text-sm">{selectedPassage.reference}</h3>
           </div>
-        )}
+
+                        {/* Breadcrumb journey indicator with visual trail */}
+          {breadcrumbs.length > 0 && (
+            <div className="flex items-center">
+              <button 
+                onClick={() => setShowBreadcrumbs(!showBreadcrumbs)}
+                className="p-3 bg-white rounded-lg shadow-lg flex items-center space-x-2 hover:bg-indigo-50"
+              >
+                <History size={16} className="text-indigo-600" />
+                <span className="text-sm text-indigo-800 font-medium">
+                  Journey: {breadcrumbs.filter(b => !b.isSessionMarker).length} {breadcrumbs.length === 1 ? 'passage' : 'passages'}
+                </span>
+              </button>
+              
+              {/* Visual breadcrumb trail (last 5 passages) */}
+              <div className="ml-2 flex items-center">
+                {breadcrumbs
+                  .filter(b => !b.isSessionMarker)
+                  .slice(-5)
+                  .map((crumb, idx, arr) => (
+                    <div 
+                      key={`trail-${crumb.breadcrumbId || idx}`} 
+                      className="flex items-center"
+                    >
+                      <button
+                        className="w-6 h-6 rounded-full flex items-center justify-center border-2 border-white shadow-sm hover:scale-110 transition-transform"
+                        style={{ backgroundColor: crumb.bookColor || '#6366f1' }}
+                        title={`${crumb.title} (${crumb.reference})`}
+                        onClick={() => handleBreadcrumbClick(crumb, breadcrumbs.indexOf(crumb))}
+                      >
+                        <span className="text-[9px] text-white font-bold">{idx + 1}</span>
+                      </button>
+                      {idx < arr.length - 1 && (
+                        <div className="w-2 h-0.5 bg-gray-300"></div>
+                      )}
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     );
   };
@@ -1538,6 +2113,103 @@ const BibleBookConnections = () => {
               
               {/* Add the connection switcher for multiple connections */}
               {renderConnectionSwitcher()}
+              
+                              {/* Display enhanced breadcrumb navigation in reading pane if there are breadcrumbs */}
+              {breadcrumbs.length > 0 && (
+                <div className="mb-6 bg-gray-50 rounded-lg p-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center">
+                      <h3 className="text-sm font-medium text-indigo-800">Your Bible Journey</h3>
+                      <div className="ml-2 px-1.5 py-0.5 text-xs bg-indigo-100 text-indigo-800 rounded-full">
+                        {breadcrumbs.filter(b => !b.isSessionMarker).length}
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <span className="text-xs text-indigo-600">
+                        {breadcrumbSessionName}
+                      </span>
+                      <button 
+                        className="text-xs text-indigo-600 hover:text-indigo-800"
+                        onClick={() => setShowBreadcrumbs(!showBreadcrumbs)}
+                      >
+                        {showBreadcrumbs ? "Hide" : "Show all"}
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Visual journey path */}
+                  <div className="relative pb-1 mb-2">
+                    <div className="absolute left-0 right-0 top-4 h-0.5 bg-indigo-100"></div>
+                    <div className="relative flex justify-between items-center">
+                      {breadcrumbs
+                        .filter(b => !b.isSessionMarker)
+                        .slice(-5)
+                        .map((crumb, idx, arr) => {
+                          const crumbId = crumb.breadcrumbId || `${crumb.id}-${idx}`;
+                          const hasNote = breadcrumbNotes[crumbId];
+                          
+                          return (
+                            <div key={`journey-${crumbId}`} className="z-10 flex flex-col items-center">
+                              <button
+                                className={`w-7 h-7 rounded-full flex items-center justify-center border-2 border-white 
+                                  ${hasNote ? 'ring-2 ring-yellow-300' : ''}
+                                  ${idx === arr.length - 1 ? 'bg-indigo-600' : 'bg-indigo-400'}
+                                  hover:bg-indigo-500 transition-colors`}
+                                title={hasNote ? `${crumb.title} (${crumb.reference})\n\nNote: ${breadcrumbNotes[crumbId]}` : `${crumb.title} (${crumb.reference})`}
+                                onClick={() => handleBreadcrumbClick(crumb, breadcrumbs.indexOf(crumb))}
+                              >
+                                <span className="text-[10px] text-white font-bold">{idx + 1}</span>
+                              </button>
+                              {hasNote && (
+                                <div className="absolute -bottom-1 w-2 h-2 bg-yellow-400 rounded-full"></div>
+                              )}
+                            </div>
+                          );
+                        })
+                      }
+                    </div>
+                  </div>
+                  
+                  {/* Recent passages */}
+                  <div className="flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-hide">
+                    {breadcrumbs
+                      .filter(b => !b.isSessionMarker)
+                      .slice(-3)
+                      .map((crumb, index) => {
+                        const crumbId = crumb.breadcrumbId || `${crumb.id}-${index}`;
+                        const hasNote = breadcrumbNotes[crumbId];
+                        
+                        return (
+                          <button
+                            key={`${crumbId}-recent`}
+                            className={`flex items-center space-x-1 px-2 py-1 
+                              ${hasNote ? 'bg-yellow-50 border-yellow-200' : 'bg-white border-gray-200'}
+                              rounded border text-xs whitespace-nowrap`}
+                            onClick={() => handleBreadcrumbClick(crumb, breadcrumbs.indexOf(crumb))}
+                          >
+                            <div 
+                              className="w-2 h-2 rounded-full"
+                              style={{ backgroundColor: crumb.bookColor || '#6366f1' }}
+                            ></div>
+                            <span className="max-w-[100px] truncate">{crumb.title}</span>
+                          </button>
+                        );
+                      })
+                    }
+                    
+                    {/* Show all button */}
+                    {breadcrumbs.filter(b => !b.isSessionMarker).length > 3 && (
+                      <button
+                        className="flex items-center px-2 py-1 bg-indigo-50 text-indigo-600 rounded border border-indigo-100 text-xs whitespace-nowrap hover:bg-indigo-100"
+                        onClick={() => setShowBreadcrumbs(true)}
+                      >
+                        <span>View all</span>
+                        <ChevronRight size={12} className="ml-1" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
               
               {bibleSections.length > 0 ? (
                 bibleSections.map((section, index) => (
@@ -1611,61 +2283,76 @@ const BibleBookConnections = () => {
                   <ChevronDown size={16} />
                 </button>
                 {showBookSelector && (
-                  <div className="absolute top-12 left-0 w-72 max-h-96 overflow-y-auto bg-white shadow-lg rounded-lg border border-gray-200 z-30">
-                    <div className="p-3 border-b border-gray-200">
-                      <div className="flex items-center space-x-2 px-2 py-1 bg-gray-100 rounded">
-                        <Search size={16} className="text-gray-500" />
-                        <input
-                          type="text"
-                          placeholder="Search books..."
-                          value={bookSearch}
-                          onChange={(e) => setBookSearch(e.target.value)}
-                          className="w-full bg-transparent border-none outline-none text-sm"
-                        />
-                      </div>
-                      <div className="flex space-x-1 mt-2">
-                        <button
-                          onClick={() => setActiveTestament("all")}
-                          className={`text-xs px-2 py-1 rounded ${activeTestament === "all" ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-600"}`}
-                        >
-                          All
-                        </button>
-                        <button
-                          onClick={() => setActiveTestament("old")}
-                          className={`text-xs px-2 py-1 rounded ${activeTestament === "old" ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-600"}`}
-                        >
-                          Old Testament
-                        </button>
-                        <button
-                          onClick={() => setActiveTestament("new")}
-                          className={`text-xs px-2 py-1 rounded ${activeTestament === "new" ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-600"}`}
-                        >
-                          New Testament
-                        </button>
-                      </div>
-                    </div>
-                    <div className="p-2">
-                      <div className="grid grid-cols-2 gap-1">
-                        {bibleBooks
-                          .filter(book => bookSearch ? book.toLowerCase().includes(bookSearch.toLowerCase()) : true)
-                          .map(book => (
-                          <button
-                            key={book}
-                            onClick={() => {
-                              setCurrentBook(book);
-                              setShowBookSelector(false);
-                            }}
-                            className={`text-left px-3 py-2 rounded text-sm ${
-                              currentBook === book ? "bg-indigo-100 text-indigo-700 font-medium" : "hover:bg-gray-100"
-                            }`}
-                          >
-                            {book}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
+ <div className="absolute top-12 left-0 w-72 max-h-96 overflow-y-auto bg-white shadow-lg rounded-lg border border-gray-200 z-30">
+    <div className="p-3 border-b border-gray-200">
+      <div className="flex items-center space-x-2 px-2 py-1 bg-gray-100 rounded">
+        <Search size={16} className="text-gray-500" />
+        <input
+          type="text"
+          placeholder="Search books..."
+          value={bookSearch}
+          onChange={(e) => setBookSearch(e.target.value)}
+          className="w-full bg-transparent border-none outline-none text-sm"
+        />
+      </div>
+      <div className="flex space-x-1 mt-2">
+        <button
+          onClick={() => setActiveTestament("all")}
+          className={`text-xs px-2 py-1 rounded ${activeTestament === "all" ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-600"}`}
+        >
+          All
+        </button>
+        <button
+          onClick={() => setActiveTestament("old")}
+          className={`text-xs px-2 py-1 rounded ${activeTestament === "old" ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-600"}`}
+        >
+          Old Testament
+        </button>
+        <button
+          onClick={() => setActiveTestament("new")}
+          className={`text-xs px-2 py-1 rounded ${activeTestament === "new" ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-600"}`}
+        >
+          New Testament
+        </button>
+      </div>
+    </div>
+    <div className="p-2">
+      <div className="grid grid-cols-2 gap-1">
+        {bibleBooks
+          .filter(book => {
+            // First filter by search text
+            const matchesSearch = bookSearch ? 
+              book.toLowerCase().includes(bookSearch.toLowerCase()) : 
+              true;
+            
+            // Then filter by testament
+            let matchesTestament = true;
+            if (activeTestament === "old") {
+              matchesTestament = oldTestamentBooks.includes(book);
+            } else if (activeTestament === "new") {
+              matchesTestament = newTestamentBooks.includes(book);
+            }
+            
+            return matchesSearch && matchesTestament;
+          })
+          .map(book => (
+            <button
+              key={book}
+              onClick={() => {
+                setCurrentBook(book);
+                setShowBookSelector(false);
+              }}
+              className={`text-left px-3 py-2 rounded text-sm ${
+                currentBook === book ? "bg-indigo-100 text-indigo-700 font-medium" : "hover:bg-gray-100"
+              }`}
+            >
+              {book}
+            </button>
+          ))}
+      </div>
+    </div>
+  </div>
+)}
               </div>
               
               {/* Chapter selector */}
@@ -1720,6 +2407,18 @@ const BibleBookConnections = () => {
               {/* Action buttons */}
               <div className="flex items-center gap-2">
                 <button
+                  className={`p-2 ${showBreadcrumbs ? 'bg-indigo-100 text-indigo-700' : 'bg-indigo-50 hover:bg-indigo-100 text-indigo-700'} rounded-lg relative`}
+                  onClick={() => setShowBreadcrumbs(!showBreadcrumbs)}
+                  title="Navigation history"
+                >
+                  <History size={18} />
+                  {breadcrumbs.length > 0 && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-indigo-600 text-white text-xs rounded-full flex items-center justify-center">
+                      {breadcrumbs.length}
+                    </span>
+                  )}
+                </button>
+                <button
                   className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg"
                   onClick={toggleGraphVisibility}
                   title={showGraph ? "Hide connections" : "Show connections"}
@@ -1768,14 +2467,14 @@ const BibleBookConnections = () => {
         className={`flex-1 relative ${isLargeScreen ? 'flex flex-row' : 'flex flex-col'} overflow-hidden`}
       >
         <div 
-          className={`transition-all duration-100`}
-          style={{ 
-            height: isLargeScreen ? '100%' : `${panelSize}%`,
-            width: isLargeScreen ? '50%' : '100%'
-          }}
-        >
-          {renderReadingPane()}
-        </div>
+    className={`transition-all duration-100`}
+    style={{ 
+      height: isLargeScreen || !showGraph ? '100%' : `${panelSize}%`,
+      width: isLargeScreen && showGraph ? '50%' : '100%'
+    }}
+  >
+    {renderReadingPane()}
+  </div>
         
         {/* Resize handle between panels */}
         {renderResizeHandle()}
@@ -1792,10 +2491,21 @@ const BibleBookConnections = () => {
           >
             {selectedPassage ? (
               <div className="h-full flex flex-col">
-                <div className="bg-white py-3 px-4 border-b border-indigo-100 h-[56px] flex items-center">
+                <div className="bg-white py-3 px-4 border-b border-indigo-100 h-[56px] flex items-center justify-between">
                   <div className="flex flex-col justify-center">
                     <h2 className="text-lg font-bold text-indigo-900 leading-tight">{selectedPassage.title}</h2>
                   </div>
+                  
+                  {/* Add breadcrumb navigation button to header */}
+                  {breadcrumbs.length > 0 && (
+                    <button
+                      className="flex items-center space-x-1 py-1 px-2 bg-indigo-50 text-indigo-700 rounded text-sm hover:bg-indigo-100"
+                      onClick={() => setShowBreadcrumbs(!showBreadcrumbs)}
+                    >
+                      <History size={14} />
+                      <span>History ({breadcrumbs.length})</span>
+                    </button>
+                  )}
                 </div>
                 <div className="flex-1">
                   {renderConnectionsVisualization()}
@@ -1811,7 +2521,7 @@ const BibleBookConnections = () => {
                 We are still building the connections for this passage. Please select a passage from the reading pane to explore connections.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-4 justify-center max-w-xl">
-                  {narrativeSections.slice(0, 3).map(section => (
+                  {narrativeSections.slice(0, 0).map(section => (
                     <button
                       key={section.id}
                       onClick={() => handleNarrativeSectionSelect(section.id)}
@@ -1873,7 +2583,15 @@ const BibleBookConnections = () => {
                 <li>Verse numbers highlighted in the text can be clicked to explore connections.</li>
                 <li><strong>Green dots</strong> on verse numbers indicate multiple available connections.</li>
                 <li>Use the <strong>resize handle</strong> to adjust the size of the reading pane and graph.</li>
+                <li>Use the <strong>history button</strong> <History size={14} className="inline mb-1" /> to view your navigation history.</li>
               </ul>
+              
+              <h3 className="text-xl font-bold mb-2 text-indigo-800">Navigation History:</h3>
+              <p className="mb-4 text-gray-700">
+                As you explore different passages, your journey is automatically saved in the navigation history.
+                Click the history button <History size={14} className="inline mb-1" /> in the toolbar or graph area to view 
+                your exploration path and quickly jump back to previously visited passages.
+              </p>
               
               <h3 className="text-xl font-bold mb-2 text-indigo-800">Reading Tips:</h3>
               <p className="mb-4 text-gray-700">

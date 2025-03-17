@@ -1,3 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+
+.app-content {
+  transition: opacity 0.5s ease-in;
+}
+
+.app-content.hidden {
+  opacity: 0;
+}
+
+.app-content.visible {
+  opacity: 1;
+}
+
 .App {
   text-align: center;
 }
