@@ -15,76 +15,8 @@ import {
   ArrowRight,
   Maximize2, 
   Minimize2,
-  BookOpen,
-  // Resize controls
-  GripHorizontal
+  BookOpen
 } from 'lucide-react';
-
-import { bibleStructure } from '../constants/bibleStructure';
-import { allConnections } from '../components/allConnections';
-import { bibleBookChapterCounts } from '../components/bibleBookChapterCounts';
-
-// Using the existing code from the file...
-// (Keeping all existing variables and functions)
-export const referenceToPassageMap = {
-  // All existing mappings
-  'Genesis 1:1-3': 'word',
-  'Genesis 1:3-31': 'creation',
-  'Genesis 3:1-24': 'fall',
-  'Genesis 4:1-16': 'cainAbel',
-  'Genesis 6:1-22': 'noahArk',
-  'Genesis 7:1-24': 'noahArk',
-  'Genesis 8:1-22': 'noahArk',
-  'Genesis 9:1-17': 'noahArk',
-  'Exodus 14:1-31': 'redSea',
-  'Ruth 4:1-22': 'ruthRedeemer',
-  'Jonah 1:1-17': 'jonah',
-  'Jonah 2:1-10': 'jonah',
-  'John 1:1-5': 'jesusword',
-  'Matthew 3:13-17': 'baptism',
-  'Revelation 21:1-8': 'newCreation'
-};
-
-export const narrativeSections = [
-  { id: 'word', title: 'The Word', reference: 'Genesis 1:1-3', book: 'genesis', chapter: 1 },
-  { id: 'creation', title: '6 Day\'s', reference: 'Genesis 1:3-31', book: 'genesis', chapter: 1 },
-  { id: 'noahArk', title: 'Noah\'s Ark', reference: 'Genesis 6-9', book: 'genesis', chapter: 6 },
-];
-
-// All utility functions stay the same
-const isVerseInRange = (verseNum, referenceRange) => {
-  const match = referenceRange.match(/(\w+)\s+(\d+):(\d+)-(\d+)/);
-  if (!match) return false;
-  
-  const [_, book, chapter, startVerse, endVerse] = match;
-  const start = parseInt(startVerse);
-  const end = parseInt(endVerse);
-  
-  return verseNum >= start && verseNum <= end;
-};
-
-const findPassageIdsForVerseRange = (book, chapter, startVerse, endVerse) => {
-  const passageIds = new Set();
-  
-  Object.entries(referenceToPassageMap).forEach(([referenceRange, passageId]) => {
-    if (referenceRange.startsWith(`${book} ${chapter}:`)) {
-      const rangeMatch = referenceRange.match(/:(\d+)-(\d+)$/);
-      if (rangeMatch) {
-        const refStartVerse = parseInt(rangeMatch[1]);
-        const refEndVerse = parseInt(rangeMatch[2]);
-        
-        if (
-          (refStartVerse <= endVerse && refEndVerse >= startVerse) || 
-          (startVerse <= refEndVerse && endVerse >= refStartVerse)
-        ) {
-          passageIds.add(passageId);
-        }
-      }
-    }
-  });
-  
-  return Array.from(passageIds);
-};
 
 const BibleBookConnections = () => {
   // Original state from your application
@@ -94,8 +26,6 @@ const BibleBookConnections = () => {
   const [filterType, setFilterType] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [showInfo, setShowInfo] = useState(false);
-  const [showHeader, setShowHeader] = useState(true);
-  const [lastScrollTop, setLastScrollTop] = useState(0);
   const [expandedSections, setExpandedSections] = useState({
     pentateuch: true,
     historical: false,
@@ -105,7 +35,7 @@ const BibleBookConnections = () => {
     epistles: false,
     revelation: false
   });
-   
+  
   // State for the reading pane and navigation
   const [showReadingPane, setShowReadingPane] = useState(true);
   const [showNavigator, setShowNavigator] = useState(false);
@@ -125,36 +55,18 @@ const BibleBookConnections = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [showGraph, setShowGraph] = useState(true);
-  const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
+  const [nodeDragOffset, setNodeDragOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-  const [isLargeScreen, setIsLargeScreen] = useState(false);
-  
-  // Additional state for node dragging
   const [draggedNodeId, setDraggedNodeId] = useState(null);
-  const [nodePositions, setNodePositions] = useState({});
-  const [dragStartTime, setDragStartTime] = useState(0);
-  const [isDraggingNode, setIsDraggingNode] = useState(false);
-  
-  // State for connection type panel
-  const [showConnectionTypes, setShowConnectionTypes] = useState(false);
-  
-  // State for verse-level connections
-  const [availableConnectionsForChapter, setAvailableConnectionsForChapter] = useState([]);
-  const [activeNarrativeSection, setActiveNarrativeSection] = useState('creation');
-  const [currentVerseRange, setCurrentVerseRange] = useState({ start: 1, end: 31 });
-  
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
   // Array to store section headings for the Bible text
   const [bibleSections, setBibleSections] = useState([]);
+  
+  // Responsive layout state
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
   const textContainerRef = useRef(null);
   
-  // *** NEW STATE FOR RESIZING ***
-  const [isResizing, setIsResizing] = useState(false);
-  const [resizeStartPosition, setResizeStartPosition] = useState(0);
-  const [panelSize, setPanelSize] = useState(isLargeScreen ? 50 : 60); // Default: 50% width or 60% height
-  const resizeRef = useRef(null);
-  const containerRef = useRef(null);
-
   // Check screen size
   useEffect(() => {
     const checkScreenSize = () => {
@@ -164,23 +76,24 @@ const BibleBookConnections = () => {
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
-
-  // Reference to track if we were previously in large screen mode
-  const lastIsLargeScreen = useRef(isLargeScreen);
-
-  // Only update panel size when screen size changes and 
-  // we're switching between layouts - keeps user's custom sizing otherwise
-  useEffect(() => {
-    // Set default sizes based on screen layout
-    const defaultSize = isLargeScreen ? 50 : 60;
-    
-    // Only change size if layout changes (large to small or vice versa)
-    if (lastIsLargeScreen.current !== isLargeScreen) {
-      setPanelSize(defaultSize);
-      lastIsLargeScreen.current = isLargeScreen;
-    }
-  }, [isLargeScreen]);
   
+  const bibleBookChapterCounts = {
+    Genesis: 50, Exodus: 40, Leviticus: 27, Numbers: 36, Deuteronomy: 34,
+    Joshua: 24, Judges: 21, Ruth: 4, '1 Samuel': 31, '2 Samuel': 24,
+    '1 Kings': 22, '2 Kings': 25, '1 Chronicles': 29, '2 Chronicles': 36,
+    Ezra: 10, Nehemiah: 13, Esther: 10, Job: 42, Psalms: 150,
+    Proverbs: 31, Ecclesiastes: 12, 'Song of Solomon': 8, Isaiah: 66,
+    Jeremiah: 52, Lamentations: 5, Ezekiel: 48, Daniel: 12, Hosea: 14,
+    Joel: 3, Amos: 9, Obadiah: 1, Jonah: 4, Micah: 7, Nahum: 3,
+    Habakkuk: 3, Zephaniah: 3, Haggai: 2, Zechariah: 14, Malachi: 4,
+    Matthew: 28, Mark: 16, Luke: 24, John: 21, Acts: 28,
+    Romans: 16, '1 Corinthians': 16, '2 Corinthians': 13, Galatians: 6,
+    Ephesians: 6, Philippians: 4, Colossians: 4, '1 Thessalonians': 5,
+    '2 Thessalonians': 3, '1 Timothy': 6, '2 Timothy': 4, Titus: 3,
+    Philemon: 1, Hebrews: 13, James: 5, '1 Peter': 5, '2 Peter': 3,
+    '1 John': 5, '2 John': 1, '3 John': 1, Jude: 1, Revelation: 22
+  };
+
   // Initialize book list
   useEffect(() => {
     const books = Object.keys(bibleBookChapterCounts);
@@ -195,93 +108,356 @@ const BibleBookConnections = () => {
     }
   }, [currentBook]);
 
-  // *** VERTICAL RESIZE HANDLERS FOR SMALL SCREENS ***
-  const handleResizeStart = (e) => {
-    e.preventDefault();
-    setIsResizing(true);
-    
-    // Store the current position (only care about Y for vertical resize)
-    setResizeStartPosition(e.clientY || e.touches?.[0]?.clientY);
-  };
-
-  const handleResizeMove = (e) => {
-    if (!isResizing || !containerRef.current) return;
-    
-    const containerRect = containerRef.current.getBoundingClientRect();
-    
-    // Get mouse/touch Y position
-    const mousePosition = e.clientY || e.touches?.[0]?.clientY;
-    const positionDelta = mousePosition - resizeStartPosition;
-    
-    // Vertical resize for small screens
-    const containerHeight = containerRect.height;
-    
-    // Calculate new height as a percentage
-    const newHeight = panelSize + (positionDelta / containerHeight * 100);
-    
-    // Constrain between 20% and 80%
-    const constrainedHeight = Math.min(Math.max(newHeight, 20), 80);
-    setPanelSize(constrainedHeight);
-    
-    // Update start position for next move
-    setResizeStartPosition(mousePosition);
-  };
-
-  const handleResizeEnd = () => {
-    setIsResizing(false);
-  };
-
-  // Add global mouse event listeners when resizing
-  useEffect(() => {
-    if (isResizing) {
-      document.addEventListener('mousemove', handleResizeMove);
-      document.addEventListener('mouseup', handleResizeEnd);
-      document.addEventListener('touchmove', handleResizeMove, { passive: false });
-      document.addEventListener('touchend', handleResizeEnd);
-      
-      // Add a class to prevent text selection during resize
-      document.body.classList.add('resize-active');
-    } else {
-      document.removeEventListener('mousemove', handleResizeMove);
-      document.removeEventListener('mouseup', handleResizeEnd);
-      document.removeEventListener('touchmove', handleResizeMove);
-      document.removeEventListener('touchend', handleResizeEnd);
-      
-      // Remove class when done resizing
-      document.body.classList.remove('resize-active');
+  // Bible Structure (your existing code)
+  const bibleStructure = {
+    pentateuch: {
+      title: "Pentateuch",
+      books: [
+        {
+          id: "genesis",
+          title: "Genesis",
+          color: "#3498db",
+          passages: [
+            {
+              id: 'creation',
+              title: 'Creation',
+              reference: 'Genesis 1-2',
+              description: 'God creates the heavens and earth'
+            },
+            {
+              id: 'fall',
+              title: 'The Fall',
+              reference: 'Genesis 3',
+              description: 'Humanity falls into sin'
+            },
+            {
+              id: 'cainAbel',
+              title: 'Cain & Abel',
+              reference: 'Genesis 4',
+              description: 'First murder; Cain kills Abel'
+            },
+            {
+              id: 'noahArk',
+              title: "Noah's Ark",
+              reference: 'Genesis 6-9',
+              description: 'God sends a flood but saves Noah'
+            },
+            {
+              id: 'babel',
+              title: 'Tower of Babel',
+              reference: 'Genesis 11',
+              description: 'People attempt to build tower to heaven'
+            },
+            {
+              id: 'abraham',
+              title: 'Call of Abraham',
+              reference: 'Genesis 12',
+              description: 'God calls Abraham and makes covenant'
+            },
+            {
+              id: 'isaacOffering',
+              title: 'Offering of Isaac',
+              reference: 'Genesis 22',
+              description: 'Abraham shows faith by offering Isaac'
+            },
+            {
+              id: 'jacobLadder',
+              title: "Jacob's Ladder",
+              reference: 'Genesis 28',
+              description: 'Jacob dreams of ladder to heaven'
+            },
+            {
+              id: 'josephSold',
+              title: 'Joseph Sold',
+              reference: 'Genesis 37',
+              description: "Joseph's brothers sell him into slavery"
+            }
+          ]
+        },
+        {
+          id: "exodus",
+          title: "Exodus",
+          color: "#2980b9",
+          passages: [
+            {
+              id: 'burningBush',
+              title: 'Burning Bush',
+              reference: 'Exodus 3',
+              description: 'God calls Moses from burning bush'
+            },
+            {
+              id: 'passover',
+              title: 'Passover',
+              reference: 'Exodus 12',
+              description: 'Blood of lamb saves Israelites'
+            },
+            {
+              id: 'redSea',
+              title: 'Red Sea Crossing',
+              reference: 'Exodus 14',
+              description: 'Israel passes through parted sea'
+            },
+            {
+              id: 'tenCommandments',
+              title: 'Ten Commandments',
+              reference: 'Exodus 20',
+              description: 'God gives law at Mount Sinai'
+            },
+            {
+              id: 'goldenCalf',
+              title: 'Golden Calf',
+              reference: 'Exodus 32',
+              description: 'Israel worships golden idol'
+            }
+          ]
+        }
+      ]
+    },
+    historical: {
+      title: "Historical Books",
+      books: [
+        {
+          id: "joshua",
+          title: "Joshua",
+          color: "#e67e22",
+          passages: [
+            {
+              id: 'jericho',
+              title: 'Fall of Jericho',
+              reference: 'Joshua 6',
+              description: 'Walls of Jericho fall by faith'
+            }
+          ]
+        },
+        {
+          id: "ruth",
+          title: "Ruth",
+          color: "#d35400",
+          passages: [
+            {
+              id: 'ruthRedeemer',
+              title: 'Ruth & Boaz',
+              reference: 'Ruth 4',
+              description: 'Boaz redeems Ruth as kinsman-redeemer'
+            }
+          ]
+        }
+      ]
+    },
+    wisdom: {
+      title: "Wisdom Literature",
+      books: [
+        {
+          id: "psalms",
+          title: "Psalms",
+          color: "#f1c40f",
+          passages: [
+            {
+              id: 'psalm22',
+              title: 'Forsaken Psalm',
+              reference: 'Psalm 22',
+              description: "Prophecy of Messiah's suffering"
+            },
+            {
+              id: 'psalm23',
+              title: 'Shepherd Psalm',
+              reference: 'Psalm 23',
+              description: 'The Lord as shepherd'
+            }
+          ]
+        }
+      ]
+    },
+    prophets: {
+      title: "Prophets",
+      books: [
+        {
+          id: "isaiah",
+          title: "Isaiah",
+          color: "#e74c3c",
+          passages: [
+            {
+              id: 'isaiah53',
+              title: 'Suffering Servant',
+              reference: 'Isaiah 53',
+              description: 'Prophecy of the suffering servant'
+            },
+            {
+              id: 'isaiah7',
+              title: 'Immanuel',
+              reference: 'Isaiah 7:14',
+              description: 'Prophecy of virgin birth'
+            }
+          ]
+        },
+        {
+          id: "daniel",
+          title: "Daniel",
+          color: "#c0392b",
+          passages: [
+            {
+              id: 'daniel7',
+              title: 'Son of Man',
+              reference: 'Daniel 7',
+              description: 'Vision of the Son of Man'
+            }
+          ]
+        },
+        {
+          id: "jonah",
+          title: "Jonah",
+          color: "#e74c3c",
+          passages: [
+            {
+              id: 'jonah',
+              title: 'Jonah & the Fish',
+              reference: 'Jonah 1-2',
+              description: 'Prophet swallowed by great fish'
+            }
+          ]
+        }
+      ]
+    },
+    gospels: {
+      title: "Gospels & Acts",
+      books: [
+        {
+          id: "matthew",
+          title: "Matthew",
+          color: "#2ecc71",
+          passages: [
+            {
+              id: 'birth',
+              title: 'Birth of Jesus',
+              reference: 'Matthew 1-2',
+              description: 'Jesus is born in Bethlehem'
+            },
+            {
+              id: 'baptism',
+              title: 'Baptism of Jesus',
+              reference: 'Matthew 3',
+              description: 'Jesus baptized by John'
+            },
+            {
+              id: 'temptation',
+              title: 'Temptation',
+              reference: 'Matthew 4',
+              description: 'Jesus tempted in wilderness'
+            },
+            {
+              id: 'sermon',
+              title: 'Sermon on Mount',
+              reference: 'Matthew 5-7',
+              description: 'Jesus teaches about kingdom'
+            }
+          ]
+        },
+        {
+          id: "john",
+          title: "John",
+          color: "#27ae60",
+          passages: [
+            {
+              id: 'word',
+              title: 'The Word',
+              reference: 'John 1',
+              description: 'Jesus as the eternal Word'
+            },
+            {
+              id: 'nicodemus',
+              title: 'Born Again',
+              reference: 'John 3',
+              description: 'Jesus teaches Nicodemus about new birth'
+            },
+            {
+              id: 'crucifixion',
+              title: 'Crucifixion',
+              reference: 'John 19',
+              description: 'Jesus dies on the cross'
+            }
+          ]
+        },
+        {
+          id: "acts",
+          title: "Acts",
+          color: "#16a085",
+          passages: [
+            {
+              id: 'pentecost',
+              title: 'Pentecost',
+              reference: 'Acts 2',
+              description: 'Holy Spirit comes on disciples'
+            },
+            {
+              id: 'conversion',
+              title: "Paul's Conversion",
+              reference: 'Acts 9',
+              description: 'Saul becomes Paul on Damascus road'
+            }
+          ]
+        }
+      ]
+    },
+    epistles: {
+      title: "Epistles",
+      books: [
+        {
+          id: "romans",
+          title: "Romans",
+          color: "#9b59b6",
+          passages: [
+            {
+              id: 'romans8',
+              title: 'More Than Conquerors',
+              reference: 'Romans 8',
+              description: "Nothing can separate us from God's love"
+            }
+          ]
+        },
+        {
+          id: "hebrews",
+          title: "Hebrews",
+          color: "#8e44ad",
+          passages: [
+            {
+              id: 'hebrewsFaith',
+              title: 'Hall of Faith',
+              reference: 'Hebrews 11',
+              description: 'Examples of faith throughout Scripture'
+            }
+          ]
+        }
+      ]
+    },
+    revelation: {
+      title: "Revelation",
+      books: [
+        {
+          id: "revelation",
+          title: "Revelation",
+          color: "#f1c40f",
+          passages: [
+            {
+              id: 'throne',
+              title: 'Heavenly Throne',
+              reference: 'Revelation 4',
+              description: "Vision of God's throne"
+            },
+            {
+              id: 'newCreation',
+              title: 'New Creation',
+              reference: 'Revelation 21',
+              description: 'New heaven and new earth'
+            }
+          ]
+        }
+      ]
     }
-    
-    return () => {
-      document.removeEventListener('mousemove', handleResizeMove);
-      document.removeEventListener('mouseup', handleResizeEnd);
-      document.removeEventListener('touchmove', handleResizeMove);
-      document.removeEventListener('touchend', handleResizeEnd);
-      document.body.classList.remove('resize-active');
-    };
-  }, [isResizing, handleResizeMove, handleResizeEnd]);
-
-  // Touch gesture state
-  const [touchDistance, setTouchDistance] = useState(null);
-  const [touchCenter, setTouchCenter] = useState(null);
-
-  // Calculate distance between two touch points
-  const getTouchDistance = (touches) => {
-    if (touches.length < 2) return null;
-    const dx = touches[0].clientX - touches[1].clientX;
-    const dy = touches[0].clientY - touches[1].clientY;
-    return Math.sqrt(dx * dx + dy * dy);
   };
 
-  // Calculate center point between two touches
-  const getTouchCenter = (touches) => {
-    if (touches.length < 2) return null;
-    return {
-      x: (touches[0].clientX + touches[1].clientX) / 2,
-      y: (touches[0].clientY + touches[1].clientY) / 2
-    };
-  };
+  // State for connection type panel
+  const [showConnectionTypes, setShowConnectionTypes] = useState(false);
   
-  // Enhanced parseTextIntoSections function with verse range awareness
   const parseTextIntoSections = (text) => {
     if (!text) return [];
     
@@ -386,7 +562,260 @@ const BibleBookConnections = () => {
     return sections;
   };
 
-  // Enhanced fetchBiblePassage function with verse-level awareness
+  const allConnections = [
+    {
+      from: 'noahArk',
+      to: 'creation',
+      type: 'thematic',
+      strength: 0.7,
+      description: 'Re-creation of the world after the flood'
+    },
+    {
+      from: 'noahArk',
+      to: 'baptism',
+      type: 'typological',
+      strength: 0.8,
+      description: 'Waters of judgment and salvation (1 Peter 3:20-21)'
+    },
+    {
+      from: 'noahArk',
+      to: 'redSea',
+      type: 'typological',
+      strength: 0.9,
+      description: 'Passing through water to salvation'
+    },
+    {
+      from: 'noahArk',
+      to: 'newCreation',
+      type: 'thematic',
+      strength: 0.6,
+      description: 'Gods covenant and rainbow promise fulfilled'
+    },
+    {
+      from: 'noahArk',
+      to: 'jonah',
+      type: 'typological',
+      strength: 0.7,
+      description: 'Salvation through wood/vessel amid waters'
+    },
+    {
+      from: 'isaacOffering',
+      to: 'crucifixion',
+      type: 'typological',
+      strength: 0.9,
+      description: 'Father offering beloved son as sacrifice'
+    },
+    {
+      from: 'isaacOffering',
+      to: 'passover',
+      type: 'typological',
+      strength: 0.8,
+      description: 'Substitute sacrifice provided by God'
+    },
+    {
+      from: 'isaacOffering',
+      to: 'hebrewsFaith',
+      type: 'commentary',
+      strength: 0.7,
+      description: 'Abraham received Isaac back figuratively (Heb 11:19)'
+    },
+    {
+      from: 'passover',
+      to: 'crucifixion',
+      type: 'typological',
+      strength: 0.9,
+      description: 'Blood of the lamb brings salvation'
+    },
+    {
+      from: 'redSea',
+      to: 'baptism',
+      type: 'typological',
+      strength: 0.8,
+      description: 'Passing through water into new life'
+    },
+    {
+      from: 'tenCommandments',
+      to: 'sermon',
+      type: 'thematic',
+      strength: 0.9,
+      description: "God's law explained and fulfilled"
+    },
+    {
+      from: 'isaiah53',
+      to: 'crucifixion',
+      type: 'prophetic',
+      strength: 0.95,
+      description: 'Prophecy of suffering servant fulfilled'
+    },
+    {
+      from: 'psalm22',
+      to: 'crucifixion',
+      type: 'prophetic',
+      strength: 0.9,
+      description: 'Details of crucifixion prophesied'
+    },
+    {
+      from: 'daniel7',
+      to: 'conversion',
+      type: 'prophetic',
+      strength: 0.8,
+      description: 'Son of Man appears to Saul on Damascus road'
+    },
+    {
+      from: 'jonah',
+      to: 'crucifixion',
+      type: 'typological',
+      strength: 0.85,
+      description: 'Three days in "grave" then restoration'
+    },
+    {
+      from: 'creation',
+      to: 'newCreation',
+      type: 'thematic',
+      strength: 0.9,
+      description: 'Original creation fulfilled in new creation'
+    },
+    {
+      from: 'creation',
+      to: 'word',
+      type: 'thematic',
+      strength: 0.8,
+      description: 'Word as agent of creation'
+    },
+    {
+      from: 'fall',
+      to: 'crucifixion',
+      type: 'thematic',
+      strength: 0.85,
+      description: 'Sins entry addressed by sins defeat'
+    },
+    {
+      from: 'temptation',
+      to: 'fall',
+      type: 'thematic',
+      strength: 0.8,
+      description: 'Temptation resisted vs. temptation yielded to'
+    },
+    {
+      from: 'cainAbel',
+      to: 'crucifixion',
+      type: 'typological',
+      strength: 0.7,
+      description: 'Innocent blood shed (Hebrews 12:24)'
+    },
+    {
+      from: 'jacobLadder',
+      to: 'pentecost',
+      type: 'thematic',
+      strength: 0.7,
+      description: 'Heaven and earth connected'
+    },
+    {
+      from: 'burningBush',
+      to: 'pentecost',
+      type: 'typological',
+      strength: 0.8,
+      description: 'Gods presence manifested in fire'
+    },
+    {
+      from: 'josephSold',
+      to: 'crucifixion',
+      type: 'typological',
+      strength: 0.8,
+      description: 'Betrayed by brothers/disciples, yet brings salvation'
+    },
+    {
+      from: 'babel',
+      to: 'pentecost',
+      type: 'typological',
+      strength: 0.9,
+      description: 'Languages confused vs. language barrier overcome'
+    },
+    {
+      from: 'jericho',
+      to: 'hebrewsFaith',
+      type: 'commentary',
+      strength: 0.8,
+      description: 'Walls fell by faith (Hebrews 11:30)'
+    },
+    {
+      from: 'ruthRedeemer',
+      to: 'crucifixion',
+      type: 'typological',
+      strength: 0.7,
+      description: 'Kinsman-redeemer as type of Christ'
+    },
+    {
+      from: 'psalm23',
+      to: 'word',
+      type: 'thematic',
+      strength: 0.8,
+      description: 'The Lord as shepherd'
+    }
+  ];
+
+  // Reference mapping for the ESV API to our passage IDs
+  const referenceToPassageMap = {
+    'Genesis 1': 'creation',
+    'Genesis 2': 'creation',
+    'Genesis 3': 'fall',
+    'Genesis 4': 'cainAbel',
+    'Genesis 6': 'noahArk',
+    'Genesis 7': 'noahArk',
+    'Genesis 8': 'noahArk',
+    'Genesis 9': 'noahArk',
+    'Genesis 11': 'babel',
+    'Genesis 12': 'abraham',
+    'Genesis 22': 'isaacOffering',
+    'Genesis 28': 'jacobLadder',
+    'Genesis 37': 'josephSold',
+    'Exodus 3': 'burningBush',
+    'Exodus 12': 'passover',
+    'Exodus 14': 'redSea',
+    'Exodus 20': 'tenCommandments',
+    'Exodus 32': 'goldenCalf',
+    'Joshua 6': 'jericho',
+    'Ruth 4': 'ruthRedeemer',
+    'Psalm 22': 'psalm22',
+    'Psalm 23': 'psalm23',
+    'Isaiah 53': 'isaiah53',
+    'Isaiah 7': 'isaiah7',
+    'Daniel 7': 'daniel7',
+    'Jonah 1': 'jonah',
+    'Jonah 2': 'jonah',
+    'Matthew 1': 'birth',
+    'Matthew 2': 'birth',
+    'Matthew 3': 'baptism',
+    'Matthew 4': 'temptation',
+    'Matthew 5': 'sermon',
+    'Matthew 6': 'sermon',
+    'Matthew 7': 'sermon',
+    'John 1': 'word',
+    'John 3': 'nicodemus',
+    'John 19': 'crucifixion',
+    'Acts 2': 'pentecost',
+    'Acts 9': 'conversion',
+    'Romans 8': 'romans8',
+    'Hebrews 11': 'hebrewsFaith',
+    'Revelation 4': 'throne',
+    'Revelation 21': 'newCreation'
+  };
+
+  // Define narrative sections that correspond to our connection data
+  const narrativeSections = [
+    { id: 'creation', title: 'Creation', reference: 'Genesis 1-2', book: 'genesis', chapter: 1 },
+    { id: 'fall', title: 'The Fall', reference: 'Genesis 3', book: 'genesis', chapter: 3 },
+    { id: 'cainAbel', title: 'Cain & Abel', reference: 'Genesis 4', book: 'genesis', chapter: 4 },
+    { id: 'noahArk', title: 'Noah\'s Ark', reference: 'Genesis 6-9', book: 'genesis', chapter: 6 },
+    { id: 'abraham', title: 'Abraham', reference: 'Genesis 12', book: 'genesis', chapter: 12 },
+    { id: 'passover', title: 'Passover', reference: 'Exodus 12', book: 'exodus', chapter: 12 },
+    { id: 'baptism', title: 'Baptism of Jesus', reference: 'Matthew 3', book: 'matthew', chapter: 3 },
+    { id: 'crucifixion', title: 'Crucifixion', reference: 'John 19', book: 'john', chapter: 19 }
+  ];
+  
+  const [activeNarrativeSection, setActiveNarrativeSection] = useState('creation');
+
+  // Fetch Bible passage from ESV API
   const fetchBiblePassage = async (reference) => {
     setIsLoadingBibleText(true);
     try {
@@ -409,27 +838,11 @@ const BibleBookConnections = () => {
         const parsedSections = parseTextIntoSections(text);
         setBibleSections(parsedSections);
         
-        // Extract verse numbers from the text to determine verse range
-        const verseMatches = text.match(/\[(\d+)\]/g) || [];
-        const verses = verseMatches.map(match => parseInt(match.replace(/[\[\]]/g, '')));
+        // Check if current reference matches any passages in our dataset
+        const passageKey = `${currentBook} ${currentChapter}`;
+        const passageId = referenceToPassageMap[passageKey];
         
-        const startVerse = Math.min(...verses) || 1;
-        const endVerse = Math.max(...verses) || 1;
-        
-        // Update current verse range
-        setCurrentVerseRange({ start: startVerse, end: endVerse });
-        
-        // Find passages that overlap with our current verse range
-        const passageIds = findPassageIdsForVerseRange(currentBook, currentChapter, startVerse, endVerse);
-        
-        if (passageIds.length > 0) {
-          // If we have multiple matching passages, use the activeNarrativeSection if it's one of them
-          let passageId = passageIds[0]; // Default to first match
-          
-          if (passageIds.includes(activeNarrativeSection)) {
-            passageId = activeNarrativeSection;
-          }
-          
+        if (passageId) {
           // Find the passage in our dataset
           const allPassages = getAllPassages();
           const passage = allPassages.find(p => p.id === passageId);
@@ -442,35 +855,10 @@ const BibleBookConnections = () => {
             setConnections(passageConnections);
             setActiveConnectionsInText(passageConnections);
             
-            // Create highlighted verses object based on the matching verse range
+            // Create highlighted verses object based on current chapter
             const versesToHighlight = {};
-            const foundRange = Object.keys(referenceToPassageMap).find(ref => 
-              ref.startsWith(`${currentBook} ${currentChapter}:`) && 
-              referenceToPassageMap[ref] === passageId
-            );
-            
-            if (foundRange) {
-              const rangeMatch = foundRange.match(/:(\d+)-(\d+)$/);
-              if (rangeMatch) {
-                const rangeStart = parseInt(rangeMatch[1]);
-                const rangeEnd = parseInt(rangeMatch[2]);
-                
-                for (let v = rangeStart; v <= rangeEnd; v++) {
-                  versesToHighlight[v] = true;
-                }
-              }
-            }
-            
+            versesToHighlight[currentChapter] = true;
             setHighlightedVerses(versesToHighlight);
-            
-            // If we have multiple passage matches, make them available for selection
-            if (passageIds.length > 1) {
-              setAvailableConnectionsForChapter(passageIds.map(id => 
-                allPassages.find(p => p.id === id)
-              ).filter(Boolean));
-            } else {
-              setAvailableConnectionsForChapter([]);
-            }
           }
         } else {
           // No specific connection for this passage
@@ -478,7 +866,6 @@ const BibleBookConnections = () => {
           setConnections([]);
           setActiveConnectionsInText([]);
           setHighlightedVerses({});
-          setAvailableConnectionsForChapter([]);
         }
       } else {
         setBibleText("Passage not found");
@@ -487,7 +874,6 @@ const BibleBookConnections = () => {
         setConnections([]);
         setActiveConnectionsInText([]);
         setHighlightedVerses({});
-        setAvailableConnectionsForChapter([]);
       }
     } catch (error) {
       console.error('Error fetching Bible passage:', error);
@@ -504,9 +890,6 @@ const BibleBookConnections = () => {
       const reference = `${currentBook} ${currentChapter}`;
       setCurrentBibleReference(reference);
       fetchBiblePassage(reference);
-      
-      // Reset node positions when changing passages
-      setNodePositions({});
     }
   }, [currentBook, currentChapter, showReadingPane]);
 
@@ -532,8 +915,6 @@ const BibleBookConnections = () => {
 
   const findPassage = (id) => allPassages.find(p => p.id === id);
 
-  // Keep all the existing functions like toggleSection, handlePassageClick, etc.
-  // The rest of the functions stay the same
   const toggleSection = (section) => {
     setExpandedSections(prev => ({
       ...prev,
@@ -551,34 +932,12 @@ const BibleBookConnections = () => {
     }
   };
 
-  // Enhanced handlePassageClick function with support for verse-level connections
   const handlePassageClick = (passage) => {
     setSelectedPassage(passage);
     const passageConnections = allConnections.filter(
       conn => conn.from === passage.id || conn.to === passage.id
     );
     setConnections(passageConnections);
-    setActiveNarrativeSection(passage.id);
-    
-    // Update highlighted verses based on the passage's verse range
-    const verseRange = Object.keys(referenceToPassageMap).find(ref => 
-      referenceToPassageMap[ref] === passage.id &&
-      ref.startsWith(`${currentBook} ${currentChapter}:`)
-    );
-    
-    if (verseRange) {
-      const rangeMatch = verseRange.match(/:(\d+)-(\d+)$/);
-      if (rangeMatch) {
-        const rangeStart = parseInt(rangeMatch[1]);
-        const rangeEnd = parseInt(rangeMatch[2]);
-        
-        const versesToHighlight = {};
-        for (let v = rangeStart; v <= rangeEnd; v++) {
-          versesToHighlight[v] = true;
-        }
-        setHighlightedVerses(versesToHighlight);
-      }
-    }
     
     // If we have a reading pane open, try to navigate to the related passage
     if (showReadingPane && passage) {
@@ -596,11 +955,8 @@ const BibleBookConnections = () => {
         }
         
         if (bibleBookChapterCounts[book]) {
-          // Only navigate if book/chapter is different
-          if (book !== currentBook || parseInt(chapter) !== currentChapter) {
-            setCurrentBook(book);
-            setCurrentChapter(parseInt(chapter));
-          }
+          setCurrentBook(book);
+          setCurrentChapter(parseInt(chapter));
         }
       }
     }
@@ -655,7 +1011,6 @@ const BibleBookConnections = () => {
     }
   };
   
-  // Enhanced handleNarrativeSectionSelect function for verse-level support
   const handleNarrativeSectionSelect = (sectionId) => {
     setActiveNarrativeSection(sectionId);
     const section = narrativeSections.find(s => s.id === sectionId);
@@ -667,26 +1022,8 @@ const BibleBookConnections = () => {
       
       if (book) {
         const bookName = book.title;
-        const wasOnSameChapter = currentBook === bookName && currentChapter === section.chapter;
-        
         setCurrentBook(bookName);
         setCurrentChapter(section.chapter);
-        
-        // If we're already on the same chapter, explicitly select this passage
-        if (wasOnSameChapter) {
-          const passage = allPassages.find(p => p.id === sectionId);
-          if (passage) {
-            handlePassageClick(passage);
-          }
-        } else {
-          // Otherwise, wait for the chapter to load, then select the passage
-          setTimeout(() => {
-            const passage = allPassages.find(p => p.id === sectionId);
-            if (passage) {
-              handlePassageClick(passage);
-            }
-          }, 300);
-        }
       }
     }
   };
@@ -729,7 +1066,6 @@ const BibleBookConnections = () => {
     { id: 'commentary', name: 'New Testament Commentary' }
   ];
 
-  // Enhanced highlightBibleText function with support for verse-level connections
   const highlightBibleText = (text) => {
     if (!text) return '';
     
@@ -743,74 +1079,54 @@ const BibleBookConnections = () => {
         const verseNumber = parseInt(match[1]);
         const isHighlighted = highlightedVerses[verseNumber];
         
-        // Find connected passages for this verse
-        const connectedPassages = [];
-        
-        // Check all reference ranges in the map for this verse
-        Object.entries(referenceToPassageMap).forEach(([referenceRange, passageId]) => {
-          // Check if the reference matches our current book and chapter
-          if (referenceRange.startsWith(`${currentBook} ${currentChapter}:`)) {
-            // Parse the verse range from the reference
-            const rangeMatch = referenceRange.match(/:(\d+)-(\d+)$/);
-            if (rangeMatch) {
-              const refStartVerse = parseInt(rangeMatch[1]);
-              const refEndVerse = parseInt(rangeMatch[2]);
-              
-              // Check if this verse is in the range
-              if (verseNumber >= refStartVerse && verseNumber <= refEndVerse) {
-                const passage = allPassages.find(p => p.id === passageId);
-                if (passage && !connectedPassages.some(p => p.id === passageId)) {
-                  connectedPassages.push(passage);
-                }
-              }
-            }
+        // Check if this is a connection point
+        const relatedConnection = activeConnectionsInText.find(conn => {
+          const targetPassage = conn.from === selectedPassage?.id 
+            ? findPassage(conn.to)
+            : findPassage(conn.from);
+          
+          if (targetPassage) {
+            const verseRef = targetPassage.reference.match(/\d+$/);
+            return verseRef && parseInt(verseRef[0]) === verseNumber;
           }
+          return false;
         });
         
-        // Determine if this verse is part of the currently selected passage
-        const isConnectionPoint = connectedPassages.length > 0;
-        const isPartOfSelectedPassage = selectedPassage && connectedPassages.some(p => p.id === selectedPassage.id);
+        const isConnectionPoint = !!relatedConnection;
         
         return (
-          <div key={index} className="inline-block relative verse-number-container">
-            <button 
-              className={`
-                inline-flex items-center justify-center w-7 h-7 rounded-full mx-1 font-bold text-sm
-                ${isHighlighted || isPartOfSelectedPassage
-                  ? 'bg-indigo-500 text-white hover:bg-indigo-600' 
-                  : isConnectionPoint
-                    ? 'bg-indigo-100 text-indigo-700 ring-1 ring-indigo-300 hover:bg-indigo-200' 
-                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}
-                transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-400
-              `}
-              title={isConnectionPoint ? `${connectedPassages.map(p => p.title).join(', ')}` : ""}
-              onClick={() => {
-                if (isConnectionPoint) {
-                  // If there's only one connection, use it
-                  if (connectedPassages.length === 1) {
-                    handlePassageClick(connectedPassages[0]);
-                  } 
-                  // If clicked verse has the current passage, cycle to next option
-                  else if (isPartOfSelectedPassage) {
-                    const currentIndex = connectedPassages.findIndex(p => p.id === selectedPassage.id);
-                    const nextIndex = (currentIndex + 1) % connectedPassages.length;
-                    handlePassageClick(connectedPassages[nextIndex]);
-                  }
-                  // Otherwise use the first connection
-                  else {
-                    handlePassageClick(connectedPassages[0]);
-                  }
+          <button 
+            key={index}
+            className={`
+              inline-flex items-center justify-center w-7 h-7 rounded-full mx-1 font-bold text-sm
+              ${isHighlighted || (selectedPassage && isConnectionPoint)
+                ? 'bg-indigo-500 text-white hover:bg-indigo-600' 
+                : isConnectionPoint 
+                  ? 'bg-indigo-100 text-indigo-700 ring-1 ring-indigo-300 hover:bg-indigo-200' 
+                  : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}
+              transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-400
+            `}
+            title={isConnectionPoint ? "Click to view this connection" : ""}
+            onClick={() => {
+              if (isConnectionPoint && relatedConnection) {
+                const targetPassageId = relatedConnection.from === selectedPassage?.id 
+                  ? relatedConnection.to
+                  : relatedConnection.from;
+                
+                const targetPassage = findPassage(targetPassageId);
+                if (targetPassage) {
+                  handlePassageClick({
+                    ...targetPassage,
+                    book: targetPassage.book,
+                    bookTitle: targetPassage.bookTitle,
+                    bookColor: targetPassage.bookColor
+                  });
                 }
-              }}
-            >
-              {verseNumber}
-            </button>
-            
-            {/* Show a small dot indicator if there are multiple connections for this verse */}
-            {connectedPassages.length > 1 && (
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border border-white"></div>
-            )}
-          </div>
+              }
+            }}
+          >
+            {verseNumber}
+          </button>
         );
       }
       
@@ -835,33 +1151,6 @@ const BibleBookConnections = () => {
       
       return <span key={index}>{part}</span>;
     });
-  };
-
-  // UI component to switch between different connection visualizations
-  const renderConnectionSwitcher = () => {
-    if (!availableConnectionsForChapter.length || availableConnectionsForChapter.length <= 1) {
-      return null; // Don't show if there's only one or no connection
-    }
-    
-    return (
-      <div className="bg-white px-4 py-2 mb-2 border-b border-indigo-100">
-        <div className="text-sm text-gray-600 mb-1">Available connections for this chapter:</div>
-        <div className="flex flex-wrap gap-2">
-          {availableConnectionsForChapter.map(passage => (
-            <button
-              key={passage.id}
-              onClick={() => handlePassageClick(passage)}
-              className={`px-3 py-1 text-sm rounded-full transition-colors
-                ${selectedPassage && selectedPassage.id === passage.id 
-                  ? 'bg-indigo-600 text-white' 
-                  : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'}`}
-            >
-              {passage.title}
-            </button>
-          ))}
-        </div>
-      </div>
-    );
   };
 
   const renderBibleSections = () => {
@@ -922,7 +1211,6 @@ const BibleBookConnections = () => {
     ));
   };
 
-  // All other render functions like renderConnectionsVisualization stay the same
   const renderConnectionsVisualization = () => {
     if (!selectedPassage) return null;
     const visData = { nodes: [], links: [] };
@@ -1034,16 +1322,13 @@ const BibleBookConnections = () => {
           style={{ 
             transform: `scale(${zoomLevel})`, 
             transformOrigin: 'center',
-            cursor: isDragging ? 'grabbing' : 'grab',
-            touchAction: 'none' // Prevent browser handling of touch gestures
+            cursor: isDragging ? 'grabbing' : 'grab'
           }}
           viewBox="0 0 800 600"
           className="transition-transform duration-200"
           onMouseDown={(e) => {
-            if (e.button === 0) { // Only handle left mouse button
-              setIsDragging(true);
-              setDragStart({ x: e.clientX, y: e.clientY });
-            }
+            setIsDragging(true);
+            setDragStart({ x: e.clientX, y: e.clientY });
           }}
           onMouseMove={(e) => {
             if (isDragging) {
@@ -1061,91 +1346,6 @@ const BibleBookConnections = () => {
           }}
           onMouseLeave={() => {
             setIsDragging(false);
-          }}
-          onTouchStart={(e) => {
-            e.preventDefault(); // Prevent default touch actions
-            if (e.touches.length === 1) {
-              // Single touch = panning
-              setIsDragging(true);
-              setDragStart({ 
-                x: e.touches[0].clientX, 
-                y: e.touches[0].clientY 
-              });
-              setTouchDistance(null);
-              setTouchCenter(null);
-            } else if (e.touches.length === 2) {
-              // Double touch = potential zoom gesture
-              setTouchDistance(getTouchDistance(e.touches));
-              setTouchCenter(getTouchCenter(e.touches));
-              setIsDragging(false);
-            }
-          }}
-          onTouchMove={(e) => {
-            e.preventDefault(); // Prevent default touch actions
-            if (e.touches.length === 1 && isDragging) {
-              // Single touch = panning
-              const dx = e.touches[0].clientX - dragStart.x;
-              const dy = e.touches[0].clientY - dragStart.y;
-              setPanOffset({
-                x: panOffset.x + dx/zoomLevel,
-                y: panOffset.y + dy/zoomLevel
-              });
-              setDragStart({ 
-                x: e.touches[0].clientX, 
-                y: e.touches[0].clientY 
-              });
-            } else if (e.touches.length === 2 && touchDistance) {
-              // Handle pinch zoom
-              const newDistance = getTouchDistance(e.touches);
-              const newCenter = getTouchCenter(e.touches);
-              
-              if (newDistance && touchDistance) {
-                // Calculate zoom factor
-                const zoomDelta = newDistance / touchDistance;
-                const newZoomLevel = Math.min(Math.max(zoomLevel * zoomDelta, 0.5), 2);
-                
-                // Update zoom
-                setZoomLevel(newZoomLevel);
-                
-                // Calculate pan adjustment for zoom around pinch center
-                if (touchCenter && newCenter) {
-                  const centerDeltaX = newCenter.x - touchCenter.x;
-                  const centerDeltaY = newCenter.y - touchCenter.y;
-                  
-                  // Adjust pan offset
-                  setPanOffset({
-                    x: panOffset.x + centerDeltaX/newZoomLevel,
-                    y: panOffset.y + centerDeltaY/newZoomLevel
-                  });
-                }
-                
-                // Update touch state
-                setTouchDistance(newDistance);
-                setTouchCenter(newCenter);
-              }
-            }
-          }}
-          onTouchEnd={(e) => {
-            // Reset touch states if no touches left
-            if (e.touches.length === 0) {
-              setIsDragging(false);
-              setTouchDistance(null);
-              setTouchCenter(null);
-            } else if (e.touches.length === 1) {
-              // Switched from pinch zoom to pan
-              setIsDragging(true);
-              setDragStart({ 
-                x: e.touches[0].clientX, 
-                y: e.touches[0].clientY 
-              });
-              setTouchDistance(null);
-              setTouchCenter(null);
-            }
-          }}
-          onTouchCancel={() => {
-            setIsDragging(false);
-            setTouchDistance(null);
-            setTouchCenter(null);
           }}
         >
           <rect width="800" height="600" fill="#f8fafc" rx="8" ry="8" />
@@ -1195,25 +1395,9 @@ const BibleBookConnections = () => {
               const source = visData.nodes.find(n => n.id === link.source);
               const target = visData.nodes.find(n => n.id === link.target);
               if (!source || !target) return null;
-
-              // Get node positions with any custom positioning applied
-              const sourcePos = nodePositions[source.id] || { x: source.x, y: source.y };
-              const targetPos = nodePositions[target.id] || { x: target.x, y: target.y };
-              
-              const dx = targetPos.x - sourcePos.x;
-              const dy = targetPos.y - sourcePos.y;
+              const dx = target.x - source.x;
+              const dy = target.y - source.y;
               const dr = Math.sqrt(dx * dx + dy * dy) * 1.5;
-              
-              // Calculate angle to determine if the text would be upside down
-              const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-              // If angle is between 90 and 270 degrees, the text would appear upside down
-              const textUpsideDown = (angle > 90 && angle < 270);
-              
-              // Set path direction based on text orientation
-              const pathData = textUpsideDown 
-                ? `M ${targetPos.x},${targetPos.y} A ${dr},${dr} 0 0,0 ${sourcePos.x},${sourcePos.y}` // Reversed
-                : `M ${sourcePos.x},${sourcePos.y} A ${dr},${dr} 0 0,1 ${targetPos.x},${targetPos.y}`;
-              
               return (
                 <g key={`link-${index}`}>
                   <defs>
@@ -1224,15 +1408,14 @@ const BibleBookConnections = () => {
                       x2="100%" 
                       y2="0%"
                       gradientUnits="userSpaceOnUse"
-                      gradientTransform={`rotate(${Math.atan2(dy, dx) * 180 / Math.PI}, ${sourcePos.x}, ${sourcePos.y})`}
+                      gradientTransform={`rotate(${Math.atan2(dy, dx) * 180 / Math.PI}, ${source.x}, ${source.y})`}
                     >
                       <stop offset="0%" stopColor={source.color} stopOpacity="0.7" />
                       <stop offset="100%" stopColor={target.color} stopOpacity="0.7" />
                     </linearGradient>
                   </defs>
                   <path
-                    id={`path-${index}`}
-                    d={pathData}
+                    d={`M ${source.x},${source.y} A ${dr},${dr} 0 0,1 ${target.x},${target.y}`}
                     fill="none"
                     stroke={`url(#link-gradient-${index})`}
                     strokeWidth={link.strength * 4 + 1}
@@ -1241,224 +1424,84 @@ const BibleBookConnections = () => {
                   >
                     <title>{link.description}</title>
                   </path>
-                  
-                  {/* Add visible edge label */}
-                  {link.description && (
-                    <text>
-                      <textPath 
-                        href={`#path-${index}`} 
-                        startOffset="50%" 
-                        textAnchor="middle"
-                        fontSize="11"
-                        fontWeight="500"
-                        side={textUpsideDown ? "right" : "left"}
-                      >
-                        <tspan
-                          dy="-5"
-                          fill="#ffffff"
-                          strokeWidth="3"
-                          stroke="#ffffff"
-                          paintOrder="stroke"
-                        >
-                          {link.description}
-                        </tspan>
-                        <tspan
-                          dy="-5"
-                          x="0"
-                          fill="#4a5568"
-                          strokeWidth="0"
-                        >
-                          {link.description}
-                        </tspan>
-                      </textPath>
-                    </text>
-                  )}
+                  <circle
+                    cx={(source.x + target.x) / 2}
+                    cy={(source.y + target.y) / 2}
+                    r="6"
+                    fill={getTypeColor(link.type)}
+                    stroke="#ffffff"
+                    strokeWidth="2"
+                  >
+                    <title>{link.type}</title>
+                  </circle>
                 </g>
               );
             })}
-            {visData.nodes.map(node => {
-              // Get custom position if it exists, otherwise use the default
-              const nodePos = nodePositions[node.id] || { x: node.x, y: node.y };
-              
-              return (
-                <g 
-                  key={`node-${node.id}`}
-                  transform={`translate(${nodePos.x}, ${nodePos.y})`}
-                  className={`${isDraggingNode && draggedNodeId === node.id ? 'cursor-grabbing' : 'cursor-pointer'}`}
-                  onMouseDown={(e) => {
-                    // Don't interfere with the main svg panning
-                    e.stopPropagation();
-                    
-                    // Set the start time to detect click vs drag
-                    setDragStartTime(Date.now());
-                    setDraggedNodeId(node.id);
-                    setDragStart({ x: e.clientX, y: e.clientY });
-                  }}
-                  onMouseMove={(e) => {
-                    // If we're dragging this node
-                    if (draggedNodeId === node.id) {
-                      e.stopPropagation();
-                      
-                      // Only set dragging after a small movement to differentiate from clicks
-                      const dx = e.clientX - dragStart.x;
-                      const dy = e.clientY - dragStart.y;
-                      const distance = Math.sqrt(dx * dx + dy * dy);
-                      
-                      if (distance > 5) {
-                        setIsDraggingNode(true);
-                        
-                        // Calculate new position accounting for zoom level
-                        const newPos = {
-                          x: nodePos.x + dx / zoomLevel,
-                          y: nodePos.y + dy / zoomLevel
-                        };
-                        
-                        // Update node position
-                        setNodePositions(prev => ({
-                          ...prev,
-                          [node.id]: newPos
-                        }));
-                        
-                        // Update drag start for next movement
-                        setDragStart({ x: e.clientX, y: e.clientY });
-                      }
-                    }
-                  }}
-                  onMouseUp={(e) => {
-                    e.stopPropagation();
-                    
-                    // If this was a click (not a drag), navigate to the passage
-                    const dragDuration = Date.now() - dragStartTime;
-                    if (!isDraggingNode && dragDuration < 200) {
-                      const passage = findPassage(node.id);
-                      if (passage) {
-                        handlePassageClick({
-                          ...passage,
-                          book: node.book,
-                          bookColor: node.color
-                        });
-                      }
-                    }
-                    
-                    // Reset dragging state
-                    setIsDraggingNode(false);
-                    setDraggedNodeId(null);
-                  }}
-                  onMouseLeave={() => {
-                    // Reset if mouse leaves while dragging
-                    if (draggedNodeId === node.id) {
-                      setIsDraggingNode(false);
-                      setDraggedNodeId(null);
-                    }
-                  }}
-                  onTouchStart={(e) => {
-                    // Similar to mouseDown but for touch
-                    e.stopPropagation();
-                    setDragStartTime(Date.now());
-                    setDraggedNodeId(node.id);
-                    setDragStart({ 
-                      x: e.touches[0].clientX, 
-                      y: e.touches[0].clientY 
+            {visData.nodes.map(node => (
+              <g 
+                key={`node-${node.id}`}
+                transform={`translate(${node.x}, ${node.y})`}
+                onClick={() => {
+                  const passage = findPassage(node.id);
+                  if (passage) {
+                    handlePassageClick({
+                      ...passage,
+                      book: node.book,
+                      bookColor: node.color
                     });
-                  }}
-                  onTouchMove={(e) => {
-                    if (draggedNodeId === node.id) {
-                      e.stopPropagation();
-                      
-                      const dx = e.touches[0].clientX - dragStart.x;
-                      const dy = e.touches[0].clientY - dragStart.y;
-                      const distance = Math.sqrt(dx * dx + dy * dy);
-                      
-                      if (distance > 5) {
-                        setIsDraggingNode(true);
-                        
-                        const newPos = {
-                          x: nodePos.x + dx / zoomLevel,
-                          y: nodePos.y + dy / zoomLevel
-                        };
-                        
-                        setNodePositions(prev => ({
-                          ...prev,
-                          [node.id]: newPos
-                        }));
-                        
-                        setDragStart({ 
-                          x: e.touches[0].clientX, 
-                          y: e.touches[0].clientY 
-                        });
-                      }
-                    }
-                  }}
-                  onTouchEnd={(e) => {
-                    e.stopPropagation();
-                    
-                    const dragDuration = Date.now() - dragStartTime;
-                    if (!isDraggingNode && dragDuration < 200) {
-                      const passage = findPassage(node.id);
-                      if (passage) {
-                        handlePassageClick({
-                          ...passage,
-                          book: node.book,
-                          bookColor: node.color
-                        });
-                      }
-                    }
-                    
-                    setIsDraggingNode(false);
-                    setDraggedNodeId(null);
-                  }}
+                  }
+                }}
+                className="cursor-pointer"
+              >
+                {node.primary && (
+                  <circle
+                    r="25"
+                    fill={node.color}
+                    opacity="0.2"
+                  >
+                    <animate
+                      attributeName="r"
+                      values="25;35;25"
+                      dur="3s"
+                      repeatCount="indefinite"
+                    />
+                    <animate
+                      attributeName="opacity"
+                      values="0.2;0.3;0.2"
+                      dur="3s"
+                      repeatCount="indefinite"
+                    />
+                  </circle>
+                )}
+                <circle
+                  r={node.primary ? 12 : 8}
+                  fill={node.color}
+                  stroke={node.primary ? "#ffffff" : "#ffffff"}
+                  strokeWidth="2"
                 >
                   {node.primary && (
-                    <circle
-                      r="25"
-                      fill={node.color}
-                      opacity="0.2"
-                    >
-                      <animate
-                        attributeName="r"
-                        values="25;35;25"
-                        dur="3s"
-                        repeatCount="indefinite"
-                      />
-                      <animate
-                        attributeName="opacity"
-                        values="0.2;0.3;0.2"
-                        dur="3s"
-                        repeatCount="indefinite"
-                      />
-                    </circle>
+                    <animate
+                      attributeName="r"
+                      values="12;14;12"
+                      dur="1.5s"
+                      repeatCount="indefinite"
+                    />
                   )}
-                  <circle
-                    r={node.primary ? 12 : 8}
-                    fill={node.color}
-                    stroke={node.primary ? "#ffffff" : "#ffffff"}
-                    strokeWidth="2"
-                    className={isDraggingNode && draggedNodeId === node.id ? 'cursor-grabbing' : ''}
-                  >
-                    {node.primary && (
-                      <animate
-                        attributeName="r"
-                        values="12;14;12"
-                        dur="1.5s"
-                        repeatCount="indefinite"
-                      />
-                    )}
-                  </circle>
-                  <text
-                    y={node.primary ? 30 : 20}
-                    textAnchor="middle"
-                    fontSize={node.primary ? 14 : 12}
-                    fontWeight={node.primary ? "bold" : "normal"}
-                    fill="#1e293b"
-                    stroke="#ffffff"
-                    strokeWidth="4"
-                    paintOrder="stroke"
-                  >
-                    {node.label}
-                  </text>
-                </g>
-              );
-            })}
+                </circle>
+                <text
+                  y={node.primary ? 30 : 20}
+                  textAnchor="middle"
+                  fontSize={node.primary ? 14 : 12}
+                  fontWeight={node.primary ? "bold" : "normal"}
+                  fill="#1e293b"
+                  stroke="#ffffff"
+                  strokeWidth="4"
+                  paintOrder="stroke"
+                >
+                  {node.label}
+                </text>
+              </g>
+            ))}
           </g>
         </svg>
         
@@ -1523,7 +1566,7 @@ const BibleBookConnections = () => {
         </div>
         
         <div 
-          className="bibleReadingSection flex-1 overflow-y-auto bg-white"
+          className="flex-1 overflow-y-auto bg-white"
           ref={textContainerRef}
         >
           {isLoadingBibleText ? (
@@ -1532,16 +1575,13 @@ const BibleBookConnections = () => {
             </div>
           ) : (
             <div className="max-w-3xl mx-auto px-8 py-8">
-              <div className="mb-4 pb-2 border-b border-indigo-100">
+              <div className="mb-6 pb-2 border-b border-indigo-100">
                 <h2 className="text-3xl font-serif font-bold text-indigo-900">{currentBibleReference}</h2>
               </div>
               
-              {/* Add the connection switcher for multiple connections */}
-              {renderConnectionSwitcher()}
-              
               {bibleSections.length > 0 ? (
                 bibleSections.map((section, index) => (
-                  <div key={index} className="mb-6">
+                  <div key={index} className="mb-10">
                     {section.title && section.title !== 'Introduction' && (
                       <h3 className="text-xl font-medium mb-4 text-indigo-800 pb-1 border-b border-indigo-50">{section.title}</h3>
                     )}
@@ -1562,44 +1602,13 @@ const BibleBookConnections = () => {
     );
   };
 
-  // Render the resize handle
-  const renderResizeHandle = () => {
-    if (!showGraph || isLargeScreen) return null; // Only show for small screens
-    
-    return (
-      <div 
-        ref={resizeRef}
-        className="
-          resize-handle z-10 flex items-center justify-center
-          transition-colors hover:bg-indigo-100 active:bg-indigo-200
-          cursor-row-resize h-4 w-16 absolute left-1/2 transform -translate-x-1/2 
-          bg-white rounded-full shadow-md hover:shadow-lg
-        "
-        style={{
-          top: `calc(${panelSize}% - 8px)`,
-          borderTop: '2px solid #e2e8f0',
-          borderBottom: '2px solid #e2e8f0'
-        }}
-        onMouseDown={handleResizeStart}
-        onTouchStart={handleResizeStart}
-      >
-        <GripHorizontal size={16} className="text-gray-500" />
-      </div>
-    );
-  };
-
-  // Style for the main container to support resize UI feedback
-  const containerStyle = {
-    cursor: isResizing ? (isLargeScreen ? 'col-resize' : 'row-resize') : 'default'
-  };
-
-  // Updated return statement with resize functionality
   return (
-    <div className="flex flex-col h-screen bg-slate-50 text-slate-800 font-sans" style={containerStyle}>
+    <div className="flex flex-col h-screen bg-slate-50 text-slate-800 font-sans">
       <header className="p-4 bg-white shadow-sm border-b border-slate-200">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between gap-4 flex-wrap">
-         
+            <h1 className="text-xl font-bold text-indigo-900">Echoes of Logos</h1>
+            
             <div className="flex flex-1 items-center gap-3 justify-end">
               {/* Book selector */}
               <div className="relative">
@@ -1717,6 +1726,18 @@ const BibleBookConnections = () => {
                 </button>
               </div>
               
+              {/* Search field */}
+              <div className="relative flex-grow max-w-md">
+                <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search passages or themes..."
+                  className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              
               {/* Action buttons */}
               <div className="flex items-center gap-2">
                 <button
@@ -1762,39 +1783,29 @@ const BibleBookConnections = () => {
         </div>
       </header>
       
-      {/* Main content area with resize capabilities */}
-      <div 
-        ref={containerRef}
-        className={`flex-1 relative ${isLargeScreen ? 'flex flex-row' : 'flex flex-col'} overflow-hidden`}
-      >
+      <div className={`flex-1 ${isLargeScreen ? 'flex flex-row' : 'flex flex-col'} overflow-hidden`}>
         <div 
-          className={`transition-all duration-100`}
-          style={{ 
-            height: isLargeScreen ? '100%' : `${panelSize}%`,
-            width: isLargeScreen ? '50%' : '100%'
-          }}
+          className={`
+            transition-all duration-300
+            ${isLargeScreen ? (showGraph ? 'w-1/2' : 'w-full') : (isExpanded ? 'h-1/5' : showGraph ? 'h-2/5' : 'h-full')}
+          `}
         >
           {renderReadingPane()}
         </div>
         
-        {/* Resize handle between panels */}
-        {renderResizeHandle()}
-        
         {showGraph && (
           <div className={`
-            transition-all duration-100 
-            ${isLargeScreen ? 'border-l' : 'border-t'} border-indigo-100
-          `}
-          style={{ 
-            height: isLargeScreen ? '100%' : `${100-panelSize}%`,
-            width: isLargeScreen ? '50%' : '100%'
-          }}
-          >
+            transition-all duration-300 border-l border-indigo-100
+            ${isLargeScreen ? 'w-1/2' : (isExpanded ? 'h-4/5' : 'h-3/5')}
+          `}>
             {selectedPassage ? (
               <div className="h-full flex flex-col">
                 <div className="bg-white py-3 px-4 border-b border-indigo-100 h-[56px] flex items-center">
                   <div className="flex flex-col justify-center">
                     <h2 className="text-lg font-bold text-indigo-900 leading-tight">{selectedPassage.title}</h2>
+                    <div className="flex items-center">
+                      <h3 className="text-sm text-indigo-600">{selectedPassage.reference}</h3>
+                    </div>
                   </div>
                 </div>
                 <div className="flex-1">
@@ -1808,7 +1819,7 @@ const BibleBookConnections = () => {
                 </div>
                 <h2 className="text-2xl font-bold mb-2 text-indigo-900">Select a Passage</h2>
                 <p className="text-gray-600 max-w-md">
-                We are still building the connections for this passage. Please select a passage from the reading pane to explore connections.
+                  We are still building the connections for this passage. Please select a passage from the reading pane to explore connections.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-4 justify-center max-w-xl">
                   {narrativeSections.slice(0, 3).map(section => (
@@ -1832,7 +1843,7 @@ const BibleBookConnections = () => {
         <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-xl max-w-2xl max-h-full overflow-auto">
             <div className="p-8">
-              <h2 className="text-2xl font-bold mb-4 text-indigo-900">Echoes of Logos Guide</h2>
+              <h2 className="text-2xl font-bold mb-4 text-indigo-900">Bible Connections Guide</h2>
               <h3 className="text-xl font-bold mb-2 text-indigo-800">Connection Types:</h3>
               <ul className="mb-6 space-y-3 text-gray-700">
                 <li className="flex items-center">
@@ -1867,19 +1878,15 @@ const BibleBookConnections = () => {
                 <li>Connected nodes show related passages across Scripture.</li>
                 <li>The <strong>colored lines</strong> indicate the type of connection.</li>
                 <li>Click on any node to navigate to that passage.</li>
-                <li><strong>Drag nodes</strong> to reposition them for better visibility.</li>
                 <li>Use the <strong>zoom controls</strong> to adjust your view.</li>
-                <li>Click and drag the background to pan the visualization.</li>
+                <li>Click and drag to pan the visualization.</li>
                 <li>Verse numbers highlighted in the text can be clicked to explore connections.</li>
-                <li><strong>Green dots</strong> on verse numbers indicate multiple available connections.</li>
-                <li>Use the <strong>resize handle</strong> to adjust the size of the reading pane and graph.</li>
               </ul>
               
               <h3 className="text-xl font-bold mb-2 text-indigo-800">Reading Tips:</h3>
               <p className="mb-4 text-gray-700">
                 While reading, look for <span className="px-2 py-1 bg-indigo-100 text-indigo-800 rounded-full font-medium">highlighted verse numbers</span>, 
                 which indicate connections to other passages. Click these to explore the connected passages directly.
-                If a verse has multiple connections, clicking will cycle through them.
               </p>
               
               <div className="text-center">
@@ -1895,26 +1902,17 @@ const BibleBookConnections = () => {
         </div>
       )}
       
-      {/* Add a global CSS class for preventing text selection during resizing */}
-      <style jsx global>{`
-        .resize-active {
-          user-select: none;
-          -webkit-user-select: none;
-          cursor: row-resize;
-        }
-        
-        .resize-handle {
-          transition: background-color 0.2s ease;
-        }
-        
-        .resize-handle:hover {
-          background-color: rgba(99, 102, 241, 0.1);
-        }
-        
-        .resize-handle:active {
-          background-color: rgba(99, 102, 241, 0.2);
-        }
-      `}</style>
+      {!showGraph && (
+        <div className="fixed bottom-4 right-4 z-20">
+          <button
+            onClick={toggleGraphVisibility}
+            className="bg-indigo-600 text-white p-3 rounded-full shadow-lg hover:bg-indigo-700 transition-colors"
+            title="Show connections"
+          >
+            <Eye size={24} />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
