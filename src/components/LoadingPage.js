@@ -27,8 +27,11 @@ const LoadingPage = ({ onLoadingComplete }) => {
     <div className={`loading-container ${fadeOut ? 'fade-out' : ''}`}>
       <div className="loader-content">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" className="bible-graph-animation">
-          {/* Background */}
-          <rect width="800" height="500" fill="#FFFFFF" />
+          {/* App Name moved to top */}
+          <text x="400" y="80" fontFamily="'Playfair Display', serif" fontSize="28" fontWeight="500" textAnchor="middle" fill="#333333" opacity="0">
+            Echoes of Logos
+            <animate attributeName="opacity" values="0;1" dur="1s" begin="0.5s" fill="freeze" />
+          </text>
           
           {/* Central Bible Book */}
           <g className="bible-group" transform="translate(400, 250)">
@@ -327,12 +330,6 @@ const LoadingPage = ({ onLoadingComplete }) => {
               <animate attributeName="opacity" values="0;0.8;0" dur="1.2s" begin="2.2s" fill="freeze" />
             </circle>
           </g>
-          
-          {/* App Name */}
-          <text x="400" y="430" fontFamily="'Playfair Display', serif" fontSize="28" fontWeight="500" textAnchor="middle" fill="#333333" opacity="0">
-            Biblical Connections
-            <animate attributeName="opacity" values="0;1" dur="1s" begin="2.5s" fill="freeze" />
-          </text>
         </svg>
       </div>
     </div>
