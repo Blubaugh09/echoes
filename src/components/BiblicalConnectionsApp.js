@@ -1562,13 +1562,13 @@ const BibleBookConnections = () => {
         <svg 
           width="100%" 
           height="100%" 
+          viewBox={`0 0 ${svgWidth} ${svgHeight}`}
           style={{ 
             transform: `scale(${zoomLevel})`, 
             transformOrigin: 'center',
             cursor: isDragging ? 'grabbing' : 'grab',
             touchAction: 'none' // Prevent browser handling of touch gestures
           }}
-          viewBox="0 0 800 600"
           className="transition-transform duration-200"
           onClick={clearNodeFocus}
           onMouseDown={(e) => {
@@ -1680,8 +1680,53 @@ const BibleBookConnections = () => {
             setTouchCenter(null);
           }}
         >
-          <rect width="800" height="600" fill="#f8fafc" rx="8" ry="8" />
+          <g>
+            <rect width="800" height="600" fill="#f8fafc" rx="8" ry="8" />
+          </g>
           <g transform={`translate(${panOffset.x}, ${panOffset.y})`}>
+            {/* Book labels around the visualization */}
+            {books.map((book, index) => {
+              const bookAngle = (index / books.length) * Math.PI * 2;
+              const labelRadius = radius + 30;
+              const labelX = centerX + Math.cos(bookAngle) * labelRadius;
+              const labelY = centerY + Math.sin(bookAngle) * labelRadius;
+              let bookData = null;
+              for (const section of Object.values(bibleStructure)) {
+                const foundBook = section.books.find(b => b.id === book);
+                if (foundBook) {
+                  bookData = foundBook;
+                  break;
+                }
+              }
+              if (!bookData) return null;
+              return (
+                <g key={`book-${book}`} className="cursor-pointer" onClick={() => handleBookClick(book)}>
+                  <text
+                    x={labelX}
+                    y={labelY}
+                    textAnchor="middle"
+                    alignmentBaseline="middle"
+                    fontSize="14"
+                    fontWeight="bold"
+                    fill={bookData.color}
+                    stroke="#ffffff"
+                    strokeWidth="4"
+                    paintOrder="stroke"
+                  >
+                    {bookData.title}
+                  </text>
+                  <circle 
+                    cx={labelX}
+                    cy={labelY - 20}
+                    r="6"
+                    fill={bookData.color}
+                    stroke="#ffffff"
+                    strokeWidth="2"
+                  />
+                </g>
+              );
+            })}
+            
             {/* Filter links when in focused mode */}
             {visData.links.filter(link => {
               // If no node is focused, show all links
@@ -1752,6 +1797,7 @@ const BibleBookConnections = () => {
                 </g>
               );
             })}
+            
             {/* Filter nodes when in focused mode */}
             {visData.nodes.filter(node => {
               // If no node is focused, show all nodes
@@ -1851,17 +1897,26 @@ const BibleBookConnections = () => {
                         } else {
                           // Focus on this node and show its info
                           setFocusedNodeId(node.id);
+                          
+                          // Get passage and connection info
+                          const passage = findPassage(node.id);
+                          
+                          // Find the connection information for this node
+                          const connection = filteredConnections.find(conn => 
+                            conn.from === node.id || conn.to === node.id
+                          );
+                          
                           setSelectedNodeInfo({
-                            id: node.id,
-                            title: node.title,
-                            content: node.content,
-                            book: node.book,
-                            references: node.references,
-                            type: node.type,
-                            position: {
-                              x: nodePos.x,
-                              y: nodePos.y
-                            }
+                            ...node,
+                            x: nodePos.x,
+                            y: nodePos.y,
+                            reference: passage?.reference,
+                            passage,
+                            connection,
+                            isSource: connection?.from === node.id,
+                            connectedTo: connection?.from === node.id ? 
+                              findPassage(connection?.to)?.title : 
+                              findPassage(connection?.from)?.title
                           });
                         }
                       }
