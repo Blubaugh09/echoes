@@ -1450,6 +1450,10 @@ const BibleBookConnections = () => {
   // All other render functions like renderConnectionsVisualization stay the same
   const renderConnectionsVisualization = () => {
     if (!selectedPassage) return null;
+    // Define svg dimensions
+    const svgWidth = 800;
+    const svgHeight = 600;
+    
     const visData = { nodes: [], links: [] };
     visData.nodes.push({
       id: selectedPassage.id,
