@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   Book,
   ZoomIn, 
@@ -1966,17 +1966,18 @@ const BibleBookConnections = () => {
             </button>
             <div 
               id="sections-container"
+              ref={sectionsContainerRef}
               className="flex-1 overflow-x-auto py-3 px-2 flex space-x-3 scrollbar-hide"
               style={{ 
                 scrollbarWidth: 'none', 
                 msOverflowStyle: 'none',
-                maxWidth: 'calc(100% - 70px)',
                 width: '100%'
               }}
             >
-              {narrativeSections.map((section) => (
+              {sortedNarrativeSections.map((section) => (
                 <button
                   key={section.id}
+                  data-section-id={section.id}
                   onClick={() => handleNarrativeSectionSelect(section.id)}
                   className={`py-1.5 px-4 text-sm font-medium rounded-full transition-colors whitespace-nowrap relative ${
                     activeNarrativeSection === section.id 
@@ -1986,9 +1987,6 @@ const BibleBookConnections = () => {
                 >
                   {section.title}
                   {section.reference && <span className="ml-1 text-xs text-gray-400 hidden sm:inline">{section.reference}</span>}
-                  {activeNarrativeSection === section.id && (
-                    <span className="absolute left-1/2 transform -translate-x-1/2 bottom-0 w-1.5 h-1.5 bg-indigo-600 rounded-full"></span>
-                  )}
                 </button>
               ))}
             </div>
@@ -2525,6 +2523,7 @@ const BibleBookConnections = () => {
             </button>
             <div 
               id="sections-container"
+              ref={sectionsContainerRef}
               className="flex-1 overflow-x-auto py-3 px-2 flex space-x-3 scrollbar-hide"
               style={{ 
                 scrollbarWidth: 'none', 
@@ -2532,9 +2531,10 @@ const BibleBookConnections = () => {
                 width: '100%'
               }}
             >
-              {narrativeSections.map((section) => (
+              {sortedNarrativeSections.map((section) => (
                 <button
                   key={section.id}
+                  data-section-id={section.id}
                   onClick={() => handleNarrativeSectionSelect(section.id)}
                   className={`py-1.5 px-4 text-sm font-medium rounded-full transition-colors whitespace-nowrap relative ${
                     activeNarrativeSection === section.id 
@@ -2544,9 +2544,6 @@ const BibleBookConnections = () => {
                 >
                   {section.title}
                   {section.reference && <span className="ml-1 text-xs text-gray-400 hidden sm:inline">{section.reference}</span>}
-                  {activeNarrativeSection === section.id && (
-                    <span className="absolute left-1/2 transform -translate-x-1/2 bottom-0 w-1.5 h-1.5 bg-indigo-600 rounded-full"></span>
-                  )}
                 </button>
               ))}
             </div>
