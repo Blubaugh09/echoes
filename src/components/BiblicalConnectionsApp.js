@@ -2291,20 +2291,51 @@ const BibleBookConnections = () => {
   
   // Sort narrative sections by biblical order
   const sortedNarrativeSections = useMemo(() => {
+    // Create a complete list of Bible books in order
+    const fullBibleBooksList = [...oldTestamentBooks, ...newTestamentBooks];
+    
     // Create a mapping of book names to their order in the Bible
     const bibleBookOrder = {};
-    bibleBooks.forEach((book, index) => {
+    fullBibleBooksList.forEach((book, index) => {
       bibleBookOrder[book.toLowerCase()] = index;
     });
     
+    // Get the first part of the reference to determine the book name
+    const getBookFromReference = (reference) => {
+      if (!reference) return '';
+      // Extract book name from reference like "Genesis 1:1"
+      const match = reference.match(/^(\d*\s*[A-Za-z]+)/);
+      return match ? match[1].toLowerCase() : '';
+    };
+    
     return [...narrativeSections].sort((a, b) => {
-      // Sort by book first
-      const bookA = a.book || '';
-      const bookB = b.book || '';
+      // Get book names
+      const bookNameA = a.book || getBookFromReference(a.reference) || '';
+      const bookNameB = b.book || getBookFromReference(b.reference) || '';
       
-      const bookOrderA = bibleBookOrder[bookA] || Infinity;
-      const bookOrderB = bibleBookOrder[bookB] || Infinity;
+      // Get book order - normalize "genesis" to "genesis" for lookup
+      let bookOrderA = Infinity;
+      let bookOrderB = Infinity;
       
+      // Try to match book name with or without spaces
+      Object.keys(bibleBookOrder).forEach(bookName => {
+        if (bookNameA.includes(bookName) || bookName.includes(bookNameA)) {
+          bookOrderA = Math.min(bookOrderA, bibleBookOrder[bookName]);
+        }
+        if (bookNameB.includes(bookName) || bookName.includes(bookNameB)) {
+          bookOrderB = Math.min(bookOrderB, bibleBookOrder[bookName]);
+        }
+      });
+      
+      // If exact match is available, use it
+      if (bibleBookOrder[bookNameA] !== undefined) {
+        bookOrderA = bibleBookOrder[bookNameA];
+      }
+      if (bibleBookOrder[bookNameB] !== undefined) {
+        bookOrderB = bibleBookOrder[bookNameB];
+      }
+      
+      // First sort by book
       if (bookOrderA !== bookOrderB) return bookOrderA - bookOrderB;
       
       // Then sort by chapter
@@ -2316,7 +2347,7 @@ const BibleBookConnections = () => {
       
       return parseInt(verseA) - parseInt(verseB);
     });
-  }, [narrativeSections, bibleBooks]);
+  }, [narrativeSections, oldTestamentBooks, newTestamentBooks]);
 
   // Updated return statement with resize functionality
   return (
