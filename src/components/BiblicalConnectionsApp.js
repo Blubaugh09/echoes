@@ -2286,6 +2286,38 @@ const BibleBookConnections = () => {
     );
   };
 
+  // Remove duplicated sections container - this should already exist in the component state section
+  const sectionsContainerRef = useRef(null);
+  
+  // Sort narrative sections by biblical order
+  const sortedNarrativeSections = useMemo(() => {
+    // Create a mapping of book names to their order in the Bible
+    const bibleBookOrder = {};
+    bibleBooks.forEach((book, index) => {
+      bibleBookOrder[book.toLowerCase()] = index;
+    });
+    
+    return [...narrativeSections].sort((a, b) => {
+      // Sort by book first
+      const bookA = a.book || '';
+      const bookB = b.book || '';
+      
+      const bookOrderA = bibleBookOrder[bookA] || Infinity;
+      const bookOrderB = bibleBookOrder[bookB] || Infinity;
+      
+      if (bookOrderA !== bookOrderB) return bookOrderA - bookOrderB;
+      
+      // Then sort by chapter
+      if (a.chapter !== b.chapter) return a.chapter - b.chapter;
+      
+      // If same chapter, try to sort by verse if available
+      const verseA = a.reference?.match(/:(\d+)/)?.[1] || 0;
+      const verseB = b.reference?.match(/:(\d+)/)?.[1] || 0;
+      
+      return parseInt(verseA) - parseInt(verseB);
+    });
+  }, [narrativeSections, bibleBooks]);
+
   // Updated return statement with resize functionality
   return (
     <div className="flex flex-col h-screen bg-slate-50 text-slate-800 font-sans" style={containerStyle}>
@@ -2638,7 +2670,7 @@ const BibleBookConnections = () => {
                 We are still building the connections for this passage. Please select a passage from the reading pane to explore connections.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-4 justify-center max-w-xl">
-                  {narrativeSections.slice(0, 0).map(section => (
+                  {sortedNarrativeSections.slice(0, 0).map(section => (
                     <button
                       key={section.id}
                       onClick={() => handleNarrativeSectionSelect(section.id)}
