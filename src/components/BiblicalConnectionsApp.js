@@ -930,12 +930,12 @@ const BibleBookConnections = () => {
           <div key={index} className="inline-block relative verse-number-container">
             <button 
               className={`
-                inline-flex items-center justify-center w-5 h-5 rounded-sm mx-1 text-xs
+                inline-flex items-center justify-center w-6 h-6 rounded mx-1 text-xs
                 ${isHighlighted || isPartOfSelectedPassage
-                  ? 'text-indigo-600 font-medium' 
+                  ? 'bg-indigo-100 text-indigo-700 font-medium' 
                   : isConnectionPoint
-                    ? 'text-indigo-400 underline decoration-dotted' 
-                    : 'text-gray-400'}
+                    ? 'bg-gray-100 text-indigo-500 border border-indigo-200' 
+                    : 'text-gray-500 hover:bg-gray-50'}
                 transition-colors focus:outline-none focus:ring-1 focus:ring-indigo-300
               `}
               title={isConnectionPoint ? `${connectedPassages.map(p => p.title).join(', ')}` : ""}
