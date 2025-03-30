@@ -627,6 +627,12 @@ const BibleBookConnections = () => {
       }
     }
     
+    // Clear any focused node state when changing passages
+    if (typeof setFocusedNodeId === 'function') {
+      setFocusedNodeId(null);
+      setSelectedNodeInfo(null);
+    }
+    
     setSelectedPassage(passage);
     const passageConnections = allConnections.filter(
       conn => conn.from === passage.id || conn.to === passage.id
@@ -815,6 +821,12 @@ const BibleBookConnections = () => {
   // Enhanced handleNarrativeSectionSelect function for verse-level support
   const handleNarrativeSectionSelect = (sectionId) => {
     setActiveNarrativeSection(sectionId);
+    // Clear any focused node state when changing sections
+    if (typeof setFocusedNodeId === 'function') {
+      setFocusedNodeId(null);
+      setSelectedNodeInfo(null);
+    }
+    
     const section = narrativeSections.find(s => s.id === sectionId);
     if (section) {
       // Find the matching book ID and convert it to the proper book name format
@@ -2417,8 +2429,9 @@ const BibleBookConnections = () => {
   // Function to clear node focus when clicking outside
   const clearNodeFocus = (e) => {
     // Only clear if clicking on the SVG background, not on a node
-    if (e.target.tagName === 'svg') {
+    if (e.target.tagName === 'svg' || e.target.tagName === 'rect') {
       setFocusedNodeId(null);
+      setSelectedNodeInfo(null);
     }
   };
 
