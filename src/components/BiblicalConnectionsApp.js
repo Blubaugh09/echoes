@@ -930,13 +930,13 @@ const BibleBookConnections = () => {
           <div key={index} className="inline-block relative verse-number-container">
             <button 
               className={`
-                inline-flex items-center justify-center w-7 h-7 rounded-full mx-1 font-bold text-sm
+                inline-flex items-center justify-center w-5 h-5 rounded-sm mx-1 text-xs
                 ${isHighlighted || isPartOfSelectedPassage
-                  ? 'bg-indigo-500 text-white hover:bg-indigo-600' 
+                  ? 'text-indigo-600 font-medium' 
                   : isConnectionPoint
-                    ? 'bg-indigo-100 text-indigo-700 ring-1 ring-indigo-300 hover:bg-indigo-200' 
-                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}
-                transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-400
+                    ? 'text-indigo-400 underline decoration-dotted' 
+                    : 'text-gray-400'}
+                transition-colors focus:outline-none focus:ring-1 focus:ring-indigo-300
               `}
               title={isConnectionPoint ? `${connectedPassages.map(p => p.title).join(', ')}` : ""}
               onClick={() => {
@@ -2087,15 +2087,67 @@ const BibleBookConnections = () => {
 
   // Add this new component for the node info popup
   const NodeInfoPopup = ({ node, onClose, onNavigate }) => {
+    const popupRef = useRef(null);
+    const [position, setPosition] = useState({ left: node.x + 20, top: node.y - 20 });
+    
+    // Adjust position when component mounts
+    useEffect(() => {
+      if (!popupRef.current) return;
+      
+      const updatePosition = () => {
+        const popup = popupRef.current;
+        if (!popup) return;
+        
+        const rect = popup.getBoundingClientRect();
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        
+        let newLeft = node.x + 20;
+        let newTop = node.y - 20;
+        
+        // Check if popup extends beyond right edge
+        if (newLeft + rect.width > viewportWidth) {
+          newLeft = node.x - rect.width - 10; // Position to the left of node
+        }
+        
+        // If still off-screen on the left, center it
+        if (newLeft < 0) {
+          newLeft = Math.max(10, (viewportWidth - rect.width) / 2);
+        }
+        
+        // Check if popup extends beyond bottom edge
+        if (newTop + rect.height > viewportHeight) {
+          newTop = node.y - rect.height - 10; // Position above node
+        }
+        
+        // If still off-screen on the top, position at top of viewport
+        if (newTop < 0) {
+          newTop = 10;
+        }
+        
+        setPosition({ left: newLeft, top: newTop });
+      };
+      
+      // Run once on mount
+      updatePosition();
+      
+      // Also update on resize
+      window.addEventListener('resize', updatePosition);
+      return () => window.removeEventListener('resize', updatePosition);
+    }, [node.x, node.y]);
+    
     console.log('Rendering NodeInfoPopup with node:', node);
     
     return (
       <div 
-        className="fixed bg-white rounded-lg shadow-xl border border-gray-200 p-4 w-96"
+        ref={popupRef}
+        className="fixed bg-white rounded-lg shadow-xl border border-gray-200 p-4 max-w-sm w-full sm:w-96"
         style={{ 
-          left: `${node.x + 20}px`, 
-          top: `${node.y - 20}px`,
-          zIndex: 1000
+          left: `${position.left}px`, 
+          top: `${position.top}px`,
+          zIndex: 1000,
+          maxHeight: '80vh',
+          overflowY: 'auto'
         }}
       >
         <button 
@@ -2107,13 +2159,13 @@ const BibleBookConnections = () => {
         >
           ×
         </button>
-
+        
         {/* Title and Reference */}
         <h3 className="font-bold text-xl text-indigo-900 mb-1">{node.label}</h3>
         <div className="text-sm text-indigo-600 mb-4 font-medium">
           {node.reference}
         </div>
-
+        
         {/* Connection Details */}
         {node.connection && (
           <div className="space-y-3 mb-4">
