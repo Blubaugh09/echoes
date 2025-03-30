@@ -883,17 +883,30 @@ const BibleBookConnections = () => {
     // Create a clean copy of the connection
     const cleanedConnection = { ...connection };
     
-    // Check if the description contains the fallback error message
-    if (typeof connection.description === 'string' && 
-        connection.description.includes('fallback response') && 
-        connection.description.includes('JSON repair failed')) {
-      
-      // Extract the reference from the description
-      const match = connection.description.match(/Connection to ([^(]+)/);
-      const reference = match ? match[1].trim() : '';
-      
-      // Create a clean description
-      cleanedConnection.description = `Connection to ${reference}`;
+    // Always ensure description is a clean, safe string
+    if (typeof connection.description === 'string') {
+      // If description contains error messages, extract just the reference
+      if (connection.description.includes('fallback response') || 
+          connection.description.includes('JSON repair failed')) {
+        // Extract the reference from the description
+        const match = connection.description.match(/Connection to ([^(]+)/);
+        const reference = match ? match[1].trim() : '';
+        
+        // Create a simple clean description
+        cleanedConnection.description = `Connection to ${reference}`;
+      } 
+      // Keep the original description, it's already a valid string
+    } else if (connection.description === null || connection.description === undefined) {
+      // If description is null or undefined, set a default
+      cleanedConnection.description = "Connection between passages";
+    } else {
+      // For any other non-string type, use a safe default
+      try {
+        // If it's an object that might be stringified, use a generic message
+        cleanedConnection.description = "Connection between passages";
+      } catch (error) {
+        cleanedConnection.description = "Connection between passages";
+      }
     }
     
     return cleanedConnection;
@@ -2356,11 +2369,7 @@ const BibleBookConnections = () => {
                   Description:
                 </div>
                 <div className="text-sm text-indigo-900">
-                  {/* Render the description if it doesn't contain error messages */}
-                  {typeof node.connection.description === 'string' && 
-                   !node.connection.description.includes('fallback response') 
-                    ? node.connection.description 
-                    : `Connection to ${node.connectedTo}`}
+                  {node.connection.description}
                 </div>
               </div>
             )}
