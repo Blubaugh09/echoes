@@ -2204,6 +2204,7 @@ const BibleBookConnections = () => {
   const NodeInfoPopup = ({ node, onClose, onNavigate }) => {
     const popupRef = useRef(null);
     const [position, setPosition] = useState({ left: node.x + 20, top: node.y - 20 });
+    const [isCentered, setIsCentered] = useState(false);
     
     // Adjust position when component mounts
     useEffect(() => {
@@ -2216,6 +2217,14 @@ const BibleBookConnections = () => {
         const rect = popup.getBoundingClientRect();
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
+        
+        // For smaller screens (mobile), always center the popup
+        if (viewportWidth < 768) { // 768px is the standard md breakpoint in Tailwind
+          setIsCentered(true);
+          return;
+        }
+        
+        setIsCentered(false);
         
         let newLeft = node.x + 20;
         let newTop = node.y - 20;
@@ -2251,13 +2260,22 @@ const BibleBookConnections = () => {
       return () => window.removeEventListener('resize', updatePosition);
     }, [node.x, node.y]);
     
-    console.log('Rendering NodeInfoPopup with node:', node);
-    
     return (
       <div 
         ref={popupRef}
-        className="fixed bg-white rounded-lg shadow-xl border border-gray-200 p-4 max-w-sm w-full sm:w-96"
-        style={{ 
+        className={`fixed bg-white rounded-lg shadow-xl border border-gray-200 p-4 max-w-sm w-full sm:w-96 ${
+          isCentered ? 'transition-all duration-200' : ''
+        }`}
+        style={isCentered ? {
+          // Center positioning for small screens
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 1000,
+          maxHeight: '80vh',
+          overflowY: 'auto'
+        } : { 
+          // Normal positioning for larger screens
           left: `${position.left}px`, 
           top: `${position.top}px`,
           zIndex: 1000,
