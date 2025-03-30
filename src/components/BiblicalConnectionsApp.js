@@ -171,6 +171,8 @@ const BibleBookConnections = () => {
 
   // Add state for the selected node info
   const [selectedNodeInfo, setSelectedNodeInfo] = useState(null);
+  // Add state for focused node view
+  const [focusedNodeId, setFocusedNodeId] = useState(null);
 
   // Check screen size
   useEffect(() => {
@@ -1568,6 +1570,7 @@ const BibleBookConnections = () => {
           }}
           viewBox="0 0 800 600"
           className="transition-transform duration-200"
+          onClick={clearNodeFocus}
           onMouseDown={(e) => {
             if (e.button === 0) { // Only handle left mouse button
               setIsDragging(true);
@@ -1679,124 +1682,68 @@ const BibleBookConnections = () => {
         >
           <rect width="800" height="600" fill="#f8fafc" rx="8" ry="8" />
           <g transform={`translate(${panOffset.x}, ${panOffset.y})`}>
-            {books.map((book, index) => {
-              const bookAngle = (index / books.length) * Math.PI * 2;
-              const labelRadius = radius + 30;
-              const labelX = centerX + Math.cos(bookAngle) * labelRadius;
-              const labelY = centerY + Math.sin(bookAngle) * labelRadius;
-              let bookData = null;
-              for (const section of Object.values(bibleStructure)) {
-                const foundBook = section.books.find(b => b.id === book);
-                if (foundBook) {
-                  bookData = foundBook;
-                  break;
-                }
-              }
-              if (!bookData) return null;
-              return (
-                <g key={`book-${book}`} className="cursor-pointer" onClick={() => handleBookClick(book)}>
-                  <text
-                    x={labelX}
-                    y={labelY}
-                    textAnchor="middle"
-                    alignmentBaseline="middle"
-                    fontSize="14"
-                    fontWeight="bold"
-                    fill={bookData.color}
-                    stroke="#ffffff"
-                    strokeWidth="4"
-                    paintOrder="stroke"
-                  >
-                    {bookData.title}
-                  </text>
-                  <circle 
-                    cx={labelX}
-                    cy={labelY - 20}
-                    r="6"
-                    fill={bookData.color}
-                    stroke="#ffffff"
-                    strokeWidth="2"
-                  />
-                </g>
-              );
-            })}
-            {visData.links.map((link, index) => {
-              const source = visData.nodes.find(n => n.id === link.source);
-              const target = visData.nodes.find(n => n.id === link.target);
-              if (!source || !target) return null;
-
-              // Get node positions with any custom positioning applied
-              const sourcePos = nodePositions[source.id] || { x: source.x, y: source.y };
-              const targetPos = nodePositions[target.id] || { x: target.x, y: target.y };
+            {/* Filter links when in focused mode */}
+            {visData.links.filter(link => {
+              // If no node is focused, show all links
+              if (!focusedNodeId) return true;
               
+              // Otherwise, only show links connected to the focused node
+              return link.source === focusedNodeId || link.target === focusedNodeId;
+            }).map(link => {
+              const sourceNode = visData.nodes.find(n => n.id === link.source);
+              const targetNode = visData.nodes.find(n => n.id === link.target);
+              
+              if (!sourceNode || !targetNode) return null;
+              
+              const sourcePos = nodePositions[sourceNode.id] || { x: sourceNode.x, y: sourceNode.y };
+              const targetPos = nodePositions[targetNode.id] || { x: targetNode.x, y: targetNode.y };
+              
+              // Calculate line path for link
               const dx = targetPos.x - sourcePos.x;
               const dy = targetPos.y - sourcePos.y;
-              const dr = Math.sqrt(dx * dx + dy * dy) * 1.5;
+              const linkLength = Math.sqrt(dx * dx + dy * dy);
               
-              // Calculate angle to determine if the text would be upside down
-              const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-              // If angle is between 90 and 270 degrees, the text would appear upside down
-              const textUpsideDown = (angle > 90 && angle < 270);
+              // Adjust source and target points to be at the edge of the circles
+              const sourceRadius = sourceNode.primary ? 12 : 8;
+              const targetRadius = targetNode.primary ? 12 : 8;
               
-              // Set path direction based on text orientation
-              const pathData = textUpsideDown 
-                ? `M ${targetPos.x},${targetPos.y} A ${dr},${dr} 0 0,0 ${sourcePos.x},${sourcePos.y}` // Reversed
-                : `M ${sourcePos.x},${sourcePos.y} A ${dr},${dr} 0 0,1 ${targetPos.x},${targetPos.y}`;
+              const offsetRatio = sourceRadius / linkLength;
+              const offsetX = dx * offsetRatio;
+              const offsetY = dy * offsetRatio;
+              
+              const targetOffsetRatio = targetRadius / linkLength;
+              const targetOffsetX = dx * targetOffsetRatio;
+              const targetOffsetY = dy * targetOffsetRatio;
+              
+              const adjustedSourceX = sourcePos.x + offsetX;
+              const adjustedSourceY = sourcePos.y + offsetY;
+              const adjustedTargetX = targetPos.x - targetOffsetX;
+              const adjustedTargetY = targetPos.y - targetOffsetY;
+              
+              // Create a unique ID for the path
+              const pathId = `path-${link.source}-${link.target}`;
               
               return (
-                <g key={`link-${index}`}>
+                <g key={`link-${link.source}-${link.target}`}>
                   <defs>
-                    <linearGradient 
-                      id={`link-gradient-${index}`} 
-                      x1="0%" 
-                      y1="0%" 
-                      x2="100%" 
-                      y2="0%"
-                      gradientUnits="userSpaceOnUse"
-                      gradientTransform={`rotate(${Math.atan2(dy, dx) * 180 / Math.PI}, ${sourcePos.x}, ${sourcePos.y})`}
-                    >
-                      <stop offset="0%" stopColor={source.color} stopOpacity="0.7" />
-                      <stop offset="100%" stopColor={target.color} stopOpacity="0.7" />
-                    </linearGradient>
+                    <path 
+                      id={pathId} 
+                      d={`M${adjustedSourceX},${adjustedSourceY} L${adjustedTargetX},${adjustedTargetY}`}
+                    />
                   </defs>
                   <path
-                    id={`path-${index}`}
-                    d={pathData}
+                    d={`M${adjustedSourceX},${adjustedSourceY} L${adjustedTargetX},${adjustedTargetY}`}
+                    stroke={getTypeColor(link.type)}
+                    strokeWidth={1 + link.strength * 2}
+                    opacity={0.7}
+                    strokeLinecap="round"
                     fill="none"
-                    stroke={`url(#link-gradient-${index})`}
-                    strokeWidth={link.strength * 4 + 1}
-                    strokeOpacity="0.6"
-                    strokeDasharray={link.type === 'prophetic' ? "5,5" : (link.type === 'commentary' ? "2,2" : "none")}
-                  >
-                    <title>{link.description}</title>
-                  </path>
-                  
-                  {/* Add visible edge label */}
+                    markerEnd={`url(#${link.type}Marker)`}
+                  />
                   {link.description && (
-                    <text>
-                      <textPath 
-                        href={`#path-${index}`} 
-                        startOffset="50%" 
-                        textAnchor="middle"
-                        fontSize="11"
-                        fontWeight="500"
-                        side={textUpsideDown ? "right" : "left"}
-                      >
-                        <tspan
-                          dy="-5"
-                          fill="#ffffff"
-                          strokeWidth="3"
-                          stroke="#ffffff"
-                          paintOrder="stroke"
-                        >
-                          {link.description}
-                        </tspan>
-                        <tspan
-                          dy="-5"
-                          x="0"
-                          fill="#4a5568"
-                          strokeWidth="0"
-                        >
+                    <text dy={-3} className="connection-label">
+                      <textPath xlinkHref={`#${pathId}`} startOffset="50%" textAnchor="middle" fontSize="10" fill="#4b5563">
+                        <tspan>
                           {link.description}
                         </tspan>
                       </textPath>
@@ -1805,7 +1752,25 @@ const BibleBookConnections = () => {
                 </g>
               );
             })}
-            {visData.nodes.map(node => {
+            {/* Filter nodes when in focused mode */}
+            {visData.nodes.filter(node => {
+              // If no node is focused, show all nodes
+              if (!focusedNodeId) return true;
+              
+              // Always show the primary node
+              if (node.primary) return true;
+              
+              // Show the focused node
+              if (node.id === focusedNodeId) return true;
+              
+              // Show nodes directly connected to the focused node
+              const connectedToFocused = visData.links.some(link => 
+                (link.source === focusedNodeId && link.target === node.id) ||
+                (link.target === focusedNodeId && link.source === node.id)
+              );
+              
+              return connectedToFocused;
+            }).map(node => {
               const nodePos = nodePositions[node.id] || { x: node.x, y: node.y };
               
               return (
@@ -1822,74 +1787,85 @@ const BibleBookConnections = () => {
                     setDragStartTime(Date.now());
                     setDraggedNodeId(node.id);
                     setDragStart({ x: e.clientX, y: e.clientY });
+                    
+                    // Only set isDraggingNode to true if the mouse moves a certain distance
+                    // This will be handled in the onMouseMove handler
+                    
+                    // Add mouse move and mouse up handlers to document
+                    const handleMouseMove = (e) => {
+                      // Only begin dragging after a small movement to differentiate from clicks
+                      if (draggedNodeId === node.id) {
+                        const dx = e.clientX - dragStart.x;
+                        const dy = e.clientY - dragStart.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance > 5 && !isDraggingNode) {
+                          setIsDraggingNode(true);
+                        }
+                      }
+                    };
+                    
+                    // Add these handlers to document so drags continue outside the node
+                    document.addEventListener('mousemove', handleMouseMove);
+                    document.addEventListener('mouseup', () => {
+                      document.removeEventListener('mousemove', handleMouseMove);
+                    }, { once: true });
                   }}
                   onMouseMove={(e) => {
-                    // If we're dragging this node
-                    if (draggedNodeId === node.id) {
-                      console.log('Node dragging');
+                    // Only handle drag if this is the dragged node
+                    if (draggedNodeId === node.id && isDraggingNode) {
                       e.stopPropagation();
                       
-                      // Only set dragging after a small movement to differentiate from clicks
+                      // Calculate the new position
                       const dx = e.clientX - dragStart.x;
                       const dy = e.clientY - dragStart.y;
-                      const distance = Math.sqrt(dx * dx + dy * dy);
                       
-                      if (distance > 5) {
-                        setIsDraggingNode(true);
-                        
-                        // Calculate new position accounting for zoom level
-                        const newPos = {
+                      // Update node position
+                      setNodePositions(prev => ({
+                        ...prev,
+                        [node.id]: {
                           x: nodePos.x + dx / zoomLevel,
                           y: nodePos.y + dy / zoomLevel
-                        };
-                        
-                        // Update node position
-                        setNodePositions(prev => ({
-                          ...prev,
-                          [node.id]: newPos
-                        }));
-                        
-                        // Update drag start for next movement
-                        setDragStart({ x: e.clientX, y: e.clientY });
-                      }
+                        }
+                      }));
+                      
+                      // Update drag start for next movement
+                      setDragStart({ x: e.clientX, y: e.clientY });
                     }
                   }}
                   onMouseUp={(e) => {
                     console.log('Node mouseUp');
-                    e.stopPropagation();
+                    const isClick = (Date.now() - dragStartTime) < 200;
                     
-                    const dragDuration = Date.now() - dragStartTime;
-                    console.log('Drag duration:', dragDuration);
-                    console.log('isDraggingNode:', isDraggingNode);
-                    
-                    if (!isDraggingNode && dragDuration < 200) {
-                      console.log('Treating as click - showing node info');
-                      const passage = findPassage(node.id);
-                      if (passage) {
-                        // Find the connection information for this node
-                        const connection = filteredConnections.find(conn => 
-                          conn.from === node.id || conn.to === node.id
-                        );
-                        
-                        setSelectedNodeInfo({
-                          ...node,
-                          x: nodePos.x,
-                          y: nodePos.y,
-                          reference: passage.reference,
-                          passage,
-                          connection,
-                          isSource: connection?.from === node.id,
-                          connectedTo: connection?.from === node.id ? 
-                            findPassage(connection.to)?.title : 
-                            findPassage(connection.from)?.title
-                        });
-                        return;
+                    if (draggedNodeId === node.id) {
+                      setDraggedNodeId(null);
+                      setIsDraggingNode(false);
+                      
+                      if (isClick) {
+                        // This was a click, not a drag
+                        console.log('Node clicked:', node);
+                        // If this node is already focused, clear focus
+                        if (focusedNodeId === node.id) {
+                          setFocusedNodeId(null);
+                          setSelectedNodeInfo(null);
+                        } else {
+                          // Focus on this node and show its info
+                          setFocusedNodeId(node.id);
+                          setSelectedNodeInfo({
+                            id: node.id,
+                            title: node.title,
+                            content: node.content,
+                            book: node.book,
+                            references: node.references,
+                            type: node.type,
+                            position: {
+                              x: nodePos.x,
+                              y: nodePos.y
+                            }
+                          });
+                        }
                       }
                     }
-                    
-                    // Reset dragging state
-                    setIsDraggingNode(false);
-                    setDraggedNodeId(null);
                   }}
                   onMouseLeave={() => {
                     console.log('Node mouseLeave');
@@ -2348,6 +2324,14 @@ const BibleBookConnections = () => {
       return parseInt(verseA) - parseInt(verseB);
     });
   }, [narrativeSections, oldTestamentBooks, newTestamentBooks]);
+
+  // Function to clear node focus when clicking outside
+  const clearNodeFocus = (e) => {
+    // Only clear if clicking on the SVG background, not on a node
+    if (e.target.tagName === 'svg') {
+      setFocusedNodeId(null);
+    }
+  };
 
   // Updated return statement with resize functionality
   return (
