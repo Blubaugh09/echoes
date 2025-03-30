@@ -891,6 +891,23 @@ const BibleBookConnections = () => {
     // Enhanced regex to find verse numbers (e.g., [1], [2], etc.)
     const parts = text.split(/(\[\d+\])/g);
     
+    // Determine current book color
+    let currentBookColor = '#6366f1'; // Default indigo color
+    
+    // Try to get the color of the current book
+    for (const section of Object.values(bibleStructure)) {
+      const foundBook = section.books.find(b => b.id === currentBook);
+      if (foundBook) {
+        currentBookColor = foundBook.color;
+        break;
+      }
+    }
+    
+    // If we have a selected passage, use its book color
+    if (selectedPassage && selectedPassage.bookColor) {
+      currentBookColor = selectedPassage.bookColor;
+    }
+    
     return parts.map((part, index) => {
       // Check if this part is a verse number
       const match = part.match(/\[(\d+)\]/);
@@ -926,18 +943,45 @@ const BibleBookConnections = () => {
         const isConnectionPoint = connectedPassages.length > 0;
         const isPartOfSelectedPassage = selectedPassage && connectedPassages.some(p => p.id === selectedPassage.id);
         
+        // Get connection color - if it's part of selected passage, use that book's color
+        let connectionColor = currentBookColor;
+        if (isConnectionPoint && connectedPassages.length > 0) {
+          // If it's the selected passage, use the connected passage's book color
+          if (isPartOfSelectedPassage) {
+            const selectedConnectedPassage = connectedPassages.find(p => p.id === selectedPassage.id);
+            if (selectedConnectedPassage && selectedConnectedPassage.bookColor) {
+              connectionColor = selectedConnectedPassage.bookColor;
+            }
+          }
+          // Otherwise use the first connected passage's book color
+          else if (connectedPassages[0].bookColor) {
+            connectionColor = connectedPassages[0].bookColor;
+          }
+        }
+        
+        // Add opacity for background colors
+        const bgColor = `${connectionColor}15`; // 15% opacity
+        const bgColorHover = `${connectionColor}25`; // 25% opacity
+        const borderColor = `${connectionColor}30`; // 30% opacity
+        
         return (
           <div key={index} className="inline-block relative verse-number-container">
             <button 
               className={`
                 inline-flex items-center justify-center w-6 h-6 rounded mx-1 text-xs
                 ${isHighlighted || isPartOfSelectedPassage
-                  ? 'bg-indigo-100 text-indigo-700 font-medium' 
+                  ? 'font-medium' 
                   : isConnectionPoint
-                    ? 'bg-gray-100 text-indigo-500 border border-indigo-200' 
+                    ? 'border' 
                     : 'text-gray-500 hover:bg-gray-50'}
-                transition-colors focus:outline-none focus:ring-1 focus:ring-indigo-300
+                transition-colors focus:outline-none focus:ring-1
               `}
+              style={{
+                color: isHighlighted || isPartOfSelectedPassage || isConnectionPoint ? connectionColor : '',
+                backgroundColor: isHighlighted || isPartOfSelectedPassage ? bgColor : isConnectionPoint ? 'rgba(243, 244, 246, 0.8)' : '',
+                borderColor: isConnectionPoint ? borderColor : '',
+                boxShadow: isHighlighted || isPartOfSelectedPassage ? `0 0 0 1px ${borderColor}` : ''
+              }}
               title={isConnectionPoint ? `${connectedPassages.map(p => p.title).join(', ')}` : ""}
               onClick={() => {
                 if (isConnectionPoint) {
@@ -963,12 +1007,14 @@ const BibleBookConnections = () => {
             
             {/* Show a small dot indicator if there are multiple connections for this verse */}
             {connectedPassages.length > 1 && (
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border border-white"></div>
+              <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full border border-white"
+                  style={{ backgroundColor: connectionColor }}></div>
             )}
           </div>
         );
       }
       
+      // Regular text part
       // Process paragraph text to add proper styling
       const paragraphText = part.trim();
       if (paragraphText.length > 0) {
@@ -2034,9 +2080,7 @@ const BibleBookConnections = () => {
               {bibleSections.length > 0 ? (
                 bibleSections.map((section, index) => (
                   <div key={index} className="mb-6">
-                    {section.title && section.title !== 'Introduction' && (
-                      <h3 className="text-xl font-medium mb-4 text-indigo-800 pb-1 border-b border-indigo-50">{section.title}</h3>
-                    )}
+                    
                     <div className="prose prose-indigo prose-lg max-w-none font-serif leading-relaxed">
                       {highlightBibleText(section.text)}
                     </div>
@@ -2546,9 +2590,7 @@ const BibleBookConnections = () => {
                   {bibleSections.length > 0 ? (
                     bibleSections.map((section, index) => (
                       <div key={index} className="mb-6">
-                        {section.title && section.title !== 'Introduction' && (
-                          <h3 className="text-xl font-medium mb-4 text-indigo-800 pb-1 border-b border-indigo-50">{section.title}</h3>
-                        )}
+                       
                         <div className="prose prose-indigo prose-lg max-w-none font-serif leading-relaxed">
                           {highlightBibleText(section.text)}
                         </div>
