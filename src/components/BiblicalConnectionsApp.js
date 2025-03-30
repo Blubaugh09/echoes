@@ -1910,13 +1910,25 @@ const BibleBookConnections = () => {
                             conn.from === node.id || conn.to === node.id
                           );
                           
+                          // Ensure the connection is properly formatted
+                          let formattedConnection = null;
+                          if (connection) {
+                            formattedConnection = {
+                              ...connection,
+                              // Ensure description is a string
+                              description: typeof connection.description === 'string' 
+                                ? connection.description 
+                                : null
+                            };
+                          }
+                          
                           setSelectedNodeInfo({
                             ...node,
                             x: nodePos.x,
                             y: nodePos.y,
                             reference: passage?.reference,
                             passage,
-                            connection,
+                            connection: formattedConnection,
                             isSource: connection?.from === node.id,
                             connectedTo: connection?.from === node.id ? 
                               findPassage(connection?.to)?.title : 
@@ -2300,7 +2312,9 @@ const BibleBookConnections = () => {
                   Description:
                 </div>
                 <div className="text-sm text-indigo-900">
-                  {node.connection.description}
+                  {typeof node.connection.description === 'string' 
+                    ? node.connection.description 
+                    : "Connection to " + node.connectedTo}
                 </div>
               </div>
             )}
