@@ -864,6 +864,29 @@ const BibleBookConnections = () => {
     return findPassage(connectedId);
   };
 
+  // Function to clean connection data that might have corrupted descriptions
+  const cleanConnection = (connection) => {
+    if (!connection) return null;
+    
+    // Create a clean copy of the connection
+    const cleanedConnection = { ...connection };
+    
+    // Check if the description contains the fallback error message
+    if (typeof connection.description === 'string' && 
+        connection.description.includes('fallback response') && 
+        connection.description.includes('JSON repair failed')) {
+      
+      // Extract the reference from the description
+      const match = connection.description.match(/Connection to ([^(]+)/);
+      const reference = match ? match[1].trim() : '';
+      
+      // Create a clean description
+      cleanedConnection.description = `Connection to ${reference}`;
+    }
+    
+    return cleanedConnection;
+  };
+
   const getTypeColor = (type) => {
     switch(type) {
       case 'thematic': return '#3498db';
@@ -1910,17 +1933,8 @@ const BibleBookConnections = () => {
                             conn.from === node.id || conn.to === node.id
                           );
                           
-                          // Ensure the connection is properly formatted
-                          let formattedConnection = null;
-                          if (connection) {
-                            formattedConnection = {
-                              ...connection,
-                              // Ensure description is a string
-                              description: typeof connection.description === 'string' 
-                                ? connection.description 
-                                : null
-                            };
-                          }
+                          // Clean the connection data to fix corrupted descriptions
+                          const formattedConnection = cleanConnection(connection);
                           
                           setSelectedNodeInfo({
                             ...node,
@@ -2312,9 +2326,11 @@ const BibleBookConnections = () => {
                   Description:
                 </div>
                 <div className="text-sm text-indigo-900">
-                  {typeof node.connection.description === 'string' 
+                  {/* Render the description if it doesn't contain error messages */}
+                  {typeof node.connection.description === 'string' && 
+                   !node.connection.description.includes('fallback response') 
                     ? node.connection.description 
-                    : "Connection to " + node.connectedTo}
+                    : `Connection to ${node.connectedTo}`}
                 </div>
               </div>
             )}
