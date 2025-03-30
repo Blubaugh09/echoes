@@ -1562,7 +1562,7 @@ const BibleBookConnections = () => {
         <svg 
           width="100%" 
           height="100%" 
-          viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+          viewBox="0 0 800 600"
           style={{ 
             transform: `scale(${zoomLevel})`, 
             transformOrigin: 'center',
