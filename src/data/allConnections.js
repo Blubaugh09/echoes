@@ -753,6 +753,14 @@ export const allConnections = [
     "description": "This passage contrasts the first Adam, the man of dust, with the last Adam, the man of heaven, continuing the biblical theme of humanity's creation and restoration in God's image."
   },
   {
+    "from": "creation-of-humans",
+    "to": "newCreation",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "related to revelation"
+  },
+  {
     "from": "vision-of-horses",
     "to": "vision-of-four-chariots",
     "type": "Character Connections",

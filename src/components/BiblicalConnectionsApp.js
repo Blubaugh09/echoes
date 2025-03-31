@@ -1528,7 +1528,7 @@ const BibleBookConnections = () => {
           target: connection.to,
           type: connection.type,
           strength: connection.strength,
-          description: connection.description
+         
         });
       }
     });
@@ -1837,6 +1837,15 @@ const BibleBookConnections = () => {
                     fill="none"
                     markerEnd={`url(#${link.type}Marker)`}
                   />
+                  {link.description && (
+                    <text dy={-3} className="connection-label">
+                      <textPath xlinkHref={`#${pathId}`} startOffset="50%" textAnchor="middle" fontSize="10" fill="#4b5563">
+                        <tspan>
+                          {link.description}
+                        </tspan>
+                      </textPath>
+                    </text>
+                  )}
                 </g>
               );
             })}
@@ -1996,16 +2005,17 @@ const BibleBookConnections = () => {
                    
                   </circle>
                   <text
+                    y={node.primary ? 30 : 20}
                     textAnchor="middle"
-                    dy="0.3em"
-                    fontSize="10"
-                    fontFamily="Arial"
-                    fill="white"
-                    fontWeight="bold"
+                    fontSize={node.primary ? 14 : 12}
+                    fontWeight={node.primary ? "bold" : "normal"}
+                    fill="#1e293b"
+                    stroke="#ffffff"
+                    strokeWidth="4"
+                    paintOrder="stroke"
                   >
-                    {node.label.length > 10 ? node.label.substr(0, 1) : node.label.substr(0, 3)}
+                    {node.label}
                   </text>
-                  <title>{node.label}</title>
                 </g>
               );
             })}
@@ -2353,16 +2363,13 @@ const BibleBookConnections = () => {
               )}
             </div>
 
-            {/* Ensure connection description is displayed here */}
             {node.connection.description && (
               <div className="bg-indigo-50 p-3 rounded-lg">
                 <div className="text-xs font-medium text-indigo-800 mb-1">
                   Description:
                 </div>
                 <div className="text-sm text-indigo-900">
-                  {typeof node.connection.description === 'string' 
-                    ? node.connection.description 
-                    : "Connection between passages"}
+                  {node.connection.description}
                 </div>
               </div>
             )}
@@ -2924,18 +2931,39 @@ const BibleBookConnections = () => {
       {selectedNodeInfo && (
         <NodeInfoPopup
           node={selectedNodeInfo}
-          onClose={() => {
-            setSelectedNodeInfo(null);
-            setFocusedNodeId(null);
-          }}
+          onClose={() => setSelectedNodeInfo(null)}
           onNavigate={() => {
             if (selectedNodeInfo.passage) {
-              // First close the popup
-              setSelectedNodeInfo(null);
-              setFocusedNodeId(null);
+              console.log('Navigating to passage:', selectedNodeInfo.passage);
               
-              // Then navigate to the passage
-              handlePassageClick(selectedNodeInfo.passage);
+              // Extract book and chapter from the reference
+              const reference = selectedNodeInfo.passage.reference;
+              console.log('Reference:', reference);
+              
+              // Parse using regex
+              const referenceRegex = /^((?:[1-3]\s+)?[A-Za-z\s]+)\s+(\d+)(?::|\s)/;
+              const match = reference.match(referenceRegex);
+              
+              if (match) {
+                const book = match[1].trim();
+                const chapter = parseInt(match[2]);
+                console.log('Extracted book:', book, 'chapter:', chapter);
+                
+                // IMPORTANT: First set the book and chapter to ensure 
+                // the reading pane shows the correct chapter
+                setCurrentBook(book);
+                setCurrentChapter(chapter);
+                
+                // Then, with a small delay, call handlePassageClick
+                setTimeout(() => {
+                  handlePassageClick(selectedNodeInfo.passage);
+                  setSelectedNodeInfo(null);
+                }, 50);
+              } else {
+                // Fallback if regex fails
+                handlePassageClick(selectedNodeInfo.passage);
+                setSelectedNodeInfo(null);
+              }
             }
           }}
         />
