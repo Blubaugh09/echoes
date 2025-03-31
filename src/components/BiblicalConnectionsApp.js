@@ -20,7 +20,8 @@ import {
   History,
   CornerDownLeft,
   // Resize controls
-  GripHorizontal
+  GripHorizontal,
+  X
 } from 'lucide-react';
 
 import { bibleStructure } from '../data/bibleStructure';
@@ -120,6 +121,7 @@ const BibleBookConnections = () => {
   const [bibleBooks, setBibleBooks] = useState([]);
   const [currentBook, setCurrentBook] = useState('Genesis');
   const [currentChapter, setCurrentChapter] = useState(1);
+  const [currentVerse, setCurrentVerse] = useState(1);
   const [chapterCount, setChapterCount] = useState(50); // Default for Genesis
   const [activeConnectionsInText, setActiveConnectionsInText] = useState([]);
   const [highlightedVerses, setHighlightedVerses] = useState({});
@@ -148,6 +150,8 @@ const BibleBookConnections = () => {
   const [availableConnectionsForChapter, setAvailableConnectionsForChapter] = useState([]);
   const [activeNarrativeSection, setActiveNarrativeSection] = useState('creation');
   const [currentVerseRange, setCurrentVerseRange] = useState({ start: 1, end: 31 });
+  const [sectionSearchTerm, setSectionSearchTerm] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   
   // Array to store section headings for the Bible text
   const [bibleSections, setBibleSections] = useState([]);
@@ -880,34 +884,77 @@ const BibleBookConnections = () => {
   const cleanConnection = (connection) => {
     if (!connection) return null;
     
+    console.log('Cleaning connection:', {
+      originalDescription: connection.description,
+      type: typeof connection.description,
+      connection
+    });
+    
     // Create a clean copy of the connection
     const cleanedConnection = { ...connection };
     
     // Always ensure description is a clean, safe string
     if (typeof connection.description === 'string') {
-      // If description contains error messages, extract just the reference
+      // If description contains error messages, try to preserve more information
       if (connection.description.includes('fallback response') || 
           connection.description.includes('JSON repair failed')) {
-        // Extract the reference from the description
-        const match = connection.description.match(/Connection to ([^(]+)/);
-        const reference = match ? match[1].trim() : '';
+        console.log('Found error message in description, attempting to extract meaningful content');
         
-        // Create a simple clean description
-        cleanedConnection.description = `Connection to ${reference}`;
-      } 
-      // Keep the original description, it's already a valid string
+        // Try to extract the main content before any error messages
+        const mainContentMatch = connection.description.match(/^([^(]+)/);
+        if (mainContentMatch) {
+          // Keep the main content but clean it up
+          cleanedConnection.description = mainContentMatch[1].trim();
+          console.log('Extracted main content:', cleanedConnection.description);
+        } else {
+          // Fallback to reference extraction if no main content found
+          const match = connection.description.match(/Connection to ([^(]+)/);
+          const reference = match ? match[1].trim() : '';
+          cleanedConnection.description = `Connection to ${reference}`;
+          console.log('Falling back to reference extraction:', reference);
+        }
+      } else {
+        // Keep the original description if it's a valid string without errors
+        cleanedConnection.description = connection.description;
+        console.log('Keeping original description:', cleanedConnection.description);
+      }
     } else if (connection.description === null || connection.description === undefined) {
+      console.log('Description is null/undefined, using default');
       // If description is null or undefined, set a default
       cleanedConnection.description = "Connection between passages";
     } else {
-      // For any other non-string type, use a safe default
+      console.log('Description is non-string type, attempting to convert');
+      // For any other non-string type, try to convert it
       try {
-        // If it's an object that might be stringified, use a generic message
-        cleanedConnection.description = "Connection between passages";
+        // If it's an object that might be stringified, try to extract meaningful content
+        if (typeof connection.description === 'object') {
+          // Try to get a meaningful string representation
+          const stringified = JSON.stringify(connection.description);
+          if (stringified.length > 0) {
+            cleanedConnection.description = stringified;
+          } else {
+            cleanedConnection.description = "Connection between passages";
+          }
+        } else {
+          // For other types, try to convert to string
+          cleanedConnection.description = String(connection.description);
+        }
       } catch (error) {
+        console.log('Error converting description:', error);
         cleanedConnection.description = "Connection between passages";
       }
     }
+    
+    // Final validation to ensure we have a reasonable description
+    if (cleanedConnection.description.length > 500) {
+      console.log('Description too long, truncating');
+      cleanedConnection.description = cleanedConnection.description.substring(0, 497) + '...';
+    }
+    
+    console.log('Final cleaned connection:', {
+      finalDescription: cleanedConnection.description,
+      cleanedConnection
+    });
     
     return cleanedConnection;
   };
@@ -2098,62 +2145,6 @@ const BibleBookConnections = () => {
               {/* Add the connection switcher for multiple connections */}
               {renderConnectionSwitcher()}
               
-                              {/* Display enhanced breadcrumb navigation in reading pane if there are breadcrumbs */}
-              {breadcrumbs.length > 0 && (
-                <div className="mb-6 bg-white rounded-lg border border-gray-100 shadow-sm">
-                  <div className="p-2 flex items-center justify-between">
-                    <div className="flex items-center space-x-2 overflow-x-auto scrollbar-hide flex-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                      {breadcrumbs
-                        .filter(b => !b.isSessionMarker)
-                        .map((crumb, index) => {
-                          const crumbId = crumb.breadcrumbId || `${crumb.id}-${index}`;
-                          
-                          // Find book information to display
-                          let bookInfo = null;
-                          for (const section of Object.values(bibleStructure)) {
-                            const foundBook = section.books.find(b => b.id === crumb.book);
-                            if (foundBook) {
-                              bookInfo = foundBook;
-                              break;
-                            }
-                          }
-                          
-                          const bookColor = bookInfo?.color || crumb.bookColor || '#6366f1';
-                          const bookName = bookInfo?.title || crumb.bookName || 'Unknown';
-                          
-                          return (
-                            <button
-                              key={`breadcrumb-${crumbId}`}
-                              className="flex items-center space-x-2 px-3 py-1.5 bg-gray-50 rounded-lg hover:bg-indigo-50 transition-colors group whitespace-nowrap"
-                              onClick={() => handleBreadcrumbClick(crumb, breadcrumbs.indexOf(crumb))}
-                            >
-                              <div 
-                                className="w-2 h-2 rounded-full"
-                                style={{ backgroundColor: bookColor }}
-                              ></div>
-                              <div className="text-xs font-medium text-gray-700 group-hover:text-indigo-700">
-                                {crumb.title}
-                              </div>
-                            </button>
-                          );
-                        })
-                      }
-                    </div>
-                    <button
-                      onClick={clearBreadcrumbs}
-                      className="ml-2 p-1 text-gray-400 hover:text-red-500 rounded-full hover:bg-red-50 transition-colors"
-                      title="Clear history"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M3 6h18"></path>
-                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              )}
-              
               {bibleSections.length > 0 ? (
                 bibleSections.map((section, index) => (
                   <div key={index} className="mb-6">
@@ -2164,8 +2155,8 @@ const BibleBookConnections = () => {
                   </div>
                 ))
               ) : (
-                <div className="prose prose-indigo prose-lg max-w-none font-serif leading-relaxed">
-                  {highlightBibleText(bibleText)}
+                <div className="text-center text-gray-500 py-8">
+                  No sections found in this chapter.
                 </div>
               )}
             </div>
@@ -2458,6 +2449,17 @@ const BibleBookConnections = () => {
     }
   };
 
+  // Add this function to filter sections based on search term
+  const filteredNarrativeSections = useMemo(() => {
+    if (!sectionSearchTerm) return sortedNarrativeSections;
+    
+    const searchLower = sectionSearchTerm.toLowerCase();
+    return sortedNarrativeSections.filter(section => 
+      section.title.toLowerCase().includes(searchLower) ||
+      (section.reference && section.reference.toLowerCase().includes(searchLower))
+    );
+  }, [sortedNarrativeSections, sectionSearchTerm]);
+
   // Updated return statement with resize functionality
   return (
     <div className="flex flex-col h-screen bg-slate-50 text-slate-800 font-sans" style={containerStyle}>
@@ -2521,6 +2523,60 @@ const BibleBookConnections = () => {
 
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div className="flex flex-1 items-center gap-3 justify-end">
+              {/* Search sections button with slide-out */}
+              <div className="relative">
+                <button
+                  onClick={() => {
+                    setIsSearchOpen(!isSearchOpen);
+                    if (!isSearchOpen) {
+                      setTimeout(() => {
+                        const searchInput = document.getElementById('section-search-input');
+                        if (searchInput) {
+                          searchInput.focus();
+                        }
+                      }, 50);
+                    }
+                  }}
+                  className="flex items-center py-2 px-3 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
+                  title="Search sections"
+                >
+                  <Search size={16} />
+                </button>
+                
+                {/* Search input dropdown */}
+                <div 
+                  className={`absolute top-full right-0 mt-1 transform transition-all duration-300 ease-in-out bg-white border border-gray-200 rounded-lg shadow-md z-50 ${
+                    isSearchOpen ? 'opacity-100 w-64 scale-100' : 'opacity-0 w-0 scale-95 pointer-events-none'
+                  }`}
+                >
+                  <div className="relative flex items-center w-full">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+                    <input
+                      id="section-search-input"
+                      type="text"
+                      placeholder="Search sections..."
+                      value={sectionSearchTerm}
+                      onChange={(e) => setSectionSearchTerm(e.target.value)}
+                      onBlur={() => {
+                        if (!sectionSearchTerm) {
+                          setTimeout(() => setIsSearchOpen(false), 200);
+                        }
+                      }}
+                      className="w-full pl-10 pr-10 py-2 rounded-lg focus:outline-none text-sm"
+                    />
+                    <button
+                      onClick={() => {
+                        setSectionSearchTerm('');
+                        document.getElementById('section-search-input')?.focus();
+                      }}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            
               {/* Book selector */}
               <div className="relative">
                 <button
@@ -2683,6 +2739,7 @@ const BibleBookConnections = () => {
         {/* Add sections container here at the top level */}
         <div className="absolute top-0 left-0 right-0 w-screen bg-white z-10">
           <div className="absolute h-1 bottom-0 left-0 right-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-60"></div>
+          
           <div className="flex items-center h-[56px] relative w-full">
             <button 
               className="sticky left-4 px-2 py-3 bg-gradient-to-r from-white to-transparent z-10"
@@ -2703,7 +2760,7 @@ const BibleBookConnections = () => {
                 width: '100%'
               }}
             >
-              {sortedNarrativeSections.map((section) => (
+              {filteredNarrativeSections.map((section) => (
                 <button
                   key={section.id}
                   data-section-id={section.id}
@@ -2759,15 +2816,15 @@ const BibleBookConnections = () => {
                   {bibleSections.length > 0 ? (
                     bibleSections.map((section, index) => (
                       <div key={index} className="mb-6">
-                       
+                        
                         <div className="prose prose-indigo prose-lg max-w-none font-serif leading-relaxed">
                           {highlightBibleText(section.text)}
                         </div>
                       </div>
                     ))
                   ) : (
-                    <div className="prose prose-indigo prose-lg max-w-none font-serif leading-relaxed">
-                      {highlightBibleText(bibleText)}
+                    <div className="text-center text-gray-500 py-8">
+                      No sections found in this chapter.
                     </div>
                   )}
                 </div>
