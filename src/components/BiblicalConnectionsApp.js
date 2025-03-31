@@ -1528,7 +1528,6 @@ const BibleBookConnections = () => {
           target: connection.to,
           type: connection.type,
           strength: connection.strength,
-         
         });
       }
     });
@@ -1933,49 +1932,43 @@ const BibleBookConnections = () => {
                   }}
                   onMouseUp={(e) => {
                     console.log('Node mouseUp');
-                    const isClick = (Date.now() - dragStartTime) < 200;
+                    e.stopPropagation();
                     
-                    if (draggedNodeId === node.id) {
-                      setDraggedNodeId(null);
-                      setIsDraggingNode(false);
-                      
-                      if (isClick) {
-                        // This was a click, not a drag
-                        console.log('Node clicked:', node);
-                        // If this node is already focused, clear focus
-                        if (focusedNodeId === node.id) {
-                          setFocusedNodeId(null);
-                          setSelectedNodeInfo(null);
-                        } else {
-                          // Focus on this node and show its info
-                          setFocusedNodeId(node.id);
-                          
-                          // Get passage and connection info
-                          const passage = findPassage(node.id);
-                          
-                          // Find the connection information for this node
-                          const connection = filteredConnections.find(conn => 
-                            conn.from === node.id || conn.to === node.id
-                          );
-                          
-                          // Clean the connection data to fix corrupted descriptions
-                          const formattedConnection = cleanConnection(connection);
-                          
-                          setSelectedNodeInfo({
-                            ...node,
-                            x: nodePos.x,
-                            y: nodePos.y,
-                            reference: passage?.reference,
-                            passage,
-                            connection: formattedConnection,
-                            isSource: connection?.from === node.id,
-                            connectedTo: connection?.from === node.id ? 
-                              findPassage(connection?.to)?.title : 
-                              findPassage(connection?.from)?.title
-                          });
-                        }
+                    const dragDuration = Date.now() - dragStartTime;
+                    console.log('Drag duration:', dragDuration);
+                    console.log('isDraggingNode:', isDraggingNode);
+                    
+                    if (!isDraggingNode && dragDuration < 200) {
+                      console.log('Treating as click - showing node info');
+                      const passage = findPassage(node.id);
+                      if (passage) {
+                        // Find the connection information for this node
+                        const connection = filteredConnections.find(conn => 
+                          conn.from === node.id || conn.to === node.id
+                        );
+                        
+                        // Clean the connection data to fix corrupted descriptions
+                        const formattedConnection = cleanConnection(connection);
+                        
+                        setSelectedNodeInfo({
+                          ...node,
+                          x: nodePos.x,
+                          y: nodePos.y,
+                          reference: passage.reference,
+                          passage,
+                          connection: formattedConnection,
+                          isSource: connection?.from === node.id,
+                          connectedTo: connection?.from === node.id ? 
+                            findPassage(connection.to)?.title : 
+                            findPassage(connection.from)?.title
+                        });
+                        return;
                       }
                     }
+                    
+                    // Reset dragging state
+                    setIsDraggingNode(false);
+                    setDraggedNodeId(null);
                   }}
                   onMouseLeave={() => {
                     console.log('Node mouseLeave');
@@ -2272,6 +2265,9 @@ const BibleBookConnections = () => {
       window.addEventListener('resize', updatePosition);
       return () => window.removeEventListener('resize', updatePosition);
     }, [node.x, node.y]);
+    
+    // For debugging
+    console.log('NodeInfoPopup received node with connection:', node.connection);
     
     return (
       <div 
