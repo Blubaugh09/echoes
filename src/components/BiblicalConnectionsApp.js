@@ -1837,15 +1837,6 @@ const BibleBookConnections = () => {
                     fill="none"
                     markerEnd={`url(#${link.type}Marker)`}
                   />
-                  {link.description && (
-                    <text dy={-3} className="connection-label">
-                      <textPath xlinkHref={`#${pathId}`} startOffset="50%" textAnchor="middle" fontSize="10" fill="#4b5563">
-                        <tspan>
-                          {link.description}
-                        </tspan>
-                      </textPath>
-                    </text>
-                  )}
                 </g>
               );
             })}
