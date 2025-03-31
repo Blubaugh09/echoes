@@ -2136,6 +2136,7 @@ const BibleBookConnections = () => {
             <div className="flex justify-center items-center h-full">
               <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
             </div>
+            
           ) : (
             <div className="max-w-3xl mx-auto px-8 py-8">
               <div className="mb-4 pb-2 border-b border-indigo-100">
@@ -2159,6 +2160,27 @@ const BibleBookConnections = () => {
                   No sections found in this chapter.
                 </div>
               )}
+              
+              {/* Next Chapter button at the bottom */}
+              <div className="mt-10 mb-6 flex justify-center">
+                <div className="flex items-center gap-4">
+                  <button 
+                    className="flex items-center gap-2 py-2 px-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg shadow-sm transition-colors"
+                    onClick={prevChapter}
+                  >
+                    <ArrowLeft size={18} />
+                    <span>Previous Chapter</span>
+                  </button>
+                  
+                  <button 
+                    className="flex items-center gap-2 py-2 px-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg shadow-sm transition-colors"
+                    onClick={nextChapter}
+                  >
+                    <span>Next Chapter</span>
+                    <ArrowRight size={18} />
+                  </button>
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -2466,7 +2488,7 @@ const BibleBookConnections = () => {
       <header className="p-4 bg-white shadow-sm border-b border-slate-200">
         <div className="max-w-7xl mx-auto">
           {/* Navigation History Section */}
-          {breadcrumbs.length > 0 && (
+{/*           {breadcrumbs.length > 0 && (
             <div className="mb-4 bg-white rounded-lg border border-gray-100 shadow-sm">
               <div className="p-2 flex items-center justify-between">
                 <div className="flex items-center space-x-2 overflow-x-auto scrollbar-hide flex-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
@@ -2519,7 +2541,7 @@ const BibleBookConnections = () => {
                 </button>
               </div>
             </div>
-          )}
+          )} */}
 
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div className="flex flex-1 items-center gap-3 justify-end">
@@ -2693,7 +2715,7 @@ const BibleBookConnections = () => {
               </div>
               
               {/* Navigation buttons */}
-              <div className="flex items-center">
+{/*               <div className="flex items-center">
                 <button 
                   className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-l-lg shadow-sm"
                   onClick={prevChapter}
@@ -2706,7 +2728,7 @@ const BibleBookConnections = () => {
                 >
                   <ArrowRight size={18} />
                 </button>
-              </div>
+              </div> */}
               
               {/* Action buttons */}
               <div className="flex items-center gap-2">
@@ -2718,13 +2740,13 @@ const BibleBookConnections = () => {
                 >
                   {showGraph ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
-                <button
+               {/*  <button
                   className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg"
                   onClick={() => setShowInfo(!showInfo)}
                   title="Show Information"
                 >
                   <Info size={18} />
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
@@ -2827,6 +2849,27 @@ const BibleBookConnections = () => {
                       No sections found in this chapter.
                     </div>
                   )}
+                  
+                  {/* Next Chapter button at the bottom */}
+                  <div className="mt-10 mb-6 flex justify-center">
+                    <div className="flex items-center gap-4">
+                      <button 
+                        className="flex items-center gap-2 py-2 px-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg shadow-sm transition-colors"
+                        onClick={prevChapter}
+                      >
+                        <ArrowLeft size={18} />
+                        <span>Previous Chapter</span>
+                      </button>
+                      
+                      <button 
+                        className="flex items-center gap-2 py-2 px-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg shadow-sm transition-colors"
+                        onClick={nextChapter}
+                      >
+                        <span>Next Chapter</span>
+                        <ArrowRight size={18} />
+                      </button>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
