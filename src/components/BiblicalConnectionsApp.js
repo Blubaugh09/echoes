@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import {
   Book,
   ZoomIn, 
@@ -2525,6 +2525,87 @@ const BibleBookConnections = () => {
       }
     }
   }, [sortedNarrativeSections, currentVisibleBook, bibleStructure]);
+  
+  // Function to scroll to the first section for the selected book and chapter
+  const scrollToFirstSectionForChapter = useCallback((book, chapter) => {
+    // Find the first section that matches the current book and chapter
+    const firstMatchingSection = sortedNarrativeSections.find(section => {
+      // Check if book matches
+      if (section.book && section.book.toLowerCase() === book.toLowerCase() && section.chapter === chapter) {
+        return true;
+      }
+      
+      // If no direct book property, try to match from reference
+      if (!section.book && section.reference) {
+        const bookMatch = section.reference.match(/^((?:[1-3]\s+)?[A-Za-z\s]+)/);
+        if (bookMatch) {
+          const sectionBook = bookMatch[1].trim().toLowerCase();
+          const bookMatches = sectionBook === book.toLowerCase();
+          
+          // Extract chapter from reference
+          const chapterMatch = section.reference.match(/(\d+):/);
+          if (chapterMatch) {
+            const sectionChapter = parseInt(chapterMatch[1]);
+            return bookMatches && sectionChapter === chapter;
+          }
+          return bookMatches;
+        }
+      }
+      return false;
+    });
+    
+    if (firstMatchingSection) {
+      // Find the DOM element for this section
+      setTimeout(() => {
+        const container = document.getElementById('sections-container');
+        const sectionButton = container?.querySelector(`button[data-section-id="${firstMatchingSection.id}"]`);
+        
+        if (container && sectionButton) {
+          // Calculate position to scroll to
+          const containerRect = container.getBoundingClientRect();
+          const sectionRect = sectionButton.getBoundingClientRect();
+          const scrollLeft = sectionButton.offsetLeft - containerRect.width / 2 + sectionRect.width / 2;
+          
+          // Scroll to the section
+          container.scrollTo({
+            left: scrollLeft,
+            behavior: 'smooth'
+          });
+          
+          // Optionally, highlight this section
+          setActiveNarrativeSection(firstMatchingSection.id);
+        }
+      }, 100); // Short delay to ensure the DOM is updated
+    }
+  }, [sortedNarrativeSections, setActiveNarrativeSection]);
+  
+  // Fetch bible text whenever book or chapter changes
+  useEffect(() => {
+    const fetchBibleText = async () => {
+      setIsLoadingBibleText(true);
+      try {
+        const response = await fetch(`/api/getBibleText?book=${currentBook}&chapter=${currentChapter}`);
+        if (!response.ok) throw new Error('Failed to fetch Bible text');
+        const data = await response.json();
+        
+        setBibleText(data.text);
+        setCurrentVerseRange({ start: 1, end: 31 }); // Reset verse range on chapter change
+        
+        // Call the function to scroll to the first section for this book/chapter
+        scrollToFirstSectionForChapter(currentBook, currentChapter);
+        
+      } catch (error) {
+        console.error('Error fetching Bible text:', error);
+        setBibleText('Error loading Bible text. Please try again.');
+      } finally {
+        setIsLoadingBibleText(false);
+      }
+    };
+    
+    if (currentBook && currentChapter) {
+      fetchBibleText();
+    }
+  }, [currentBook, currentChapter, scrollToFirstSectionForChapter]);  // Added scrollToFirstSectionForChapter to dependencies
   
   // Updated return statement with resize functionality
   return (
