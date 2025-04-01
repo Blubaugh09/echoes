@@ -2527,9 +2527,41 @@ const BibleBookConnections = () => {
   }, [sortedNarrativeSections, currentVisibleBook, bibleStructure]);
   
   // Function to scroll to the first section for the selected book and chapter
+  console.log('*** DEFINING scrollToFirstSectionForChapter with sortedNarrativeSections:', 
+    sortedNarrativeSections ? `(length: ${sortedNarrativeSections.length})` : 'undefined');
+  
   const scrollToFirstSectionForChapter = useCallback((book, chapter) => {
     console.log('*** scrollToFirstSectionForChapter called with:', { book, chapter });
     console.log('*** Total narrative sections:', sortedNarrativeSections.length);
+    
+    // SPECIAL TEST FOR EXODUS
+    if (book === 'Exodus') {
+      console.log('*** TESTING SPECIFICALLY FOR EXODUS ***');
+      const exodusSections = sortedNarrativeSections.filter(s => 
+        s.book === 'exodus' || 
+        (s.reference && s.reference.toLowerCase().includes('exodus'))
+      );
+      console.log('*** Found Exodus sections:', exodusSections.length);
+      
+      // Find Exodus chapter 1 sections specifically
+      const exodusChapter1Sections = exodusSections.filter(s => s.chapter === 1);
+      console.log('*** Exodus chapter 1 sections:', exodusChapter1Sections);
+      
+      // Try various formats to find matching sections
+      const exactMatch = sortedNarrativeSections.find(s => s.book === 'exodus' && s.chapter === 1);
+      const caseInsensitiveMatch = sortedNarrativeSections.find(s => 
+        s.book && s.book.toLowerCase() === 'exodus' && s.chapter === 1
+      );
+      const referenceMatch = sortedNarrativeSections.find(s => 
+        s.reference && s.reference.startsWith('Exodus 1') && s.chapter === 1
+      );
+      
+      console.log('*** Matching tests:', {
+        exactMatch,
+        caseInsensitiveMatch,
+        referenceMatch
+      });
+    }
     
     // Log what books we have in the sections
     const uniqueBooks = [...new Set(sortedNarrativeSections.map(s => s.book))];
@@ -2719,8 +2751,18 @@ const BibleBookConnections = () => {
         setCurrentVerseRange({ start: 1, end: 31 }); // Reset verse range on chapter change
         
         console.log('*** Bible text fetch complete, now calling scrollToFirstSectionForChapter');
-        // Call the function to scroll to the first section for this book/chapter
-        scrollToFirstSectionForChapter(currentBook, currentChapter);
+        
+        try {
+          // Call the function to scroll to the first section for this book/chapter
+          if (typeof scrollToFirstSectionForChapter === 'function') {
+            console.log('*** scrollToFirstSectionForChapter exists as a function');
+            scrollToFirstSectionForChapter(currentBook, currentChapter);
+          } else {
+            console.error('*** scrollToFirstSectionForChapter is not a function:', scrollToFirstSectionForChapter);
+          }
+        } catch (scrollError) {
+          console.error('*** Error in scrollToFirstSectionForChapter:', scrollError);
+        }
         
       } catch (error) {
         console.error('Error fetching Bible text:', error);
