@@ -153,6 +153,7 @@ const BibleBookConnections = () => {
   const [sectionSearchTerm, setSectionSearchTerm] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [currentVisibleBook, setCurrentVisibleBook] = useState('');
+  const [currentBookColor, setCurrentBookColor] = useState('#6366f1'); // Default indigo color
   
   // Array to store section headings for the Bible text
   const [bibleSections, setBibleSections] = useState([]);
@@ -2140,9 +2141,9 @@ const BibleBookConnections = () => {
             
           ) : (
             <div className="max-w-3xl mx-auto px-8 py-8">
-              <div className="mb-4 pb-2 border-b border-indigo-100">
+              {/* <div className="mb-4 pb-2 border-b border-indigo-100">
                 <h2 className="text-3xl font-serif font-bold text-indigo-900">{currentBibleReference}</h2>
-              </div>
+              </div> */}
               
               {/* Add the connection switcher for multiple connections */}
               {renderConnectionSwitcher()}
@@ -2487,17 +2488,43 @@ const BibleBookConnections = () => {
   useEffect(() => {
     if (sortedNarrativeSections.length > 0 && !currentVisibleBook) {
       const firstSection = sortedNarrativeSections[0];
-      if (firstSection && firstSection.book) {
-        setCurrentVisibleBook(firstSection.book);
-      } else if (firstSection && firstSection.reference) {
-        // Extract book from reference if not directly available
-        const match = firstSection.reference.match(/^((?:[1-3]\s+)?[A-Za-z\s]+)/);
-        if (match) {
-          setCurrentVisibleBook(match[1].trim());
+      if (firstSection) {
+        // Set book name
+        let bookName = '';
+        if (firstSection.book) {
+          bookName = firstSection.book;
+          setCurrentVisibleBook(bookName);
+        } else if (firstSection.reference) {
+          // Extract book from reference if not directly available
+          const match = firstSection.reference.match(/^((?:[1-3]\s+)?[A-Za-z\s]+)/);
+          if (match) {
+            bookName = match[1].trim();
+            setCurrentVisibleBook(bookName);
+          }
+        }
+        
+        // Set book color
+        if (bookName) {
+          // Find the book in bibleStructure
+          let bookColor = '#6366f1'; // Default color
+          
+          for (const sectionData of Object.values(bibleStructure)) {
+            const foundBook = sectionData.books?.find(b => 
+              b.title?.toLowerCase() === bookName?.toLowerCase() ||
+              b.id?.toLowerCase() === bookName?.toLowerCase()
+            );
+            
+            if (foundBook && foundBook.color) {
+              bookColor = foundBook.color;
+              break;
+            }
+          }
+          
+          setCurrentBookColor(bookColor);
         }
       }
     }
-  }, [sortedNarrativeSections, currentVisibleBook]);
+  }, [sortedNarrativeSections, currentVisibleBook, bibleStructure]);
   
   // Updated return statement with resize functionality
   return (
@@ -2782,8 +2809,14 @@ const BibleBookConnections = () => {
           <div className="absolute h-1 bottom-0 left-0 right-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-60"></div>
           
           {/* Book indicator that updates as sections scroll */}
-          <div className="h-7 px-4 bg-gradient-to-r from-indigo-100 to-indigo-50 flex items-center border-b border-indigo-100">
-            <span className="text-xs font-semibold text-indigo-800 tracking-wide uppercase">
+          <div 
+            className="h-7 px-4 flex items-center border-b border-indigo-100"
+            style={{ 
+              background: `linear-gradient(to right, ${currentBookColor}15, ${currentBookColor}05)`,
+              borderLeft: `3px solid ${currentBookColor}`
+            }}
+          >
+            <span className="text-xs font-semibold tracking-wide uppercase" style={{ color: currentBookColor }}>
               {currentVisibleBook || 'Genesis'}
             </span>
           </div>
@@ -2834,6 +2867,7 @@ const BibleBookConnections = () => {
                   // Find the section data
                   const section = sortedNarrativeSections.find(s => s.id === sectionId);
                   if (section) {
+                    // Set book name
                     if (section.book) {
                       setCurrentVisibleBook(section.book);
                     } else if (section.reference) {
@@ -2843,6 +2877,27 @@ const BibleBookConnections = () => {
                         setCurrentVisibleBook(match[1].trim());
                       }
                     }
+                    
+                    // Find book color from bibleStructure
+                    let bookColor = '#6366f1'; // Default color
+                    const bookName = section.book || (section.reference ? section.reference.match(/^((?:[1-3]\s+)?[A-Za-z\s]+)/) : null)?.[1]?.trim();
+                    
+                    if (bookName) {
+                      // Find the book in bibleStructure
+                      for (const sectionData of Object.values(bibleStructure)) {
+                        const foundBook = sectionData.books?.find(b => 
+                          b.title?.toLowerCase() === bookName?.toLowerCase() ||
+                          b.id?.toLowerCase() === bookName?.toLowerCase()
+                        );
+                        
+                        if (foundBook && foundBook.color) {
+                          bookColor = foundBook.color;
+                          break;
+                        }
+                      }
+                    }
+                    
+                    setCurrentBookColor(bookColor);
                   }
                 }
               }}
@@ -2906,9 +2961,9 @@ const BibleBookConnections = () => {
                 </div>
               ) : (
                 <div className="max-w-3xl mx-auto px-8 py-8">
-                  <div className="mb-4 pb-2 border-b border-indigo-100">
+                 {/*  <div className="mb-4 pb-2 border-b border-indigo-100">
                     <h2 className="text-3xl font-serif font-bold text-indigo-900">{currentBibleReference}</h2>
-                  </div>
+                  </div> */}
                   
                   {/* Add the connection switcher for multiple connections */}
                   {renderConnectionSwitcher()}
