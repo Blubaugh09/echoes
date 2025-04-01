@@ -2735,6 +2735,28 @@ const BibleBookConnections = () => {
     }
   }, [sortedNarrativeSections, setActiveNarrativeSection]);
   
+  // Track component re-renders
+  useEffect(() => {
+    console.log('*** COMPONENT RE-RENDERED with:', { 
+      currentBook, 
+      currentChapter,
+      sectionsCount: sortedNarrativeSections.length,
+      domReady: document.getElementById('sections-container') ? 'yes' : 'no'
+    });
+    
+    // Check if we need to scroll to current book/chapter
+    const timeout = setTimeout(() => {
+      const container = document.getElementById('sections-container');
+      if (container) {
+        console.log('*** sections-container is ready in DOM after timeout');
+      } else {
+        console.log('*** sections-container still not in DOM after timeout');
+      }
+    }, 1000);
+    
+    return () => clearTimeout(timeout);
+  }, [currentBook, currentChapter, sortedNarrativeSections]);
+  
   // Fetch bible text whenever book or chapter changes
   useEffect(() => {
     console.log('*** useEffect triggered - book/chapter changed:', { book: currentBook, chapter: currentChapter });
