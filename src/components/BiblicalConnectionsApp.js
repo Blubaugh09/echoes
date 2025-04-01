@@ -2528,8 +2528,35 @@ const BibleBookConnections = () => {
   
   // Function to scroll to the first section for the selected book and chapter
   const scrollToFirstSectionForChapter = useCallback((book, chapter) => {
-    console.log('Attempting to scroll to first section for:', book, chapter);
-    console.log('Available sections:', sortedNarrativeSections);
+    console.log('*** scrollToFirstSectionForChapter called with:', { book, chapter });
+    console.log('*** Total narrative sections:', sortedNarrativeSections.length);
+    
+    // Log what books we have in the sections
+    const uniqueBooks = [...new Set(sortedNarrativeSections.map(s => s.book))];
+    console.log('*** Available books in sections:', uniqueBooks);
+    
+    // Log some key troubleshooting info
+    console.log('*** Searching for book formats:', {
+      original: book,
+      lowercase: book.toLowerCase(),
+      withoutSpaces: book.replace(/\s+/g, '').toLowerCase()
+    });
+    
+    // Collect book + chapter combinations to help debug
+    const bookChapterCombos = sortedNarrativeSections
+      .filter(s => s.chapter !== undefined)
+      .map(s => ({ book: s.book, chapter: s.chapter }));
+    console.log('*** Book+Chapter combinations available:', bookChapterCombos.slice(0, 10)); // Show first 10
+    
+    // Log book name format in first 10 sections
+    const sectionsSample = sortedNarrativeSections.slice(0, 10);
+    console.log('*** Sample sections book formats:', sectionsSample.map(s => ({ 
+      id: s.id,
+      title: s.title,
+      book: s.book, 
+      chapter: s.chapter,
+      reference: s.reference
+    })));
     
     // Find the first section that matches the current book and chapter
     let firstMatchingSection = null;
@@ -2537,14 +2564,32 @@ const BibleBookConnections = () => {
     // First try exact match with book and chapter properties
     firstMatchingSection = sortedNarrativeSections.find(section => {
       if (section.book && section.book.toLowerCase() === book.toLowerCase() && section.chapter === chapter) {
-        console.log('Found exact match:', section);
+        console.log('*** Found exact match:', section);
         return true;
       }
       return false;
     });
     
-    // If no match found, try matching with reference
+    // If no match found, try with book name without spaces
     if (!firstMatchingSection) {
+      console.log('*** No exact match found, trying with spaces removed');
+      const normalizedBook = book.replace(/\s+/g, '').toLowerCase();
+      
+      firstMatchingSection = sortedNarrativeSections.find(section => {
+        if (section.book) {
+          const normalizedSectionBook = section.book.replace(/\s+/g, '').toLowerCase();
+          if (normalizedSectionBook === normalizedBook && section.chapter === chapter) {
+            console.log('*** Found normalized match:', section);
+            return true;
+          }
+        }
+        return false;
+      });
+    }
+    
+    // If STILL no match found, try matching with reference
+    if (!firstMatchingSection) {
+      console.log('*** No normalized match found, trying reference matching');
       firstMatchingSection = sortedNarrativeSections.find(section => {
         if (section.reference) {
           // Extract book from reference (like "Genesis 1:1")
@@ -2552,8 +2597,8 @@ const BibleBookConnections = () => {
           if (bookMatch) {
             const sectionBook = bookMatch[1].trim().toLowerCase();
             const bookMatches = sectionBook === book.toLowerCase() || 
-                               book.toLowerCase().includes(sectionBook) || 
-                               sectionBook.includes(book.toLowerCase());
+                             book.toLowerCase().includes(sectionBook) || 
+                             sectionBook.includes(book.toLowerCase());
             
             // Extract chapter from reference
             const chapterMatch = section.reference.match(/(\d+):/);
@@ -2562,7 +2607,7 @@ const BibleBookConnections = () => {
               const chapterMatches = sectionChapter === chapter;
               
               if (bookMatches && chapterMatches) {
-                console.log('Found reference match:', section);
+                console.log('*** Found reference match:', section);
                 return true;
               }
             }
@@ -2572,19 +2617,32 @@ const BibleBookConnections = () => {
       });
     }
     
-    // If still no match, try looser matching by looking for sections that mention the book
+    // If still no match, try matching by title
     if (!firstMatchingSection) {
-      firstMatchingSection = sortedNarrativeSections.find(section => {
-        // Check if title contains book name
-        if (section.title && section.title.toLowerCase().includes(book.toLowerCase())) {
-          console.log('Found title match:', section);
-          return true;
+      console.log('*** No reference match found, trying title matching');
+      // Try to match by title - gather all sections that mention the book name
+      const possibleMatches = sortedNarrativeSections.filter(section => 
+        section.title && section.title.toLowerCase().includes(book.toLowerCase())
+      );
+      
+      console.log('*** Title matches found:', possibleMatches.length);
+      
+      // If we found multiple matches, try to find one with the right chapter
+      if (possibleMatches.length > 0) {
+        // First see if any have a chapter property matching
+        const withChapter = possibleMatches.find(section => section.chapter === chapter);
+        if (withChapter) {
+          console.log('*** Found title+chapter match:', withChapter);
+          firstMatchingSection = withChapter;
+        } else {
+          // Just take the first one as a fallback
+          console.log('*** Using first title match as fallback:', possibleMatches[0]);
+          firstMatchingSection = possibleMatches[0];
         }
-        return false;
-      });
+      }
     }
     
-    console.log('First matching section found:', firstMatchingSection);
+    console.log('*** Final matching section found:', firstMatchingSection);
     
     if (firstMatchingSection) {
       // Find the DOM element for this section
@@ -2592,24 +2650,38 @@ const BibleBookConnections = () => {
         const container = document.getElementById('sections-container');
         const sectionButton = container?.querySelector(`button[data-section-id="${firstMatchingSection.id}"]`);
         
-        console.log('Found section container:', container);
-        console.log('Found section button:', sectionButton);
+        console.log('*** Found section container:', container);
+        console.log('*** Found section button:', sectionButton);
         
         if (container && sectionButton) {
-          // Calculate position to scroll to
+          // Log positions to verify calculations
           const containerRect = container.getBoundingClientRect();
           const sectionRect = sectionButton.getBoundingClientRect();
+          
+          console.log('*** Container measurements:', { 
+            left: containerRect.left, 
+            width: containerRect.width,
+            scrollLeft: container.scrollLeft
+          });
+          
+          console.log('*** Section button measurements:', { 
+            left: sectionRect.left, 
+            width: sectionRect.width,
+            offsetLeft: sectionButton.offsetLeft
+          });
           
           // Calculate the target scroll position to center the button
           const scrollLeft = sectionButton.offsetLeft - (containerRect.width / 2) + (sectionRect.width / 2);
           
-          console.log('Scrolling to position:', scrollLeft);
+          console.log('*** Scrolling to position:', scrollLeft);
           
           // Scroll to the section
           container.scrollTo({
             left: scrollLeft,
             behavior: 'smooth'
           });
+          
+          console.log('*** Scroll command issued');
           
           // Highlight this section
           setActiveNarrativeSection(firstMatchingSection.id);
@@ -2619,16 +2691,26 @@ const BibleBookConnections = () => {
           setTimeout(() => {
             sectionButton.classList.remove('pulse-animation');
           }, 2000);
+        } else {
+          console.error('*** Failed to find DOM elements:',
+            !container ? 'Container missing' : 'Section button missing',
+            'Section ID:', firstMatchingSection.id
+          );
         }
-      }, 300); // Increased delay to ensure DOM is ready
+      }, 600); // Increased delay to ensure DOM is ready
+    } else {
+      console.warn('*** No matching section found for:', { book, chapter });
     }
   }, [sortedNarrativeSections, setActiveNarrativeSection]);
   
   // Fetch bible text whenever book or chapter changes
   useEffect(() => {
+    console.log('*** useEffect triggered - book/chapter changed:', { book: currentBook, chapter: currentChapter });
+    
     const fetchBibleText = async () => {
       setIsLoadingBibleText(true);
       try {
+        console.log('*** Fetching Bible text for:', { book: currentBook, chapter: currentChapter });
         const response = await fetch(`/api/getBibleText?book=${currentBook}&chapter=${currentChapter}`);
         if (!response.ok) throw new Error('Failed to fetch Bible text');
         const data = await response.json();
@@ -2636,6 +2718,7 @@ const BibleBookConnections = () => {
         setBibleText(data.text);
         setCurrentVerseRange({ start: 1, end: 31 }); // Reset verse range on chapter change
         
+        console.log('*** Bible text fetch complete, now calling scrollToFirstSectionForChapter');
         // Call the function to scroll to the first section for this book/chapter
         scrollToFirstSectionForChapter(currentBook, currentChapter);
         
@@ -2783,11 +2866,14 @@ const BibleBookConnections = () => {
             <button
               key={book}
               onClick={() => {
+                console.log('*** Book selected:', book);
                 setCurrentBook(book);
                 setShowBookSelector(false);
               }}
-              className={`text-left px-3 py-2 rounded text-sm ${
-                currentBook === book ? "bg-indigo-100 text-indigo-700 font-medium" : "hover:bg-gray-100"
+              className={`px-3 py-2 block w-full text-left text-sm ${
+                currentBook === book 
+                  ? 'bg-indigo-50 text-indigo-600 font-medium' 
+                  : 'text-gray-700 hover:bg-gray-50'
               }`}
             >
               {book}
@@ -2802,25 +2888,28 @@ const BibleBookConnections = () => {
               {/* Chapter selector */}
               <div className="relative">
                 <button
-                  onClick={() => setShowChapterSelector(prev => !prev)}
-                  className="flex items-center space-x-2 py-2 px-3 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
+                  onClick={() => setShowChapterSelector(!showChapterSelector)}
+                  className="flex items-center space-x-2 py-2 px-4 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
                 >
-                  <span className="font-medium">{currentChapter}</span>
+                  <span className="font-medium">Chapter {currentChapter}</span>
                   <ChevronDown size={16} />
                 </button>
                 {showChapterSelector && (
-                  <div className="absolute top-12 left-0 w-64 max-h-80 overflow-y-auto bg-white shadow-lg rounded-lg border border-gray-200 z-30">
+                  <div className="absolute top-12 right-0 w-72 max-h-96 overflow-y-auto bg-white shadow-lg rounded-lg border border-gray-200 z-30">
                     <div className="p-2">
                       <div className="grid grid-cols-5 gap-1">
                         {Array.from({ length: chapterCount }, (_, i) => (
                           <button
-                            key={`chapter-${i + 1}`}
+                            key={i + 1}
                             onClick={() => {
+                              console.log('*** Chapter selected:', i + 1);
                               setCurrentChapter(i + 1);
                               setShowChapterSelector(false);
                             }}
-                            className={`h-10 w-10 text-sm rounded-full flex items-center justify-center ${
-                              currentChapter === i + 1 ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            className={`p-2 text-center rounded ${
+                              currentChapter === i + 1
+                                ? 'bg-indigo-100 text-indigo-700 font-medium'
+                                : 'hover:bg-gray-50 text-gray-700'
                             }`}
                           >
                             {i + 1}
