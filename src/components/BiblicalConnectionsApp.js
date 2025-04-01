@@ -152,6 +152,7 @@ const BibleBookConnections = () => {
   const [currentVerseRange, setCurrentVerseRange] = useState({ start: 1, end: 31 });
   const [sectionSearchTerm, setSectionSearchTerm] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [currentVisibleBook, setCurrentVisibleBook] = useState('');
   
   // Array to store section headings for the Bible text
   const [bibleSections, setBibleSections] = useState([]);
@@ -2482,6 +2483,22 @@ const BibleBookConnections = () => {
     );
   }, [sortedNarrativeSections, sectionSearchTerm]);
 
+  // Effect to set initial visible book
+  useEffect(() => {
+    if (sortedNarrativeSections.length > 0 && !currentVisibleBook) {
+      const firstSection = sortedNarrativeSections[0];
+      if (firstSection && firstSection.book) {
+        setCurrentVisibleBook(firstSection.book);
+      } else if (firstSection && firstSection.reference) {
+        // Extract book from reference if not directly available
+        const match = firstSection.reference.match(/^((?:[1-3]\s+)?[A-Za-z\s]+)/);
+        if (match) {
+          setCurrentVisibleBook(match[1].trim());
+        }
+      }
+    }
+  }, [sortedNarrativeSections, currentVisibleBook]);
+  
   // Updated return statement with resize functionality
   return (
     <div className="flex flex-col h-screen bg-slate-50 text-slate-800 font-sans" style={containerStyle}>
@@ -2545,59 +2562,7 @@ const BibleBookConnections = () => {
 
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div className="flex flex-1 items-center gap-3 justify-end">
-              {/* Search sections button with slide-out */}
-              <div className="relative">
-                <button
-                  onClick={() => {
-                    setIsSearchOpen(!isSearchOpen);
-                    if (!isSearchOpen) {
-                      setTimeout(() => {
-                        const searchInput = document.getElementById('section-search-input');
-                        if (searchInput) {
-                          searchInput.focus();
-                        }
-                      }, 50);
-                    }
-                  }}
-                  className="flex items-center py-2 px-3 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
-                  title="Search sections"
-                >
-                  <Search size={16} />
-                </button>
-                
-                {/* Search input dropdown */}
-                <div 
-                  className={`absolute top-full right-0 mt-1 transform transition-all duration-300 ease-in-out bg-white border border-gray-200 rounded-lg shadow-md z-50 ${
-                    isSearchOpen ? 'opacity-100 w-64 scale-100' : 'opacity-0 w-0 scale-95 pointer-events-none'
-                  }`}
-                >
-                  <div className="relative flex items-center w-full">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
-                    <input
-                      id="section-search-input"
-                      type="text"
-                      placeholder="Search sections..."
-                      value={sectionSearchTerm}
-                      onChange={(e) => setSectionSearchTerm(e.target.value)}
-                      onBlur={() => {
-                        if (!sectionSearchTerm) {
-                          setTimeout(() => setIsSearchOpen(false), 200);
-                        }
-                      }}
-                      className="w-full pl-10 pr-10 py-2 rounded-lg focus:outline-none text-sm"
-                    />
-                    <button
-                      onClick={() => {
-                        setSectionSearchTerm('');
-                        document.getElementById('section-search-input')?.focus();
-                      }}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    >
-                      <X size={16} />
-                    </button>
-                  </div>
-                </div>
-              </div>
+             
             
               {/* Book selector */}
               <div className="relative">
@@ -2748,6 +2713,60 @@ const BibleBookConnections = () => {
                   <Info size={18} />
                 </button> */}
               </div>
+
+               {/* Search sections button with slide-out */}
+              <div className="relative">
+                <button
+                  onClick={() => {
+                    setIsSearchOpen(!isSearchOpen);
+                    if (!isSearchOpen) {
+                      setTimeout(() => {
+                        const searchInput = document.getElementById('section-search-input');
+                        if (searchInput) {
+                          searchInput.focus();
+                        }
+                      }, 50);
+                    }
+                  }}
+                  className="flex items-center py-2 px-3 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
+                  title="Search sections"
+                >
+                  <Search size={16} />
+                </button>
+                
+                {/* Search input dropdown */}
+                <div 
+                  className={`absolute top-full right-0 mt-1 transform transition-all duration-300 ease-in-out bg-white border border-gray-200 rounded-lg shadow-md z-50 ${
+                    isSearchOpen ? 'opacity-100 w-64 scale-100' : 'opacity-0 w-0 scale-95 pointer-events-none'
+                  }`}
+                >
+                  <div className="relative flex items-center w-full">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                    <input
+                      id="section-search-input"
+                      type="text"
+                      placeholder="Search sections..."
+                      value={sectionSearchTerm}
+                      onChange={(e) => setSectionSearchTerm(e.target.value)}
+                      onBlur={() => {
+                        if (!sectionSearchTerm) {
+                          setTimeout(() => setIsSearchOpen(false), 200);
+                        }
+                      }}
+                      className="w-full pl-10 pr-10 py-2 rounded-lg focus:outline-none text-sm"
+                    />
+                    <button
+                      onClick={() => {
+                        setSectionSearchTerm('');
+                        document.getElementById('section-search-input')?.focus();
+                      }}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -2761,6 +2780,13 @@ const BibleBookConnections = () => {
         {/* Add sections container here at the top level */}
         <div className="absolute top-0 left-0 right-0 w-screen bg-white z-10">
           <div className="absolute h-1 bottom-0 left-0 right-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-60"></div>
+          
+          {/* Book indicator that updates as sections scroll */}
+          <div className="h-7 px-4 bg-gradient-to-r from-indigo-100 to-indigo-50 flex items-center border-b border-indigo-100">
+            <span className="text-xs font-semibold text-indigo-800 tracking-wide uppercase">
+              {currentVisibleBook || 'Genesis'}
+            </span>
+          </div>
           
           <div className="flex items-center h-[56px] relative w-full">
             <button 
@@ -2781,22 +2807,74 @@ const BibleBookConnections = () => {
                 msOverflowStyle: 'none',
                 width: '100%'
               }}
+              onScroll={(e) => {
+                // Update the current visible book based on scroll position
+                const container = e.currentTarget;
+                const scrollLeft = container.scrollLeft;
+                const containerWidth = container.clientWidth;
+                
+                // Find the first section that's fully visible or partially visible
+                const sections = Array.from(container.querySelectorAll('button[data-section-id]'));
+                let visibleSection = null;
+                
+                for (const section of sections) {
+                  const rect = section.getBoundingClientRect();
+                  const containerRect = container.getBoundingClientRect();
+                  
+                  // Check if the section is visible in the viewport
+                  if (rect.left >= containerRect.left - rect.width / 2 && 
+                      rect.left <= containerRect.right - rect.width / 2) {
+                    visibleSection = section;
+                    break;
+                  }
+                }
+                
+                if (visibleSection) {
+                  const sectionId = visibleSection.dataset.sectionId;
+                  // Find the section data
+                  const section = sortedNarrativeSections.find(s => s.id === sectionId);
+                  if (section) {
+                    if (section.book) {
+                      setCurrentVisibleBook(section.book);
+                    } else if (section.reference) {
+                      // Extract book from reference
+                      const match = section.reference.match(/^((?:[1-3]\s+)?[A-Za-z\s]+)/);
+                      if (match) {
+                        setCurrentVisibleBook(match[1].trim());
+                      }
+                    }
+                  }
+                }
+              }}
             >
-              {filteredNarrativeSections.map((section) => (
-                <button
-                  key={section.id}
-                  data-section-id={section.id}
-                  onClick={() => handleNarrativeSectionSelect(section.id)}
-                  className={`py-1.5 px-4 text-sm font-medium rounded-full transition-colors whitespace-nowrap relative ${
-                    activeNarrativeSection === section.id 
-                      ? 'bg-indigo-100 text-indigo-800 border border-indigo-200 shadow-sm' 
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-indigo-600'
-                  }`}
-                >
-                  {section.title}
-                  {section.reference && <span className="ml-1 text-xs text-gray-400 hidden sm:inline">{section.reference}</span>}
-                </button>
-              ))}
+              {/* Group sections by book for better organization */}
+              {filteredNarrativeSections.map((section) => {
+                // Extract book from reference if not directly available
+                let book = section.book;
+                if (!book && section.reference) {
+                  const match = section.reference.match(/^((?:[1-3]\s+)?[A-Za-z\s]+)/);
+                  if (match) {
+                    book = match[1].trim();
+                  }
+                }
+                
+                return (
+                  <button
+                    key={section.id}
+                    data-section-id={section.id}
+                    data-book={book || ''}
+                    onClick={() => handleNarrativeSectionSelect(section.id)}
+                    className={`py-1.5 px-4 text-sm font-medium rounded-full transition-colors whitespace-nowrap relative ${
+                      activeNarrativeSection === section.id 
+                        ? 'bg-indigo-100 text-indigo-800 border border-indigo-200 shadow-sm' 
+                        : 'text-gray-600 hover:bg-gray-100 hover:text-indigo-600'
+                    }`}
+                  >
+                    {section.title}
+                    {section.reference && <span className="ml-1 text-xs text-gray-400 hidden sm:inline">{section.reference}</span>}
+                  </button>
+                );
+              })}
             </div>
             <button 
               className="sticky right-4 px-2 py-3 bg-gradient-to-l from-white to-transparent z-10"
@@ -2881,7 +2959,7 @@ const BibleBookConnections = () => {
         
         {showGraph && (
           <div className={`
-            transition-all duration-100 mt-[56px]
+          
             ${isLargeScreen ? 'border-l' : 'border-t'} border-indigo-100
           `}
           style={{ 
