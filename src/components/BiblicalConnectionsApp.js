@@ -2619,6 +2619,28 @@ const BibleBookConnections = () => {
       });
     }
     
+    // Specifically handle exodus case
+    if (!firstMatchingSection && book === 'Exodus' && chapter === 1) {
+      console.log('*** Special handling for Exodus 1');
+      // Look for sections with "Exodus" in the reference field
+      firstMatchingSection = sortedNarrativeSections.find(section => 
+        section.book === 'exodus' && section.chapter === 1
+      );
+      
+      if (!firstMatchingSection) {
+        // Fall back to any section that mentions Exodus chapter 1
+        firstMatchingSection = sortedNarrativeSections.find(section =>
+          section.reference && 
+          section.reference.includes('Exodus 1') &&
+          (section.chapter === 1 || section.chapter === undefined)
+        );
+      }
+      
+      if (firstMatchingSection) {
+        console.log('*** Found Exodus 1 section with special handling:', firstMatchingSection);
+      }
+    }
+    
     // If STILL no match found, try matching with reference
     if (!firstMatchingSection) {
       console.log('*** No normalized match found, trying reference matching');
@@ -2670,6 +2692,34 @@ const BibleBookConnections = () => {
           // Just take the first one as a fallback
           console.log('*** Using first title match as fallback:', possibleMatches[0]);
           firstMatchingSection = possibleMatches[0];
+        }
+      }
+    }
+    
+    // FINAL FALLBACK: If we still can't find anything, just get ANY section with the right book
+    if (!firstMatchingSection) {
+      console.log('*** Using final book-only fallback');
+      
+      // Convert book name to lowercase for comparison
+      const bookLower = book.toLowerCase();
+      
+      // Try to find any section with matching book property
+      const bookMatch = sortedNarrativeSections.find(section => 
+        section.book && section.book.toLowerCase() === bookLower
+      );
+      
+      if (bookMatch) {
+        console.log('*** Found book-only fallback match:', bookMatch);
+        firstMatchingSection = bookMatch;
+      } else {
+        // As a last resort, try to find any section with the book name in the reference
+        const referenceMatch = sortedNarrativeSections.find(section => 
+          section.reference && section.reference.toLowerCase().includes(bookLower)
+        );
+        
+        if (referenceMatch) {
+          console.log('*** Found reference fallback match:', referenceMatch);
+          firstMatchingSection = referenceMatch;
         }
       }
     }
@@ -2749,13 +2799,19 @@ const BibleBookConnections = () => {
       const container = document.getElementById('sections-container');
       if (container) {
         console.log('*** sections-container is ready in DOM after timeout');
+        
+        // Directly attempt to scroll to the section, independent of the Bible text fetch
+        if (typeof scrollToFirstSectionForChapter === 'function') {
+          console.log('*** Direct scroll attempt from component render effect');
+          scrollToFirstSectionForChapter(currentBook, currentChapter);
+        }
       } else {
         console.log('*** sections-container still not in DOM after timeout');
       }
     }, 1000);
     
     return () => clearTimeout(timeout);
-  }, [currentBook, currentChapter, sortedNarrativeSections]);
+  }, [currentBook, currentChapter, sortedNarrativeSections, scrollToFirstSectionForChapter]);
   
   // Fetch bible text whenever book or chapter changes
   useEffect(() => {
@@ -2789,6 +2845,18 @@ const BibleBookConnections = () => {
       } catch (error) {
         console.error('Error fetching Bible text:', error);
         setBibleText('Error loading Bible text. Please try again.');
+        
+        // Even if the text fetch fails, still attempt to scroll to the correct section
+        console.log('*** Attempting to scroll despite fetch error');
+        setTimeout(() => {
+          try {
+            if (typeof scrollToFirstSectionForChapter === 'function') {
+              scrollToFirstSectionForChapter(currentBook, currentChapter);
+            }
+          } catch (scrollError) {
+            console.error('*** Error in scrollToFirstSectionForChapter after fetch failure:', scrollError);
+          }
+        }, 500);
       } finally {
         setIsLoadingBibleText(false);
       }
