@@ -2528,31 +2528,63 @@ const BibleBookConnections = () => {
   
   // Function to scroll to the first section for the selected book and chapter
   const scrollToFirstSectionForChapter = useCallback((book, chapter) => {
+    console.log('Attempting to scroll to first section for:', book, chapter);
+    console.log('Available sections:', sortedNarrativeSections);
+    
     // Find the first section that matches the current book and chapter
-    const firstMatchingSection = sortedNarrativeSections.find(section => {
-      // Check if book matches
+    let firstMatchingSection = null;
+    
+    // First try exact match with book and chapter properties
+    firstMatchingSection = sortedNarrativeSections.find(section => {
       if (section.book && section.book.toLowerCase() === book.toLowerCase() && section.chapter === chapter) {
+        console.log('Found exact match:', section);
         return true;
-      }
-      
-      // If no direct book property, try to match from reference
-      if (!section.book && section.reference) {
-        const bookMatch = section.reference.match(/^((?:[1-3]\s+)?[A-Za-z\s]+)/);
-        if (bookMatch) {
-          const sectionBook = bookMatch[1].trim().toLowerCase();
-          const bookMatches = sectionBook === book.toLowerCase();
-          
-          // Extract chapter from reference
-          const chapterMatch = section.reference.match(/(\d+):/);
-          if (chapterMatch) {
-            const sectionChapter = parseInt(chapterMatch[1]);
-            return bookMatches && sectionChapter === chapter;
-          }
-          return bookMatches;
-        }
       }
       return false;
     });
+    
+    // If no match found, try matching with reference
+    if (!firstMatchingSection) {
+      firstMatchingSection = sortedNarrativeSections.find(section => {
+        if (section.reference) {
+          // Extract book from reference (like "Genesis 1:1")
+          const bookMatch = section.reference.match(/^((?:[1-3]\s+)?[A-Za-z\s]+)/);
+          if (bookMatch) {
+            const sectionBook = bookMatch[1].trim().toLowerCase();
+            const bookMatches = sectionBook === book.toLowerCase() || 
+                               book.toLowerCase().includes(sectionBook) || 
+                               sectionBook.includes(book.toLowerCase());
+            
+            // Extract chapter from reference
+            const chapterMatch = section.reference.match(/(\d+):/);
+            if (chapterMatch) {
+              const sectionChapter = parseInt(chapterMatch[1]);
+              const chapterMatches = sectionChapter === chapter;
+              
+              if (bookMatches && chapterMatches) {
+                console.log('Found reference match:', section);
+                return true;
+              }
+            }
+          }
+        }
+        return false;
+      });
+    }
+    
+    // If still no match, try looser matching by looking for sections that mention the book
+    if (!firstMatchingSection) {
+      firstMatchingSection = sortedNarrativeSections.find(section => {
+        // Check if title contains book name
+        if (section.title && section.title.toLowerCase().includes(book.toLowerCase())) {
+          console.log('Found title match:', section);
+          return true;
+        }
+        return false;
+      });
+    }
+    
+    console.log('First matching section found:', firstMatchingSection);
     
     if (firstMatchingSection) {
       // Find the DOM element for this section
@@ -2560,11 +2592,18 @@ const BibleBookConnections = () => {
         const container = document.getElementById('sections-container');
         const sectionButton = container?.querySelector(`button[data-section-id="${firstMatchingSection.id}"]`);
         
+        console.log('Found section container:', container);
+        console.log('Found section button:', sectionButton);
+        
         if (container && sectionButton) {
           // Calculate position to scroll to
           const containerRect = container.getBoundingClientRect();
           const sectionRect = sectionButton.getBoundingClientRect();
-          const scrollLeft = sectionButton.offsetLeft - containerRect.width / 2 + sectionRect.width / 2;
+          
+          // Calculate the target scroll position to center the button
+          const scrollLeft = sectionButton.offsetLeft - (containerRect.width / 2) + (sectionRect.width / 2);
+          
+          console.log('Scrolling to position:', scrollLeft);
           
           // Scroll to the section
           container.scrollTo({
@@ -2572,10 +2611,16 @@ const BibleBookConnections = () => {
             behavior: 'smooth'
           });
           
-          // Optionally, highlight this section
+          // Highlight this section
           setActiveNarrativeSection(firstMatchingSection.id);
+          
+          // Make the button visually stand out
+          sectionButton.classList.add('pulse-animation');
+          setTimeout(() => {
+            sectionButton.classList.remove('pulse-animation');
+          }, 2000);
         }
-      }, 100); // Short delay to ensure the DOM is updated
+      }, 300); // Increased delay to ensure DOM is ready
     }
   }, [sortedNarrativeSections, setActiveNarrativeSection]);
   
@@ -3234,6 +3279,25 @@ const BibleBookConnections = () => {
         
         .resize-handle:active {
           background-color: rgba(99, 102, 241, 0.2);
+        }
+        
+        @keyframes pulse {
+          0% {
+            box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
+            transform: scale(1);
+          }
+          50% {
+            box-shadow: 0 0 0 8px rgba(99, 102, 241, 0);
+            transform: scale(1.05);
+          }
+          100% {
+            box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+            transform: scale(1);
+          }
+        }
+        
+        .pulse-animation {
+          animation: pulse 0.8s ease-in-out 2;
         }
       `}</style>
       
