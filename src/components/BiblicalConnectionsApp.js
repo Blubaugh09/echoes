@@ -2152,11 +2152,28 @@ const BibleBookConnections = () => {
                 const connectedPassage = findPassage(connectedId);
                 if (!connectedPassage) return null;
 
+                // Find the connection information for this node
+                const connectionInfo = cleanConnection(connection);
+                
                 return (
                   <div 
                     key={connection.id}
                     className="p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer transition-colors"
-                    onClick={() => handlePassageClick(connectedPassage)}
+                    onClick={() => {
+                      setSelectedNodeInfo({
+                        id: connectedId,
+                        label: connectedPassage.title,
+                        type: connection.type,
+                        passage: connectedPassage,
+                        connection: connectionInfo,
+                        isSource: connection.from === connectedId,
+                        connectedTo: connection.from === connectedId ? 
+                          findPassage(connection.to)?.title : 
+                          findPassage(connection.from)?.title,
+                        x: 0, // These coordinates aren't used for list view
+                        y: 0
+                      });
+                    }}
                   >
                     <div className="flex items-center gap-2 mb-1">
                       <div 
