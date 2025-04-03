@@ -29,7 +29,7 @@ exports.handler = async (event, context) => {
         console.log('Fetching verse summary for:', data.verseReference);
         try {
           const response = await anthropic.messages.create({
-            model: 'claude-3-sonnet-20240229',
+            model: 'claude-3-opus-20240229',
             max_tokens: 300,
             messages: [{
               role: 'user',
@@ -52,7 +52,7 @@ exports.handler = async (event, context) => {
         console.log('Processing question:', data.question);
         try {
           const response = await anthropic.messages.create({
-            model: 'claude-3-sonnet-20240229',
+            model: 'claude-3-opus-20240229',
             max_tokens: 300,
             messages: [{
               role: 'user',
