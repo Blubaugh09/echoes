@@ -1,108 +1,88 @@
 const { Anthropic } = require('@anthropic-ai/sdk');
 
 // Initialize Anthropic client outside the handler for better performance
-let anthropicClient = null;
+const anthropic = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY
+});
 
-exports.handler = async function(event, context) {
-  // Log the incoming request
+exports.handler = async (event, context) => {
   console.log('Received request:', {
     method: event.httpMethod,
     body: event.body
   });
 
-  // Only allow POST requests
-  if (event.httpMethod !== 'POST') {
+  // Check for API key
+  if (!process.env.ANTHROPIC_API_KEY) {
+    console.error('ANTHROPIC_API_KEY is not set');
     return {
-      statusCode: 405,
-      body: JSON.stringify({ error: 'Method Not Allowed' })
+      statusCode: 500,
+      body: JSON.stringify({ error: 'API key not configured' })
     };
   }
 
   try {
-    // Initialize Anthropic client if not already done
-    if (!anthropicClient) {
-      if (!process.env.ANTHROPIC_API_KEY) {
-        console.error('Missing ANTHROPIC_API_KEY');
-        return {
-          statusCode: 500,
-          body: JSON.stringify({ 
-            error: 'Server configuration error',
-            details: 'Missing API key'
-          })
-        };
+    const data = JSON.parse(event.body || '{}');
+    console.log('Parsed request:', data);
+
+    if (event.httpMethod === 'POST') {
+      if (data.verseReference) {
+        console.log('Fetching verse summary for:', data.verseReference);
+        try {
+          const response = await anthropic.messages.create({
+            model: 'claude-3-sonnet-20240229',
+            max_tokens: 300,
+            messages: [{
+              role: 'user',
+              content: `Explain the meaning and significance of this Bible verse: ${data.verseReference}. Focus on its theological and historical context.`
+            }]
+          });
+          console.log('Received response from Anthropic API');
+          return {
+            statusCode: 200,
+            body: JSON.stringify({ summary: response.content[0].text })
+          };
+        } catch (apiError) {
+          console.error('Anthropic API error:', apiError);
+          return {
+            statusCode: 500,
+            body: JSON.stringify({ error: 'Failed to get verse summary from AI' })
+          };
+        }
+      } else if (data.question) {
+        console.log('Processing question:', data.question);
+        try {
+          const response = await anthropic.messages.create({
+            model: 'claude-3-sonnet-20240229',
+            max_tokens: 300,
+            messages: [{
+              role: 'user',
+              content: data.question
+            }]
+          });
+          console.log('Received response from Anthropic API for question');
+          return {
+            statusCode: 200,
+            body: JSON.stringify({ answer: response.content[0].text })
+          };
+        } catch (apiError) {
+          console.error('Anthropic API error for question:', apiError);
+          return {
+            statusCode: 500,
+            body: JSON.stringify({ error: 'Failed to get answer from AI' })
+          };
+        }
       }
-      anthropicClient = new Anthropic({
-        apiKey: process.env.ANTHROPIC_API_KEY
-      });
-    }
-
-    const body = JSON.parse(event.body);
-    const { verseReference, question } = body;
-
-    // Log the parsed request
-    console.log('Parsed request:', { verseReference, question });
-
-    // Handle verse summary request
-    if (verseReference && !question) {
-      console.log('Fetching verse summary for:', verseReference);
-      const message = await anthropicClient.messages.create({
-        model: 'claude-3-opus-20240229',
-        max_tokens: 300, // Reduced from 500 to improve response time
-        temperature: 0.7,
-        system: "You are a biblical scholar helping to explain the context and significance of Bible verses. Focus on explaining why this verse is important in its section, what it contributes to the narrative or teaching, and how it connects to the surrounding content. Be concise but informative.",
-        messages: [{
-          role: 'user',
-          content: `Explain the context and significance of this verse in its section: ${verseReference}`
-        }]
-      });
-
-      console.log('Received response from Claude');
-      return {
-        statusCode: 200,
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ summary: message.content[0].text })
-      };
-    }
-
-    // Handle verse question request
-    if (verseReference && question) {
-      console.log('Processing question for verse:', verseReference);
-      const message = await anthropicClient.messages.create({
-        model: 'claude-3-opus-20240229',
-        max_tokens: 300, // Reduced from 500 to improve response time
-        temperature: 0.7,
-        system: "You are a biblical scholar helping to answer questions about Bible verses. Provide clear, accurate, and concise answers based on the verse's context and meaning.",
-        messages: [{
-          role: 'user',
-          content: `Verse: ${verseReference}\nQuestion: ${question}`
-        }]
-      });
-
-      console.log('Received response from Claude');
-      return {
-        statusCode: 200,
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ answer: message.content[0].text })
-      };
     }
 
     return {
-      statusCode: 400,
-      body: JSON.stringify({ error: 'Invalid request parameters' })
+      statusCode: 405,
+      body: JSON.stringify({ error: 'Method not allowed' })
     };
-
   } catch (error) {
-    console.error('API Error:', error);
+    console.error('Function error:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ 
-        error: 'Internal server error',
-        details: error.message
-      })
+      body: JSON.stringify({ error: 'Internal server error' })
     };
   }
 }; 
