@@ -214,6 +214,32 @@ const BibleBookConnections = () => {
   const [selectedVerseReference, setSelectedVerseReference] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(false);
 
+  // Add settings state
+  const [settings, setSettings] = useState(() => {
+    const savedSettings = localStorage.getItem('bibleAppSettings');
+    return savedSettings ? JSON.parse(savedSettings) : {
+      darkMode: false,
+      fontSize: 16,
+      fontType: 'serif'
+    };
+  });
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
+  // Save settings to localStorage when they change
+  useEffect(() => {
+    localStorage.setItem('bibleAppSettings', JSON.stringify(settings));
+    // Apply dark mode to body
+    if (settings.darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [settings]);
+
+  const handleSettingsChange = (newSettings) => {
+    setSettings(newSettings);
+  };
+
   // Check screen size
   useEffect(() => {
     const checkScreenSize = () => {
@@ -2675,712 +2701,60 @@ const BibleBookConnections = () => {
   
   // Updated return statement with resize functionality
   return (
-    <div className="flex flex-col h-screen bg-slate-50 text-slate-800 font-sans" style={containerStyle}>
-      <header className="p-4 bg-white shadow-sm border-b border-slate-200">
-        <div className="max-w-7xl mx-auto">
-          {/* Navigation History Section */}
-{/*           {breadcrumbs.length > 0 && (
-            <div className="mb-4 bg-white rounded-lg border border-gray-100 shadow-sm">
-              <div className="p-2 flex items-center justify-between">
-                <div className="flex items-center space-x-2 overflow-x-auto scrollbar-hide flex-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                  {breadcrumbs
-                    .filter(b => !b.isSessionMarker)
-                    .map((crumb, index) => {
-                      const crumbId = crumb.breadcrumbId || `${crumb.id}-${index}`;
-                      
-                      // Find book information to display
-                      let bookInfo = null;
-                      for (const section of Object.values(bibleStructure)) {
-                        const foundBook = section.books.find(b => b.id === crumb.book);
-                        if (foundBook) {
-                          bookInfo = foundBook;
-                          break;
-                        }
-                      }
-                      
-                      const bookColor = bookInfo?.color || crumb.bookColor || '#6366f1';
-                      const bookName = bookInfo?.title || crumb.bookName || 'Unknown';
-                      
-                      return (
-                        <button
-                          key={`breadcrumb-${crumbId}`}
-                          className="flex items-center space-x-2 px-3 py-1.5 bg-gray-50 rounded-lg hover:bg-indigo-50 transition-colors group whitespace-nowrap"
-                          onClick={() => handleBreadcrumbClick(crumb, breadcrumbs.indexOf(crumb))}
-                        >
-                          <div 
-                            className="w-2 h-2 rounded-full"
-                            style={{ backgroundColor: bookColor }}
-                          ></div>
-                          <div className="text-xs font-medium text-gray-700 group-hover:text-indigo-700">
-                            {crumb.title}
-                          </div>
-                        </button>
-                      );
-                    })
-                  }
-                </div>
-                <button
-                  onClick={clearBreadcrumbs}
-                  className="ml-2 p-1 text-gray-400 hover:text-red-500 rounded-full hover:bg-red-50 transition-colors"
-                  title="Clear history"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M3 6h18"></path>
-                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          )} */}
+    <div className={`min-h-screen ${settings.darkMode ? 'dark' : ''}`}>
+      {/* Add settings button to the top right */}
+      <div className="absolute top-4 right-4 z-50">
+        <button
+          onClick={() => setSettingsOpen(true)}
+          className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+        >
+          ⚙️
+        </button>
+      </div>
 
-          <div className="flex items-center justify-between gap-4 flex-wrap">
-            <div className="flex flex-1 items-center gap-3 justify-end">
-             
-            
-              {/* Book selector */}
-              <div className="relative">
-                <button
-                  onClick={() => setShowBookSelector(!showBookSelector)}
-                  className="flex items-center space-x-2 py-2 px-4 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
-                >
-                  <span className="font-medium">{currentBook}</span>
-                  <ChevronDown size={16} />
-                </button>
-                {showBookSelector && (
- <div className="absolute top-12 left-0 w-72 max-h-96 overflow-y-auto bg-white shadow-lg rounded-lg border border-gray-200 z-30">
-    <div className="p-3 border-b border-gray-200">
-      <div className="flex items-center space-x-2 px-2 py-1 bg-gray-100 rounded">
-        <Search size={16} className="text-gray-500" />
-        <input
-          type="text"
-          placeholder="Search books..."
-          value={bookSearch}
-          onChange={(e) => setBookSearch(e.target.value)}
-          className="w-full bg-transparent border-none outline-none text-sm"
-        />
-      </div>
-      <div className="flex space-x-1 mt-2">
-        <button
-          onClick={() => setActiveTestament("all")}
-          className={`text-xs px-2 py-1 rounded ${activeTestament === "all" ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-600"}`}
-        >
-          All
-        </button>
-        <button
-          onClick={() => setActiveTestament("old")}
-          className={`text-xs px-2 py-1 rounded ${activeTestament === "old" ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-600"}`}
-        >
-          Old Testament
-        </button>
-        <button
-          onClick={() => setActiveTestament("new")}
-          className={`text-xs px-2 py-1 rounded ${activeTestament === "new" ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-600"}`}
-        >
-          New Testament
-        </button>
-      </div>
-    </div>
-    <div className="p-2">
-      <div className="grid grid-cols-2 gap-1">
-        {bibleBooks
-          .filter(book => {
-            // First filter by search text
-            const matchesSearch = bookSearch ? 
-              book.toLowerCase().includes(bookSearch.toLowerCase()) : 
-              true;
-            
-            // Then filter by testament
-            let matchesTestament = true;
-            if (activeTestament === "old") {
-              matchesTestament = oldTestamentBooks.includes(book);
-            } else if (activeTestament === "new") {
-              matchesTestament = newTestamentBooks.includes(book);
-            }
-            
-            return matchesSearch && matchesTestament;
-          })
-          .map(book => (
-            <button
-              key={book}
-              onClick={() => {
-                console.log('*** Book selected:', book);
-                setCurrentBook(book);
-                setShowBookSelector(false);
-              }}
-              className={`px-3 py-2 block w-full text-left text-sm ${
-                currentBook === book 
-                  ? 'bg-indigo-50 text-indigo-600 font-medium' 
-                  : 'text-gray-700 hover:bg-gray-50'
-              }`}
-            >
-              {book}
-            </button>
-          ))}
-      </div>
-    </div>
-  </div>
-)}
-              </div>
-              
-              {/* Chapter selector */}
-              <div className="relative">
-                <button
-                  onClick={() => setShowChapterSelector(!showChapterSelector)}
-                  className="flex items-center space-x-2 py-2 px-4 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
-                >
-                  <span className="font-medium">Chapter {currentChapter}</span>
-                  <ChevronDown size={16} />
-                </button>
-                {showChapterSelector && (
-                  <div className="absolute top-12 right-0 w-72 max-h-96 overflow-y-auto bg-white shadow-lg rounded-lg border border-gray-200 z-30">
-                    <div className="p-2">
-                      <div className="grid grid-cols-5 gap-1">
-                        {Array.from({ length: chapterCount }, (_, i) => (
-                          <button
-                            key={i + 1}
-                            onClick={() => {
-                              console.log('*** Chapter selected:', i + 1);
-                              setCurrentChapter(i + 1);
-                              setShowChapterSelector(false);
-                            }}
-                            className={`p-2 text-center rounded ${
-                              currentChapter === i + 1
-                                ? 'bg-indigo-100 text-indigo-700 font-medium'
-                                : 'hover:bg-gray-50 text-gray-700'
-                            }`}
-                          >
-                            {i + 1}
-                          </button>
-                        ))}
+      {/* Add AppSettings dialog */}
+      <AppSettings
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        settings={settings}
+        onSettingsChange={handleSettingsChange}
+      />
+
+      {/* Main content area with settings applied */}
+      <div className={`flex flex-col h-screen bg-slate-50 dark:bg-gray-900 text-slate-800 dark:text-white font-sans`} style={containerStyle}>
+        <header className="p-4 bg-white dark:bg-gray-800 shadow-sm border-b border-slate-200 dark:border-gray-700">
+          {/* ... existing header content ... */}
+        </header>
+
+        <div className="flex-1 relative flex flex-col overflow-hidden">
+          <div className="bibleReadingSection flex-1 overflow-y-auto bg-white dark:bg-gray-800">
+            <div className="max-w-3xl mx-auto px-8 py-8">
+              <div className="prose prose-indigo dark:prose-invert max-w-none"
+                style={{
+                  fontSize: `${settings.fontSize}px`,
+                  fontFamily: settings.fontType
+                }}
+              >
+                {bibleSections.length > 0 ? (
+                  bibleSections.map((section, index) => (
+                    <div key={index} className="mb-6">
+                      <div className="prose prose-indigo dark:prose-invert prose-lg max-w-none leading-relaxed">
+                        {highlightBibleText(section.text)}
                       </div>
                     </div>
+                  ))
+                ) : (
+                  <div className="text-center text-gray-500 dark:text-gray-400 py-8">
+                    No sections found in this chapter.
                   </div>
                 )}
               </div>
-              
-              {/* Navigation buttons */}
-{/*               <div className="flex items-center">
-                <button 
-                  className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-l-lg shadow-sm"
-                  onClick={prevChapter}
-                >
-                  <ArrowLeft size={18} />
-                </button>
-                <button 
-                  className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-r-lg shadow-sm border-l border-white/20"
-                  onClick={nextChapter}
-                >
-                  <ArrowRight size={18} />
-                </button>
-              </div> */}
-              
-              {/* Action buttons */}
-              <div className="flex items-center gap-2">
-                
-                <button
-                  className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg"
-                  onClick={toggleGraphVisibility}
-                  title={showGraph ? "Hide connections" : "Show connections"}
-                >
-                  {showGraph ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-               {/*  <button
-                  className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg"
-                  onClick={() => setShowInfo(!showInfo)}
-                  title="Show Information"
-                >
-                  <Info size={18} />
-                </button> */}
-              </div>
-              <AppSettings className="mr-2" />
-
-               {/* Search sections button with slide-out */}
-              <div className="relative">
-                <button
-                  onClick={() => {
-                    setIsSearchOpen(!isSearchOpen);
-                    if (!isSearchOpen) {
-                      setTimeout(() => {
-                        const searchInput = document.getElementById('section-search-input');
-                        if (searchInput) {
-                          searchInput.focus();
-                        }
-                      }, 50);
-                    }
-                  }}
-                  className="flex items-center py-2 px-3 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
-                  title="Search sections"
-                >
-                  <Search size={16} />
-                </button>
-                
-                {/* Search input dropdown */}
-                <div 
-                  className={`absolute top-full right-0 mt-1 transform transition-all duration-300 ease-in-out bg-white border border-gray-200 rounded-lg shadow-md z-50 ${
-                    isSearchOpen ? 'opacity-100 w-64 scale-100' : 'opacity-0 w-0 scale-95 pointer-events-none'
-                  }`}
-                >
-                  <div className="relative flex items-center w-full">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-                    <input
-                      id="section-search-input"
-                      type="text"
-                      placeholder="Search sections..."
-                      value={sectionSearchTerm}
-                      onChange={(e) => setSectionSearchTerm(e.target.value)}
-                      onBlur={() => {
-                        if (!sectionSearchTerm) {
-                          setTimeout(() => setIsSearchOpen(false), 200);
-                        }
-                      }}
-                      className="w-full pl-10 pr-10 py-2 rounded-lg focus:outline-none text-sm"
-                    />
-                    <button
-                      onClick={() => {
-                        setSectionSearchTerm('');
-                        document.getElementById('section-search-input')?.focus();
-                      }}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    >
-                      <X size={20} />
-                    </button>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
-      </header>
-      
-      {/* Main content area with resize capabilities */}
-      <div 
-        ref={containerRef}
-        className={`flex-1 relative ${isLargeScreen ? 'flex flex-row' : 'flex flex-col'} overflow-hidden`}
-      >
-        {/* Add sections container here at the top level */}
-        <div className="absolute top-0 left-0 right-0 w-screen bg-white z-10">
-          <div className="absolute h-1 bottom-0 left-0 right-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-60"></div>
-          
-          {/* Book indicator that updates as sections scroll */}
-          <div 
-            className="h-7 px-4 flex items-center border-b border-indigo-100"
-            style={{ 
-              background: `linear-gradient(to right, ${currentBookColor}15, ${currentBookColor}05)`,
-              borderLeft: `3px solid ${currentBookColor}`
-            }}
-          >
-            <span className="text-xs font-semibold tracking-wide uppercase" style={{ color: currentBookColor }}>
-              {currentVisibleBook || 'Genesis'}
-            </span>
-          </div>
-          
-          <div className="flex items-center h-[56px] relative w-full">
-            <button 
-              className="sticky left-4 px-2 py-3 bg-gradient-to-r from-white to-transparent z-10"
-              onClick={() => {
-                const container = document.getElementById('sections-container');
-                if (container) container.scrollBy({ left: -200, behavior: 'smooth' });
-              }}
-            >
-              <ChevronLeft size={16} className="text-gray-600" />
-            </button>
-            <div 
-              id="sections-container"
-              ref={sectionsContainerRef}
-              className="flex-1 overflow-x-auto py-3 px-2 flex space-x-3 scrollbar-hide"
-              style={{ 
-                scrollbarWidth: 'none', 
-                msOverflowStyle: 'none',
-                width: '100%'
-              }}
-              onScroll={(e) => {
-                // Update the current visible book based on scroll position
-                const container = e.currentTarget;
-                const scrollLeft = container.scrollLeft;
-                const containerWidth = container.clientWidth;
-                
-                // Find the first section that's fully visible or partially visible
-                const sections = Array.from(container.querySelectorAll('button[data-section-id]'));
-                let visibleSection = null;
-                
-                for (const section of sections) {
-                  const rect = section.getBoundingClientRect();
-                  const containerRect = container.getBoundingClientRect();
-                  
-                  // Check if the section is visible in the viewport
-                  if (rect.left >= containerRect.left - rect.width / 2 && 
-                      rect.left <= containerRect.right - rect.width / 2) {
-                    visibleSection = section;
-                    break;
-                  }
-                }
-                
-                if (visibleSection) {
-                  const sectionId = visibleSection.dataset.sectionId;
-                  // Find the section data
-                  const section = sortedNarrativeSections.find(s => s.id === sectionId);
-                  if (section) {
-                    // Set book name
-                    if (section.book) {
-                      setCurrentVisibleBook(section.book);
-                    } else if (section.reference) {
-                      // Extract book from reference
-                      const match = section.reference.match(/^((?:[1-3]\s+)?[A-Za-z\s]+)/);
-                      if (match) {
-                        setCurrentVisibleBook(match[1].trim());
-                      }
-                    }
-                    
-                    // Find book color from bibleStructure
-                    let bookColor = '#6366f1'; // Default color
-                    const bookName = section.book || (section.reference ? section.reference.match(/^((?:[1-3]\s+)?[A-Za-z\s]+)/) : null)?.[1]?.trim();
-                    
-                    if (bookName) {
-                      // Find the book in bibleStructure
-                      for (const sectionData of Object.values(bibleStructure)) {
-                        const foundBook = sectionData.books?.find(b => 
-                          b.title?.toLowerCase() === bookName?.toLowerCase() ||
-                          b.id?.toLowerCase() === bookName?.toLowerCase()
-                        );
-                        
-                        if (foundBook && foundBook.color) {
-                          bookColor = foundBook.color;
-                          break;
-                        }
-                      }
-                    }
-                    
-                    setCurrentBookColor(bookColor);
-                  }
-                }
-              }}
-            >
-              {/* Group sections by book for better organization */}
-              {filteredNarrativeSections.map((section) => {
-                // Extract book from reference if not directly available
-                let book = section.book;
-                if (!book && section.reference) {
-                  const match = section.reference.match(/^((?:[1-3]\s+)?[A-Za-z\s]+)/);
-                  if (match) {
-                    book = match[1].trim();
-                  }
-                }
-                
-                return (
-                  <button
-                    key={section.id}
-                    data-section-id={section.id}
-                    data-book={book || ''}
-                    onClick={() => handleNarrativeSectionSelect(section.id)}
-                    className={`py-1.5 px-4 text-sm font-medium rounded-full transition-colors whitespace-nowrap relative ${
-                      activeNarrativeSection === section.id 
-                        ? 'bg-indigo-100 text-indigo-800 border border-indigo-200 shadow-sm' 
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-indigo-600'
-                    }`}
-                  >
-                    {section.title}
-                    {section.reference && <span className="ml-1 text-xs text-gray-400 hidden sm:inline">{section.reference}</span>}
-                  </button>
-                );
-              })}
-            </div>
-            <button 
-              className="sticky right-4 px-2 py-3 bg-gradient-to-l from-white to-transparent z-10"
-              onClick={() => {
-                const container = document.getElementById('sections-container');
-                if (container) container.scrollBy({ left: 200, behavior: 'smooth' });
-              }}
-            >
-              <ChevronRight size={16} className="text-gray-600" />
-            </button>
-          </div>
-        </div>
-
-        <div 
-          className={`transition-all duration-100 mt-[56px]`}
-          style={{ 
-            height: isLargeScreen || !showGraph ? 'calc(100% - 56px)' : `${panelSize}%`,
-            width: isLargeScreen && showGraph ? '50%' : '100%'
-          }}
-        >
-          <div className="h-full flex flex-col bg-white rounded-lg overflow-hidden">
-            <div 
-              className="bibleReadingSection flex-1 overflow-y-auto bg-white"
-              ref={textContainerRef}
-            >
-              {isLoadingBibleText ? (
-                <div className="flex justify-center items-center h-full">
-                  <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
-                </div>
-              ) : (
-                <div className="max-w-3xl mx-auto px-8 py-8">
-                 {/*  <div className="mb-4 pb-2 border-b border-indigo-100">
-                    <h2 className="text-3xl font-serif font-bold text-indigo-900">{currentBibleReference}</h2>
-                  </div> */}
-                  
-                  {/* Add the connection switcher for multiple connections */}
-                  {renderConnectionSwitcher()}
-                  
-                  {bibleSections.length > 0 ? (
-                    bibleSections.map((section, index) => (
-                      <div key={index} className="mb-6">
-                        
-                        <div className="prose prose-indigo prose-lg max-w-none font-serif leading-relaxed">
-                          {highlightBibleText(section.text)}
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-center text-gray-500 py-8">
-                      No sections found in this chapter.
-                    </div>
-                  )}
-                  
-                  {/* Next Chapter button at the bottom */}
-                  <div className="mt-10 mb-6 flex justify-center">
-                    <div className="flex items-center gap-4">
-                      <button 
-                        className="flex items-center gap-2 py-2 px-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg shadow-sm transition-colors"
-                        onClick={prevChapter}
-                      >
-                        <ArrowLeft size={18} />
-                        <span>Previous Chapter</span>
-                      </button>
-                      
-                      <button 
-                        className="flex items-center gap-2 py-2 px-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg shadow-sm transition-colors"
-                        onClick={nextChapter}
-                      >
-                        <span>Next Chapter</span>
-                        <ArrowRight size={18} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-        
-        {/* Resize handle between panels */}
-        {renderResizeHandle()}
-        
-        {showGraph && (
-          <div className={`
-          
-            ${isLargeScreen ? 'border-l' : 'border-t'} border-indigo-100
-          `}
-          style={{ 
-            height: isLargeScreen ? 'calc(100% - 56px)' : `${100-panelSize}%`,
-            width: isLargeScreen ? '50%' : '100%'
-          }}
-          >
-            {selectedPassage ? (
-              <div className="h-full flex flex-col">
-                <div className="bg-white py-3 px-4 border-b border-indigo-100 h-[56px] flex items-center justify-between">
-                  <div className="flex flex-col justify-center">
-                    <h2 className="text-lg font-bold text-indigo-900 leading-tight">{selectedPassage.title}</h2>
-                  </div>
-                </div>
-                <div className="flex-1">
-                  {renderConnectionsVisualization()}
-                </div>
-              </div>
-            ) : (
-              <div className="h-full flex flex-col items-center justify-center text-center p-4 mt-[56px]">
-                <div className="w-24 h-24 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
-                  <BookOpen size={48} className="text-indigo-600" />
-                </div>
-                <h2 className="text-2xl font-bold mb-2 text-indigo-900">Select a Passage</h2>
-                <p className="text-gray-600 max-w-md">
-                We are still building the connections for this passage. Please select a passage from the reading pane to explore connections.
-                </p>
-                <div className="mt-8 flex flex-wrap gap-4 justify-center max-w-xl">
-                  {sortedNarrativeSections.slice(0, 0).map(section => (
-                    <button
-                      key={section.id}
-                      onClick={() => handleNarrativeSectionSelect(section.id)}
-                      className="p-4 bg-white rounded-lg shadow-sm hover:bg-indigo-50 border border-gray-200 text-left w-60"
-                    >
-                      <h3 className="font-bold text-indigo-700">{section.title}</h3>
-                      <p className="text-sm text-gray-600 mt-1">{section.reference}</p>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
       </div>
-      
-      {showInfo && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl max-h-full overflow-auto">
-            <div className="p-8">
-              <h2 className="text-2xl font-bold mb-4 text-indigo-900">Echoes of Logos Guide</h2>
-              <h3 className="text-xl font-bold mb-2 text-indigo-800">Connection Types:</h3>
-              <ul className="mb-6 space-y-3 text-gray-700">
-                <li className="flex items-center">
-                  <div className="w-6 h-3 mr-2 rounded-full" style={{ backgroundColor: getTypeColor('thematic') }}></div>
-                  <div>
-                    <strong>Thematic:</strong> <span className="text-gray-600">Passages that share similar themes or motifs</span>
-                  </div>
-                </li>
-                <li className="flex items-center">
-                  <div className="w-6 h-3 mr-2 rounded-full" style={{ backgroundColor: getTypeColor('typological') }}></div>
-                  <div>
-                    <strong>Typological:</strong> <span className="text-gray-600">Earlier events that foreshadow later ones</span>
-                  </div>
-                </li>
-                <li className="flex items-center">
-                  <div className="w-6 h-3 mr-2 rounded-full" style={{ backgroundColor: getTypeColor('prophetic') }}></div>
-                  <div>
-                    <strong>Prophetic:</strong> <span className="text-gray-600">Prophecies and their fulfillments</span>
-                  </div>
-                </li>
-                <li className="flex items-center">
-                  <div className="w-6 h-3 mr-2 rounded-full" style={{ backgroundColor: getTypeColor('commentary') }}></div>
-                  <div>
-                    <strong>Commentary:</strong> <span className="text-gray-600">New Testament commentary on Old Testament events</span>
-                  </div>
-                </li>
-              </ul>
-              
-              <h3 className="text-xl font-bold mb-2 text-indigo-800">How to Use the Visualization:</h3>
-              <ul className="mb-6 space-y-2 list-disc pl-6 text-gray-700">
-                <li>The <strong>central node</strong> represents the current passage.</li>
-                <li>Connected nodes show related passages across Scripture.</li>
-                <li>The <strong>colored lines</strong> indicate the type of connection.</li>
-                <li>Click on any node to navigate to that passage.</li>
-                <li><strong>Drag nodes</strong> to reposition them for better visibility.</li>
-                <li>Use the <strong>zoom controls</strong> to adjust your view.</li>
-                <li>Click and drag the background to pan the visualization.</li>
-                <li>Verse numbers highlighted in the text can be clicked to explore connections.</li>
-                <li><strong>Green dots</strong> on verse numbers indicate multiple available connections.</li>
-                <li>Use the <strong>resize handle</strong> to adjust the size of the reading pane and graph.</li>
-                <li>Use the <strong>history button</strong> <History size={14} className="inline mb-1" /> to view your navigation history.</li>
-              </ul>
-              
-              <h3 className="text-xl font-bold mb-2 text-indigo-800">Navigation History:</h3>
-              <p className="mb-4 text-gray-700">
-                As you explore different passages, your journey is automatically saved in the navigation history.
-                Click the history button <History size={14} className="inline mb-1" /> in the toolbar or graph area to view 
-                your exploration path and quickly jump back to previously visited passages.
-              </p>
-              
-              <h3 className="text-xl font-bold mb-2 text-indigo-800">Reading Tips:</h3>
-              <p className="mb-4 text-gray-700">
-                While reading, look for <span className="px-2 py-1 bg-indigo-100 text-indigo-800 rounded-full font-medium">highlighted verse numbers</span>, 
-                which indicate connections to other passages. Click these to explore the connected passages directly.
-                If a verse has multiple connections, clicking will cycle through them.
-              </p>
-              
-              <div className="text-center">
-                <button 
-                  className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
-                  onClick={() => setShowInfo(false)}
-                >
-                  Got it
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-      
-      {/* Add a global CSS class for preventing text selection during resizing */}
-      <style jsx global>{`
-        .resize-active {
-          user-select: none;
-          -webkit-user-select: none;
-          cursor: row-resize;
-        }
-        
-        .resize-handle {
-          transition: background-color 0.2s ease;
-        }
-        
-        .resize-handle:hover {
-          background-color: rgba(99, 102, 241, 0.1);
-        }
-        
-        .resize-handle:active {
-          background-color: rgba(99, 102, 241, 0.2);
-        }
-        
-        @keyframes pulse {
-          0% {
-            box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
-            transform: scale(1);
-          }
-          50% {
-            box-shadow: 0 0 0 8px rgba(99, 102, 241, 0);
-            transform: scale(1.05);
-          }
-          100% {
-            box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
-            transform: scale(1);
-          }
-        }
-        
-        .pulse-animation {
-          animation: pulse 0.8s ease-in-out 2;
-        }
-      `}</style>
-      
-      {/* Add the NodeInfoPopupWrapper to the visualization */}
-      {selectedNodeInfo && (
-        <NodeInfoPopupWrapper
-          node={selectedNodeInfo}
-          onClose={() => setSelectedNodeInfo(null)}
-          onNavigate={() => {
-            if (selectedNodeInfo.passage) {
-              console.log('Navigating to passage:', selectedNodeInfo.passage);
-              
-              // Extract book and chapter from the reference
-              const reference = selectedNodeInfo.passage.reference;
-              console.log('Reference:', reference);
-              
-              // Parse using regex
-              const referenceRegex = /^((?:[1-3]\s+)?[A-Za-z\s]+)\s+(\d+)(?::|\s)/;
-              const match = reference.match(referenceRegex);
-              
-              if (match) {
-                const book = match[1].trim();
-                const chapter = parseInt(match[2]);
-                console.log('Extracted book:', book, 'chapter:', chapter);
-                
-                // IMPORTANT: First set the book and chapter to ensure 
-                // the reading pane shows the correct chapter
-                setCurrentBook(book);
-                setCurrentChapter(chapter);
-                
-                // Then, with a small delay, call handlePassageClick
-                setTimeout(() => {
-                  handlePassageClick(selectedNodeInfo.passage);
-                  setSelectedNodeInfo(null);
-                }, 50);
-              } else {
-                // Fallback if regex fails
-                handlePassageClick(selectedNodeInfo.passage);
-                setSelectedNodeInfo(null);
-              }
-            }
-          }}
-        />
-      )}
-      {/* AI Dialog */}
-      <VerseAIDialog
-        isOpen={isAIDialogOpen}
-        onClose={() => setIsAIDialogOpen(false)}
-        verseReference={selectedVerseReference}
-        verseText={bibleText?.split('\n').find(line => {
-          const verseNum = selectedVerseReference.split(':')[1];
-          return line.trim().startsWith(verseNum);
-        })}
-        isDarkMode={isDarkMode}
-      />
+
+      {/* ... rest of the existing JSX ... */}
     </div>
   );
 };

@@ -1,75 +1,91 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, Select, MenuItem, Slider, Typography, Box } from '@mui/material';
 
-const AppSettings = ({ className }) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [fontSize, setFontSize] = useState('medium');
-  const [fontFamily, setFontFamily] = useState('serif');
+const AppSettings = ({ open, onClose, settings, onSettingsChange }) => {
+  const [localSettings, setLocalSettings] = useState(settings);
 
-  useEffect(() => {
-    const savedSettings = localStorage.getItem('bibleAppSettings');
-    if (savedSettings) {
-      const settings = JSON.parse(savedSettings);
-      setIsDarkMode(settings.isDarkMode || false);
-      setFontSize(settings.fontSize || 'medium');
-      setFontFamily(settings.fontFamily || 'serif');
-    }
-  }, []);
-
-  const handleSettingChange = (setting, value) => {
-    switch (setting) {
-      case 'darkMode':
-        setIsDarkMode(value);
-        break;
-      case 'fontSize':
-        setFontSize(value);
-        break;
-      case 'fontFamily':
-        setFontFamily(value);
-        break;
-      default:
-        break;
-    }
-
-    // Save to localStorage
-    const currentSettings = {
-      isDarkMode,
-      fontSize,
-      fontFamily,
+  const handleChange = (setting, value) => {
+    setLocalSettings(prev => ({
+      ...prev,
       [setting]: value
-    };
-    localStorage.setItem('bibleAppSettings', JSON.stringify(currentSettings));
+    }));
+  };
+
+  const handleSave = () => {
+    onSettingsChange(localSettings);
+    onClose();
+  };
+
+  const handleCancel = () => {
+    setLocalSettings(settings);
+    onClose();
   };
 
   return (
-    <div className={`flex items-center space-x-4 ${className}`}>
-      <button
-        onClick={() => handleSettingChange('darkMode', !isDarkMode)}
-        className={`p-2 rounded-lg ${
-          isDarkMode ? 'bg-gray-700 text-white' : 'bg-gray-200 text-gray-800'
-        }`}
-      >
-        {isDarkMode ? '☀️' : '🌙'}
-      </button>
-      
-      <select
-        value={fontSize}
-        onChange={(e) => handleSettingChange('fontSize', e.target.value)}
-        className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-      >
-        <option value="small">Small</option>
-        <option value="medium">Medium</option>
-        <option value="large">Large</option>
-      </select>
+    <Dialog 
+      open={open} 
+      onClose={handleCancel}
+      maxWidth="sm"
+      fullWidth
+      PaperProps={{
+        sx: {
+          bgcolor: settings.darkMode ? '#1a1a1a' : '#ffffff',
+          color: settings.darkMode ? '#ffffff' : '#000000'
+        }
+      }}
+    >
+      <DialogTitle>App Settings</DialogTitle>
+      <DialogContent>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mt: 2 }}>
+          {/* Dark Mode Toggle */}
+          <FormControl fullWidth>
+            <InputLabel>Theme</InputLabel>
+            <Select
+              value={localSettings.darkMode ? 'dark' : 'light'}
+              onChange={(e) => handleChange('darkMode', e.target.value === 'dark')}
+              label="Theme"
+            >
+              <MenuItem value="light">Light</MenuItem>
+              <MenuItem value="dark">Dark</MenuItem>
+            </Select>
+          </FormControl>
 
-      <select
-        value={fontFamily}
-        onChange={(e) => handleSettingChange('fontFamily', e.target.value)}
-        className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-      >
-        <option value="serif">Serif</option>
-        <option value="sans-serif">Sans Serif</option>
-      </select>
-    </div>
+          {/* Font Size Slider */}
+          <Box>
+            <Typography gutterBottom>Font Size</Typography>
+            <Slider
+              value={localSettings.fontSize}
+              onChange={(e, value) => handleChange('fontSize', value)}
+              min={12}
+              max={24}
+              step={1}
+              marks
+              valueLabelDisplay="auto"
+            />
+          </Box>
+
+          {/* Font Type Select */}
+          <FormControl fullWidth>
+            <InputLabel>Font Type</InputLabel>
+            <Select
+              value={localSettings.fontType}
+              onChange={(e) => handleChange('fontType', e.target.value)}
+              label="Font Type"
+            >
+              <MenuItem value="serif">Serif</MenuItem>
+              <MenuItem value="sans-serif">Sans Serif</MenuItem>
+              <MenuItem value="monospace">Monospace</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleCancel}>Cancel</Button>
+        <Button onClick={handleSave} variant="contained" color="primary">
+          Save Changes
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 
