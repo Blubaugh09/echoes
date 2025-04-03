@@ -24,11 +24,15 @@ import {
   X
 } from 'lucide-react';
 
+import AppSettings from './AppSettings';
+
+import NodeInfoPopup from './NodeInfoPopup';
 import { bibleStructure } from '../data/bibleStructure';
 import { allConnections } from '../data/allConnections';
 import { bibleBookChapterCounts } from '../constants/bibleBookChapterCounts';
 import  { referenceToPassageMap } from '../data/referenceToPassageMap';
 import { narrativeSections } from '../data/narrativeSections';
+import VerseAIDialog from './VerseAIDialog';
 // Using the existing code from the 
 // (Keeping all existing variables and functions)
 
@@ -158,6 +162,7 @@ const BibleBookConnections = () => {
   // Array to store section headings for the Bible text
   const [bibleSections, setBibleSections] = useState([]);
   const textContainerRef = useRef(null);
+  const sectionsContainerRef = useRef(null);
   
   // *** NEW STATE FOR RESIZING ***
   const [isResizing, setIsResizing] = useState(false);
@@ -167,6 +172,30 @@ const BibleBookConnections = () => {
   const containerRef = useRef(null);
   
   // *** NEW STATE FOR BREADCRUMBS ***
+  // Sort narrative sections by biblical order
+  const sortedNarrativeSections = useMemo(() => {
+    // Create a complete list of Bible books in order
+    const fullBibleBooksList = [...oldTestamentBooks, ...newTestamentBooks];
+    
+    // Create a mapping of book names to their order in the Bible
+    const bibleBookOrder = {};
+    fullBibleBooksList.forEach((book, index) => {
+      bibleBookOrder[book.toLowerCase()] = index;
+    });
+    
+    // Sort the narrative sections based on biblical book order
+    return [...narrativeSections].sort((a, b) => {
+      // Extract book names from sections
+      const bookA = a.book || '';
+      const bookB = b.book || '';
+      
+      // Get their positions in the Bible
+      const orderA = bibleBookOrder[bookA.toLowerCase()] || 999;
+      const orderB = bibleBookOrder[bookB.toLowerCase()] || 999;
+      
+      return orderA - orderB;
+    });
+  }, [narrativeSections, oldTestamentBooks, newTestamentBooks]);
   const [breadcrumbs, setBreadcrumbs] = useState([]);
   const [showBreadcrumbs, setShowBreadcrumbs] = useState(false);
   const [breadcrumbSessionName, setBreadcrumbSessionName] = useState("Study Session");
@@ -179,6 +208,11 @@ const BibleBookConnections = () => {
   const [selectedNodeInfo, setSelectedNodeInfo] = useState(null);
   // Add state for focused node view
   const [focusedNodeId, setFocusedNodeId] = useState(null);
+
+  // Add state for AI dialog
+  const [isAIDialogOpen, setIsAIDialogOpen] = useState(false);
+  const [selectedVerseReference, setSelectedVerseReference] = useState('');
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   // Check screen size
   useEffect(() => {
@@ -1082,23 +1116,42 @@ const BibleBookConnections = () => {
                 boxShadow: isHighlighted || isPartOfSelectedPassage ? `0 0 0 1px ${borderColor}` : ''
               }}
               title={isConnectionPoint ? `${connectedPassages.map(p => p.title).join(', ')}` : ""}
-              onClick={() => {
+              onClick={(e) => {
+                console.log('Verse button clicked:', {
+                  book: currentBook,
+                  chapter: currentChapter,
+                  verse: verseNumber,
+                  eventType: e.type
+                });
+
+                // Always show AI dialog on click
+                setSelectedVerseReference(`${currentBook} ${currentChapter}:${verseNumber}`);
+                setIsAIDialogOpen(true);
+                console.log('Opening AI dialog for verse:', `${currentBook} ${currentChapter}:${verseNumber}`);
+
+                // Handle connections if this is a connection point
                 if (isConnectionPoint) {
-                  // If there's only one connection, use it
                   if (connectedPassages.length === 1) {
                     handlePassageClick(connectedPassages[0]);
-                  } 
-                  // If clicked verse has the current passage, cycle to next option
-                  else if (isPartOfSelectedPassage) {
+                  } else if (isPartOfSelectedPassage) {
                     const currentIndex = connectedPassages.findIndex(p => p.id === selectedPassage.id);
                     const nextIndex = (currentIndex + 1) % connectedPassages.length;
                     handlePassageClick(connectedPassages[nextIndex]);
-                  }
-                  // Otherwise use the first connection
-                  else {
+                  } else {
                     handlePassageClick(connectedPassages[0]);
                   }
                 }
+              }}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                console.log('Right-click on verse:', {
+                  book: currentBook,
+                  chapter: currentChapter,
+                  verse: verseNumber
+                });
+                setSelectedVerseReference(`${currentBook} ${currentChapter}:${verseNumber}`);
+                setIsAIDialogOpen(true);
+                console.log('Opening AI dialog for verse (right-click):', `${currentBook} ${currentChapter}:${verseNumber}`);
               }}
             >
               {verseNumber}
@@ -2079,112 +2132,65 @@ const BibleBookConnections = () => {
   // Render the reading pane
   const renderReadingPane = () => {
     return (
-      <div className="h-full flex flex-col bg-white rounded-lg overflow-hidden">
-        <div className="bg-white relative">
-          <div className="absolute h-1 bottom-0 left-0 right-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-60"></div>
-          <div className="flex items-center h-[56px] relative w-full">
-            <button 
-              className="sticky left-0 px-2 py-3 bg-gradient-to-r from-white to-transparent z-10"
-              onClick={() => {
-                const container = document.getElementById('sections-container');
-                if (container) container.scrollBy({ left: -200, behavior: 'smooth' });
-              }}
+      <div className={`relative flex flex-col h-full ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
+        {/* Header */}
+        <div className={`flex items-center justify-between p-4 border-b ${
+          isDarkMode ? 'border-gray-700' : 'border-gray-200'
+        }`}>
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={toggleReadingPane}
+              className={`p-2 rounded-full hover:bg-opacity-10 ${
+                isDarkMode ? 'hover:bg-white' : 'hover:bg-gray-800'
+              }`}
             >
-              <ChevronLeft size={16} className="text-gray-600" />
+              <X className="w-6 h-6" />
             </button>
-            <div 
-              id="sections-container"
-              ref={sectionsContainerRef}
-              className="flex-1 overflow-x-auto py-3 px-2 flex space-x-3 scrollbar-hide"
-              style={{ 
-                scrollbarWidth: 'none', 
-                msOverflowStyle: 'none',
-                width: '100%'
-              }}
+            <h2 className={`text-xl font-semibold ${
+              isDarkMode ? 'text-white' : 'text-gray-800'
+            }`}>
+              {currentBook} {currentChapter}
+            </h2>
+          </div>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={prevChapter}
+              className={`p-2 rounded-full hover:bg-opacity-10 ${
+                isDarkMode ? 'hover:bg-white' : 'hover:bg-gray-800'
+              }`}
             >
-              {sortedNarrativeSections.map((section) => (
-                <button
-                  key={section.id}
-                  data-section-id={section.id}
-                  onClick={() => handleNarrativeSectionSelect(section.id)}
-                  className={`py-1.5 px-4 text-sm font-medium rounded-full transition-colors whitespace-nowrap relative ${
-                    activeNarrativeSection === section.id 
-                      ? 'bg-indigo-100 text-indigo-800 border border-indigo-200 shadow-sm' 
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-indigo-600'
-                  }`}
-                >
-                  {section.title}
-                  {section.reference && <span className="ml-1 text-xs text-gray-400 hidden sm:inline">{section.reference}</span>}
-                </button>
-              ))}
-            </div>
-            <button 
-              className="sticky right-0 px-2 py-3 bg-gradient-to-l from-white to-transparent z-10"
-              onClick={() => {
-                const container = document.getElementById('sections-container');
-                if (container) container.scrollBy({ left: 200, behavior: 'smooth' });
-              }}
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
+              onClick={nextChapter}
+              className={`p-2 rounded-full hover:bg-opacity-10 ${
+                isDarkMode ? 'hover:bg-white' : 'hover:bg-gray-800'
+              }`}
             >
-              <ChevronRight size={16} className="text-gray-600" />
+              <ChevronRight className="w-6 h-6" />
             </button>
           </div>
         </div>
-        
-        <div 
-          className="bibleReadingSection flex-1 overflow-y-auto bg-white"
-          ref={textContainerRef}
-        >
-          {isLoadingBibleText ? (
-            <div className="flex justify-center items-center h-full">
-              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
-            </div>
-            
-          ) : (
-            <div className="max-w-3xl mx-auto px-8 py-8">
-              {/* <div className="mb-4 pb-2 border-b border-indigo-100">
-                <h2 className="text-3xl font-serif font-bold text-indigo-900">{currentBibleReference}</h2>
-              </div> */}
-              
-              {/* Add the connection switcher for multiple connections */}
-              {renderConnectionSwitcher()}
-              
-              {bibleSections.length > 0 ? (
-                bibleSections.map((section, index) => (
-                  <div key={index} className="mb-6">
-                    
-                    <div className="prose prose-indigo prose-lg max-w-none font-serif leading-relaxed">
-                      {highlightBibleText(section.text)}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="text-center text-gray-500 py-8">
-                  No sections found in this chapter.
-                </div>
-              )}
-              
-              {/* Next Chapter button at the bottom */}
-              <div className="mt-10 mb-6 flex justify-center">
-                <div className="flex items-center gap-4">
-                  <button 
-                    className="flex items-center gap-2 py-2 px-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg shadow-sm transition-colors"
-                    onClick={prevChapter}
-                  >
-                    <ArrowLeft size={18} />
-                    <span>Previous Chapter</span>
-                  </button>
-                  
-                  <button 
-                    className="flex items-center gap-2 py-2 px-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg shadow-sm transition-colors"
-                    onClick={nextChapter}
-                  >
-                    <span>Next Chapter</span>
-                    <ArrowRight size={18} />
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto p-4">
+          <div className="prose max-w-none">
+            {highlightBibleText(bibleText)}
+          </div>
+        </div>
+
+        {/* AI Dialog */}
+        <div className="absolute inset-0">
+          <VerseAIDialog
+            isOpen={isAIDialogOpen}
+            onClose={() => setIsAIDialogOpen(false)}
+            verseReference={selectedVerseReference}
+            verseText={bibleText?.split('\n').find(line => {
+              const verseNum = selectedVerseReference.split(':')[1];
+              return line.trim().startsWith(verseNum);
+            })}
+            isDarkMode={isDarkMode}
+          />
         </div>
       </div>
     );
@@ -2221,249 +2227,18 @@ const BibleBookConnections = () => {
     cursor: isResizing ? (isLargeScreen ? 'col-resize' : 'row-resize') : 'default'
   };
 
-  // Add this new component for the node info popup
-  const NodeInfoPopup = ({ node, onClose, onNavigate }) => {
-    const popupRef = useRef(null);
-    const [position, setPosition] = useState({ left: node.x + 20, top: node.y - 20 });
-    const [isCentered, setIsCentered] = useState(false);
-    
-    // Adjust position when component mounts
-    useEffect(() => {
-      if (!popupRef.current) return;
-      
-      const updatePosition = () => {
-        const popup = popupRef.current;
-        if (!popup) return;
-        
-        const rect = popup.getBoundingClientRect();
-        const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
-        
-        // For smaller screens (mobile), always center the popup
-        if (viewportWidth < 768) { // 768px is the standard md breakpoint in Tailwind
-          setIsCentered(true);
-          return;
-        }
-        
-        setIsCentered(false);
-        
-        let newLeft = node.x + 20;
-        let newTop = node.y - 20;
-        
-        // Check if popup extends beyond right edge
-        if (newLeft + rect.width > viewportWidth) {
-          newLeft = node.x - rect.width - 10; // Position to the left of node
-        }
-        
-        // If still off-screen on the left, center it
-        if (newLeft < 0) {
-          newLeft = Math.max(10, (viewportWidth - rect.width) / 2);
-        }
-        
-        // Check if popup extends beyond bottom edge
-        if (newTop + rect.height > viewportHeight) {
-          newTop = node.y - rect.height - 10; // Position above node
-        }
-        
-        // If still off-screen on the top, position at top of viewport
-        if (newTop < 0) {
-          newTop = 10;
-        }
-        
-        setPosition({ left: newLeft, top: newTop });
-      };
-      
-      // Run once on mount
-      updatePosition();
-      
-      // Also update on resize
-      window.addEventListener('resize', updatePosition);
-      return () => window.removeEventListener('resize', updatePosition);
-    }, [node.x, node.y]);
-    
-    // For debugging
-    console.log('NodeInfoPopup received node with connection:', node.connection);
-    
+  // Use our separate NodeInfoPopup component
+  const NodeInfoPopupWrapper = ({ node, onClose, onNavigate }) => {
     return (
-      <div 
-        ref={popupRef}
-        className={`fixed bg-white rounded-lg shadow-xl border border-gray-200 p-4 max-w-sm w-full sm:w-96 ${
-          isCentered ? 'transition-all duration-200' : ''
-        }`}
-        style={isCentered ? {
-          // Center positioning for small screens
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 1000,
-          maxHeight: '80vh',
-          overflowY: 'auto'
-        } : { 
-          // Normal positioning for larger screens
-          left: `${position.left}px`, 
-          top: `${position.top}px`,
-          zIndex: 1000,
-          maxHeight: '80vh',
-          overflowY: 'auto'
-        }}
-      >
-        <button 
-          className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
-          onClick={(e) => {
-            e.stopPropagation();
-            onClose();
-          }}
-        >
-          ×
-        </button>
-        
-        {/* Title and Reference */}
-        <h3 className="font-bold text-xl text-indigo-900 mb-1">{node.label}</h3>
-        <div className="text-sm text-indigo-600 mb-4 font-medium">
-          {node.reference}
-        </div>
-        
-        {/* Connection Details */}
-        {node.connection && (
-          <div className="space-y-3 mb-4">
-            <div className="bg-gray-50 p-3 rounded-lg space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Connection Type:</span>
-                <span className="text-sm font-medium px-2 py-1 rounded-full"
-                  style={{ 
-                    backgroundColor: `${getTypeColor(node.connection.type)}20`,
-                    color: getTypeColor(node.connection.type)
-                  }}
-                >
-                  {node.connection.type.charAt(0).toUpperCase() + node.connection.type.slice(1)}
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Direction:</span>
-                <span className="text-sm font-medium text-gray-900">
-                  {node.isSource ? 'Source → ' : '← Target'} {node.connectedTo}
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Strength:</span>
-                <div className="flex items-center">
-                  {/* Replace dots with progress bar */}
-                  <div className="w-24 bg-gray-200 rounded-full h-2.5">
-                    <div className="h-2.5 rounded-full" 
-                      style={{
-                        width: `${Math.max(5, node.connection.strength * 100)}%`,
-                        backgroundColor: getTypeColor(node.connection.type)
-                      }}
-                    ></div>
-                  </div>
-                  <span className="ml-2 text-xs text-gray-700">
-                    {(node.connection.strength * 10).toFixed(1)}/10
-                  </span>
-                </div>
-              </div>
-
-              {node.connection.level && (
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Level:</span>
-                  <span className="text-sm font-medium text-gray-900">
-                    {node.connection.level}
-                  </span>
-                </div>
-              )}
-            </div>
-
-            {node.connection.description && (
-              <div className="bg-indigo-50 p-3 rounded-lg">
-                <div className="text-xs font-medium text-indigo-800 mb-1">
-                  Description:
-                </div>
-                <div className="text-sm text-indigo-900">
-                  {node.connection.description}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Navigation Button */}
-        <button
-          className="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-          onClick={(e) => {
-            e.stopPropagation();
-            onNavigate();
-          }}
-        >
-          Go to Passage
-        </button>
-      </div>
+      <NodeInfoPopup
+        node={node}
+        onClose={onClose}
+        onNavigate={onNavigate}
+        isDarkMode={document.documentElement.classList.contains("dark")}
+        getTypeColor={getTypeColor}
+      />
     );
   };
-
-  // Remove duplicated sections container - this should already exist in the component state section
-  const sectionsContainerRef = useRef(null);
-  
-  // Sort narrative sections by biblical order
-  const sortedNarrativeSections = useMemo(() => {
-    // Create a complete list of Bible books in order
-    const fullBibleBooksList = [...oldTestamentBooks, ...newTestamentBooks];
-    
-    // Create a mapping of book names to their order in the Bible
-    const bibleBookOrder = {};
-    fullBibleBooksList.forEach((book, index) => {
-      bibleBookOrder[book.toLowerCase()] = index;
-    });
-    
-    // Get the first part of the reference to determine the book name
-    const getBookFromReference = (reference) => {
-      if (!reference) return '';
-      // Extract book name from reference like "Genesis 1:1"
-      const match = reference.match(/^(\d*\s*[A-Za-z]+)/);
-      return match ? match[1].toLowerCase() : '';
-    };
-    
-    return [...narrativeSections].sort((a, b) => {
-      // Get book names
-      const bookNameA = a.book || getBookFromReference(a.reference) || '';
-      const bookNameB = b.book || getBookFromReference(b.reference) || '';
-      
-      // Get book order - normalize "genesis" to "genesis" for lookup
-      let bookOrderA = Infinity;
-      let bookOrderB = Infinity;
-      
-      // Try to match book name with or without spaces
-      Object.keys(bibleBookOrder).forEach(bookName => {
-        if (bookNameA.includes(bookName) || bookName.includes(bookNameA)) {
-          bookOrderA = Math.min(bookOrderA, bibleBookOrder[bookName]);
-        }
-        if (bookNameB.includes(bookName) || bookName.includes(bookNameB)) {
-          bookOrderB = Math.min(bookOrderB, bibleBookOrder[bookName]);
-        }
-      });
-      
-      // If exact match is available, use it
-      if (bibleBookOrder[bookNameA] !== undefined) {
-        bookOrderA = bibleBookOrder[bookNameA];
-      }
-      if (bibleBookOrder[bookNameB] !== undefined) {
-        bookOrderB = bibleBookOrder[bookNameB];
-      }
-      
-      // First sort by book
-      if (bookOrderA !== bookOrderB) return bookOrderA - bookOrderB;
-      
-      // Then sort by chapter
-      if (a.chapter !== b.chapter) return a.chapter - b.chapter;
-      
-      // If same chapter, try to sort by verse if available
-      const verseA = a.reference?.match(/:(\d+)/)?.[1] || 0;
-      const verseB = b.reference?.match(/:(\d+)/)?.[1] || 0;
-      
-      return parseInt(verseA) - parseInt(verseB);
-    });
-  }, [narrativeSections, oldTestamentBooks, newTestamentBooks]);
-
   // Function to clear node focus when clicking outside
   const clearNodeFocus = (e) => {
     // Only clear if clicking on the SVG background, not on a node
@@ -2867,6 +2642,37 @@ const BibleBookConnections = () => {
     }
   }, [currentBook, currentChapter, scrollToFirstSectionForChapter]);  // Added scrollToFirstSectionForChapter to dependencies
   
+  // Add effect to sync with localStorage
+  useEffect(() => {
+    const savedSettings = localStorage.getItem('bibleAppSettings');
+    if (savedSettings) {
+      try {
+        const settings = JSON.parse(savedSettings);
+        setIsDarkMode(settings.isDarkMode || false);
+      } catch (e) {
+        console.error('Error parsing saved settings:', e);
+      }
+    }
+  }, []);
+
+  // Listen for changes to dark mode setting
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const savedSettings = localStorage.getItem('bibleAppSettings');
+      if (savedSettings) {
+        try {
+          const settings = JSON.parse(savedSettings);
+          setIsDarkMode(settings.isDarkMode || false);
+        } catch (e) {
+          console.error('Error parsing saved settings:', e);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+  
   // Updated return statement with resize functionality
   return (
     <div className="flex flex-col h-screen bg-slate-50 text-slate-800 font-sans" style={containerStyle}>
@@ -3087,6 +2893,7 @@ const BibleBookConnections = () => {
                   <Info size={18} />
                 </button> */}
               </div>
+              <AppSettings className="mr-2" />
 
                {/* Search sections button with slide-out */}
               <div className="relative">
@@ -3522,9 +3329,9 @@ const BibleBookConnections = () => {
         }
       `}</style>
       
-      {/* Add the NodeInfoPopup to the visualization */}
+      {/* Add the NodeInfoPopupWrapper to the visualization */}
       {selectedNodeInfo && (
-        <NodeInfoPopup
+        <NodeInfoPopupWrapper
           node={selectedNodeInfo}
           onClose={() => setSelectedNodeInfo(null)}
           onNavigate={() => {
@@ -3563,6 +3370,17 @@ const BibleBookConnections = () => {
           }}
         />
       )}
+      {/* AI Dialog */}
+      <VerseAIDialog
+        isOpen={isAIDialogOpen}
+        onClose={() => setIsAIDialogOpen(false)}
+        verseReference={selectedVerseReference}
+        verseText={bibleText?.split('\n').find(line => {
+          const verseNum = selectedVerseReference.split(':')[1];
+          return line.trim().startsWith(verseNum);
+        })}
+        isDarkMode={isDarkMode}
+      />
     </div>
   );
 };
