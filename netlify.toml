@@ -17,4 +17,6 @@
   node_bundler = "esbuild"
   external_node_modules = ["@anthropic-ai/sdk"]
   included_files = ["functions/**"]
+
+[functions.api]
   timeout = 30 
