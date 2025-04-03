@@ -2156,7 +2156,7 @@ const BibleBookConnections = () => {
                   <div 
                     key={connection.id}
                     className="p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer transition-colors"
-                    onClick={() => handlePassageSelect(connectedPassage)}
+                    onClick={() => handlePassageClick(connectedPassage)}
                   >
                     <div className="flex items-center gap-2 mb-1">
                       <div 
