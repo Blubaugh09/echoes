@@ -1,21 +1,46 @@
 const { Anthropic } = require('@anthropic-ai/sdk');
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY
-});
-
 exports.handler = async function(event, context) {
+  // Log the incoming request
+  console.log('Received request:', {
+    method: event.httpMethod,
+    body: event.body
+  });
+
   // Only allow POST requests
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ error: 'Method Not Allowed' })
+    };
   }
 
   try {
+    // Check for API key
+    if (!process.env.ANTHROPIC_API_KEY) {
+      console.error('Missing ANTHROPIC_API_KEY');
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ 
+          error: 'Server configuration error',
+          details: 'Missing API key'
+        })
+      };
+    }
+
+    const anthropic = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY
+    });
+
     const body = JSON.parse(event.body);
     const { verseReference, question } = body;
 
+    // Log the parsed request
+    console.log('Parsed request:', { verseReference, question });
+
     // Handle verse summary request
     if (verseReference && !question) {
+      console.log('Fetching verse summary for:', verseReference);
       const message = await anthropic.messages.create({
         model: 'claude-3-opus-20240229',
         max_tokens: 500,
@@ -27,6 +52,7 @@ exports.handler = async function(event, context) {
         }]
       });
 
+      console.log('Received response from Claude');
       return {
         statusCode: 200,
         headers: {
@@ -38,6 +64,7 @@ exports.handler = async function(event, context) {
 
     // Handle verse question request
     if (verseReference && question) {
+      console.log('Processing question for verse:', verseReference);
       const message = await anthropic.messages.create({
         model: 'claude-3-opus-20240229',
         max_tokens: 500,
@@ -49,6 +76,7 @@ exports.handler = async function(event, context) {
         }]
       });
 
+      console.log('Received response from Claude');
       return {
         statusCode: 200,
         headers: {
