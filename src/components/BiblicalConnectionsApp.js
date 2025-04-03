@@ -21,7 +21,8 @@ import {
   CornerDownLeft,
   // Resize controls
   GripHorizontal,
-  X
+  X,
+  List
 } from 'lucide-react';
 
 import AppSettings from './AppSettings';
@@ -149,6 +150,7 @@ const BibleBookConnections = () => {
   
   // State for connection type panel
   const [showConnectionTypes, setShowConnectionTypes] = useState(false);
+  const [showNodeList, setShowNodeList] = useState(false);
   
   // State for verse-level connections
   const [availableConnectionsForChapter, setAvailableConnectionsForChapter] = useState([]);
@@ -1677,7 +1679,6 @@ const BibleBookConnections = () => {
           </div>
           
           <div className="absolute top-4 right-4 z-10 flex space-x-2">
-            
             <button
               onClick={() => setShowConnectionTypes(!showConnectionTypes)}
               className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
@@ -1685,11 +1686,20 @@ const BibleBookConnections = () => {
             >
               <Info size={20} className="text-slate-700" />
             </button>
+            
+            <button
+              onClick={() => setShowNodeList(!showNodeList)}
+              className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
+              aria-label="Node list"
+            >
+              <List size={20} className="text-slate-700" />
+            </button>
           </div>
           
           {/* Breadcrumbs Panel */}
           {showBreadcrumbs && (
-            {/* Breadcrumbs Panel - Removed as requested */}
+            /* Breadcrumbs Panel - Removed as requested */
+            <div></div>
           )}
           
           {showConnectionTypes && (
@@ -1709,6 +1719,63 @@ const BibleBookConnections = () => {
                       ></div>
                     )}
                     {type.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {/* Node List Panel */}
+          {showNodeList && (
+            <div className="absolute top-16 left-4 z-20 bg-white p-3 rounded-lg shadow-lg max-h-80 overflow-y-auto w-64">
+              <div className="text-sm font-medium mb-2 text-gray-700">Passages:</div>
+              <div className="flex flex-col space-y-1">
+                {visData.nodes.map(node => (
+                  <button
+                    key={node.id}
+                    className="flex items-center px-2 py-2 rounded text-sm text-white font-medium"
+                    style={{ backgroundColor: node.color }}
+                    onClick={() => {
+                      setFocusedNodeId(node.id === focusedNodeId ? null : node.id);
+                      
+                      const passage = findPassage(node.id);
+                      if (passage) {
+                        const connection = filteredConnections.find(conn => 
+                          conn.from === node.id || conn.to === node.id
+                        );
+                        const formattedConnection = cleanConnection(connection);
+                        const nodePos = nodePositions[node.id] || { x: node.x, y: node.y };
+                        
+                        setSelectedNodeInfo({
+                          ...node,
+                          x: nodePos.x,
+                          y: nodePos.y,
+                          reference: passage.reference,
+                          passage,
+                          connection: formattedConnection,
+                          isSource: connection?.from === node.id,
+                          connectedTo: connection?.from === node.id ? 
+                            findPassage(connection.to)?.title : 
+                            findPassage(connection.from)?.title
+                        });
+                      }
+                    }}
+                  >
+                    <div className="flex flex-col w-full">
+                      <div className="flex items-center">
+                        <div 
+                          className={`w-3 h-3 rounded-full mr-2 ${node.primary ? 'border-2 border-white' : 'border border-white'}`}
+                          style={{ backgroundColor: '#ffffff', opacity: 0.9 }}
+                        ></div>
+                        <span>{node.label} {node.primary && '(Primary)'}</span>
+                      </div>
+                      <div className="text-xs opacity-80 mt-1 ml-5">
+                        {(() => {
+                          const passage = findPassage(node.id);
+                          return passage ? passage.reference : '';
+                        })()}
+                      </div>
+                    </div>
                   </button>
                 ))}
               </div>
