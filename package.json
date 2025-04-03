@@ -4,9 +4,6 @@
   "private": true,
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
-    "@emotion/react": "^11.11.3",
-    "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.15.10",
     "@react-sigma/core": "^3.4.2",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
