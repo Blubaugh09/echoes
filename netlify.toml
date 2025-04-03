@@ -8,9 +8,10 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "http://localhost:3001/api/:splat"
+  to = "/.netlify/functions/api"
   status = 200
   force = true
 
 [functions]
-  directory = "functions" 
+  directory = "functions"
+  node_bundler = "esbuild" 
