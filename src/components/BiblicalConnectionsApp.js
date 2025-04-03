@@ -161,6 +161,9 @@ const BibleBookConnections = () => {
   const [currentVisibleBook, setCurrentVisibleBook] = useState('');
   const [currentBookColor, setCurrentBookColor] = useState('#6366f1'); // Default indigo color
   
+  // State for the node list book expansion
+  const [bookExpansionState, setBookExpansionState] = useState({});
+  
   // Array to store section headings for the Bible text
   const [bibleSections, setBibleSections] = useState([]);
   const textContainerRef = useRef(null);
@@ -1727,57 +1730,155 @@ const BibleBookConnections = () => {
           
           {/* Node List Panel */}
           {showNodeList && (
-            <div className="absolute top-16 left-4 z-20 bg-white p-3 rounded-lg shadow-lg max-h-80 overflow-y-auto w-64">
-              <div className="text-sm font-medium mb-2 text-gray-700">Passages:</div>
+            <div className="absolute top-16 left-4 z-20 bg-white p-3 rounded-lg shadow-lg max-h-80 overflow-y-auto w-72">
+              <div className="text-sm font-medium mb-2 text-gray-700">Passages by Book:</div>
               <div className="flex flex-col space-y-1">
-                {visData.nodes.map(node => (
-                  <button
-                    key={node.id}
-                    className="flex items-center px-2 py-2 rounded text-sm text-white font-medium"
-                    style={{ backgroundColor: node.color }}
-                    onClick={() => {
-                      setFocusedNodeId(node.id === focusedNodeId ? null : node.id);
-                      
-                      const passage = findPassage(node.id);
-                      if (passage) {
-                        const connection = filteredConnections.find(conn => 
-                          conn.from === node.id || conn.to === node.id
-                        );
-                        const formattedConnection = cleanConnection(connection);
-                        const nodePos = nodePositions[node.id] || { x: node.x, y: node.y };
+                {(() => {
+                  // Group nodes by book and chapter
+                  const bookGroups = {};
+                  
+                  visData.nodes.forEach(node => {
+                    const passage = findPassage(node.id);
+                    if (!passage) return;
+                    
+                    // Extract book and chapter from reference
+                    const reference = passage.reference;
+                    const bookName = node.book;
+                    
+                    // Initialize expansion state for this book if not yet set
+                    if (bookExpansionState[bookName] === undefined) {
+                      // Update the book expansion state for new books
+                      setBookExpansionState(prev => ({
+                        ...prev,
+                        [bookName]: true // Default to expanded
+                      }));
+                    }
+                    
+                    // Get chapter from reference (assuming format like "Genesis 1:1-10")
+                    let chapter = "Unknown";
+                    const chapterMatch = reference.match(/\s(\d+):/);
+                    if (chapterMatch && chapterMatch[1]) {
+                      chapter = chapterMatch[1];
+                    }
+                    
+                    // Create book group if it doesn't exist
+                    if (!bookGroups[bookName]) {
+                      bookGroups[bookName] = {
+                        color: node.color,
+                        chapters: {}
+                      };
+                    }
+                    
+                    // Create chapter group if it doesn't exist
+                    if (!bookGroups[bookName].chapters[chapter]) {
+                      bookGroups[bookName].chapters[chapter] = [];
+                    }
+                    
+                    // Add node to chapter group
+                    bookGroups[bookName].chapters[chapter].push({
+                      node,
+                      passage
+                    });
+                  });
+                  
+                  // Sort books alphabetically
+                  const sortedBooks = Object.keys(bookGroups).sort();
+                  
+                  return (
+                    <>
+                      {sortedBooks.map(bookName => {
+                        const bookData = bookGroups[bookName];
+                        const bookColor = bookData.color;
                         
-                        setSelectedNodeInfo({
-                          ...node,
-                          x: nodePos.x,
-                          y: nodePos.y,
-                          reference: passage.reference,
-                          passage,
-                          connection: formattedConnection,
-                          isSource: connection?.from === node.id,
-                          connectedTo: connection?.from === node.id ? 
-                            findPassage(connection.to)?.title : 
-                            findPassage(connection.from)?.title
-                        });
-                      }
-                    }}
-                  >
-                    <div className="flex flex-col w-full">
-                      <div className="flex items-center">
-                        <div 
-                          className={`w-3 h-3 rounded-full mr-2 ${node.primary ? 'border-2 border-white' : 'border border-white'}`}
-                          style={{ backgroundColor: '#ffffff', opacity: 0.9 }}
-                        ></div>
-                        <span>{node.label} {node.primary && '(Primary)'}</span>
-                      </div>
-                      <div className="text-xs opacity-80 mt-1 ml-5">
-                        {(() => {
-                          const passage = findPassage(node.id);
-                          return passage ? passage.reference : '';
-                        })()}
-                      </div>
-                    </div>
-                  </button>
-                ))}
+                        // Sort chapters numerically
+                        const sortedChapters = Object.keys(bookData.chapters)
+                          .sort((a, b) => parseInt(a) - parseInt(b));
+                        
+                        return (
+                          <div key={bookName} className="mb-2">
+                            {/* Book Header */}
+                            <button
+                              className="w-full text-left p-2 rounded flex items-center justify-between"
+                              style={{ backgroundColor: bookColor }}
+                              onClick={() => {
+                                setBookExpansionState(prev => ({
+                                  ...prev,
+                                  [bookName]: !prev[bookName]
+                                }));
+                              }}
+                            >
+                              <span className="font-medium text-white">{bookName}</span>
+                              <span className="text-white">
+                                {bookExpansionState[bookName] ? 
+                                  <ChevronDown size={16} /> : 
+                                  <ChevronRight size={16} />
+                                }
+                              </span>
+                            </button>
+                            
+                            {/* Chapters and Passages */}
+                            {bookExpansionState[bookName] && (
+                              <div className="ml-2 mt-1">
+                                {sortedChapters.map(chapter => (
+                                  <div key={`${bookName}-${chapter}`} className="mt-1">
+                                    <div className="font-medium text-sm text-gray-700 pl-2">
+                                      Chapter {chapter}
+                                    </div>
+                                    
+                                    <div className="ml-2">
+                                      {bookData.chapters[chapter].map(({node, passage}) => (
+                                        <button
+                                          key={node.id}
+                                          className="flex items-center px-2 py-2 rounded text-sm text-white font-medium w-full mt-1"
+                                          style={{ backgroundColor: node.color, opacity: 0.9 }}
+                                          onClick={() => {
+                                            setFocusedNodeId(node.id === focusedNodeId ? null : node.id);
+                                            
+                                            const connection = filteredConnections.find(conn => 
+                                              conn.from === node.id || conn.to === node.id
+                                            );
+                                            const formattedConnection = cleanConnection(connection);
+                                            const nodePos = nodePositions[node.id] || { x: node.x, y: node.y };
+                                            
+                                            setSelectedNodeInfo({
+                                              ...node,
+                                              x: nodePos.x,
+                                              y: nodePos.y,
+                                              reference: passage.reference,
+                                              passage,
+                                              connection: formattedConnection,
+                                              isSource: connection?.from === node.id,
+                                              connectedTo: connection?.from === node.id ? 
+                                                findPassage(connection.to)?.title : 
+                                                findPassage(connection.from)?.title
+                                            });
+                                          }}
+                                        >
+                                          <div className="flex flex-col w-full">
+                                            <div className="flex items-center">
+                                              <div 
+                                                className={`w-3 h-3 rounded-full mr-2 ${node.primary ? 'border-2 border-white' : 'border border-white'}`}
+                                                style={{ backgroundColor: '#ffffff', opacity: 0.9 }}
+                                              ></div>
+                                              <span>{node.label} {node.primary && '(Primary)'}</span>
+                                            </div>
+                                            <div className="text-xs opacity-80 mt-1 ml-5">
+                                              {passage.reference}
+                                            </div>
+                                          </div>
+                                        </button>
+                                      ))}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </>
+                  );
+                })()}
               </div>
             </div>
           )}
@@ -2197,65 +2298,7 @@ const BibleBookConnections = () => {
           </div>
         </div>
 
-        {/* List View Panel */}
-        <div className="w-64 bg-white border-l border-slate-200 p-4 overflow-y-auto">
-          <h3 className="text-lg font-semibold text-slate-800 mb-4">Connected Passages</h3>
-          
-          {/* Main Passage */}
-          <div className="mb-6">
-            <div className="text-sm font-medium text-slate-500 mb-1">Main Passage</div>
-            <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
-              <div className="font-medium text-slate-800">{selectedPassage.reference}</div>
-              <div className="text-sm text-slate-600">{selectedPassage.title}</div>
-            </div>
-          </div>
-
-          {/* Connected Passages */}
-          <div>
-            <div className="text-sm font-medium text-slate-500 mb-2">Connected To</div>
-            <div className="space-y-2">
-              {filteredConnections.map(connection => {
-                const connectedId = connection.from === selectedPassage.id ? connection.to : connection.from;
-                const connectedPassage = findPassage(connectedId);
-                if (!connectedPassage) return null;
-
-                // Find the connection information for this node
-                const connectionInfo = cleanConnection(connection);
-                
-                return (
-                  <div 
-                    key={connection.id}
-                    className="p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer transition-colors"
-                    onClick={() => {
-                      setSelectedNodeInfo({
-                        id: connectedId,
-                        label: connectedPassage.title,
-                        type: connection.type,
-                        passage: connectedPassage,
-                        connection: connectionInfo,
-                        isSource: connection.from === connectedId,
-                        connectedTo: connection.from === connectedId ? 
-                          findPassage(connection.to)?.title : 
-                          findPassage(connection.from)?.title,
-                        x: 0, // These coordinates aren't used for list view
-                        y: 0
-                      });
-                    }}
-                  >
-                    <div className="flex items-center gap-2 mb-1">
-                      <div 
-                        className="w-2 h-2 rounded-full"
-                        style={{ backgroundColor: getTypeColor(connection.type) }}
-                      />
-                      <div className="font-medium text-slate-800">{connectedPassage.reference}</div>
-                    </div>
-                    <div className="text-sm text-slate-600">{connectedPassage.title}</div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
+        
       </div>
     );
   };
