@@ -1,109 +1,91 @@
-import React, { useState, useEffect } from 'react';
-import { X, Send } from 'lucide-react';
+import React, { useState } from 'react';
+import { X } from 'lucide-react';
 
-const VerseAIDialog = ({ isOpen, onClose, verseReference, verseText, isDarkMode }) => {
+const VerseAIDialog = ({ isOpen, onClose, verseReference, isDarkMode }) => {
   const [summary, setSummary] = useState('');
-  const [userQuestion, setUserQuestion] = useState('');
-  const [aiResponse, setAiResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [question, setQuestion] = useState('');
+  const [answer, setAnswer] = useState('');
+  const [isAnswerLoading, setIsAnswerLoading] = useState(false);
 
-  // Clear previous responses when verse changes
-  useEffect(() => {
-    setSummary('');
-    setUserQuestion('');
-    setAiResponse('');
-    setError(null);
-    if (isOpen && verseReference) {
-      fetchVerseSummary();
-    }
-  }, [isOpen, verseReference]);
-
+  // Function to fetch verse summary
   const fetchVerseSummary = async () => {
+    setIsLoading(true);
+    setError(null);
+    console.log('Fetching summary for verse:', verseReference);
+
     try {
-      setError(null);
-      setIsLoading(true);
-      console.log('Fetching summary for verse:', verseReference);
-      
-      const response = await fetch('http://localhost:3001/api/verse-summary', {
+      const response = await fetch('/.netlify/functions/api', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
         },
         body: JSON.stringify({ verseReference })
       });
 
-      console.log('Response status:', response.status);
-      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
-      
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Error response:', errorText);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('Received data:', data);
-      
-      if (!data || !data.summary) {
-        throw new Error('Invalid response format');
+      if (data.error) {
+        throw new Error(data.error);
       }
 
       setSummary(data.summary);
     } catch (error) {
       console.error('Error fetching verse summary:', error);
-      setError(error.message);
+      setError('Failed to fetch verse explanation. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
 
+  // Function to handle question submission
   const handleQuestionSubmit = async (e) => {
     e.preventDefault();
-    if (!userQuestion.trim()) return;
+    if (!question.trim()) return;
 
-    setIsLoading(true);
+    setIsAnswerLoading(true);
     setError(null);
+
     try {
-      console.log('Submitting question for:', verseReference);
-      const response = await fetch('http://localhost:3001/api/verse-question', {
+      const response = await fetch('/.netlify/functions/api', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
         },
         body: JSON.stringify({
           verseReference,
-          question: userQuestion
+          question: question.trim()
         })
       });
 
-      console.log('Response status:', response.status);
-      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
-      
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Error response:', errorText);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('Received data:', data);
-      
-      if (!data || !data.response) {
-        throw new Error('Invalid response format');
+      if (data.error) {
+        throw new Error(data.error);
       }
 
-      setAiResponse(data.response);
+      setAnswer(data.answer);
     } catch (error) {
-      console.error('Error fetching AI response:', error);
-      setError(error.message);
-      setAiResponse('Unable to get response. Please try again.');
+      console.error('Error getting answer:', error);
+      setError('Failed to get answer. Please try again.');
     } finally {
-      setIsLoading(false);
+      setIsAnswerLoading(false);
     }
   };
+
+  // Fetch summary when dialog opens
+  React.useEffect(() => {
+    if (isOpen && verseReference) {
+      fetchVerseSummary();
+    }
+  }, [isOpen, verseReference]);
 
   if (!isOpen) return null;
 
@@ -112,98 +94,75 @@ const VerseAIDialog = ({ isOpen, onClose, verseReference, verseText, isDarkMode 
       <div className={`relative w-full max-w-2xl mx-4 mt-4 p-6 rounded-lg shadow-xl ${
         isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'
       }`}>
+        {/* Close button */}
         <button
           onClick={onClose}
-          className={`absolute top-4 right-4 p-2 rounded-full hover:bg-opacity-10 ${
-            isDarkMode ? 'hover:bg-white' : 'hover:bg-gray-800'
+          className={`absolute top-4 right-4 ${
+            isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-700'
           }`}
         >
-          <X className="w-6 h-6" />
+          <X size={24} />
         </button>
 
-        <h2 className={`text-xl font-semibold mb-4 ${
-          isDarkMode ? 'text-white' : 'text-gray-800'
-        }`}>
-          {verseReference}
-        </h2>
+        {/* Verse reference */}
+        <h2 className="text-xl font-semibold mb-4">{verseReference}</h2>
 
-        {verseText && (
-          <div className={`mb-4 p-3 rounded ${
-            isDarkMode ? 'bg-gray-700' : 'bg-gray-100'
-          }`}>
-            <p className={`italic ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              {verseText}
-            </p>
-          </div>
-        )}
-
+        {/* Error message */}
         {error && (
-          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
+          <div className="mb-4 p-3 rounded bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-100">
             {error}
           </div>
         )}
 
-        <div className="mb-6">
-          <h3 className={`text-lg font-medium mb-2 ${
-            isDarkMode ? 'text-white' : 'text-gray-800'
-          }`}>
-            Summary
-          </h3>
-          {isLoading ? (
-            <div className="animate-pulse">
-              <div className={`h-4 bg-gray-300 rounded w-3/4 mb-2 ${
-                isDarkMode ? 'bg-gray-700' : 'bg-gray-300'
-              }`}></div>
-              <div className={`h-4 bg-gray-300 rounded w-1/2 ${
-                isDarkMode ? 'bg-gray-700' : 'bg-gray-300'
-              }`}></div>
-            </div>
-          ) : (
-            <p className={`${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-              {summary}
-            </p>
-          )}
-        </div>
+        {/* Loading state */}
+        {isLoading ? (
+          <div className="flex justify-center items-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-600 dark:border-gray-300"></div>
+          </div>
+        ) : (
+          /* Summary section */
+          <div className="mb-6">
+            <h3 className="font-semibold mb-2">Context and Significance:</h3>
+            <p className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>{summary}</p>
+          </div>
+        )}
 
-        <form onSubmit={handleQuestionSubmit} className="mb-6">
-          <div className="flex gap-2">
+        {/* Question section */}
+        <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <h3 className="font-semibold mb-3">Ask a question about this verse:</h3>
+          <form onSubmit={handleQuestionSubmit} className="space-y-4">
             <input
               type="text"
-              value={userQuestion}
-              onChange={(e) => setUserQuestion(e.target.value)}
-              placeholder="Ask a question about this verse..."
-              className={`flex-1 p-2 rounded border ${
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              className={`w-full p-2 rounded border ${
                 isDarkMode 
-                  ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
-                  : 'bg-white border-gray-300 text-gray-800 placeholder-gray-500'
+                  ? 'bg-gray-700 border-gray-600 text-white' 
+                  : 'bg-white border-gray-300 text-gray-800'
               }`}
+              placeholder="Type your question here..."
             />
             <button
               type="submit"
-              disabled={isLoading || !userQuestion.trim()}
+              disabled={isAnswerLoading || !question.trim()}
               className={`px-4 py-2 rounded ${
-                isLoading || !userQuestion.trim()
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-blue-500 hover:bg-blue-600'
-              } text-white`}
+                isDarkMode
+                  ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                  : 'bg-blue-500 hover:bg-blue-600 text-white'
+              } disabled:opacity-50`}
             >
-              {isLoading ? 'Sending...' : <Send className="w-5 h-5" />}
+              {isAnswerLoading ? 'Getting Answer...' : 'Ask'}
             </button>
-          </div>
-        </form>
+          </form>
 
-        {aiResponse && (
-          <div className="max-h-60 overflow-y-auto">
-            <h3 className={`text-lg font-medium mb-2 ${
-              isDarkMode ? 'text-white' : 'text-gray-800'
-            }`}>
-              Answer
-            </h3>
-            <p className={`${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-              {aiResponse}
-            </p>
-          </div>
-        )}
+          {/* Answer section */}
+          {answer && (
+            <div className="mt-4">
+              <h4 className="font-semibold mb-2">Answer:</h4>
+              <p className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>{answer}</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
