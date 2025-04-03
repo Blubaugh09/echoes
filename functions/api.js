@@ -1,5 +1,8 @@
 const { Anthropic } = require('@anthropic-ai/sdk');
 
+// Initialize Anthropic client outside the handler for better performance
+let anthropicClient = null;
+
 exports.handler = async function(event, context) {
   // Log the incoming request
   console.log('Received request:', {
@@ -16,21 +19,22 @@ exports.handler = async function(event, context) {
   }
 
   try {
-    // Check for API key
-    if (!process.env.ANTHROPIC_API_KEY) {
-      console.error('Missing ANTHROPIC_API_KEY');
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ 
-          error: 'Server configuration error',
-          details: 'Missing API key'
-        })
-      };
+    // Initialize Anthropic client if not already done
+    if (!anthropicClient) {
+      if (!process.env.ANTHROPIC_API_KEY) {
+        console.error('Missing ANTHROPIC_API_KEY');
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ 
+            error: 'Server configuration error',
+            details: 'Missing API key'
+          })
+        };
+      }
+      anthropicClient = new Anthropic({
+        apiKey: process.env.ANTHROPIC_API_KEY
+      });
     }
-
-    const anthropic = new Anthropic({
-      apiKey: process.env.ANTHROPIC_API_KEY
-    });
 
     const body = JSON.parse(event.body);
     const { verseReference, question } = body;
@@ -41,9 +45,9 @@ exports.handler = async function(event, context) {
     // Handle verse summary request
     if (verseReference && !question) {
       console.log('Fetching verse summary for:', verseReference);
-      const message = await anthropic.messages.create({
+      const message = await anthropicClient.messages.create({
         model: 'claude-3-opus-20240229',
-        max_tokens: 500,
+        max_tokens: 300, // Reduced from 500 to improve response time
         temperature: 0.7,
         system: "You are a biblical scholar helping to explain the context and significance of Bible verses. Focus on explaining why this verse is important in its section, what it contributes to the narrative or teaching, and how it connects to the surrounding content. Be concise but informative.",
         messages: [{
@@ -65,9 +69,9 @@ exports.handler = async function(event, context) {
     // Handle verse question request
     if (verseReference && question) {
       console.log('Processing question for verse:', verseReference);
-      const message = await anthropic.messages.create({
+      const message = await anthropicClient.messages.create({
         model: 'claude-3-opus-20240229',
-        max_tokens: 500,
+        max_tokens: 300, // Reduced from 500 to improve response time
         temperature: 0.7,
         system: "You are a biblical scholar helping to answer questions about Bible verses. Provide clear, accurate, and concise answers based on the verse's context and meaning.",
         messages: [{
