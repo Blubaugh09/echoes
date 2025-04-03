@@ -1,12 +1,16 @@
 [build]
-  command = "npm cache clean --force && rm -rf node_modules && npm install --legacy-peer-deps && npm run build"
+  command = "npm run build"
   publish = "build"
 
 [build.environment]
-  NODE_VERSION = "18.17.0"
-  NPM_VERSION = "9.6.7"
+  NODE_VERSION = "18"
+  NPM_VERSION = "9"
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200 
+  from = "/api/*"
+  to = "http://localhost:3001/api/:splat"
+  status = 200
+  force = true
+
+[functions]
+  directory = "functions" 
