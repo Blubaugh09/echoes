@@ -137,6 +137,14 @@ export const allConnections = [
     "description": "This passage encourages fleeing from youthful passions and pursuing righteousness, which is connected to Job's covenant with his eyes."
   },
   {
+    "from": "imitators-and-examples",
+    "to": "elders-shepherd-the-flock",
+    "type": "thematic-parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage encourages leaders to be examples to the flock, which connects to the Thessalonians becoming examples in 1 Thessalonians 1:7."
+  },
+  {
     "from": "288-skilled-singers",
     "to": "gods-love-for-the-world",
     "type": "Thematic Parallels",
@@ -537,6 +545,14 @@ export const allConnections = [
     "description": "This psalm uses the imagery of a vine or vineyard to represent Israel, similar to the vineyard metaphor in Isaiah 27:2-5."
   },
   {
+    "from": "remember-prophets-and-apostles",
+    "to": "scripture-is-god-breathed",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Paul emphasizes the importance of Scripture, which aligns with the exhortation in 2 Peter to remember the words of the prophets and apostles."
+  },
+  {
     "from": "haman-deceives-king",
     "to": "escape-to-egypt",
     "type": "Typological",
@@ -729,6 +745,14 @@ export const allConnections = [
     "description": "Connection to Leviticus 22:26-30 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 65 (line 1 column 66))"
   },
   {
+    "from": "revelation-of-jesus-christ",
+    "to": "future-glory",
+    "type": "Covenantal Connections",
+    "strength": 0.9,
+    "level": 2,
+    "description": "Connection to Revelation 1:1-2 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 58 (line 1 column 59))"
+  },
+  {
     "from": "death-of-firstborn",
     "to": "related-1-0",
     "type": "Character Connections",
@@ -751,14 +775,6 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "This passage contrasts the first Adam, the man of dust, with the last Adam, the man of heaven, continuing the biblical theme of humanity's creation and restoration in God's image."
-  },
-  {
-    "from": "creation-of-humans",
-    "to": "newCreation",
-    "type": "Thematic Parallels",
-    "strength": 0.8,
-    "level": 1,
-    "description": "related to revelation"
   },
   {
     "from": "vision-of-horses",
@@ -911,6 +927,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Both passages speak of God's judgment on Israel followed by a restoration and return to the land, reflecting the cycle of judgment and redemption."
+  },
+  {
+    "from": "weak-conscience-defiled",
+    "to": "appointing-elders",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage emphasizes that everything is pure to those who are pure in heart, which relates to the concept of the weak conscience being defiled."
   },
   {
     "from": "second-chance",
@@ -1089,6 +1113,14 @@ export const allConnections = [
     "description": "The rivalry between Jacob and Esau (the progenitor of the Edomites) foreshadows the ongoing hostility between Israel and Edom."
   },
   {
+    "from": "eyewitness-testimony",
+    "to": "the-word-became-flesh",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This verse also affirms the apostles' eyewitness testimony to the glory of Christ."
+  },
+  {
     "from": "mordecai-mourns-hamans-decree",
     "to": "jerusalem-desolate",
     "type": "Thematic Parallels",
@@ -1231,6 +1263,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The psalmist declares that the fear of the Lord is the beginning of wisdom, which leads to a good understanding and a life of righteousness."
+  },
+  {
+    "from": "gentiles-glorify-god",
+    "to": "worship-of-the-lamb",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage from Revelation depicts people from every tribe, language, people, and nation worshiping God, which is related to the Gentiles glorifying God."
   },
   {
     "from": "abraham-deceives-abimelech",
@@ -1665,6 +1705,14 @@ export const allConnections = [
     "description": "Nehemiah also entrusts temple treasures and supplies to the care of priests and Levites, continuing the theme from Ezra's time."
   },
   {
+    "from": "righteousness-through-faith",
+    "to": "ministry-of-reconciliation",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This verse speaks of believers being made the righteousness of God in Christ, echoing the theme in Romans 3."
+  },
+  {
     "from": "job-questions-his-suffering",
     "to": "future-glory",
     "type": "Thematic Parallels",
@@ -1783,6 +1831,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Both passages describe God establishing His sovereign rule and reign over the earth."
+  },
+  {
+    "from": "knowledge-vs-love",
+    "to": "trust-in-the-lord",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage encourages trusting in the Lord rather than relying solely on one's own understanding, which connects to the theme of knowledge versus love."
   },
   {
     "from": "edom-desolate-like-israel",
@@ -2241,6 +2297,14 @@ export const allConnections = [
     "description": "The prayer of Jabez in 1 Chronicles 4:9-10 echoes the theme of seeking God's blessing and protection, as seen in Jacob's encounter with the angel in Genesis 32:26-29."
   },
   {
+    "from": "sixth-trumpet-four-angels-released",
+    "to": "four-angels-holding-winds",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages involve the release of angels who bring judgment upon the earth."
+  },
+  {
     "from": "prayer-for-all-people",
     "to": "darius-decree-to-rebuild-temple",
     "type": "Thematic Parallels",
@@ -2271,6 +2335,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Both passages call the people to seek the Lord and do what is right in His sight."
+  },
+  {
+    "from": "red-dragon-appears",
+    "to": "daniels-vision-of-four-beasts",
+    "type": "Thematic Parallel",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The red dragon's appearance and power is similar to the description of the fourth beast in Daniel's vision, representing a powerful, persecuting kingdom."
   },
   {
     "from": "gods-mercy-and-justice",
@@ -2489,6 +2561,14 @@ export const allConnections = [
     "description": "This earlier passage also features the prophet Azariah rebuking Asa, highlighting the theme of prophetic warnings and the consequences of ignoring them."
   },
   {
+    "from": "walking-in-the-light",
+    "to": "jesus-the-light-of-the-world",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Jesus' declaration that He is the light of the world is connected to the theme of walking in the light found in 1 John 1:6-7."
+  },
+  {
     "from": "grain-offerings-to-the-lord",
     "to": "gods-name-great-among-nations",
     "type": "Thematic Parallels",
@@ -2641,6 +2721,14 @@ export const allConnections = [
     "description": "Both passages describe the tragic loss of family members, exploring the themes of suffering, faith, and divine providence."
   },
   {
+    "from": "running-the-race-with-discipline",
+    "to": "all-things-to-all-people",
+    "type": "Character Connections",
+    "strength": 0.9,
+    "level": 2,
+    "description": "Paul's willingness to become all things to all people in order to win some for the gospel is connected to the discipline he describes in this passage."
+  },
+  {
     "from": "assyria-threatens-jerusalem",
     "to": "assyria-attacks-judah",
     "type": "Thematic Parallels",
@@ -2681,6 +2769,14 @@ export const allConnections = [
     "description": "Both passages emphasize the fleeting and transient nature of human life."
   },
   {
+    "from": "remaining-in-current-situation",
+    "to": "working-for-the-lord",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage encourages slaves to serve their masters wholeheartedly, which reflects the principle of remaining in one's current situation as outlined in 1 Corinthians 7:17-24."
+  },
+  {
     "from": "joseph-forgives-his-brothers",
     "to": "bless-persecutors",
     "type": "Thematic Parallels",
@@ -2695,6 +2791,22 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "The post-exilic passages in Nehemiah demonstrate the ongoing need for military organization and leadership, drawing a connection to the practices established during David's reign."
+  },
+  {
+    "from": "prayer-for-all-people",
+    "to": "confidence-in-prayer",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage emphasizes the confidence believers can have in God's willingness to hear and answer their prayers, which supports the instruction in 1 Timothy 2:1-4 to pray for all people."
+  },
+  {
+    "from": "rebuke-of-pergamum-church",
+    "to": "characteristics-of-false-teachers",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The rebuke of the Pergamum church for tolerating false teachers is thematically similar to Peter's warning about the danger of false teachers who lead people astray."
   },
   {
     "from": "judgment-on-israel",
@@ -3585,6 +3697,14 @@ export const allConnections = [
     "description": "Jehu's anointing and subsequent actions were a fulfillment of God's judgment on Ahab's house, which Ahaziah was a part of."
   },
   {
+    "from": "all-things-to-all-people",
+    "to": "glorifying-god-in-all-things",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages emphasize Paul's desire to adapt his approach to reach different people with the gospel, without compromising the message."
+  },
+  {
     "from": "friendship-and-marriage",
     "to": "ruth-remains-loyal",
     "type": "character-connections",
@@ -3663,6 +3783,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "The author of Lamentations expresses confidence in God's enduring love and faithfulness to His people, even in the midst of judgment and exile."
+  },
+  {
+    "from": "assurance-of-eternal-life",
+    "to": "gods-love-in-christ",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages affirm the unbreakable bond between believers and God, guaranteeing their eternal life."
   },
   {
     "from": "the-lamb-and-144000",
@@ -3785,6 +3913,14 @@ export const allConnections = [
     "description": "The Levites were set apart by God to serve in the temple, which connects to Ezra's gathering of them."
   },
   {
+    "from": "woman-clothed-with-sun",
+    "to": "josephs-dreams",
+    "type": "Typological",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The woman clothed with the sun, moon, and stars echoes Joseph's dream of the sun, moon, and stars bowing down to him, prefiguring the woman and her child."
+  },
+  {
     "from": "job-warns-friends-of-judgment",
     "to": "final-judgment",
     "type": "Thematic Parallels",
@@ -3905,6 +4041,14 @@ export const allConnections = [
     "description": "The Psalmist's emphasis on offering thanksgiving and fulfilling vows to God relates to the distinction between required and voluntary offerings in Numbers 29."
   },
   {
+    "from": "encouragement-to-smyrna-church",
+    "to": "faith-tested-produces-endurance",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The encouragement to the Smyrna church to persevere through trials connects to James' teaching about the value of enduring trials and the spiritual growth they can produce."
+  },
+  {
     "from": "gods-sacrifice-for-animals",
     "to": "destruction-of-edom",
     "type": "Thematic Parallels",
@@ -3959,6 +4103,22 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The Deuteronomic passage reflects on how God turned Balaam's intended curse into a blessing, fulfilling the events described in Numbers 23."
+  },
+  {
+    "from": "angels-from-the-temple",
+    "to": "gods-love-for-the-world",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Connection to Revelation 15:5-6 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 66 (line 1 column 67))"
+  },
+  {
+    "from": "sexual-immorality-in-the-church",
+    "to": "creation-of-heavens-and-earth",
+    "type": "Typological",
+    "strength": 0.75,
+    "level": 1,
+    "description": "Connection to 1 Corinthians 5:1-2 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 69 (line 1 column 70))"
   },
   {
     "from": "cleansing-ritual-for-lepers",
@@ -4249,6 +4409,14 @@ export const allConnections = [
     "description": "This New Testament passage also contrasts the importance of inner spiritual beauty over external adornment."
   },
   {
+    "from": "gods-blessing-and-judgment",
+    "to": "future-glory",
+    "type": "Covenantal Connections",
+    "strength": 0.9,
+    "level": 2,
+    "description": "Connection to Hebrews 6:7-8 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 60 (line 1 column 61))"
+  },
+  {
     "from": "consequences-of-wickedness",
     "to": "related-0-0",
     "type": "thematic-parallels",
@@ -4479,6 +4647,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "The Most Holy Place in the temple is modeled after the Most Holy Place in the tabernacle, where the Ark of the Covenant was housed."
+  },
+  {
+    "from": "rebuke-of-lukewarm-church",
+    "to": "treasures-in-heaven",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages warn against the danger of divided loyalty and the inability to serve two masters."
   },
   {
     "from": "nadab-and-baasha-reign-in-israel",
@@ -4777,6 +4953,14 @@ export const allConnections = [
     "description": "Both passages describe a future judgment of the nations based on their treatment of God's people."
   },
   {
+    "from": "endure-hardship-as-christs-soldier",
+    "to": "rejoicing-in-suffering",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The passages share the theme of enduring suffering and hardship as a faithful follower of Christ, with the promise of future glory."
+  },
+  {
     "from": "slaves-to-righteousness",
     "to": "fruit-of-the-spirit",
     "type": "Thematic Parallels",
@@ -5009,6 +5193,14 @@ export const allConnections = [
     "description": "Both passages address the need to separate from those who claim to be believers but live in unrepentant sin."
   },
   {
+    "from": "rebuke-of-lukewarm-church",
+    "to": "corruption-in-gilead",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages criticize the lukewarm, half-hearted commitment of God's people and the need for wholehearted devotion."
+  },
+  {
     "from": "greeting-from-paul",
     "to": "the-gospel-of-jesus-christ",
     "type": "character-connections",
@@ -5055,6 +5247,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 2,
     "description": "Connection to Luke 10:1-12 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 59 (line 1 column 60))"
+  },
+  {
+    "from": "deliverance-through-christ",
+    "to": "no-condemnation-in-christ",
+    "type": "deliverance-through-christ",
+    "strength": 0.9,
+    "level": 1,
+    "description": "Both passages emphasize the freedom from the law of sin and death that is available through Christ."
   },
   {
     "from": "jehoshaphat-and-ahaziah-reign",
@@ -5121,6 +5321,14 @@ export const allConnections = [
     "description": "This passage describes the earthly rituals and regulations as a shadow of the reality found in Christ, echoing the idea of the earthly tabernacle being a copy of the heavenly one."
   },
   {
+    "from": "qualifications-for-widows",
+    "to": "creation-of-heavens-and-earth",
+    "type": "Typological",
+    "strength": 0.75,
+    "level": 1,
+    "description": "Connection to 1 Timothy 5:9-15 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 68 (line 1 column 69))"
+  },
+  {
     "from": "light-extinguished",
     "to": "related-2-1",
     "type": "Thematic Parallels",
@@ -5129,12 +5337,28 @@ export const allConnections = [
     "description": "Both passages describe God as the one who lights up the darkness and extinguishes the light of the wicked."
   },
   {
+    "from": "servants-of-god",
+    "to": "christs-preeminence",
+    "type": "character-connections",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages emphasize the role of ministers in serving the church and proclaiming the gospel, even in the face of suffering."
+  },
+  {
     "from": "israels-disobedience",
     "to": "child-sacrifice-in-hinnom",
     "type": "thematic-parallels",
     "strength": 0.8,
     "level": 1,
     "description": "This passage describes Israel's long history of disobedience and rejection of God's commands, similar to the theme in Romans 10."
+  },
+  {
+    "from": "greeting-and-blessing",
+    "to": "chosen-before-creation",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage also features a greeting and blessing similar to the one in 2 Corinthians 1:1-3."
   },
   {
     "from": "god-destroys-mans-hope",
@@ -5241,12 +5465,28 @@ export const allConnections = [
     "description": "This passage also describes David's growing family, including the names of his sons born in Hebron, providing additional details about the expansion of his household."
   },
   {
+    "from": "rebuke-of-the-dead-church",
+    "to": "dead-in-sin",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages address the spiritual deadness of those who are separated from God and the need for revival and new life in Christ."
+  },
+  {
     "from": "israel-routs-the-philistines",
     "to": "shamgar-defeats-philistines",
     "type": "Typological",
     "strength": 0.6,
     "level": 1,
     "description": "These earlier passages feature Israelite heroes like Shamgar and Samson who also defeat the Philistines, foreshadowing the victories described in 1 Samuel 14."
+  },
+  {
+    "from": "ministry-of-mercy",
+    "to": "hope-in-gods-faithfulness",
+    "type": "Thematic Parallels",
+    "strength": 0.5,
+    "level": 1,
+    "description": "The idea of God's mercies being new every morning in Lamentations 3:22-23 connects to the ministry of mercy described in 2 Corinthians 4:1."
   },
   {
     "from": "abram-lot-return-from-egypt",
@@ -5279,6 +5519,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Moses' warnings about the curses that will come upon Israel for disobedience parallel Samuel's warnings."
+  },
+  {
+    "from": "law-hearers-vs-doers",
+    "to": "vicarious-atonement",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.85,
+    "level": 1,
+    "description": "Connection to Romans 2:12-16 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 67 (line 1 column 68))"
   },
   {
     "from": "joseph-lives-to-old-age",
@@ -5719,6 +5967,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The trickery used by Laban to get Jacob to marry Leah first mirrors the earlier deception used by Jacob to obtain his father Isaac's blessing instead of his brother Esau."
+  },
+  {
+    "from": "criticism-of-ephesus-church",
+    "to": "signs-of-the-end-times",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The criticism of the Ephesian church for losing their first love connects to Jesus' prophecy that in the last days, the love of many will grow cold."
   },
   {
     "from": "job-mocked-by-neighbors",
@@ -6201,6 +6457,14 @@ export const allConnections = [
     "description": "Connection to Isaiah 48:9-11 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 69 (line 1 column 70))"
   },
   {
+    "from": "great-multitude-in-white-robes",
+    "to": "isaiahs-vision-of-the-lord",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The heavenly throne room scene in Revelation 7 is reminiscent of Isaiah's vision of God's glory in the temple, with the multitude praising God's holiness."
+  },
+  {
     "from": "light-and-glory",
     "to": "gods-glory-fills-tabernacle",
     "type": "Thematic Parallels",
@@ -6359,6 +6623,22 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "The mysterious writing on the wall, like the appearance of Samuel's spirit, is a supernatural event that unsettles the powerful and points to their impending downfall."
+  },
+  {
+    "from": "righteousness-apart-from-works",
+    "to": "abrams-belief-credited-as-righteousness",
+    "type": "Thematic Parallels",
+    "strength": 0.9,
+    "level": 1,
+    "description": "This passage in Genesis describes how Abraham's faith was credited to him as righteousness, apart from works."
+  },
+  {
+    "from": "free-from-sin",
+    "to": "submit-to-authorities",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This verse encourages believers to live as servants of God, which relates to the concept of being free from sin in Romans 6."
   },
   {
     "from": "beware-of-hypocrisy",
@@ -6521,6 +6801,14 @@ export const allConnections = [
     "description": "Both passages emphasize that if God is for His people, no one can ultimately defeat them, highlighting His unfailing love and protection."
   },
   {
+    "from": "dragon-persecutes-woman",
+    "to": "pharaoh-orders-male-infanticide",
+    "type": "Thematic Parallel",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The dragon's attempt to destroy the woman's child echoes Pharaoh's efforts to kill the Israelite male children."
+  },
+  {
     "from": "nebuchadnezzar-attacks-tyre",
     "to": "jehoiakim-rebels",
     "type": "character-connections",
@@ -6593,6 +6881,22 @@ export const allConnections = [
     "description": "Both passages involve divine self-revelation, with God revealing himself to Moses and Jesus revealing himself as the Messiah to the Samaritan woman."
   },
   {
+    "from": "comfort-through-titus",
+    "to": "personal-instructions",
+    "type": "Character Connections",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage mentions Titus, further highlighting his relationship with Paul and the significance of his visit in 2 Corinthians 7:5-7."
+  },
+  {
+    "from": "enduring-temptation-brings-blessing",
+    "to": "encouragement-to-smyrna-church",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages promise a crown of life to those who endure and overcome temptation."
+  },
+  {
     "from": "creation-of-sky-and-seas",
     "to": "creation-of-the-earth",
     "type": "Thematic Parallels",
@@ -6631,6 +6935,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The affliction of the Philistines with tumors parallels the plague of boils that God inflicted on the Egyptians, demonstrating His power to punish those who oppose Him."
+  },
+  {
+    "from": "greeting-and-blessing",
+    "to": "paul-servant-and-apostle",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages begin with a greeting and blessing from Paul to the recipients of the letter."
   },
   {
     "from": "the-lamb-and-144000",
@@ -6849,12 +7161,28 @@ export const allConnections = [
     "description": "The psalmist encourages the fulfillment of vows made to God, echoing the themes in Numbers 30."
   },
   {
+    "from": "rejoicing-in-suffering",
+    "to": "the-beatitudes",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages encourage believers to rejoice in persecution and suffering for righteousness' sake."
+  },
+  {
     "from": "pure-and-undefiled-religion",
     "to": "what-god-requires",
     "type": "Thematic Parallels",
     "strength": 0.8,
     "level": 1,
     "description": "Both passages emphasize the importance of doing justice, loving kindness, and walking humbly with God as the essence of true religion."
+  },
+  {
+    "from": "entrust-teaching-to-faithful-men",
+    "to": "scripture-is-god-breathed",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages highlight the importance of sound doctrine and the need to pass on the truth of God's Word to the next generation of believers."
   },
   {
     "from": "spiritual-warfare",
@@ -7361,6 +7689,14 @@ export const allConnections = [
     "description": "Absalom's return from Geshur and reconciliation with David fulfills the prophecy of his eventual return."
   },
   {
+    "from": "eyewitness-testimony",
+    "to": "the-transfiguration",
+    "type": "typological",
+    "strength": 0.8,
+    "level": 1,
+    "description": "The Transfiguration account in Luke's gospel is the specific event Peter refers to as an eyewitness."
+  },
+  {
     "from": "god-rescues-david",
     "to": "related-3-1",
     "type": "Thematic Parallels",
@@ -7641,6 +7977,14 @@ export const allConnections = [
     "description": "Josiah's reading of the Book of the Covenant is directly connected to the earlier events of the law's rediscovery and the prophecy regarding Judah's fate, highlighting the importance of the Mosaic covenant."
   },
   {
+    "from": "living-for-gods-will",
+    "to": "raised-with-christ",
+    "type": "thematic-parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages encourage believers to set their minds on things above, not on earthly things."
+  },
+  {
     "from": "yahweh-provides-rain",
     "to": "seek-god-in-trouble",
     "type": "Thematic Parallels",
@@ -7679,6 +8023,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Jesus warns his followers to beware of false prophets, fulfilling the principles laid out in Deuteronomy 13 about discerning and dealing with those who promote false gods."
+  },
+  {
+    "from": "friendship-with-the-world",
+    "to": "dead-in-sin",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The description of living according to the ways of the world and the flesh in Ephesians 2 connects to the warning in James 4:4-6."
   },
   {
     "from": "jawbone-weapon",
@@ -8063,6 +8415,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The prophecy in Ezekiel 21 is fulfilled when Nebuchadnezzar and the Babylonians attack and conquer Jerusalem, as described in 2 Kings 24."
+  },
+  {
+    "from": "john-on-patmos",
+    "to": "gods-love-for-the-world",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Connection to Revelation 1:9-11 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 58 (line 1 column 59))"
   },
   {
     "from": "responding-to-correction",
@@ -8481,6 +8841,14 @@ export const allConnections = [
     "description": "These verses in Ezekiel also highlight God's concern for the sanctity of His name and His willingness to act for its sake."
   },
   {
+    "from": "gods-judgment-by-fire",
+    "to": "building-on-the-foundation",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage discusses how each person's work will be tested by fire, which aligns with the theme of God's judgment by fire in 2 Peter."
+  },
+  {
     "from": "generations-of-adam",
     "to": "creation-of-heavens-and-earth",
     "type": "Typological",
@@ -8649,6 +9017,14 @@ export const allConnections = [
     "description": "Christ is the cornerstone, and believers are living stones built upon Him as the foundation."
   },
   {
+    "from": "harvest-of-the-earth",
+    "to": "jesus-rejected-at-nazareth",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Jesus' parable of the wheat and the weeds also depicts the final judgment and separation of the righteous and the wicked, like the harvest in Revelation 14."
+  },
+  {
     "from": "esther-reveals-hamans-plot",
     "to": "pharaoh-orders-male-infanticide",
     "type": "Thematic Parallels",
@@ -8679,6 +9055,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 2,
     "description": "Jehoash's reign in Jerusalem can be connected to the broader covenantal history of the Davidic dynasty, as established in 1 Kings 14:21, where Jerusalem is described as the city chosen by God to place his name."
+  },
+  {
+    "from": "no-more-delay",
+    "to": "related-3-0",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Habakkuk's vision, which has an appointed time and will not delay, is thematically connected to the angel's declaration of no more delay in Revelation."
   },
   {
     "from": "the-narrow-door",
@@ -8937,6 +9321,14 @@ export const allConnections = [
     "description": "Nehemiah records the Levites and temple servants settling in Jerusalem, continuing the theme from Ezra's time."
   },
   {
+    "from": "no-other-gospel",
+    "to": "called-and-kept",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages emphasize the importance of contending for the true faith and rejecting false doctrines that distort the gospel."
+  },
+  {
     "from": "humility-over-pride",
     "to": "humility-before-god",
     "type": "Thematic Parallels",
@@ -9143,6 +9535,22 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The Levites' migration to Judah aligns with the Mosaic covenant's requirement for a central sanctuary, foreshadowing the later establishment of the temple in Jerusalem."
+  },
+  {
+    "from": "honor-marriage-avoid-immorality",
+    "to": "creation-of-woman",
+    "type": "covenantal-connections",
+    "strength": 0.7,
+    "level": 2,
+    "description": "The creation of marriage as a covenant between a man and a woman is a foundational principle that underlies the teaching in Hebrews 13:4."
+  },
+  {
+    "from": "slaves-to-righteousness",
+    "to": "circumcision-and-the-law",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This verse encourages believers to use their freedom in Christ to serve one another, which relates to the idea of being slaves to righteousness in Romans 6."
   },
   {
     "from": "warning-against-going-to-egypt",
@@ -9457,6 +9865,14 @@ export const allConnections = [
     "description": "Connection to 1 John 2:15-17 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 69 (line 1 column 70))"
   },
   {
+    "from": "boasting-in-the-cross",
+    "to": "glory-in-knowing-god",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This Old Testament passage warns against boasting in one's own wisdom, strength, or riches, and instead encourages boasting in the Lord, which is connected to the message in Galatians 6:14-15."
+  },
+  {
     "from": "jonathan-condemned-and-rescued",
     "to": "rebekah-sends-jacob-away",
     "type": "Thematic Parallels",
@@ -9729,6 +10145,14 @@ export const allConnections = [
     "description": "Connection to Acts 18:1-4 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 72 (line 1 column 73))"
   },
   {
+    "from": "pauls-travel-plans",
+    "to": "accepting-one-another",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Paul's travel plans and missionary goals, as expressed in 1 Corinthians 16, are further elaborated on in this passage from Romans."
+  },
+  {
     "from": "solomon-turns-from-god",
     "to": "creation-of-heavens-and-earth",
     "type": "Typological",
@@ -9895,6 +10319,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "Both passages describe Zedekiah's reign as king of Judah and his rebellion against Babylon."
+  },
+  {
+    "from": "pauls-personal-conviction",
+    "to": "unity-and-humility",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage encourages putting the interests of others before one's own, which connects to the theme of Paul's personal conviction."
   },
   {
     "from": "duties-of-kohathites",
@@ -10065,6 +10497,14 @@ export const allConnections = [
     "description": "The restrictions on priests regarding alcohol consumption and separation for holy service are similar to the Nazirite vow."
   },
   {
+    "from": "john-must-prophesy-again",
+    "to": "authority-of-jesus",
+    "type": "Thematic Parallels",
+    "strength": 0.5,
+    "level": 1,
+    "description": "Jesus' Great Commission to his disciples to go and make disciples of all nations is thematically connected to John's prophetic mandate."
+  },
+  {
     "from": "egypts-allies-fall",
     "to": "cup-of-gods-wrath",
     "type": "thematic-parallels",
@@ -10079,6 +10519,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "The new covenant prophesied by Jeremiah, where God's law is written on the hearts of his people by the Spirit, is the same new covenant described in 2 Corinthians 3."
+  },
+  {
+    "from": "earthly-tabernacle",
+    "to": "building-solomons-temple",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The description of Solomon's temple shares similarities with the earthly tabernacle in Hebrews 9."
   },
   {
     "from": "curse-of-the-law",
@@ -10305,6 +10753,14 @@ export const allConnections = [
     "description": "Connection to 1 John 3:4-6 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 60 (line 1 column 61))"
   },
   {
+    "from": "god-appoints-members",
+    "to": "unity-in-diversity",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "These passages share the theme of the church as a body with many members, each with different gifts and functions appointed by God."
+  },
+  {
     "from": "dealing-with-sin-in-the-church",
     "to": "judging-within-the-church",
     "type": "Thematic Parallels",
@@ -10439,6 +10895,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Rahab's faith in Yahweh is highlighted as an example of faith, foreshadowing the role of faith in the New Covenant."
+  },
+  {
+    "from": "acting-in-faith",
+    "to": "obedience-and-assurance",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage connects obedience and confidence before God, which is related to the idea of acting in faith in Romans 14."
   },
   {
     "from": "twelve-rods-from-princes",
@@ -10767,6 +11231,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 2,
     "description": "Connection to Nahum 2:6-10 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 74 (line 1 column 75))"
+  },
+  {
+    "from": "made-alive-in-christ",
+    "to": "jesus-divine-authority",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage speaks of believers passing from death to life, which is related to the theme of being made alive in Christ in Ephesians 2:4-7."
   },
   {
     "from": "duties-of-aaron-and-sons",
@@ -11113,6 +11585,14 @@ export const allConnections = [
     "description": "This passage affirms the divine nature and glory of Jesus, the Son of God, who is the exact representation of God's being."
   },
   {
+    "from": "walk-in-christ",
+    "to": "related-3-2",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The imagery of being like a tree planted by streams of water, yielding fruit in its season, is reminiscent of the call to be rooted and built up in Christ in Colossians 2."
+  },
+  {
     "from": "final-greetings-and-instructions",
     "to": "commendation-of-phoebe",
     "type": "Character Connections",
@@ -11127,6 +11607,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "This passage also contrasts milk (for the immature) and solid food (for the mature), similar to the call to long for spiritual milk in 1 Peter 2:2-3."
+  },
+  {
+    "from": "do-not-let-sin-reign",
+    "to": "chosen-people-of-god",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This verse exhorts believers to abstain from sinful desires, which connects to the idea of not letting sin reign in one's life."
   },
   {
     "from": "avoid-envying-the-wicked",
@@ -11665,6 +12153,14 @@ export const allConnections = [
     "description": "Both passages describe the death and resurrection of key figures, with accompanying supernatural events."
   },
   {
+    "from": "sincere-conduct",
+    "to": "entrusted-with-the-gospel",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage also highlights Paul's sincerity, purity of motives, and desire to please God rather than men."
+  },
+  {
     "from": "judgment-against-edom",
     "to": "vengeance-on-edom",
     "type": "thematic-parallels",
@@ -12009,6 +12505,14 @@ export const allConnections = [
     "description": "Both Ezekiel 45 and Numbers 35 describe the allocation of land for the Levites and priests, highlighting the importance of setting aside a holy portion for religious purposes."
   },
   {
+    "from": "warning-against-rejecting-grace",
+    "to": "call-to-obedience",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage in Deuteronomy also warns against falling away from God's grace, similar to the warning in Hebrews 12."
+  },
+  {
     "from": "living-for-gods-will",
     "to": "walk-by-the-spirit",
     "type": "Thematic Parallels",
@@ -12047,6 +12551,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "This psalm recounts God's miraculous provision of water and manna for the Israelites in the wilderness, similar to the themes in Deuteronomy 2."
+  },
+  {
+    "from": "pauls-struggle-for-the-church",
+    "to": "bold-preaching-despite-opposition",
+    "type": "character-connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Paul's deep affection and longing for the Thessalonian believers, and his desire for their spiritual growth and unity, reflects the same pastoral heart expressed in Colossians 2."
   },
   {
     "from": "war-with-the-hagrites",
@@ -12289,6 +12801,14 @@ export const allConnections = [
     "description": "This passage from Isaiah prophesies that the Messiah will open the eyes of the blind, which is fulfilled in Jesus' healing miracles."
   },
   {
+    "from": "good-report-of-thessalonians-faith",
+    "to": "gods-love-for-the-world",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Connection to 1 Thessalonians 3:6-8 (Note: This is a fallback response. Reason: Error calling Claude API: Claude API error: 502 - <html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>cloudflare</center>\r\n</body>\r\n</html>\r\n)"
+  },
+  {
     "from": "joseph-reveals-identity",
     "to": "joseph-sold-into-slavery",
     "type": "Typological",
@@ -12423,6 +12943,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "Leviticus 18 provides a more comprehensive set of sexual morality laws, building upon the principles established in Exodus 22."
+  },
+  {
+    "from": "seven-thunders-sealed",
+    "to": "michael-stands-up",
+    "type": "Typological",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Like Daniel, John is told to seal up the words he has heard, foreshadowing the sealing of the seven thunders in Revelation."
   },
   {
     "from": "peace-of-god",
@@ -12623,6 +13151,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "The Levites' role in overseeing the temple treasuries and dedicated things continued in the post-exilic period, as seen in this passage from Nehemiah."
+  },
+  {
+    "from": "purging-out-the-old-leaven",
+    "to": "vicarious-atonement",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.85,
+    "level": 1,
+    "description": "Connection to 1 Corinthians 5:6-8 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 69 (line 1 column 70))"
   },
   {
     "from": "eternal-excellency",
@@ -12961,6 +13497,14 @@ export const allConnections = [
     "description": "The healing of the paralytic fulfills the prophecy of the Suffering Servant who would bear our infirmities and carry our diseases."
   },
   {
+    "from": "john-must-prophesy-again",
+    "to": "jeremiahs-prophetic-call",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Like Jeremiah, John is called by God to prophesy to many peoples, emphasizing the prophetic role and responsibility."
+  },
+  {
     "from": "officers-report-to-moses",
     "to": "restoration-of-temple-duties",
     "type": "Thematic Parallels",
@@ -12975,6 +13519,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "The Israelites' acceptance of the Gibeonites' offer of help, despite their deception, is a cautionary tale about the dangers of allying with adversaries."
+  },
+  {
+    "from": "pauls-bold-appeal",
+    "to": "bless-persecutors",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This verse speaks of giving a defense with gentleness and respect, which connects to Paul's approach in his appeal to the Corinthians."
   },
   {
     "from": "egypt-cast-down-to-sheol",
@@ -13257,6 +13809,14 @@ export const allConnections = [
     "description": "Both passages describe the evil reign of a king over Israel, continuing the pattern of spiritual decline."
   },
   {
+    "from": "gentiles-glorify-god",
+    "to": "israels-disobedience-and-punishment",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.8,
+    "level": 1,
+    "description": "This passage from Isaiah prophesies that the Messiah will be a light to the Gentiles, which is fulfilled in the inclusion of the Gentiles in God's plan of salvation."
+  },
+  {
     "from": "agurs-words",
     "to": "gods-incomparable-greatness",
     "type": "Thematic Parallels",
@@ -13343,6 +13903,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "The author of 1 Peter, like Job, contrasts the transience of human life with the enduring nature of God's word and promises."
+  },
+  {
+    "from": "boasting-in-the-cross",
+    "to": "gods-wisdom-vs-worlds-wisdom",
+    "type": "Thematic Parallels",
+    "strength": 0.9,
+    "level": 1,
+    "description": "Both passages emphasize the power and centrality of the cross of Christ, in contrast to worldly wisdom and boasting."
   },
   {
     "from": "davids-sons-born-in-hebron",
@@ -13441,6 +14009,14 @@ export const allConnections = [
     "description": "The account in Isaiah 37 records the same events of Hezekiah seeking God's help in the face of the Assyrian threat, demonstrating the fulfillment of the narrative in 2 Kings 19."
   },
   {
+    "from": "dangers-of-jealousy-and-ambition",
+    "to": "cain-kills-abel",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "The story of Cain and Abel illustrates how jealousy and selfish ambition can lead to evil and violence."
+  },
+  {
     "from": "incense",
     "to": "day-of-atonement-instructions",
     "type": "Thematic Parallels",
@@ -13479,6 +14055,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "This passage also emphasizes the value of seeking and restoring what is lost, which connects to the principle of returning lost property in Deuteronomy 22:1-3."
+  },
+  {
+    "from": "timothy-and-epaphroditus",
+    "to": "apostles-as-fools-for-christ",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Paul's commendation of Timothy in Philippians 2 connects to his earlier mention of Timothy in 1 Corinthians."
   },
   {
     "from": "tabernacle-curtains-made",
@@ -13865,6 +14449,14 @@ export const allConnections = [
     "description": "The legal transaction between Abraham and Ephron for the burial site is similar to the later land redemption transaction between Boaz and the unnamed kinsman-redeemer, both involving the transfer of property rights."
   },
   {
+    "from": "honor-for-weaker-members",
+    "to": "god-chooses-the-poor",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages emphasize the importance of honoring and not discriminating against the seemingly weaker or less prominent members of the community."
+  },
+  {
     "from": "ishbosheth-made-king",
     "to": "abner-defects-to-david",
     "type": "Thematic Parallels",
@@ -13911,6 +14503,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "Both passages condemn the wicked shepherds/leaders who have failed to care for God's flock."
+  },
+  {
+    "from": "work-out-your-salvation",
+    "to": "examples-of-living-faith",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "James also stresses the importance of faith being accompanied by works, similar to the call in Philippians 2."
   },
   {
     "from": "seeking-the-beloved",
@@ -13961,6 +14561,14 @@ export const allConnections = [
     "description": "This passage from 2 Chronicles also calls the people to return to the Lord, drawing connections to the themes of repentance and God's mercy found in Zechariah 1:1-6."
   },
   {
+    "from": "conduct-in-the-church",
+    "to": "living-stones",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages describe the church as a spiritual house, with believers as living stones being built into a holy priesthood."
+  },
+  {
     "from": "joash-becomes-king",
     "to": "jehoash-reigns-in-judah",
     "type": "Thematic Parallels",
@@ -14009,6 +14617,14 @@ export const allConnections = [
     "description": "Both passages involve individuals attempting to use spiritual power for their own gain, which is condemned by the apostles."
   },
   {
+    "from": "qualifications-of-deacons",
+    "to": "greeting-and-thanksgiving",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages mention deacons as distinct leaders in the church, alongside overseers (bishops)."
+  },
+  {
     "from": "sixth-seal-cosmic-disturbances",
     "to": "coming-of-the-son-of-man",
     "type": "Prophetic Fulfillment",
@@ -14023,6 +14639,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "This passage highlights Moses' unique status as a prophet and leader, which is reflected in the examples of his faith cited in Hebrews 11."
+  },
+  {
+    "from": "rebuke-of-the-dead-church",
+    "to": "bones-represent-israel",
+    "type": "typological",
+    "strength": 0.6,
+    "level": 2,
+    "description": "The vision of the dry bones in Ezekiel foreshadows the spiritual revival and restoration that Christ calls the dead church in Sardis to experience."
   },
   {
     "from": "signs-of-a-true-apostle",
@@ -14553,6 +15177,14 @@ export const allConnections = [
     "description": "The Gospel of Mark provides a similar account of the plot to arrest and kill Jesus."
   },
   {
+    "from": "collection-for-the-saints",
+    "to": "barnabas-sent-to-antioch",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage describes an earlier collection for the saints in Judea, which provides historical context for Paul's instructions in 1 Corinthians 16."
+  },
+  {
     "from": "achan-punished",
     "to": "blessings-for-obedience",
     "type": "Thematic Parallels",
@@ -14575,6 +15207,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Psalm 13:1-2 expresses a similar plea for God to remember the psalmist's affliction, connecting to the themes of Lamentations 5:1."
+  },
+  {
+    "from": "personal-instructions",
+    "to": "instructions-regarding-timothy",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages show Paul's concern for Timothy's well-being and ministry."
   },
   {
     "from": "edom-to-face-judgment",
@@ -14769,6 +15409,14 @@ export const allConnections = [
     "description": "An Old Testament passage that condemns false prophets who build a flimsy wall, which connects to the metaphor of the wise and foolish builders."
   },
   {
+    "from": "paul-forgoes-his-rights",
+    "to": "paul-boasts-in-his-sufferings",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Paul's decision to forgo his right to financial support from the Corinthians is also discussed in this passage from 2 Corinthians."
+  },
+  {
     "from": "rebuke-of-shemaiah",
     "to": "vicarious-atonement",
     "type": "Prophetic Fulfillment",
@@ -14791,6 +15439,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "This passage describes how the wicked King Manasseh repented and was forgiven, demonstrating God's willingness to offer second chances."
+  },
+  {
+    "from": "virgins-and-the-unmarried",
+    "to": "jesus-presented-at-temple",
+    "type": "Character Connections",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The example of Anna, a prophetess who remained unmarried and devoted herself to God, provides a real-life illustration of the principles discussed in 1 Corinthians 7:25-40."
   },
   {
     "from": "distinction-between-israel-egypt",
@@ -14961,6 +15617,14 @@ export const allConnections = [
     "description": "Daniel also turned to fasting and prayer during a time of crisis, similar to Ezra's approach."
   },
   {
+    "from": "hallelujah-for-gods-judgments",
+    "to": "related-2-2",
+    "type": "Thematic Parallel",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Psalm 149 calls the people of God to 'sing to the Lord a new song' and 'execute vengeance on the nations,' which connects to the themes of praise and God's judgment in Revelation 19."
+  },
+  {
     "from": "jeremiah-rewrites-scroll",
     "to": "john-eats-the-little-book",
     "type": "Thematic Parallels",
@@ -15039,6 +15703,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Micaiah's prophecy against Ahab is connected to Elijah's earlier prophecy of Ahab's downfall and the end of his dynasty."
+  },
+  {
+    "from": "christ-learned-obedience",
+    "to": "related-1-0",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Connection to Hebrews 5:7-9 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 75 (line 1 column 76))"
   },
   {
     "from": "god-is-mighty-and-just",
@@ -15215,6 +15887,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Paul's discussion of the Abrahamic covenant and its relationship to the Mosaic law provides a broader theological context for understanding Melchizedek's superiority over Abraham."
+  },
+  {
+    "from": "gentiles-brought-near",
+    "to": "gods-anger-and-healing",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.8,
+    "level": 1,
+    "description": "This passage prophesies that God will bring peace to those who are far off, which is fulfilled in Ephesians 2:11-13 with the Gentiles being brought near."
   },
   {
     "from": "gods-guidance-to-promised-land",
@@ -15713,12 +16393,28 @@ export const allConnections = [
     "description": "Another instance of Jesus teaching his disciples about the nature of true greatness in the kingdom of God."
   },
   {
+    "from": "shine-as-lights",
+    "to": "children-of-light",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Like Philippians 2, Ephesians 5 calls believers to live as children of light in a dark world."
+  },
+  {
     "from": "covenant-of-peace",
     "to": "new-covenant",
     "type": "covenantal-connections",
     "strength": 0.9,
     "level": 1,
     "description": "Jeremiah prophesies a new covenant that will replace the old, connecting to Ezekiel's vision of a renewed relationship between God and His people."
+  },
+  {
+    "from": "gods-wisdom-and-knowledge",
+    "to": "related-2-2",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The psalmist's wonder at God's unsearchable knowledge and understanding is echoed in Paul's doxology."
   },
   {
     "from": "solomons-foreign-wives",
@@ -15881,6 +16577,14 @@ export const allConnections = [
     "description": "Jeremiah's prophecy of God's judgment against Babylon is thematically connected to Nahum's portrayal of Yahweh's judgment against Nineveh."
   },
   {
+    "from": "sincere-conduct",
+    "to": "consequences-of-wickedness",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This proverb speaks of the integrity and uprightness of the righteous, which is connected to the theme of sincere conduct in 2 Corinthians 1:12-14."
+  },
+  {
     "from": "amorite-kings-captured",
     "to": "body-removed-from-tree",
     "type": "Thematic Parallels",
@@ -15951,6 +16655,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The book of James also warns about the power of the tongue and the need to tame it, similar to the message in Ecclesiastes 10:20."
+  },
+  {
+    "from": "advantage-of-the-jews",
+    "to": "related-0-1",
+    "type": "Covenantal Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "God revealed his word and statutes to the Jews, giving them a unique advantage over other nations."
   },
   {
     "from": "creation-of-plants",
@@ -16121,6 +16833,14 @@ export const allConnections = [
     "description": "The promise that all who desire to live godly in Christ Jesus will be persecuted is connected to the persecution Jesus warns his disciples about."
   },
   {
+    "from": "pauls-departure",
+    "to": "eternal-heavenly-dwelling",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages express a longing for the heavenly dwelling and the assurance of eternal life with Christ."
+  },
+  {
     "from": "rebekah-chosen-as-wife",
     "to": "jacob-marries-leah-and-rachel",
     "type": "Character Connections",
@@ -16143,6 +16863,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Nehemiah's prayer also acknowledges the people's sins and pleads for God's compassion, similar to the themes in Lamentations 1."
+  },
+  {
+    "from": "god-appoints-members",
+    "to": "using-spiritual-gifts",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both texts emphasize that the various gifts and roles within the church are given by God and should be used to serve one another."
   },
   {
     "from": "blinded-unbelievers",
@@ -16505,12 +17233,28 @@ export const allConnections = [
     "description": "Connection to Romans 9:1-5 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 82 (line 1 column 83))"
   },
   {
+    "from": "temple-of-god",
+    "to": "the-day-of-salvation",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages affirm that believers, as the temple of the living God, should not be defiled or destroyed."
+  },
+  {
     "from": "trumpet-warning-of-judgment",
     "to": "prophetic-warnings",
     "type": "Thematic Parallels",
     "strength": 0.7,
     "level": 1,
     "description": "This passage also speaks of the trumpet being blown as a warning of judgment, connecting to the theme in Hosea 8:1."
+  },
+  {
+    "from": "final-greetings-and-instructions",
+    "to": "lords-deliverance",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages contain Paul's final greetings and instructions to his co-workers as he nears the end of his ministry."
   },
   {
     "from": "god-protects-jerusalem",
@@ -16527,6 +17271,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Ezekiel's prophecy about the fall of Jerusalem is fulfilled in the events described in Jeremiah 39."
+  },
+  {
+    "from": "love-over-freedom",
+    "to": "glorifying-god-in-all-things",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage also discusses the need to limit personal freedoms for the sake of others and the glory of God, which is related to the message in Romans 14."
   },
   {
     "from": "joab-put-to-death",
@@ -16897,6 +17649,14 @@ export const allConnections = [
     "description": "The presentation of Jesus in the temple fulfills the prophecy of the Lord's messenger coming to his temple."
   },
   {
+    "from": "conduct-in-the-church",
+    "to": "temple-of-god",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages highlight the church as the temple of God, where the Holy Spirit dwells, and the importance of maintaining its holiness."
+  },
+  {
     "from": "moses-final-blessing",
     "to": "be-strong-and-courageous",
     "type": "Prophetic Fulfillment",
@@ -16991,6 +17751,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Connection to Leviticus 19:5-8 (Note: This is a fallback response. Reason: Error calling Claude API: Claude API error: 529 - {\"type\":\"error\",\"error\":{\"type\":\"overloaded_error\",\"message\":\"Overloaded\"}})"
+  },
+  {
+    "from": "fathers-nurture-children",
+    "to": "related-1-0",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Connection to Ephesians 6:4 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 65 (line 1 column 66))"
   },
   {
     "from": "genealogy-of-shem",
@@ -17207,6 +17975,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "This passage emphasizes the importance of baptism and receiving the Holy Spirit, which is a key part of the new covenant established by Jesus."
+  },
+  {
+    "from": "rights-of-apostles",
+    "to": "paul-forgoes-his-rights",
+    "type": "Character Connections",
+    "strength": 0.9,
+    "level": 2,
+    "description": "Paul's discussion of the rights of apostles in this passage provides the context for his decision to forgo those rights in the subsequent passage."
   },
   {
     "from": "offerings-and-blessings",
@@ -17753,6 +18529,14 @@ export const allConnections = [
     "description": "The prophet expresses disappointment in his friends, comparing them to a deceptive stream."
   },
   {
+    "from": "avoiding-pagan-practices",
+    "to": "gods-love-for-the-world",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Connection to 1 Corinthians 10:18-22 (Note: This is a fallback response. Reason: Error calling Claude API: Claude API error: 529 - {\"type\":\"error\",\"error\":{\"type\":\"overloaded_error\",\"message\":\"Overloaded\"}})"
+  },
+  {
     "from": "living-sacrifice",
     "to": "christs-example-of-humility",
     "type": "thematic-parallels",
@@ -17857,6 +18641,14 @@ export const allConnections = [
     "description": "The description of the foundations of the New Jerusalem being adorned with precious stones echoes the imagery of the breastplate of judgment, connecting the heavenly priesthood of Christ to the Aaronic priesthood."
   },
   {
+    "from": "wisdom-from-above",
+    "to": "gods-wisdom-vs-worlds-wisdom",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Paul contrasts the wisdom of the world with the wisdom of God, which is often seen as foolishness, connecting to the themes in James."
+  },
+  {
     "from": "loneliness-and-endless-toil",
     "to": "future-glory",
     "type": "Covenantal Connections",
@@ -17919,6 +18711,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The census and duties of the Levites are detailed, providing context for their genealogy."
+  },
+  {
+    "from": "israel-stumbles-over-the-stumbling-stone",
+    "to": "trusting-in-god-alone",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.9,
+    "level": 1,
+    "description": "This passage from Isaiah prophesies that the Messiah will be a stone of stumbling and a rock of offense, which is fulfilled in Israel's rejection of Jesus as the Messiah."
   },
   {
     "from": "restoration-and-understanding",
@@ -18031,6 +18831,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Both passages emphasize that God will judge everyone according to their deeds."
+  },
+  {
+    "from": "protection-from-evil",
+    "to": "put-on-armor-of-god",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages highlight the need for believers to rely on God's power and protection against the schemes of the devil."
   },
   {
     "from": "ezekiel-commissioned",
@@ -18225,6 +19033,14 @@ export const allConnections = [
     "description": "The Israelites' response to the negative report, including their desire to return to Egypt, is described."
   },
   {
+    "from": "love-is-essential",
+    "to": "god-appoints-members",
+    "type": "Contextual Connections",
+    "strength": 0.8,
+    "level": 1,
+    "description": "This verse immediately precedes the passage in 1 Corinthians 13, setting up the importance of love as the most excellent way to pursue spiritual gifts."
+  },
+  {
     "from": "personal-instructions",
     "to": "avoid-foolish-disputes",
     "type": "thematic-parallels",
@@ -18287,6 +19103,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "This passage in Jeremiah also conveys God's promise to save and restore Israel, echoing the themes of Isaiah 41:8-16."
+  },
+  {
+    "from": "genuine-love",
+    "to": "gods-love-for-the-world",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Connection to Romans 12:9-13 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 56 (line 1 column 57))"
   },
   {
     "from": "levites-receive-cities",
@@ -18393,12 +19217,28 @@ export const allConnections = [
     "description": "The entire chapter of Proverbs 8 is dedicated to personifying and extolling the virtues of wisdom, which provides a deeper exploration of the themes found in Proverbs 3."
   },
   {
+    "from": "comfort-in-affliction",
+    "to": "related-0-2",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This psalm expresses God's nearness and comfort to those who are brokenhearted and crushed in spirit."
+  },
+  {
     "from": "reuben-and-gad-build-cities",
     "to": "war-with-the-hagrites",
     "type": "Character Connections",
     "strength": 0.7,
     "level": 1,
     "description": "The Chronicles account provides additional details about the later history and military exploits of the Transjordan tribes, building on the information in Numbers 32."
+  },
+  {
+    "from": "not-judging-others",
+    "to": "beatitudes-and-woes",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage instructs us not to judge others, so that we will not be judged."
   },
   {
     "from": "offerings-and-sacrifices",
@@ -18551,6 +19391,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Both passages reflect on the vastness of God's creation and the insignificance of humanity in comparison."
+  },
+  {
+    "from": "suffering-and-deliverance",
+    "to": "pauls-example-and-persecutions",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage also speaks of the persecutions and sufferings that believers can expect to face, and God's faithfulness in delivering them."
   },
   {
     "from": "israel-cries-out-to-god",
@@ -18732,7 +19580,7 @@ export const allConnections = [
     "from": "pauls-conversion-on-damascus-road",
     "to": "ananias-heals-saul",
     "type": "Prophetic Fulfillment",
-    "strength": 1,
+    "strength": 0.0,
     "level": 1,
     "description": "This passage directly recounts the same event of Paul's conversion on the Damascus road, as described in Acts 26."
   },
@@ -18825,6 +19673,14 @@ export const allConnections = [
     "description": "The cloud that guided Israel may be seen as a prophetic foreshadowing of the return of Christ in the clouds."
   },
   {
+    "from": "overcome-evil-with-good",
+    "to": "future-glory",
+    "type": "Covenantal Connections",
+    "strength": 0.9,
+    "level": 2,
+    "description": "Connection to Romans 12:14-21 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 56 (line 1 column 57))"
+  },
+  {
     "from": "samuel-records-regulations",
     "to": "joash-crowned-king",
     "type": "Character Connections",
@@ -18887,6 +19743,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "This passage similarly emphasizes the unity of believers as one body in Christ, despite their diversity."
+  },
+  {
+    "from": "dangers-of-jealousy-and-ambition",
+    "to": "circumcision-and-the-law",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Paul lists jealousy and selfish ambition among the works of the flesh, echoing the warnings in James."
   },
   {
     "from": "day-of-vengeance",
@@ -19281,6 +20145,14 @@ export const allConnections = [
     "description": "This verse compares the testing of one's faith to the refining of gold, which relates to the mining and refining imagery in Job 28."
   },
   {
+    "from": "rebuke-of-lukewarm-church",
+    "to": "ask-god-for-wisdom",
+    "type": "thematic-parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages warn against the instability and double-mindedness of those who are lukewarm in their faith."
+  },
+  {
     "from": "covenant-blessings-and-curses",
     "to": "restoration-through-repentance",
     "type": "Thematic Parallels",
@@ -19529,6 +20401,14 @@ export const allConnections = [
     "description": "The Levites are responsible for bearing the iniquity of the people, which connects to the passage in Ezekiel."
   },
   {
+    "from": "taming-the-tongue",
+    "to": "jesus-accused-of-using-satanic-power",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Jesus teaches that the words we speak reveal the condition of our hearts, similar to the message in James."
+  },
+  {
     "from": "fools-and-scoundrels-exposed",
     "to": "characteristics-of-the-last-days",
     "type": "Thematic Parallels",
@@ -19681,6 +20561,14 @@ export const allConnections = [
     "description": "This passage also addresses the fair division of spoils, establishing a precedent and principle for how plunder should be shared."
   },
   {
+    "from": "personal-instructions",
+    "to": "charge-to-timothy",
+    "type": "Character Connections",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages involve Paul giving personal instructions and warnings to his prot\u00e9g\u00e9, Timothy."
+  },
+  {
     "from": "man-not-more-righteous-than-god",
     "to": "righteousness-through-faith",
     "type": "Thematic Parallels",
@@ -19759,6 +20647,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Paul warns that evil people and impostors will go from bad to worse, deceiving and being deceived, which connects to the deception and judgment described in 2 Thessalonians 2."
+  },
+  {
+    "from": "be-a-vessel-of-honor-for-god",
+    "to": "dead-in-sin",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The idea of being God's workmanship, created for good works, connects to the concept of being a vessel of honor prepared for noble purposes."
   },
   {
     "from": "israel-defeats-judah",
@@ -19895,6 +20791,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "The letter to the church in Pergamum also addresses the issue of believers participating in pagan practices, echoing the concerns raised in 1 Corinthians 10."
+  },
+  {
+    "from": "unity-in-diversity",
+    "to": "creation-of-heavens-and-earth",
+    "type": "Typological",
+    "strength": 0.75,
+    "level": 1,
+    "description": "Connection to Romans 12:3-8 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 56 (line 1 column 57))"
   },
   {
     "from": "job-desires-to-reason-with-god",
@@ -20241,6 +21145,14 @@ export const allConnections = [
     "description": "These passages share the theme of being careful not to cause a weaker brother to stumble."
   },
   {
+    "from": "work-out-your-salvation",
+    "to": "saved-by-grace",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages emphasize the balance between God's grace and the believer's responsibility in salvation."
+  },
+  {
     "from": "tobiah-attempts-to-intimidate-nehemiah",
     "to": "haman-deceives-king",
     "type": "Thematic Parallels",
@@ -20359,6 +21271,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The manna provided by God in the wilderness foreshadows Jesus as the true Bread of Life."
+  },
+  {
+    "from": "final-exhortations",
+    "to": "children-obey-parents",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "These passages share the theme of closing a letter with a benediction and greeting."
   },
   {
     "from": "gods-power-over-egypt",
@@ -21201,6 +22121,14 @@ export const allConnections = [
     "description": "Ezekiel 32 continues the theme of comparing Pharaoh to the fallen Assyrian empire, further developing the connection between these two powerful, prideful kingdoms."
   },
   {
+    "from": "invitation-to-come",
+    "to": "invitation-to-repent",
+    "type": "thematic-parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages depict Christ standing at the door and inviting people to come to him."
+  },
+  {
     "from": "advantage-of-the-jews",
     "to": "pauls-anguish-for-israel",
     "type": "Character Connections",
@@ -21249,6 +22177,14 @@ export const allConnections = [
     "description": "The Philistines' conflict with the Israelites is a broader theme that connects the events in Judges 15 to later battles between the two groups."
   },
   {
+    "from": "charge-to-timothy",
+    "to": "itching-ears",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Paul again charges Timothy to preach the word and be ready in season and out of season, continuing the theme of pastoral responsibility."
+  },
+  {
     "from": "jehoiakims-evil-reign",
     "to": "jehoahaz-and-jehoiakim-reign",
     "type": "character-connections",
@@ -21279,6 +22215,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "The new Jerusalem in Revelation has no need for the sun or moon, for the glory of God gives it light, connecting the creation of light to the ultimate restoration of all things."
+  },
+  {
+    "from": "collection-for-the-saints",
+    "to": "accepting-one-another",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Paul's instructions regarding the collection for the saints in Jerusalem are connected to his broader mission of promoting unity and support between Gentile and Jewish Christians."
   },
   {
     "from": "paul-avoids-sorrowful-visit",
@@ -21425,6 +22369,14 @@ export const allConnections = [
     "description": "The recovery of the cities from Syria fulfills Elisha's earlier prophecy, demonstrating the accuracy of God's word."
   },
   {
+    "from": "gods-presence-in-new-jerusalem",
+    "to": "gods-glory-fills-tabernacle",
+    "type": "Typological",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The presence of God filling the tabernacle in Exodus foreshadows the permanent dwelling of God with his people in the New Jerusalem."
+  },
+  {
     "from": "baker-executed",
     "to": "joseph-forgotten",
     "type": "thematic-parallels",
@@ -21455,6 +22407,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "This verse affirms the honor and purity of the marriage bed, reinforcing the guidelines in 1 Corinthians 7."
+  },
+  {
+    "from": "red-dragon-appears",
+    "to": "the-seventy-return",
+    "type": "Character Connection",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Jesus' statement about seeing Satan fall like lightning from heaven connects to the dragon's expulsion from heaven in Revelation 12."
   },
   {
     "from": "israel-defeats-kings",
@@ -21577,6 +22537,14 @@ export const allConnections = [
     "description": "A similar account of God's glory filling the temple is found in the parallel Chronicles narrative."
   },
   {
+    "from": "fruitfulness-and-assurance",
+    "to": "knowing-god",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage also connects obedience and fruitfulness to assurance of one's relationship with God."
+  },
+  {
     "from": "jotham-becomes-mighty",
     "to": "avoid-immoral-women",
     "type": "Thematic Parallels",
@@ -21639,6 +22607,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "The appointment of judges to assist Moses in governing the people is a precedent for Samuel's appointment of his sons as judges."
+  },
+  {
+    "from": "paul-defends-his-apostleship",
+    "to": "paul-boasts-in-his-sufferings",
+    "type": "Character Connections",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Paul also defends his apostleship and right to material support in this passage from 2 Corinthians."
   },
   {
     "from": "drying-of-euphrates",
@@ -21735,6 +22711,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Jeremiah prophesies about the downfall of Jehoiachin's royal line, which is fulfilled in 2 Kings 24:8-9."
+  },
+  {
+    "from": "pauls-travel-plans",
+    "to": "comfort-in-affliction",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage addresses Paul's changing travel plans, which provides additional context for the instructions in 1 Corinthians 16."
   },
   {
     "from": "futility-of-sorcery",
@@ -21841,6 +22825,14 @@ export const allConnections = [
     "description": "Both passages encourage perseverance and patience in the face of suffering, as believers await the imminent return of the Lord."
   },
   {
+    "from": "work-ethic-and-self-sufficiency",
+    "to": "living-quietly-and-working",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages highlight the importance of a strong work ethic and self-sufficiency among believers."
+  },
+  {
     "from": "laban-pursues-jacob",
     "to": "balaam-donkey-and-angel",
     "type": "Thematic Parallels",
@@ -21919,6 +22911,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "Both passages emphasize the importance of believers having fellowship and unity with God and with one another."
+  },
+  {
+    "from": "boasting-in-the-cross",
+    "to": "pauls-past-credentials",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "This passage also expresses Paul's desire to boast only in Christ and the cross, rather than in his own accomplishments."
   },
   {
     "from": "coming-judgment-and-mourning",
@@ -22047,6 +23047,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Like Nebuchadnezzar, King Manasseh also experiences a change of heart and acknowledges the true God after being punished."
+  },
+  {
+    "from": "pauls-anguish-for-israel",
+    "to": "moses-atones",
+    "type": "Character Connections",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Like Moses, Paul expresses a deep anguish and willingness to be cut off from God for the sake of his fellow Israelites."
   },
   {
     "from": "shishak-raids-jerusalem",
@@ -22207,6 +23215,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The support of the tribes for David in 1 Chronicles 12 is the fulfillment of the promise in 2 Samuel 2 that David would be anointed king over Judah."
+  },
+  {
+    "from": "prayer-for-spiritual-growth",
+    "to": "chosen-before-creation",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages feature the apostle's prayer for the spiritual growth and maturity of the believers, focusing on their love, knowledge, and discernment."
   },
   {
     "from": "fools-and-scoundrels-exposed",
@@ -22489,6 +23505,14 @@ export const allConnections = [
     "description": "This passage in Galatians discusses how the promise made to Abraham has been fulfilled in Christ, connecting to the idea in Hebrews 11:39-40 that the OT saints did not receive the ultimate promise."
   },
   {
+    "from": "trials-refine-faith",
+    "to": "creation-of-heavens-and-earth",
+    "type": "Typological",
+    "strength": 0.75,
+    "level": 1,
+    "description": "Connection to 1 Peter 1:6-9 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 63 (line 1 column 64))"
+  },
+  {
     "from": "god-destroys-mans-hope",
     "to": "son-as-eternal-god",
     "type": "Thematic Parallels",
@@ -22705,6 +23729,14 @@ export const allConnections = [
     "description": "Jude's identification as the 'brother of James' in the previous verse connects this passage to James' own self-description as a 'servant' of God and Christ."
   },
   {
+    "from": "qualifications-of-overseers",
+    "to": "elders-shepherd-the-flock",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages emphasize the importance of overseers (shepherds) leading the flock of God with integrity, humility, and a willingness to serve."
+  },
+  {
     "from": "manasseh-does-evil",
     "to": "josiah-removes-idolatry",
     "type": "Prophetic Fulfillment",
@@ -22719,6 +23751,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "God's promise to bless Jacob is similar to the blessing he previously gave to Isaac, continuing the line of covenant promise."
+  },
+  {
+    "from": "seven-bowls-of-wrath",
+    "to": "plague-on-jerusalems-attackers",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Zechariah's prophecy of a plague that will afflict the enemies of God is thematically similar to the plagues described in the seven bowls of wrath in Revelation 16."
   },
   {
     "from": "new-decree-to-protect-jews",
@@ -22751,6 +23791,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "Ezra's dedication to studying and teaching God's law is echoed in the New Testament's emphasis on the value and importance of Scripture."
+  },
+  {
+    "from": "saved-by-grace",
+    "to": "saved-by-gods-mercy",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "This passage speaks of salvation being according to God's mercy, not by works, which is the same theme as Ephesians 2:8-9."
   },
   {
     "from": "moses-intercedes-for-israel",
@@ -23321,6 +24369,14 @@ export const allConnections = [
     "description": "Connection to Matthew 24:32-35 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 69 (line 1 column 70))"
   },
   {
+    "from": "living-stones",
+    "to": "gods-spirit-empowers-zerubbabel",
+    "type": "Typological",
+    "strength": 0.7,
+    "level": 2,
+    "description": "The imagery of a cornerstone or capstone may foreshadow the role of Christ as the cornerstone of the spiritual house."
+  },
+  {
     "from": "jephthah-defeats-ephraim",
     "to": "related-1-0",
     "type": "Character Connections",
@@ -23769,6 +24825,14 @@ export const allConnections = [
     "description": "The three feasts are reiterated, with additional instructions for their observance."
   },
   {
+    "from": "submit-to-authorities",
+    "to": "david-spares-saul",
+    "type": "Character Connections",
+    "strength": 0.6,
+    "level": 2,
+    "description": "David's respect for Saul's position as the anointed king of Israel provides a precedent for the concept of submitting to authorities."
+  },
+  {
     "from": "god-warns-abimelech",
     "to": "marys-miraculous-conception",
     "type": "Prophetic Fulfillment",
@@ -23833,6 +24897,14 @@ export const allConnections = [
     "description": "Both passages urge the people to repent and turn to righteousness."
   },
   {
+    "from": "deliverance-through-christ",
+    "to": "walk-by-the-spirit",
+    "type": "struggle-between-flesh-and-spirit",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages describe the inner conflict between the flesh and the spirit, and the need for deliverance through Christ."
+  },
+  {
     "from": "abigail-intercedes",
     "to": "gods-love-for-the-world",
     "type": "Thematic Parallels",
@@ -23871,6 +24943,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Connection to Ezekiel 48:8-22 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 69 (line 1 column 70))"
+  },
+  {
+    "from": "pauls-imprisonment-for-gentiles",
+    "to": "not-ashamed-of-the-gospel",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "2 Timothy 1:8 refers to Paul's imprisonment, which was 'for the gospel', linking to his imprisonment 'for the sake of the Gentiles' in Ephesians 3:1-2."
   },
   {
     "from": "organization-of-priests-and-levites",
@@ -24185,6 +25265,14 @@ export const allConnections = [
     "description": "Connection to Judges 4:17-22 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 65 (line 1 column 66))"
   },
   {
+    "from": "pay-attention-to-salvation",
+    "to": "creation-of-heavens-and-earth",
+    "type": "Typological",
+    "strength": 0.75,
+    "level": 1,
+    "description": "Connection to Hebrews 2:1-4 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 63 (line 1 column 64))"
+  },
+  {
     "from": "invitation-to-come",
     "to": "division-over-jesus-identity",
     "type": "thematic-parallels",
@@ -24305,6 +25393,14 @@ export const allConnections = [
     "description": "Ezekiel's detailed vision of the restored Jerusalem serves as a precursor to the description of the New Jerusalem in Revelation."
   },
   {
+    "from": "saved-by-grace",
+    "to": "not-ashamed-of-the-gospel",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage also emphasizes that salvation is by God's grace, not by human works, which is related to the theme of Ephesians 2:8-9."
+  },
+  {
     "from": "absalom-killed",
     "to": "absalom-gains-popularity",
     "type": "character-connections",
@@ -24345,6 +25441,14 @@ export const allConnections = [
     "description": "This passage continues Moses' exhortation to the Israelites to be faithful to God's law, as seen in Deuteronomy 32:44-47."
   },
   {
+    "from": "wisdom-from-above",
+    "to": "avoid-immoral-women",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Proverbs teaches that true wisdom comes from the Lord, aligning with the description of wisdom from above in James."
+  },
+  {
     "from": "invitation-to-leave-lebanon",
     "to": "gods-promise-of-the-land",
     "type": "Thematic Parallel",
@@ -24383,6 +25487,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Both passages express confidence in God's continued work and faithfulness in the lives of believers."
+  },
+  {
+    "from": "dead-in-sin",
+    "to": "jesus-divine-authority",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage contrasts being dead in sin with being made alive in Christ, which is the same theme as Ephesians 2:1-3."
   },
   {
     "from": "cities-for-the-levites",
@@ -24505,6 +25617,14 @@ export const allConnections = [
     "description": "The apostle Paul's warning about the love of money and the dangers it poses, which echoes Jesus' teaching on the difficulty of the rich."
   },
   {
+    "from": "perfected-through-suffering",
+    "to": "future-glory",
+    "type": "Covenantal Connections",
+    "strength": 0.9,
+    "level": 2,
+    "description": "Connection to Hebrews 2:10-13 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 63 (line 1 column 64))"
+  },
+  {
     "from": "abijam-reigns-in-judah",
     "to": "abijahs-strength",
     "type": "Thematic Parallels",
@@ -24583,6 +25703,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The Gospel of John provides additional details about Judas' betrayal, noting that Satan entered into him and prompted the betrayal."
+  },
+  {
+    "from": "godly-sorrow-and-repentance",
+    "to": "nathan-confronts-david",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage depicts David's repentance after his sin, which is connected to the theme of godly sorrow and repentance in 2 Corinthians 7:8-11."
   },
   {
     "from": "peace-offerings-from-herd",
@@ -24833,6 +25961,14 @@ export const allConnections = [
     "description": "Both Ezekiel and Jeremiah are commanded to consume God's words, which are described as bringing lament and woe."
   },
   {
+    "from": "comfort-in-affliction",
+    "to": "gods-love-in-christ",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage also speaks of God's comfort and assurance in the face of tribulation and hardship."
+  },
+  {
     "from": "pride-against-god",
     "to": "downfall-of-babylon",
     "type": "thematic-parallels",
@@ -24977,6 +26113,14 @@ export const allConnections = [
     "description": "Jeremiah 48 provides a more detailed prophecy of Moab's downfall, which can be seen as a fulfillment of the prophecy in Isaiah 16."
   },
   {
+    "from": "handle-gods-word-properly",
+    "to": "warning-against-false-teachings",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages warn against the dangers of false teachers and the importance of handling God's Word correctly, avoiding meaningless discussions."
+  },
+  {
     "from": "joseph-prospers-in-potiphar-house",
     "to": "god-grants-wisdom-to-youths",
     "type": "Thematic Parallels",
@@ -25065,6 +26209,14 @@ export const allConnections = [
     "description": "The consequences of sin introduced in Genesis 3 are explained as the reason for the need for redemption through Christ in Romans 5."
   },
   {
+    "from": "jesus-defeats-death",
+    "to": "gods-love-for-the-world",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Connection to Hebrews 2:14-16 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 63 (line 1 column 64))"
+  },
+  {
     "from": "noahs-descendants",
     "to": "future-glory",
     "type": "Covenantal Connections",
@@ -25113,6 +26265,14 @@ export const allConnections = [
     "description": "This verse emphasizes that God shows no partiality, which connects to the Canaanite woman's faith being honored despite her Gentile status."
   },
   {
+    "from": "temple-opened-ark-revealed",
+    "to": "ark-brought-to-temple",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The ark is brought into the temple in 1 Kings, foreshadowing its appearance in the heavenly temple in Revelation."
+  },
+  {
     "from": "son-of-man-given-dominion",
     "to": "christs-example-of-humility",
     "type": "Thematic Parallels",
@@ -25127,6 +26287,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "The apostle Paul teaches that faith comes from hearing the word of God, connecting to the Israelites' belief after witnessing God's power at the Red Sea."
+  },
+  {
+    "from": "pauls-example-and-persecutions",
+    "to": "paul-stoned-in-lystra",
+    "type": "character-connections",
+    "strength": 0.8,
+    "level": 1,
+    "description": "The book of Acts recounts some of the persecutions Paul faced, such as being stoned in Lystra."
   },
   {
     "from": "speaking-in-tongues",
@@ -25175,6 +26343,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The prophetic rebuke for withholding tithes and offerings, which connects to the instructions in Deuteronomy 26."
+  },
+  {
+    "from": "warning-against-becoming-teachers",
+    "to": "warning-against-false-teachings",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Paul warns against those who desire to be teachers of the law without understanding what they are talking about, similar to the caution in James."
   },
   {
     "from": "moses-receives-the-tablets",
@@ -25455,6 +26631,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 2,
     "description": "The priesthood of Aaron is contrasted with the superior priesthood of Jesus Christ, the ultimate fulfillment of the priestly line."
+  },
+  {
+    "from": "christlike-virtues",
+    "to": "dont-grieve-the-spirit",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages emphasize the importance of cultivating virtues like compassion, kindness, and forgiveness as part of the Christian life."
   },
   {
     "from": "good-news-for-judah",
@@ -25849,6 +27033,14 @@ export const allConnections = [
     "description": "Connection to Genesis 10:6-20 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 57 (line 1 column 58))"
   },
   {
+    "from": "paul-defends-his-apostleship",
+    "to": "ananias-heals-saul",
+    "type": "Character Connections",
+    "strength": 0.8,
+    "level": 2,
+    "description": "The account of Paul's conversion and commissioning as an apostle provides important background for his defense of his apostleship."
+  },
+  {
     "from": "famine-and-gods-promise",
     "to": "related-4-2",
     "type": "Thematic Parallels",
@@ -25871,6 +27063,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Like Moses, other leaders in Israel struggle with the burdens of their calling and question God's purposes."
+  },
+  {
+    "from": "saved-by-grace",
+    "to": "righteousness-through-faith",
+    "type": "Thematic Parallels",
+    "strength": 0.9,
+    "level": 1,
+    "description": "This passage also emphasizes that salvation is by God's grace, which is the same theme as Ephesians 2:8-9."
   },
   {
     "from": "pauls-emotional-farewell",
@@ -26081,6 +27281,14 @@ export const allConnections = [
     "description": "Both passages depict the grief and mourning over the devastation of Jerusalem and Judah."
   },
   {
+    "from": "dont-grieve-the-spirit",
+    "to": "related-0-2",
+    "type": "thematic_parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The psalmist pleads with God not to take away His Holy Spirit, fearing the consequences of grieving the Spirit."
+  },
+  {
     "from": "warning-against-false-messages",
     "to": "true-and-false-prophets",
     "type": "thematic-parallels",
@@ -26129,6 +27337,14 @@ export const allConnections = [
     "description": "The psalmist's recounting of God's mighty acts in Israel's history parallels Samuel's historical review."
   },
   {
+    "from": "woman-clothed-with-sun",
+    "to": "allegory-of-hagar-and-sarah",
+    "type": "Covenantal Connection",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The woman clothed with the sun can be seen as a symbol of the heavenly Jerusalem, the mother of all believers."
+  },
+  {
     "from": "saul-attempts-to-kill-david",
     "to": "saul-angry-at-jonathans-loyalty",
     "type": "Character Connections",
@@ -26143,6 +27359,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Absalom's physical beauty and popularity among the people are highlighted, foreshadowing his ability to win the hearts of the Israelites."
+  },
+  {
+    "from": "christ-appointed-as-high-priest",
+    "to": "gods-love-for-the-world",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Connection to Hebrews 5:5-6 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 75 (line 1 column 76))"
   },
   {
     "from": "ark-sent-to-kiriath-jearim",
@@ -26223,6 +27447,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The prophet Habakkuk expresses trust in God despite outward circumstances, similar to the message in Isaiah 50:10."
+  },
+  {
+    "from": "suffering-and-deliverance",
+    "to": "treasure-in-jars-of-clay",
+    "type": "Thematic Parallels",
+    "strength": 0.9,
+    "level": 1,
+    "description": "Both passages discuss the theme of suffering and God's deliverance, emphasizing the power of God working through human weakness."
   },
   {
     "from": "christian-living",
@@ -26567,6 +27799,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "This passage also warns about the dangers of the adulterous woman and the path to death she leads."
+  },
+  {
+    "from": "invitation-to-repent",
+    "to": "god-appears-to-solomon",
+    "type": "covenantal-connections",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages emphasize the importance of repentance and God's willingness to forgive and restore those who turn to Him."
   },
   {
     "from": "paul-is-a-roman-citizen",
@@ -27025,6 +28265,14 @@ export const allConnections = [
     "description": "Ezekiel 45's vision of a restored Passover and feast celebrations can be seen as thematically connected to King Hezekiah's efforts to revive these important festivals in 2 Chronicles 30."
   },
   {
+    "from": "red-dragon-appears",
+    "to": "serpent-tempts-eve",
+    "type": "Typological",
+    "strength": 0.8,
+    "level": 1,
+    "description": "The red dragon is identified as the ancient serpent, the devil, echoing the serpent's appearance in the Garden of Eden."
+  },
+  {
     "from": "question-about-fasting",
     "to": "future-glory",
     "type": "Covenantal Connections",
@@ -27129,6 +28377,14 @@ export const allConnections = [
     "description": "Both passages emphasize God's absolute sovereignty and power to do as He pleases."
   },
   {
+    "from": "christs-power-in-paul",
+    "to": "ananias-heals-saul",
+    "type": "Character Connections",
+    "strength": 0.9,
+    "level": 1,
+    "description": "The conversion of Paul on the road to Damascus is a key event that demonstrates Christ's power working through him."
+  },
+  {
     "from": "kings-of-israel",
     "to": "kingdom-divides",
     "type": "thematic-parallels",
@@ -27191,6 +28447,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "The earlier passage describes Jonah's initial disobedience, which is then contrasted with God's gracious offer of a second chance in the later passage."
+  },
+  {
+    "from": "promise-to-overcomers",
+    "to": "gods-love-in-christ",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages emphasize the promise of victory and eternal life for those who overcome through faith in Christ."
   },
   {
     "from": "insufficiency-of-old-sacrifices",
@@ -27343,6 +28607,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The Gospel of Mark also records a similar healing of a blind man near Jericho, highlighting Jesus' power to restore sight and faith."
+  },
+  {
+    "from": "timothy-and-epaphroditus",
+    "to": "tychicus-and-onesimus-sent",
+    "type": "Character Connections",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Epaphroditus is mentioned alongside other co-workers of Paul, similar to the way he is commended in Philippians 2."
   },
   {
     "from": "paul-preaches-in-rome",
@@ -27983,6 +29255,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Paul's request for boldness to proclaim the gospel, even in chains, is similar to the prayer he expresses in Ephesians 6:19-20."
+  },
+  {
+    "from": "shine-as-lights",
+    "to": "wise-shine-like-stars",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 2,
+    "description": "This Old Testament passage speaks of the righteous shining like stars, which connects to the imagery in Philippians 2."
   },
   {
     "from": "michael-stands-up",
@@ -28921,6 +30201,22 @@ export const allConnections = [
     "description": "Luke's parallel account of Jesus healing a man's withered hand on the Sabbath"
   },
   {
+    "from": "renouncing-shameful-ways",
+    "to": "condemnation-of-false-prophets",
+    "type": "Thematic Parallels",
+    "strength": 0.5,
+    "level": 1,
+    "description": "The warning against false prophets who speak from their own imagination in Jeremiah 23:16 connects to the renunciation of deceit in 2 Corinthians 4:2."
+  },
+  {
+    "from": "dealing-with-accusations",
+    "to": "gods-love-for-the-world",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Connection to 1 Timothy 5:19-21 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 68 (line 1 column 69))"
+  },
+  {
     "from": "equality-in-giving",
     "to": "early-church-fellowship",
     "type": "Thematic Parallels",
@@ -29025,6 +30321,14 @@ export const allConnections = [
     "description": "The list of Solomon's officials in 1 Kings 4 shows some overlap with the officials mentioned in 2 Samuel 20, suggesting a continuation of David's administrative structure."
   },
   {
+    "from": "unity-and-humility",
+    "to": "unity-of-the-spirit",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Ephesians 4 also calls believers to maintain unity through humility and gentleness, similar to Philippians 2."
+  },
+  {
     "from": "genealogy-of-returning-exiles",
     "to": "census-of-returnees",
     "type": "Thematic Parallels",
@@ -29055,6 +30359,14 @@ export const allConnections = [
     "strength": 0.5,
     "level": 1,
     "description": "Both passages stress the importance of being quick to listen and slow to speak."
+  },
+  {
+    "from": "pauls-apostleship-and-greeting",
+    "to": "the-gospel-of-jesus-christ",
+    "type": "character-connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Paul's self-identification as an apostle is a common feature in the openings of his epistles."
   },
   {
     "from": "forgive-the-offender",
@@ -29159,6 +30471,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 2,
     "description": "Jesus presents himself as the good shepherd who lays down his life for the sheep, in contrast to the worthless shepherds described in Zechariah."
+  },
+  {
+    "from": "gentiles-attain-righteousness-by-faith",
+    "to": "gentiles-brought-near",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages discuss how Gentiles are included in God's plan of salvation through faith, breaking down the dividing wall between Jews and Gentiles."
   },
   {
     "from": "bones-represent-israel",
@@ -29559,6 +30879,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "This parallel passage in Luke's gospel records the same incident of Jesus observing the widow's offering."
+  },
+  {
+    "from": "masters-treat-servants-justly",
+    "to": "paul-prisoner-of-christ",
+    "type": "Character Connections",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage deals with the relationship between the master Philemon and his servant Onesimus, highlighting the importance of just and equitable treatment."
   },
   {
     "from": "enemies-conspire-to-attack",
@@ -30025,6 +31353,14 @@ export const allConnections = [
     "description": "The daughters of Zelophehad are granted their inheritance in the Promised Land, fulfilling the earlier promise."
   },
   {
+    "from": "conduct-in-the-church",
+    "to": "dead-in-sin",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages describe the church as the household of God, emphasizing proper conduct and the role of the church as the pillar and foundation of the truth."
+  },
+  {
     "from": "gods-judgment-on-his-people",
     "to": "call-for-repentance-and-prayer",
     "type": "Thematic Parallels",
@@ -30079,6 +31415,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Luke's narrative of Judas' betrayal agreement closely matches the details in Matthew."
+  },
+  {
+    "from": "confidence-in-prayer",
+    "to": "ask-seek-knock",
+    "type": "thematic-parallels",
+    "strength": 0.9,
+    "level": 1,
+    "description": "Both passages emphasize the importance of confident prayer and God's willingness to answer the prayers of His children."
   },
   {
     "from": "gathering-of-the-dispersed",
@@ -30191,6 +31535,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "The theme of God's universal reign as the only true King is shared between these two passages."
+  },
+  {
+    "from": "sound-doctrine-for-older-men",
+    "to": "gods-sovereignty",
+    "type": "thematic-parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This proverb highlights the honor and dignity associated with the gray hair of older men, which is relevant to the exhortation for older men in Titus 2:1-2."
   },
   {
     "from": "jonathan-condemned-and-rescued",
@@ -30329,6 +31681,14 @@ export const allConnections = [
     "description": "Zephaniah's prophecy of the Lord leaving a humble and lowly people in Zion connects to Micah's vision of the afflicted remnant being restored."
   },
   {
+    "from": "cheerful-giving",
+    "to": "beatitudes-and-woes",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Jesus teaches that generous, cheerful giving will be rewarded with abundant blessings, echoing the principle in 2 Corinthians 9:7."
+  },
+  {
     "from": "lament-over-babylon",
     "to": "nebuchadnezzar-attacks-tyre",
     "type": "thematic-parallels",
@@ -30391,6 +31751,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The prophet Hosea refers to the Israelites' sin at Baal Peor as a reminder of their tendency to fall into idolatry."
+  },
+  {
+    "from": "sincere-conduct",
+    "to": "triumph-in-christ",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages emphasize the importance of sincerity and integrity in Paul's ministry and teaching."
   },
   {
     "from": "refining-and-purifying",
@@ -30673,6 +32041,14 @@ export const allConnections = [
     "description": "The blessing of the younger son over the older son is a recurring theme in Genesis, as seen in the case of Jacob and Esau."
   },
   {
+    "from": "warning-against-false-teachings",
+    "to": "appointing-elders",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The Pastoral Epistles consistently address the threat of false teachers and the need to combat their influence."
+  },
+  {
     "from": "authority-of-jesus",
     "to": "gods-love-for-the-world",
     "type": "Thematic Parallels",
@@ -30777,6 +32153,14 @@ export const allConnections = [
     "description": "The mutual admiration between the lovers in the Song of Solomon prefigures the relationship between Christ and the Church."
   },
   {
+    "from": "gods-righteous-judgment",
+    "to": "gods-love-for-the-world",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Connection to Romans 2:4-11 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 67 (line 1 column 68))"
+  },
+  {
     "from": "job-teaches-about-god",
     "to": "related-2-0",
     "type": "Thematic Parallels",
@@ -30839,6 +32223,14 @@ export const allConnections = [
     "strength": 0.5,
     "level": 1,
     "description": "Joel also pronounces judgments against the coastal nations, including Sidon, for their mistreatment of Israel."
+  },
+  {
+    "from": "circumcision-and-the-law",
+    "to": "knowing-christ-above-all",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Paul contrasts righteousness through the law versus righteousness through faith in Christ, similar to the message in Galatians 5:2-6."
   },
   {
     "from": "mystery-revealed-to-paul",
@@ -30975,6 +32367,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The passage in 1 Chronicles 22 describes God's covenant with David, which is further fulfilled through Solomon's construction of the temple."
+  },
+  {
+    "from": "the-potters-right-over-the-clay",
+    "to": "moses-asks-to-see-gods-glory",
+    "type": "Covenantal Connections",
+    "strength": 0.8,
+    "level": 1,
+    "description": "This passage affirms God's sovereign right to show mercy to whom He will, which is the same principle expressed in Romans 9:14-24."
   },
   {
     "from": "faith-tested-produces-endurance",
@@ -31633,6 +33033,14 @@ export const allConnections = [
     "description": "The idea of being raised with Christ and walking in newness of life is a central theme in both Colossians 3 and Romans 6."
   },
   {
+    "from": "christs-suffering",
+    "to": "christs-superior-sacrifice",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage in Hebrews also discusses the significance of Christ's suffering and death, which purifies believers and brings them to God."
+  },
+  {
     "from": "sennacherib-threatens-jerusalem",
     "to": "related-4-2",
     "type": "thematic-parallels",
@@ -31719,6 +33127,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "Zephaniah's prophecy foretells the judgment and restoration of the Ammonites, which aligns with and expands upon Ezekiel's declaration."
+  },
+  {
+    "from": "male-child-born",
+    "to": "ruler-from-bethlehem",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The male child's birth in Revelation 12 fulfills the prophecy of the ruler who would come from Bethlehem."
   },
   {
     "from": "humility-over-pride",
@@ -31841,6 +33257,14 @@ export const allConnections = [
     "description": "These passages in Titus are closely connected, both highlighting the transformative power of God's grace in the lives of believers."
   },
   {
+    "from": "criticism-of-ephesus-church",
+    "to": "rebuke-of-lukewarm-church",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "The criticism of the Ephesian church for losing their first love is part of a broader pattern of Christ rebuking churches that have become lukewarm or complacent in their faith, as seen in the message to the Laodicean church."
+  },
+  {
     "from": "trespass-offering-instructions",
     "to": "gods-love-for-the-world",
     "type": "Thematic Parallels",
@@ -31927,6 +33351,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The similar story in the Gospel of Luke, which also highlights the rich young ruler's struggle to surrender his wealth and follow Jesus."
+  },
+  {
+    "from": "living-quietly-and-working",
+    "to": "living-for-gods-will",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This verse encourages believers to avoid meddling in other people's affairs and to live a quiet life, which aligns with the instructions in 1 Thessalonians 4:11-12."
   },
   {
     "from": "cain-kills-abel",
@@ -32031,6 +33463,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The New Testament passage emphasizes the importance of not just hearing the word of God, but also doing it, which relates to Malachi's rebuke."
+  },
+  {
+    "from": "israels-wilderness-experience",
+    "to": "future-glory",
+    "type": "Covenantal Connections",
+    "strength": 0.9,
+    "level": 2,
+    "description": "Connection to 1 Corinthians 10:1-5 (Note: This is a fallback response. Reason: Error calling Claude API: Claude API error: 529 - {\"type\":\"error\",\"error\":{\"type\":\"overloaded_error\",\"message\":\"Overloaded\"}})"
   },
   {
     "from": "wicked-counsel-of-princes",
@@ -32185,6 +33625,14 @@ export const allConnections = [
     "description": "The redemption of the firstborn is fulfilled in the presentation of the infant Jesus at the temple, as described in the Gospel of Luke."
   },
   {
+    "from": "dead-in-sin",
+    "to": "freedom-from-legalism",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage also speaks of believers being dead in their sins, which is the same theme as Ephesians 2:1-3."
+  },
+  {
     "from": "davids-lament",
     "to": "david-mourns-absalom",
     "type": "thematic-parallels",
@@ -32209,12 +33657,28 @@ export const allConnections = [
     "description": "The description of Christ as the 'Faithful and True' in Revelation 19:11 echoes the Johannine portrayal of Jesus as the 'Word made flesh' who is 'full of grace and truth' (John 1:14)."
   },
   {
+    "from": "call-to-holy-living",
+    "to": "gods-love-for-the-world",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Connection to 1 Peter 1:13-25 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 63 (line 1 column 64))"
+  },
+  {
     "from": "saul-tormented-by-evil-spirit",
     "to": "david-flees-from-saul",
     "type": "thematic parallels",
     "strength": 0.7,
     "level": 1,
     "description": "Saul's attempts to kill David while under the influence of the evil spirit further illustrate the negative impact of the spirit's influence on his actions and decision-making."
+  },
+  {
+    "from": "witnesses-killed-and-resurrected",
+    "to": "lament-over-jerusalem",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Jesus laments the killing of the prophets, foreshadowing the fate of the two witnesses in Revelation."
   },
   {
     "from": "warning-against-deception",
@@ -32289,6 +33753,22 @@ export const allConnections = [
     "description": "Connection to Deuteronomy 21:1-9 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 66 (line 1 column 67))"
   },
   {
+    "from": "seven-thunders-sealed",
+    "to": "related-4-0",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The Psalmist describes the powerful voice of the Lord, which is likened to the seven thunders in Revelation."
+  },
+  {
+    "from": "work-out-your-salvation",
+    "to": "god-will-sanctify-his-name",
+    "type": "Covenantal Connections",
+    "strength": 0.6,
+    "level": 2,
+    "description": "This Old Testament passage speaks of God's work in the believer's heart, which connects to the themes of Philippians 2."
+  },
+  {
     "from": "gods-wrath-against-gog",
     "to": "living-waters-from-jerusalem",
     "type": "Thematic Parallels",
@@ -32343,6 +33823,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Micah 7:18-20 and Isaiah 55:6-7 both call for repentance and highlight God's willingness to pardon sin and show compassion to those who turn to Him."
+  },
+  {
+    "from": "warning-against-false-apostles",
+    "to": "paul-meets-with-ephesian-elders",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Paul's warning to the Ephesian elders about the threat of false teachers is thematically connected to his warning against false apostles in 2 Corinthians 11."
   },
   {
     "from": "manasseh-reigns-in-judah",
@@ -32519,6 +34007,14 @@ export const allConnections = [
     "strength": 0.75,
     "level": 1,
     "description": "Connection to Acts 13:50-52 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 70 (line 1 column 71))"
+  },
+  {
+    "from": "wise-conduct-toward-outsiders",
+    "to": "gods-sovereignty",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 2,
+    "description": "This Old Testament passage emphasizes the importance of wise and gracious speech, which is a relevant principle for the instruction in Colossians 4:5-6."
   },
   {
     "from": "two-requests",
@@ -32761,12 +34257,28 @@ export const allConnections = [
     "description": "Connection to 1 Samuel 4:1-2 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 65 (line 1 column 66))"
   },
   {
+    "from": "restrainer-removed",
+    "to": "god-judges-unrighteousness",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Peter's description of God's judgment on the ungodly and His protection of the righteous connects to the themes of the restrainer being removed and judgment coming in 2 Thessalonians 2."
+  },
+  {
     "from": "meeting-samuel",
     "to": "god-raises-judges",
     "type": "thematic-parallels",
     "strength": 0.7,
     "level": 1,
     "description": "The pattern of Israel seeking guidance from God's appointed leaders, such as the judges, is reflected in Saul's search for Samuel the seer."
+  },
+  {
+    "from": "slaves-to-righteousness",
+    "to": "body-as-temple-of-holy-spirit",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages emphasize that believers have been bought with a price and are now slaves to God and righteousness, not to sin."
   },
   {
     "from": "fifth-trumpet-abyss-opened",
@@ -32847,6 +34359,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Connection to Hosea 12:1 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 68 (line 1 column 69))"
+  },
+  {
+    "from": "rights-of-apostles",
+    "to": "sending-out-the-seventy",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Jesus affirms the right of workers to receive their wages, which is relevant to Paul's discussion of the rights of apostles."
   },
   {
     "from": "oppression-and-upheaval",
@@ -32943,6 +34463,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Both passages describe the earth being laid waste and desolate due to God's judgment."
+  },
+  {
+    "from": "christs-superior-sacrifice",
+    "to": "call-to-holy-living",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The description of Christ's sacrifice as a spotless lamb is thematically connected to the superior sacrifice in Hebrews 9."
   },
   {
     "from": "forgotten-and-exiled",
@@ -33481,6 +35009,14 @@ export const allConnections = [
     "description": "The vision of the dry bones in Ezekiel foreshadows the resurrection of the dead, which is the central topic of Jesus' response in this passage."
   },
   {
+    "from": "restrainer-removed",
+    "to": "satan-bound",
+    "type": "prophetic-fulfillment",
+    "strength": 0.9,
+    "level": 1,
+    "description": "The angel who binds Satan for a thousand years in Revelation 20 can be seen as the fulfillment of the restrainer being removed in 2 Thessalonians 2, allowing the lawless one to be revealed."
+  },
+  {
     "from": "seven-women-one-man",
     "to": "marriage-supper-of-the-lamb",
     "type": "prophetic-fulfillment",
@@ -33567,6 +35103,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Both passages depict a leader bringing the people into a renewed covenant with God."
+  },
+  {
+    "from": "life-in-the-spirit",
+    "to": "promise-of-the-holy-spirit",
+    "type": "Covenantal Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage connects to the promise of the Holy Spirit, which is central to the believer's life in the Spirit as described in Romans 8:5-11."
   },
   {
     "from": "reaping-the-consequences",
@@ -33673,6 +35217,14 @@ export const allConnections = [
     "description": "Both passages describe God's purpose in testing Israel to humble them and see if they will obey his commands."
   },
   {
+    "from": "qualifications-of-overseers",
+    "to": "paul-meets-with-ephesian-elders",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages highlight the role of overseers (elders) in caring for the church of God, which he obtained with his own blood."
+  },
+  {
     "from": "righteousness-over-sacrifice",
     "to": "samuel-confronts-saul",
     "type": "thematic-parallels",
@@ -33727,6 +35279,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "The list of David's sons born in Hebron is also recorded in 2 Samuel 3, highlighting the continuity between the two accounts."
+  },
+  {
+    "from": "continue-in-sound-doctrine",
+    "to": "gifts-for-building-up",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Ephesians 4 emphasizes the importance of remaining steadfast in sound doctrine to avoid being tossed about by false teachings."
   },
   {
     "from": "job-as-respected-leader",
@@ -33841,6 +35401,14 @@ export const allConnections = [
     "description": "This passage also emphasizes the importance of sexual purity and the avoidance of premature or inappropriate sexual behavior."
   },
   {
+    "from": "encouragement-to-smyrna-church",
+    "to": "rejoicing-in-suffering",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "The encouragement to the Smyrna church to remain faithful despite trials and persecution is thematically similar to Peter's exhortation to believers to endure suffering for the sake of Christ."
+  },
+  {
     "from": "jehoiachin-released-from-prison",
     "to": "jehoiachins-short-reign",
     "type": "Character Connections",
@@ -33887,6 +35455,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Both passages exhort younger men to be exemplary in their conduct, highlighting the importance of setting a good example for others."
+  },
+  {
+    "from": "heirs-as-children-under-guardians",
+    "to": "vicarious-atonement",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.85,
+    "level": 1,
+    "description": "Connection to Galatians 4:1-3 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 69 (line 1 column 70))"
   },
   {
     "from": "judah-acknowledges-his-fault",
@@ -34329,12 +35905,28 @@ export const allConnections = [
     "description": "This verse also encourages living at peace with others, which connects to the theme of avoiding foolish strife."
   },
   {
+    "from": "two-witnesses-prophesy",
+    "to": "elijah-fed-by-ravens",
+    "type": "Character Connections",
+    "strength": 0.6,
+    "level": 2,
+    "description": "The actions and miracles of the two witnesses resemble those of the prophets Elijah and Elisha."
+  },
+  {
     "from": "offerings-in-addition-to-vows",
     "to": "feast-of-firstfruits",
     "type": "Thematic Parallels",
     "strength": 0.9,
     "level": 1,
     "description": "The distinction between the required feast offerings and the voluntary vows and freewill offerings is also emphasized in Leviticus 23."
+  },
+  {
+    "from": "marriage-supper-of-the-lamb",
+    "to": "god-will-restore-israel",
+    "type": "Typological",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The prophet Hosea's imagery of God betrothing Israel to himself and restoring their relationship foreshadows and typologically prefigures the marriage supper of the Lamb described in Revelation 19."
   },
   {
     "from": "davids-military-success",
@@ -34431,6 +36023,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Jesus warns against false prophets who are known by their fruits, similar to the condemnation in Jeremiah."
+  },
+  {
+    "from": "bearing-one-anothers-burdens",
+    "to": "christian-living",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This verse also encourages believers to help the weak and support one another, similar to the message in Galatians 6:2-5."
   },
   {
     "from": "joshua-succeeds-moses",
@@ -35201,6 +36801,14 @@ export const allConnections = [
     "description": "The four horses in Zechariah's vision may prefigure the four horsemen of the Apocalypse in Revelation, both representing God's judgment and the unfolding of His plan for the world."
   },
   {
+    "from": "women-learn-in-submission",
+    "to": "consequences-of-sin",
+    "type": "Typological",
+    "strength": 0.6,
+    "level": 2,
+    "description": "The curse placed on Eve after the Fall, where her desire will be for her husband and he will rule over her, may foreshadow the instructions in 1 Timothy 2:11-15 regarding women's submission to male authority."
+  },
+  {
     "from": "vows-to-yahweh",
     "to": "honoring-gods-name",
     "type": "Thematic Parallels",
@@ -35455,6 +37063,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Paul describes false teachers who are conceited, controversial, and teach false doctrines for selfish gain, similar to the characteristics in 2 Peter 2."
+  },
+  {
+    "from": "pauls-anguish-for-israel",
+    "to": "weeping-for-the-slain",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Like Jeremiah, Paul expresses deep sorrow and anguish over the spiritual condition of his people."
   },
   {
     "from": "four-angels-holding-winds",
@@ -35737,6 +37353,14 @@ export const allConnections = [
     "description": "The death of Eli and the loss of the ark of the covenant are direct consequences of the sins of Eli's sons, as foretold in the prophecy."
   },
   {
+    "from": "pauls-testimony-of-gods-grace",
+    "to": "dead-in-sin",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages emphasize that salvation is by grace alone, not by human merit or works."
+  },
+  {
     "from": "miracles-through-paul",
     "to": "elisha-raises-shunammites-son",
     "type": "typological",
@@ -35871,6 +37495,22 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Ezekiel 45's detailed instructions for offerings and sacrifices are thematically parallel to the regulations for various feast offerings found in Numbers 28-29."
+  },
+  {
+    "from": "christs-sacrifice-perfects-believers",
+    "to": "freedom-from-legalism",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Paul describes how Christ's sacrifice has forgiven our sins and canceled the legal debt we owed, perfecting believers."
+  },
+  {
+    "from": "mankind-refuses-to-repent",
+    "to": "aarons-rod-becomes-a-serpent",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages describe the hardening of hearts and the refusal to repent despite divine judgments."
   },
   {
     "from": "jonah-goes-to-nineveh",
@@ -36601,6 +38241,14 @@ export const allConnections = [
     "description": "Stephen's speech in Acts recounts the life of Abraham, including the promise of the land and his death, connecting this passage to the broader biblical narrative."
   },
   {
+    "from": "transformed-mind",
+    "to": "vicarious-atonement",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.85,
+    "level": 1,
+    "description": "Connection to Romans 12:2 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 56 (line 1 column 57))"
+  },
+  {
     "from": "joseph-sold-into-slavery",
     "to": "jacob-deceived-about-joseph",
     "type": "Typological",
@@ -36687,6 +38335,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 2,
     "description": "The tablets of stone are contrasted with the tablets of human hearts, suggesting a new covenant."
+  },
+  {
+    "from": "not-associating-with-immoral-brothers",
+    "to": "future-glory",
+    "type": "Covenantal Connections",
+    "strength": 0.9,
+    "level": 2,
+    "description": "Connection to 1 Corinthians 5:9-11 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 69 (line 1 column 70))"
   },
   {
     "from": "rest-for-the-weary",
@@ -36841,6 +38497,14 @@ export const allConnections = [
     "description": "Both passages warn against sin's desire to rule over the believer, and the need to resist its power."
   },
   {
+    "from": "simplicity-and-devotion-to-christ",
+    "to": "criticism-of-ephesus-church",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The warning against losing one's first love in Revelation 2 is thematically connected to Paul's desire for the Corinthians' pure devotion to Christ."
+  },
+  {
     "from": "ishmael-takes-captives",
     "to": "gedaliah-appointed-governor",
     "type": "Thematic Parallels",
@@ -36919,6 +38583,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The apostle Paul's exhortation to the Corinthians to give generously echoes the message in Ecclesiastes."
+  },
+  {
+    "from": "mystery-of-godliness",
+    "to": "pauls-struggle-for-the-church",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages refer to the mystery of God, which is Christ, in whom are hidden all the treasures of wisdom and knowledge."
   },
   {
     "from": "enemies-like-dust",
@@ -37031,6 +38703,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "Luke's parallel account of Jesus appointing the twelve apostles"
+  },
+  {
+    "from": "love-endures-forever",
+    "to": "related-2-2",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This psalm repeatedly declares that God's love endures forever, which connects to the theme of love's permanence in 1 Corinthians 13."
   },
   {
     "from": "lovers-delight",
@@ -37201,6 +38881,14 @@ export const allConnections = [
     "description": "This passage describes Paul's early persecution of the church, which is also recounted in Acts 26."
   },
   {
+    "from": "unity-and-humility",
+    "to": "humility-before-god",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 2,
+    "description": "This passage emphasizes the importance of humility, which connects to the themes in Philippians 2."
+  },
+  {
     "from": "all-life-perishes",
     "to": "god-judges-unrighteousness",
     "type": "Thematic Parallels",
@@ -37233,6 +38921,14 @@ export const allConnections = [
     "description": "God's promise to Abram in Genesis 13 is a reaffirmation and expansion of the earlier covenant established in Genesis 12."
   },
   {
+    "from": "rights-of-apostles",
+    "to": "blotting-out-amalek",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Paul cites this Old Testament principle about not muzzling an ox as a basis for the rights of apostles to receive material support."
+  },
+  {
     "from": "cherubim-and-throne",
     "to": "consequences-of-sin",
     "type": "typological",
@@ -37247,6 +38943,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Both passages reveal Paul's deep affection and care for the believers he ministered to, likening himself to a gentle, nurturing parent."
+  },
+  {
+    "from": "wisdom-from-above",
+    "to": "think-on-good",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Paul encourages believers to focus on what is true, honorable, just, pure, lovely, and commendable, aligning with the characteristics of wisdom from above in James."
   },
   {
     "from": "israel-sins-again",
@@ -37409,6 +39113,14 @@ export const allConnections = [
     "description": "Connection to Zephaniah 1:2-3 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 75 (line 1 column 76))"
   },
   {
+    "from": "faith-tested-produces-endurance",
+    "to": "jobs-blessings",
+    "type": "Typological",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The story of Job's endurance through trials and tribulations is a powerful example of the kind of faith and perseverance described in James 1:2-4."
+  },
+  {
     "from": "faith-of-canaanite-woman",
     "to": "gentiles-brought-near",
     "type": "Thematic Parallels",
@@ -37431,6 +39143,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "This verse confirms that Caleb did in fact drive out the Anakim from Hebron, as promised in Joshua 15:13-19."
+  },
+  {
+    "from": "taming-the-tongue",
+    "to": "dont-grieve-the-spirit",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Paul instructs believers to let no corrupting talk come out of their mouths, echoing the call to tame the tongue in James."
   },
   {
     "from": "death-of-jeroboams-son",
@@ -37471,6 +39191,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Connection to Exodus 6:2-3 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 69 (line 1 column 70))"
+  },
+  {
+    "from": "seven-angels-with-plagues",
+    "to": "related-1-0",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Connection to Revelation 15:1 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 66 (line 1 column 67))"
   },
   {
     "from": "knowing-god",
@@ -37873,6 +39601,14 @@ export const allConnections = [
     "description": "The widow's cry for help due to debt and the threat of losing her sons connects to the people's plight in Nehemiah, highlighting the need for compassion and relief."
   },
   {
+    "from": "commendation-of-phoebe",
+    "to": "contentment",
+    "type": "character-connections",
+    "strength": 0.6,
+    "level": 1,
+    "description": "These passages commend specific women who have labored alongside the apostles in the gospel work, emphasizing their valuable contributions to the church."
+  },
+  {
     "from": "gods-judgment-on-egypt",
     "to": "egypt-will-be-desolate",
     "type": "Thematic Parallels",
@@ -38105,6 +39841,14 @@ export const allConnections = [
     "description": "The sign of Hezekiah's healing in Isaiah 38 is also recorded in 2 Kings 20, demonstrating the fulfillment of the promise."
   },
   {
+    "from": "prophets-foretold-christ",
+    "to": "vicarious-atonement",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.85,
+    "level": 1,
+    "description": "Connection to 1 Peter 1:10-12 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 63 (line 1 column 64))"
+  },
+  {
     "from": "gods-power-over-creation",
     "to": "four-living-creatures",
     "type": "thematic_parallels",
@@ -38249,6 +39993,14 @@ export const allConnections = [
     "description": "The warning against the scribes in Luke is also found in the Gospel of Mark, where it is part of the same sequence of events."
   },
   {
+    "from": "gentile-salvation",
+    "to": "cornelius-vision-of-an-angel",
+    "type": "Typological",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The story of Peter's vision and the conversion of Cornelius foreshadows the inclusion of Gentiles in God's people."
+  },
+  {
     "from": "new-covenant-of-the-spirit",
     "to": "disciples-desert-jesus",
     "type": "Thematic Parallels",
@@ -38271,6 +40023,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "Like Gideon, David is a young, unlikely hero who is called by God to deliver his people from their enemies, despite his initial hesitation."
+  },
+  {
+    "from": "god-chooses-the-weak",
+    "to": "related-1-0",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Connection to 1 Corinthians 1:26-31 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 60 (line 1 column 61))"
   },
   {
     "from": "avoiding-intermarriage",
@@ -38367,6 +40127,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The parallel passage in Isaiah 37 records the same divine response to Hezekiah's prayer, demonstrating the fulfillment of the prophecy."
+  },
+  {
+    "from": "christ-the-faithful-and-true",
+    "to": "jesus-the-great-high-priest",
+    "type": "Christological",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The portrayal of Christ as the faithful and true judge in Revelation 19 connects to the Christological themes in Hebrews of Jesus as the great high priest who can sympathize with our weaknesses and judge righteously."
   },
   {
     "from": "death-of-pelatiah",
@@ -38497,6 +40265,14 @@ export const allConnections = [
     "description": "The eighth day assembly may be seen as a type of the eternal rest and celebration that will be experienced in the new heavens and new earth, as described in Revelation 21."
   },
   {
+    "from": "john-must-prophesy-again",
+    "to": "ezekiel-commissioned",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Ezekiel is also commissioned by God to prophesy to a rebellious people, similar to John's task."
+  },
+  {
     "from": "assyrias-pride-and-downfall",
     "to": "future-glory",
     "type": "Covenantal Connections",
@@ -38535,6 +40311,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Titus is again mentioned as one of Paul's companions who did not take advantage of the Corinthians, further establishing his trustworthiness."
+  },
+  {
+    "from": "dangers-of-jealousy-and-ambition",
+    "to": "anger-and-understanding",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Proverbs warns that jealousy is like a cancer that rots the bones, connecting to the theme of the dangers of jealousy."
   },
   {
     "from": "people-bring-offerings",
@@ -39225,6 +41009,14 @@ export const allConnections = [
     "description": "This passage shares the theme of living and walking in Christ, which is central to the exhortation in Colossians 2:6-7."
   },
   {
+    "from": "assurance-of-eternal-life",
+    "to": "jesus-one-with-the-father",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages emphasize the security and assurance of eternal life for believers in Christ."
+  },
+  {
     "from": "city-dimensions-and-gates",
     "to": "gods-love-for-the-world",
     "type": "Thematic Parallels",
@@ -39303,6 +41095,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Isaiah's prophecies are closely connected to the events of Hezekiah's reign, including the Assyrian threat."
+  },
+  {
+    "from": "prayer-for-thessalonians-growth",
+    "to": "future-glory",
+    "type": "Covenantal Connections",
+    "strength": 0.9,
+    "level": 2,
+    "description": "Connection to 1 Thessalonians 3:11-13 (Note: This is a fallback response. Reason: Error calling Claude API: Claude API error: 502 - <html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>cloudflare</center>\r\n</body>\r\n</html>\r\n)"
   },
   {
     "from": "jehoiachins-brief-reign",
@@ -39865,6 +41665,14 @@ export const allConnections = [
     "description": "Esau's eventual reconciliation with Jacob reflects a softening of his earlier vengeful plans."
   },
   {
+    "from": "characteristics-of-love",
+    "to": "remaining-in-jesus-love",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Jesus' teaching on the greatest love being to lay down one's life for others is thematically parallel to the description of love in 1 Corinthians 13."
+  },
+  {
     "from": "living-for-gods-will",
     "to": "dead-in-sin",
     "type": "Thematic Parallels",
@@ -39943,6 +41751,14 @@ export const allConnections = [
     "strength": 0.5,
     "level": 0,
     "description": "Thematic connection between David defeating Goliath and believers being \"more than conquerors\" through Christ."
+  },
+  {
+    "from": "old-testament-examples-of-faith",
+    "to": "rahab-acknowledges-yahweh",
+    "type": "Character Connections",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The faith of Rahab the prostitute, mentioned in Hebrews 11, is recounted in the book of Joshua."
   },
   {
     "from": "entrust-teaching-to-faithful-men",
@@ -40340,7 +42156,7 @@ export const allConnections = [
     "from": "sauls-disobedience-and-downfall",
     "to": "god-commands-saul",
     "type": "Thematic Parallels",
-    "strength": 1,
+    "strength": 0.0,
     "level": 1,
     "description": "The account of Saul's disobedience in failing to fully obey God's command to destroy the Amalekites is detailed in 1 Samuel 15, which directly led to his downfall."
   },
@@ -40481,6 +42297,14 @@ export const allConnections = [
     "description": "Ezekiel 45's instructions for princes are thematically connected to Micah's condemnation of corrupt leaders who abuse their power and neglect the needs of the people."
   },
   {
+    "from": "handle-gods-word-properly",
+    "to": "itching-ears",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages emphasize the importance of preaching and teaching the truth of God's Word, avoiding false doctrines and empty discussions."
+  },
+  {
     "from": "solomon-asks-for-wisdom",
     "to": "solomons-wealth-and-resources",
     "type": "Prophetic Fulfillment",
@@ -40593,6 +42417,14 @@ export const allConnections = [
     "description": "The honoring of Mordecai in Esther 8:15-17 is a direct continuation and fulfillment of the events described in Esther 6:6-11, where Mordecai is publicly honored by the king."
   },
   {
+    "from": "moses-faith",
+    "to": "israelites-cry-out-to-god",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.9,
+    "level": 1,
+    "description": "The account of Moses' faith in Hebrews 11 is directly connected to the narrative of the Exodus in the book of Exodus."
+  },
+  {
     "from": "israel-settles-in-egypt",
     "to": "israelites-multiply-in-egypt",
     "type": "Thematic Parallels",
@@ -40695,6 +42527,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The imagery of a tree planted by streams of water, bearing fruit, connects to the vision of the trees along the river in Ezekiel."
+  },
+  {
+    "from": "dragon-persecutes-woman",
+    "to": "god-curses-serpent",
+    "type": "Typological",
+    "strength": 0.8,
+    "level": 1,
+    "description": "The enmity between the serpent and the woman's offspring is echoed in the dragon's persecution of the woman and her child."
   },
   {
     "from": "jacob-blesses-josephs-sons",
@@ -40839,6 +42679,14 @@ export const allConnections = [
     "strength": 0.85,
     "level": 1,
     "description": "Connection to Exodus 39:32-43 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 66 (line 1 column 67))"
+  },
+  {
+    "from": "macedonian-generosity",
+    "to": "readiness-to-give",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Paul's further praise of the Macedonians' zeal for giving in 2 Corinthians 9 reinforces the account of their generosity in 2 Corinthians 8."
   },
   {
     "from": "god-curses-serpent",
@@ -41009,6 +42857,14 @@ export const allConnections = [
     "description": "Galatians 3:29 states that if one belongs to Christ, then they are 'Abraham's offspring, heirs according to promise', connecting the Gentiles' inheritance to the Abrahamic covenant."
   },
   {
+    "from": "chosen-people-of-god",
+    "to": "john-writes-to-seven-churches",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Believers are described as a kingdom of priests, echoing the idea of believers as a chosen people belonging to God."
+  },
+  {
     "from": "holy-one-of-israel-among-zion",
     "to": "new-jerusalem",
     "type": "Prophetic Fulfillment",
@@ -41031,6 +42887,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The mercy seat is seen as a type or foreshadowing of Christ, who is described as the propitiation (mercy seat) for sin."
+  },
+  {
+    "from": "paul-forgoes-his-rights",
+    "to": "paul-defends-his-apostleship",
+    "type": "Character Connections",
+    "strength": 0.9,
+    "level": 2,
+    "description": "Paul's defense of his apostleship in the previous passage provides the context for his decision to forgo his rights in this passage."
   },
   {
     "from": "discipline-children",
@@ -41095,6 +42959,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 2,
     "description": "Jesus also warns his disciples about the rise of false prophets in the end times, echoing Jeremiah's warnings."
+  },
+  {
+    "from": "instructions-for-older-women",
+    "to": "appointing-elders",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 2,
+    "description": "The instructions for older women in Titus 2:3-5 are part of a larger section in the epistle that also includes qualifications for church leaders, suggesting a thematic connection between the roles and responsibilities of older believers."
   },
   {
     "from": "final-greetings-and-instructions",
@@ -41297,6 +43169,14 @@ export const allConnections = [
     "description": "While not using the exact triad, this verse highlights how faith, hope, and love for one another are essential for the Christian life."
   },
   {
+    "from": "no-condemnation-in-christ",
+    "to": "christs-death-for-sinners",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage also speaks of the believer's justification and peace with God, which is the foundation for the freedom from condemnation described in Romans 8:1-4."
+  },
+  {
     "from": "gods-glory-appears",
     "to": "gods-love-for-the-world",
     "type": "Thematic Parallels",
@@ -41327,6 +43207,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "The New Testament echoes the promise of eternal security for those who are in Christ, the ultimate fulfillment of the Old Testament promises."
+  },
+  {
+    "from": "giving-according-to-ability",
+    "to": "vows-and-valuations",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The Mosaic law's provision for adjusting offerings based on one's means connects to the principle of giving according to ability in 2 Corinthians 8."
   },
   {
     "from": "made-alive-in-christ",
@@ -41375,6 +43263,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The instructions for building the altar on Mount Ebal share similarities with the general guidelines for building altars to God in Exodus."
+  },
+  {
+    "from": "made-alive-in-christ",
+    "to": "freedom-from-legalism",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage also describes believers being made alive together with Christ, which is the same theme as Ephesians 2:4-7."
   },
   {
     "from": "pauls-apostleship",
@@ -41561,12 +43457,28 @@ export const allConnections = [
     "description": "The account in 2 Chronicles provides additional details about Solomon's organization of the labor force for the temple project, highlighting the scale and coordination of the endeavor."
   },
   {
+    "from": "self-examination",
+    "to": "call-for-repentance",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage from the Old Testament also encourages self-examination and repentance, connecting to the theme in 2 Corinthians 13:5-6."
+  },
+  {
     "from": "all-creation-worships",
     "to": "gods-love-for-the-world",
     "type": "Thematic Parallels",
     "strength": 0.8,
     "level": 1,
     "description": "Connection to Revelation 5:13-14 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 65 (line 1 column 66))"
+  },
+  {
+    "from": "human-depravity",
+    "to": "future-glory",
+    "type": "Covenantal Connections",
+    "strength": 0.9,
+    "level": 2,
+    "description": "Connection to Romans 1:21-32 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 66 (line 1 column 67))"
   },
   {
     "from": "gods-discipline",
@@ -41625,12 +43537,28 @@ export const allConnections = [
     "description": "This passage discusses the temporary nature of the law and its role in leading us to Christ, echoing the idea of the old covenant becoming obsolete."
   },
   {
+    "from": "law-binds-until-death",
+    "to": "do-not-let-sin-reign",
+    "type": "law-binds-until-death",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages speak of believers being freed from the dominion of the law through their union with Christ."
+  },
+  {
     "from": "jesus-washes-disciples-feet",
     "to": "humility-before-god",
     "type": "Thematic Parallels",
     "strength": 0.6,
     "level": 1,
     "description": "Peter's instruction to be humble and serve one another reflects the lesson Jesus taught through the foot washing."
+  },
+  {
+    "from": "role-of-the-high-priest",
+    "to": "future-glory",
+    "type": "Covenantal Connections",
+    "strength": 0.9,
+    "level": 2,
+    "description": "Connection to Hebrews 5:1-4 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 75 (line 1 column 76))"
   },
   {
     "from": "earth-made-desolate",
@@ -41721,6 +43649,14 @@ export const allConnections = [
     "description": "Both passages describe the departure of God's glory from a place of judgment, signifying the withdrawal of His presence and protection."
   },
   {
+    "from": "greetings-to-believers",
+    "to": "itching-ears",
+    "type": "thematic-parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages contain Paul's personal greetings to various individuals, reflecting the apostle's deep care and concern for the well-being of the believers in different congregations."
+  },
+  {
     "from": "one-god-and-one-mediator",
     "to": "jesus-is-the-way-truth-and-life",
     "type": "Prophetic Fulfillment",
@@ -41745,12 +43681,28 @@ export const allConnections = [
     "description": "This passage describes another instance of a leader being chosen from among the people, similar to Jephthah's selection."
   },
   {
+    "from": "itching-ears",
+    "to": "prophets-and-priests-deceive",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages describe people who prefer to hear messages that tickle their ears rather than the truth."
+  },
+  {
     "from": "david-conquers-jerusalem",
     "to": "jerusalem-a-burdensome-stone",
     "type": "Prophetic Fulfillment",
     "strength": 0.6,
     "level": 2,
     "description": "This prophecy about Jerusalem's future prominence as a burdensome stone for the nations may be seen as a fulfillment of David's conquest and establishment of the city."
+  },
+  {
+    "from": "charge-to-timothy",
+    "to": "fight-the-good-fight",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages exhort Timothy to fight the good fight of faith and hold fast to his calling."
   },
   {
     "from": "amalekites-raid-ziklag",
@@ -42161,6 +44113,14 @@ export const allConnections = [
     "description": "Both passages discuss the high cost and demands of following Jesus as his disciple."
   },
   {
+    "from": "timothys-sincere-faith",
+    "to": "chosen-before-creation",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Paul's thanksgiving for the Ephesians' faith and love is similar to his expression of gratitude for Timothy's sincere faith."
+  },
+  {
     "from": "assembling-israel-for-the-ark",
     "to": "miraculous-jordan-crossing",
     "type": "Thematic Parallels",
@@ -42191,6 +44151,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "This prophecy against Ammon and Rabbah is fulfilled by the events described in 1 Chronicles 20:1-3."
+  },
+  {
+    "from": "gods-wrath-against-sin",
+    "to": "gods-love-for-the-world",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Connection to Romans 1:18-32 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 66 (line 1 column 67))"
   },
   {
     "from": "unacceptable-offerings",
@@ -42463,6 +44431,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "David's gathering of materials and workers for the temple construction is paralleled by Solomon's later organization of the labor force to build the temple."
+  },
+  {
+    "from": "timothy-and-epaphroditus",
+    "to": "timothy-joins-paul",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage introduces Timothy, providing background for his role in Philippians 2."
   },
   {
     "from": "the-holy-spirit-and-disciples-testimony",
@@ -43041,6 +45017,14 @@ export const allConnections = [
     "description": "Jeremiah also prophesies that the Medes will be stirred up against Babylon, fulfilling Isaiah's earlier prediction."
   },
   {
+    "from": "vision-of-christ",
+    "to": "creation-of-heavens-and-earth",
+    "type": "Typological",
+    "strength": 0.75,
+    "level": 1,
+    "description": "Connection to Revelation 1:12-18 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 58 (line 1 column 59))"
+  },
+  {
     "from": "vows-to-yahweh",
     "to": "laws-on-vows-and-offerings",
     "type": "Thematic Parallels",
@@ -43265,12 +45249,28 @@ export const allConnections = [
     "description": "The exile of the Transjordan tribes is a fulfillment of the covenant curses described in Leviticus for persistent disobedience and idolatry."
   },
   {
+    "from": "personal-conduct",
+    "to": "vicarious-atonement",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.85,
+    "level": 1,
+    "description": "Connection to 1 Timothy 5:22-25 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 68 (line 1 column 69))"
+  },
+  {
     "from": "womens-vows-in-fathers-house",
     "to": "virgins-and-the-unmarried",
     "type": "Thematic Parallels",
     "strength": 0.5,
     "level": 1,
     "description": "This passage addresses the authority of a father over his daughter's marital decisions, which is relevant to the context of women's vows in Numbers 30."
+  },
+  {
+    "from": "promise-through-faith",
+    "to": "gods-promise-of-descendants",
+    "type": "Thematic Parallels",
+    "strength": 0.9,
+    "level": 1,
+    "description": "God's promise to Abraham of innumerable descendants is fulfilled through his faith, not the law."
   },
   {
     "from": "false-prophets-condemned",
@@ -43407,6 +45407,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "Isaiah criticizes the watchmen of Israel for being negligent in their duties, which is a similar theme to Ezekiel's warning about the watchman's responsibility."
+  },
+  {
+    "from": "sound-doctrine-for-older-men",
+    "to": "appointing-elders",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 2,
+    "description": "This passage in Titus also addresses the qualifications for church leaders, which are closely connected to the instructions for older men in Titus 2:1-2."
   },
   {
     "from": "joseph-given-extra-portion",
@@ -43553,6 +45561,14 @@ export const allConnections = [
     "description": "The blessing on the three nations may prefigure the vision of the nations bringing their glory into the New Jerusalem."
   },
   {
+    "from": "true-circumcision-of-heart",
+    "to": "creation-of-heavens-and-earth",
+    "type": "Typological",
+    "strength": 0.75,
+    "level": 1,
+    "description": "Connection to Romans 2:25-29 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 67 (line 1 column 68))"
+  },
+  {
     "from": "prophecy-of-the-fugitive",
     "to": "vicarious-atonement",
     "type": "Prophetic Fulfillment",
@@ -43575,6 +45591,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The prophet Nathan's rebuke of David's sin with Bathsheba provides important context for understanding David's later sin in the census and God's judgment."
+  },
+  {
+    "from": "righteousness-by-faith",
+    "to": "abrams-belief-credited-as-righteousness",
+    "type": "covenantal-connections",
+    "strength": 0.9,
+    "level": 1,
+    "description": "Abraham's faith was credited to him as righteousness, establishing the principle of righteousness by faith that is central to Paul's teaching."
   },
   {
     "from": "pharaoh-hardens-heart",
@@ -43607,6 +45631,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The prophets, including Isaiah, spoke of the sufferings of Christ and his subsequent glory, which is now revealed in the gospel."
+  },
+  {
+    "from": "paul-servant-and-apostle",
+    "to": "vicarious-atonement",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.85,
+    "level": 1,
+    "description": "Connection to Romans 1:1-7 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 66 (line 1 column 67))"
   },
   {
     "from": "levites-counted-and-assigned-duties",
@@ -43825,6 +45857,14 @@ export const allConnections = [
     "description": "This passage also speaks of Pharaoh Neco of Egypt being defeated by the Babylonians, continuing the theme of foreign powers conquering Egypt and its allies."
   },
   {
+    "from": "mixed-review-of-thyatira-church",
+    "to": "jezebel-killed",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The judgment pronounced against the false prophetess Jezebel in Thyatira echoes the judgment and downfall of the historical Queen Jezebel, as described in 2 Kings."
+  },
+  {
     "from": "jabesh-gilead-massacre",
     "to": "israel-defeats-the-ammonites",
     "type": "Thematic Parallels",
@@ -44039,6 +46079,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Both passages affirm that the righteous will be steadfast and persevere through trials, with their hearts being established."
+  },
+  {
+    "from": "causes-of-conflict",
+    "to": "walk-by-the-spirit",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages connect the source of conflicts and quarrels to the sinful desires of the flesh."
   },
   {
     "from": "creation-of-man",
@@ -44833,6 +46881,14 @@ export const allConnections = [
     "description": "Connection to Mark 1:21-28 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 72 (line 1 column 73))"
   },
   {
+    "from": "adoption-as-gods-children",
+    "to": "gods-love-for-the-world",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Connection to Galatians 4:6-7 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 69 (line 1 column 70))"
+  },
+  {
     "from": "total-number-of-men",
     "to": "sealing-of-144000",
     "type": "Typological",
@@ -45015,6 +47071,14 @@ export const allConnections = [
     "strength": 0.75,
     "level": 1,
     "description": "Connection to Revelation 10:3-4 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 69 (line 1 column 70))"
+  },
+  {
+    "from": "pauls-confidence",
+    "to": "pauls-past-credentials",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage expresses Paul's confidence in his relationship with Christ, which is relevant to the theme of his confidence in 2 Corinthians 7:12-16."
   },
   {
     "from": "treatment-of-the-vulnerable",
@@ -45209,6 +47273,14 @@ export const allConnections = [
     "description": "Both passages address believers as those who have been 'called' by God, emphasizing the theme of divine election and God's sovereign choice of his people."
   },
   {
+    "from": "paul-desires-to-visit-thessalonians",
+    "to": "related-1-0",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Connection to 1 Thessalonians 3:9-10 (Note: This is a fallback response. Reason: Error calling Claude API: Claude API error: 502 - <html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>cloudflare</center>\r\n</body>\r\n</html>\r\n)"
+  },
+  {
     "from": "woman-seeks-beloved",
     "to": "jesus-appears-to-mary",
     "type": "Thematic Parallels",
@@ -45287,6 +47359,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "David's later rebuke of Abner for failing to protect Saul's house shows the ongoing tension between David and Saul's military commander."
+  },
+  {
+    "from": "unity-and-humility",
+    "to": "genuine-love",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages emphasize the importance of humility and considering others before oneself."
   },
   {
     "from": "remembering-the-exodus",
@@ -45601,6 +47681,14 @@ export const allConnections = [
     "description": "Moses recounts the Israelites' rebellion and fear in the face of the report about the inhabitants of Canaan."
   },
   {
+    "from": "all-under-sin",
+    "to": "dead-in-sin",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage also describes all people as being by nature children of wrath, under the power of sin."
+  },
+  {
     "from": "no-intermarriage-with-canaanites",
     "to": "intermarriage-with-pagan-nations",
     "type": "Thematic Parallels",
@@ -45705,6 +47793,14 @@ export const allConnections = [
     "description": "Eleazar the priest is responsible for overseeing the ingredients for the grain offerings, including the fine flour, oil, and frankincense."
   },
   {
+    "from": "pauls-confidence",
+    "to": "pauls-testimony-of-gods-grace",
+    "type": "Character Connections",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage highlights Paul's confidence in God's grace and calling, which is connected to the theme of his confidence in 2 Corinthians 7:12-16."
+  },
+  {
     "from": "egyptian-magicians-fail",
     "to": "opposition-to-the-truth",
     "type": "Thematic Parallels",
@@ -45735,6 +47831,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 2,
     "description": "Comparison between God's covenant with Abraham and the New Covenant established through Christ."
+  },
+  {
+    "from": "final-greetings",
+    "to": "commendation-of-phoebe",
+    "type": "Character Connections",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages contain Paul's personal greetings to various individuals, highlighting the relational nature of the early Christian community."
   },
   {
     "from": "genuine-love",
@@ -46137,6 +48241,14 @@ export const allConnections = [
     "description": "Both passages affirm that God is the God of all people, not just the Israelites, and that salvation is available to all who believe."
   },
   {
+    "from": "timothy-our-brother",
+    "to": "final-greetings-and-blessing",
+    "type": "character-connections",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Timothy is again referred to as Paul's brother in the greetings of Romans, reinforcing the close relationship between the two."
+  },
+  {
     "from": "execute-true-judgment",
     "to": "execute-justice-and-righteousness",
     "type": "Thematic Parallels",
@@ -46223,6 +48335,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "God reiterates and expands his promise of the land of Canaan to Abram, providing more specific details about the boundaries of the promised land."
+  },
+  {
+    "from": "put-away-wickedness",
+    "to": "related-3-2",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 2,
+    "description": "The psalmist's exhortation to turn from evil and do good connects to the idea of putting away wickedness."
   },
   {
     "from": "healing-of-epileptic-boy",
@@ -46601,6 +48721,14 @@ export const allConnections = [
     "description": "Both Jahaziel's prophecy and David's words to Goliath emphasize that the battle belongs to the Lord and that he will deliver his people."
   },
   {
+    "from": "opposition-to-the-truth",
+    "to": "paul-confronts-elymas",
+    "type": "character-connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The story of Elymas the sorcerer, who opposed Paul and Barnabas, is a similar example of someone who resists the truth."
+  },
+  {
     "from": "friendship-with-the-world",
     "to": "transformed-mind",
     "type": "Thematic Parallels",
@@ -46703,6 +48831,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Connection to 1 Timothy 3:16 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 65 (line 1 column 66))"
+  },
+  {
+    "from": "thanksgiving-for-spiritual-gifts",
+    "to": "vicarious-atonement",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.85,
+    "level": 1,
+    "description": "Connection to 1 Corinthians 1:4-9 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 60 (line 1 column 61))"
   },
   {
     "from": "jehoshaphat-seeks-the-lord",
@@ -46927,6 +49063,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Jeremiah also pronounces judgments against the southern kingdom, sharing the same themes of impending doom and destruction as found in Ezekiel 20."
+  },
+  {
+    "from": "seven-stars-and-lampstands",
+    "to": "vicarious-atonement",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.85,
+    "level": 1,
+    "description": "Connection to Revelation 1:19-20 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 58 (line 1 column 59))"
   },
   {
     "from": "personal-injury-laws",
@@ -47193,6 +49337,14 @@ export const allConnections = [
     "description": "An Old Testament passage that similarly promises that those who seek God wholeheartedly will find Him."
   },
   {
+    "from": "unity-and-diversity-of-gifts",
+    "to": "unity-in-diversity",
+    "type": "Thematic Parallels",
+    "strength": 0.9,
+    "level": 1,
+    "description": "Both passages discuss the diversity of spiritual gifts given by the same Spirit, emphasizing the unity and interdependence of the body of Christ."
+  },
+  {
     "from": "jacobs-family-listed",
     "to": "sealing-of-144000",
     "type": "Prophetic Fulfillment",
@@ -47351,6 +49503,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "Micah 7:1-6 and Hosea 4:1-3 both lament the moral and spiritual decay of the people, with a focus on the lack of faithfulness, kindness, and knowledge of God."
+  },
+  {
+    "from": "pauls-travel-plans",
+    "to": "miracles-through-paul",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "This passage from Acts provides historical context for Paul's travel plans mentioned in 1 Corinthians 16, including his intentions to visit Corinth."
   },
   {
     "from": "levites-exempted-from-census",
@@ -47665,6 +49825,14 @@ export const allConnections = [
     "description": "The eighth day assembly offerings in Numbers 29 are part of the instructions for the Feast of Tabernacles, which is described in detail in Leviticus 23."
   },
   {
+    "from": "final-greetings",
+    "to": "itching-ears",
+    "type": "Character Connections",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Paul's final greetings in this passage share similarities with the ones found in 1 Corinthians 16, reflecting the apostle's concern for maintaining relationships within the broader Christian community."
+  },
+  {
     "from": "gods-power-displayed",
     "to": "yahwehs-power-over-creation",
     "type": "Thematic Parallels",
@@ -47679,6 +49847,22 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "The parallel account in 2 Kings 18 provides additional details and context around the Rabshakeh's threats and attempts to intimidate Jerusalem."
+  },
+  {
+    "from": "do-not-let-sin-reign",
+    "to": "put-off-the-old-self",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages emphasize the need to put off the old self and put on the new self, which is connected to not letting sin reign in one's life."
+  },
+  {
+    "from": "grace-abounds-over-sin",
+    "to": "pauls-testimony-of-gods-grace",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages highlight the surpassing grace of God that overcomes the abundance of sin."
   },
   {
     "from": "restoration-of-israel",
@@ -47761,6 +49945,14 @@ export const allConnections = [
     "description": "Both passages describe the people's hardness of heart and unwillingness to listen to God's voice, leading to their spiritual downfall."
   },
   {
+    "from": "bowls-of-gods-wrath",
+    "to": "future-glory",
+    "type": "Covenantal Connections",
+    "strength": 0.9,
+    "level": 2,
+    "description": "Connection to Revelation 15:7-8 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 66 (line 1 column 67))"
+  },
+  {
     "from": "job-humbles-himself",
     "to": "parable-of-the-pharisee-and-tax-collector",
     "type": "Thematic Parallels",
@@ -47833,6 +50025,14 @@ export const allConnections = [
     "description": "The high priest's role in the Day of Atonement rituals foreshadows Christ's work as the ultimate high priest who secures forgiveness and access to God."
   },
   {
+    "from": "pauls-desire-to-visit-rome",
+    "to": "creation-of-heavens-and-earth",
+    "type": "Typological",
+    "strength": 0.75,
+    "level": 1,
+    "description": "Connection to Romans 1:8-15 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 66 (line 1 column 67))"
+  },
+  {
     "from": "submit-to-authorities",
     "to": "avoid-foolish-disputes",
     "type": "Thematic Parallels",
@@ -47903,6 +50103,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "This psalm speaks of the rejected stone becoming the cornerstone, which is fulfilled in Christ, the living stone, as described in 1 Peter 2:4-8."
+  },
+  {
+    "from": "one-new-man",
+    "to": "put-to-death-earthly-nature",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage also speaks of the unity of believers in Christ, which is related to the theme of the one new man in Ephesians 2:14-18."
   },
   {
     "from": "god-promises-to-bless-jacob",
@@ -48015,6 +50223,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 2,
     "description": "The abundant offerings for the tabernacle construction foreshadow the abundant offerings brought to the temple in Hezekiah's time."
+  },
+  {
+    "from": "pauls-third-visit",
+    "to": "many-corinthians-believe",
+    "type": "Typological",
+    "strength": 0.8,
+    "level": 1,
+    "description": "This passage describes Paul's initial visit and ministry in Corinth, setting the stage for his later visits."
   },
   {
     "from": "respect-for-parents-and-sabbath",
@@ -48225,6 +50441,14 @@ export const allConnections = [
     "description": "Luke's stated purpose of providing an orderly account aligns with the broader theme of Scripture being inspired by God and useful for teaching, reproof, correction, and training in righteousness."
   },
   {
+    "from": "appointing-elders",
+    "to": "elders-shepherd-the-flock",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage also addresses the role and responsibilities of elders in the church, complementing the instructions given to Titus."
+  },
+  {
     "from": "israel-oppresses-the-poor",
     "to": "god-chooses-the-poor",
     "type": "thematic_parallel",
@@ -48255,6 +50479,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Moses' blessing on Joseph's descendants in Deuteronomy foreshadows their prominent role and inheritance in the Promised Land."
+  },
+  {
+    "from": "john-writes-to-seven-churches",
+    "to": "related-1-0",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Connection to Revelation 1:4-8 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 58 (line 1 column 59))"
   },
   {
     "from": "flood-duration",
@@ -48335,6 +50567,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "This passage discusses the use of trumpets to assemble the Israelites, which is similar to the way David gathers the people in the 1 Chronicles passage."
+  },
+  {
+    "from": "pauls-prayer",
+    "to": "pauls-ministry-to-gentiles",
+    "type": "Character Connections",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages reflect Paul's concern for the spiritual well-being of the churches he has established."
   },
   {
     "from": "two-witnesses-prophesy",
@@ -48433,6 +50673,14 @@ export const allConnections = [
     "description": "Saul's prophesying foreshadows the later promise of the outpouring of the Spirit, where God's people would prophesy."
   },
   {
+    "from": "new-covenant-replaces-old",
+    "to": "glory-of-new-covenant",
+    "type": "thematic parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Paul contrasts the old and new covenants, highlighting how the new covenant is superior and more glorious."
+  },
+  {
     "from": "phinehas-receives-covenant-of-peace",
     "to": "related-3-1",
     "type": "character-connections",
@@ -48487,6 +50735,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Jezebel's death fulfills the prophecy against the house of Ahab, as described in 1 Kings 21:17-29."
+  },
+  {
+    "from": "taming-the-tongue",
+    "to": "foolishness-and-pride",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Proverbs emphasizes the power of the tongue, both for good and for evil, connecting to the themes in James."
   },
   {
     "from": "hosea-redeems-unfaithful-wife",
@@ -48849,6 +51105,14 @@ export const allConnections = [
     "description": "Moses recounts the Israelites' reaction to the spies' report, highlighting their fear and rebellion."
   },
   {
+    "from": "one-new-man",
+    "to": "unity-in-christ",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "This passage speaks of the unity of Jews and Gentiles in Christ, which is related to the theme of the one new man in Ephesians 2:14-18."
+  },
+  {
     "from": "jonah-identified-by-lot",
     "to": "achan-punished",
     "type": "Thematic Parallels",
@@ -49049,6 +51313,14 @@ export const allConnections = [
     "description": "This passage depicts Jacob's brother Esau making amends with him through the offering of gifts, similar to Abimelech's actions towards Abraham."
   },
   {
+    "from": "pauls-appeal-to-corinthians",
+    "to": "pauls-affection",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Paul's continued appeal to the Corinthians to open their hearts to him in 2 Corinthians 7 directly connects to his appeal in 2 Corinthians 6."
+  },
+  {
     "from": "israel-reclaims-cities",
     "to": "be-strong-and-courageous",
     "type": "Covenantal Connections",
@@ -49239,6 +51511,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "Both passages emphasize that humility and the fear of the Lord lead to wisdom and honor."
+  },
+  {
+    "from": "participation-in-christs-body",
+    "to": "vicarious-atonement",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.85,
+    "level": 1,
+    "description": "Connection to 1 Corinthians 10:15-17 (Note: This is a fallback response. Reason: Error calling Claude API: Claude API error: 529 - {\"type\":\"error\",\"error\":{\"type\":\"overloaded_error\",\"message\":\"Overloaded\"}})"
   },
   {
     "from": "prayer-of-jabez",
@@ -49497,6 +51777,14 @@ export const allConnections = [
     "description": "Both passages connect God's righteousness with the salvation He provides, which is the central theme of the gospel."
   },
   {
+    "from": "greeting-to-the-corinthian-church",
+    "to": "future-glory",
+    "type": "Covenantal Connections",
+    "strength": 0.9,
+    "level": 2,
+    "description": "Connection to 1 Corinthians 1:1-3 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 60 (line 1 column 61))"
+  },
+  {
     "from": "daniel-strengthened-by-angel",
     "to": "prayer-in-gethsemane",
     "type": "Thematic Parallels",
@@ -49689,6 +51977,14 @@ export const allConnections = [
     "description": "The law acted as a guardian to lead people to Christ, who is the fulfillment of the law's purpose."
   },
   {
+    "from": "equality-in-giving",
+    "to": "generosity-to-the-poor",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The Mosaic law's instructions regarding lending to and caring for the poor connect to the idea of equality in giving in 2 Corinthians 8."
+  },
+  {
     "from": "honoring-true-widows",
     "to": "love-the-foreigner",
     "type": "Thematic Parallels",
@@ -49873,6 +52169,14 @@ export const allConnections = [
     "description": "This verse also criticizes those who profess loyalty to God with their lips but whose hearts are far from him, similar to the message in Isaiah 29:13-14."
   },
   {
+    "from": "gods-sovereign-choice",
+    "to": "moses-asks-to-see-gods-glory",
+    "type": "Covenantal Connections",
+    "strength": 0.9,
+    "level": 1,
+    "description": "This passage affirms God's sovereign right to show mercy to whom He will, which is the same principle expressed in Romans 9:6-13."
+  },
+  {
     "from": "mephibosheths-injury",
     "to": "jonathan-and-davids-covenant",
     "type": "character-connections",
@@ -49913,6 +52217,14 @@ export const allConnections = [
     "description": "Connection to Exodus 6:9 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 69 (line 1 column 70))"
   },
   {
+    "from": "commendation-of-ephesus-church",
+    "to": "pauls-emotional-farewell",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The Ephesian church's commendation is connected to Paul's farewell address to the Ephesian elders, where he warns them about false teachers and encourages them to remain faithful."
+  },
+  {
     "from": "the-twelve-disciples-commissioned",
     "to": "disciples-united-in-prayer",
     "type": "Character Connections",
@@ -49935,6 +52247,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Paul and Apollos are called servants and stewards of the mysteries of God, further emphasizing their role as servants."
+  },
+  {
+    "from": "woman-clothed-with-sun",
+    "to": "zions-sudden-deliverance",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.8,
+    "level": 1,
+    "description": "The woman's travail and the birth of the male child fulfills the prophecy of Zion giving birth to a son."
   },
   {
     "from": "pauls-personal-conviction",
@@ -50481,6 +52801,14 @@ export const allConnections = [
     "description": "The story of Hannah appealing to the king (in this case, the high priest) for a son has a thematic parallel with the woman appealing to the king in this passage."
   },
   {
+    "from": "paul-visits-jerusalem",
+    "to": "ananias-heals-saul",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Paul's visit to Jerusalem in Galatians 2 can be seen as the fulfillment of his earlier conversion and calling as described in Acts 9, where he is commissioned to take the gospel to the Gentiles."
+  },
+  {
     "from": "righteousness-vs-sin",
     "to": "future-glory",
     "type": "Covenantal Connections",
@@ -50689,6 +53017,14 @@ export const allConnections = [
     "description": "The apostles, like Elihu, feel they must speak about what they have seen and heard, even in the face of opposition."
   },
   {
+    "from": "saved-by-gods-mercy",
+    "to": "righteousness-through-faith",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "This passage in Romans also highlights that we are justified by God's grace as a gift, not by our own efforts."
+  },
+  {
     "from": "esau-discovers-deception",
     "to": "gods-sovereign-choice",
     "type": "Thematic Parallels",
@@ -50727,6 +53063,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Connection to Jeremiah 17:12-18 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 63 (line 1 column 64))"
+  },
+  {
+    "from": "living-sacrifice",
+    "to": "related-1-0",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Connection to Romans 12:1-2 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 56 (line 1 column 57))"
   },
   {
     "from": "victorious-saints",
@@ -50839,6 +53183,22 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Pharaoh's rejection of Moses' request mirrors the Israelites' rejection of God's rule in favor of a human king."
+  },
+  {
+    "from": "christs-sacrifice-fulfills-gods-will",
+    "to": "imitating-god",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Paul describes Christ's sacrifice as a fragrant offering and sacrifice to God, echoing the themes in Hebrews 10."
+  },
+  {
+    "from": "household-relationships",
+    "to": "train-up-a-child",
+    "type": "thematic-parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This proverb speaks to the importance of training children in the way they should go, which connects to the instructions for fathers in Colossians 3:21."
   },
   {
     "from": "free-from-sin",
@@ -51007,6 +53367,14 @@ export const allConnections = [
     "strength": 0.75,
     "level": 1,
     "description": "Connection to Nahum 2:2 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 74 (line 1 column 75))"
+  },
+  {
+    "from": "praise-for-faithful-church",
+    "to": "parable-of-the-talents",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages highlight the importance of faithfulness and perseverance, and the rewards for those who remain steadfast."
   },
   {
     "from": "vine-trees-uselessness",
@@ -51375,6 +53743,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Both passages speak of drawing water from a well, representing the spiritual nourishment and salvation provided by God."
+  },
+  {
+    "from": "warning-against-divisive-people",
+    "to": "handle-gods-word-properly",
+    "type": "thematic-parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages warn about the dangers of false teachers and their destructive influence, urging the believers to remain steadfast in the truth and to avoid being led astray by their teachings."
   },
   {
     "from": "masters-treat-servants-justly",
@@ -51823,6 +54199,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "This passage expresses similar questions about the prosperity of the wicked and the suffering of the righteous."
+  },
+  {
+    "from": "male-child-born",
+    "to": "birth-of-jesus",
+    "type": "Thematic Parallel",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The birth of Jesus, the male child, is described in similar terms to the birth of the child in Revelation 12."
   },
   {
     "from": "parable-of-the-lost-sheep",
@@ -52505,6 +54889,14 @@ export const allConnections = [
     "description": "Both passages describe purification rituals involving the use of animal sacrifices and the sprinkling of blood."
   },
   {
+    "from": "rejoice-always",
+    "to": "related-2-1",
+    "type": "thematic",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage expresses joy and rejoicing in God even in the midst of difficult circumstances, similar to the message in Philippians 4:4."
+  },
+  {
     "from": "handle-gods-word-properly",
     "to": "gods-judgment-by-fire",
     "type": "Thematic Parallels",
@@ -52575,6 +54967,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "Abiathar supported Adonijah's claim to the throne, which led to his removal by Solomon."
+  },
+  {
+    "from": "marriage-to-unbelievers",
+    "to": "intermarriage-with-pagan-nations",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "These passages from Ezra address the issue of Israelites marrying foreign, unbelieving spouses, which is similar to the situation addressed in 1 Corinthians 7:10-16."
   },
   {
     "from": "love-one-another",
@@ -53065,6 +55465,14 @@ export const allConnections = [
     "description": "Includes a vision of a man measuring Jerusalem, suggesting a broader biblical theme of divine measurement and restoration."
   },
   {
+    "from": "working-for-the-lord",
+    "to": "parable-of-the-talents",
+    "type": "thematic-parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This parable of the faithful servant who is commended by the master for his good work relates to the idea of being rewarded by the Lord for faithful service in Colossians 3:24."
+  },
+  {
     "from": "rehoboam-assembles-army",
     "to": "judahs-victory",
     "type": "thematic-parallels",
@@ -53369,6 +55777,14 @@ export const allConnections = [
     "description": "Jethro is referred to as the Midianite priest, further establishing his relationship with Moses and the Israelites."
   },
   {
+    "from": "mighty-angel-with-little-book",
+    "to": "throne-above-the-expanse",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Ezekiel's vision of the throne of God and the appearance of a figure like a man is thematically similar to the mighty angel in Revelation, both representing divine manifestation."
+  },
+  {
     "from": "woe-to-destroyers",
     "to": "related-2-1",
     "type": "Thematic Parallels",
@@ -53407,6 +55823,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The account of Elijah's confrontation with King Ahaziah in 2 Kings 1 shares thematic similarities with his letter condemning Jehoram in 2 Chronicles 21, both involving a prophet rebuking a wayward king."
+  },
+  {
+    "from": "harvest-of-the-earth",
+    "to": "sheep-and-goats-judgment",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage describes the Son of Man separating the sheep from the goats, which is similar to the harvest and judgment imagery in Revelation 14."
   },
   {
     "from": "return-and-obedience",
@@ -53889,6 +56313,14 @@ export const allConnections = [
     "description": "Both passages express deep anguish and a sense of abandonment by God in the midst of suffering."
   },
   {
+    "from": "christs-sacrifice-perfects-believers",
+    "to": "jesus-as-superior-high-priest",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "The author of Hebrews contrasts Christ's single sacrifice with the repeated sacrifices of the Levitical priests, emphasizing its perfecting power."
+  },
+  {
     "from": "comfort-for-gods-people",
     "to": "gods-love-for-the-world",
     "type": "Thematic Parallels",
@@ -53924,7 +56356,7 @@ export const allConnections = [
     "from": "day-of-atonement-offerings",
     "to": "day-of-atonement-instructions",
     "type": "Thematic Parallels",
-    "strength": 1,
+    "strength": 0.0,
     "level": 1,
     "description": "The Day of Atonement offerings in Numbers 29 are directly connected to the detailed instructions for the Day of Atonement rituals in Leviticus 16, which cover the sin offerings, burnt offerings, and scapegoat ceremony."
   },
@@ -54169,6 +56601,14 @@ export const allConnections = [
     "description": "Jeremiah's lament for Josiah's successor, Jehoahaz, reflects the broader grief and sorrow felt by the people of Judah over the loss of their righteous king."
   },
   {
+    "from": "instructions-for-holy-living",
+    "to": "free-from-sin",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage also encourages believers to present their members as slaves to righteousness, leading to sanctification, which is similar to the instructions in 1 Thessalonians 4:1-8."
+  },
+  {
     "from": "caleb-encourages-conquest",
     "to": "warning-against-unbelief",
     "type": "Thematic Parallels",
@@ -54279,6 +56719,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The passage in Revelation echoes the imagery of nations bringing their wealth and glory to the New Jerusalem."
+  },
+  {
+    "from": "sin-entered-through-adam",
+    "to": "future-glory",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages address the consequences of sin and the hope of redemption, as the creation was subjected to futility due to Adam's sin but will be set free from its bondage to decay."
   },
   {
     "from": "ephraim-and-judah-stumble",
@@ -54417,6 +56865,22 @@ export const allConnections = [
     "description": "Both passages show a ruler rewarding a person who has helped them, by elevating their status and granting them the possessions of a former adversary."
   },
   {
+    "from": "marks-of-christ",
+    "to": "first-resurrection",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 2,
+    "description": "This passage describes the martyrs who bear the marks of Jesus, which could be seen as a future fulfillment of the idea expressed in Galatians 6:17."
+  },
+  {
+    "from": "seven-thunders-sealed",
+    "to": "spiritual-maturity",
+    "type": "Thematic Parallels",
+    "strength": 0.5,
+    "level": 1,
+    "description": "Paul's statement about seeing in a mirror dimly connects to the idea of the seven thunders being sealed, as God's full revelation is not yet known."
+  },
+  {
     "from": "examining-oneself",
     "to": "related-1-0",
     "type": "Character Connections",
@@ -54527,6 +56991,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Through Christ's sacrifice, believers have access to the Father, which enables them to draw near to God."
+  },
+  {
+    "from": "gentiles-brought-near",
+    "to": "dead-in-sin",
+    "type": "Thematic Parallels",
+    "strength": 0.9,
+    "level": 1,
+    "description": "This passage continues the theme of Gentiles being brought near and made fellow citizens with the saints."
   },
   {
     "from": "grief-over-benjamin",
@@ -54673,6 +57145,14 @@ export const allConnections = [
     "description": "The passage highlights Lot's righteous character and God's deliverance of him from the destruction of Sodom, paralleling the broader theme of God's judgment on the ungodly."
   },
   {
+    "from": "final-exhortations",
+    "to": "resisting-the-devil",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "These verses also exhort believers to be alert and steadfast in the face of spiritual adversity, echoing the themes in 1 Corinthians 16:13-14."
+  },
+  {
     "from": "aarons-consecration",
     "to": "john-writes-to-seven-churches",
     "type": "Typological",
@@ -54775,6 +57255,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Jesus declares all foods clean, fulfilling the symbolic meaning of Ezekiel's restricted diet and signaling the end of dietary restrictions."
+  },
+  {
+    "from": "grace-abounds-over-sin",
+    "to": "dead-to-sin-alive-in-christ",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages address the relationship between grace and sin, emphasizing that grace does not give license to sin."
   },
   {
     "from": "wisdom-comes-from-god",
@@ -55217,6 +57705,14 @@ export const allConnections = [
     "description": "The dedication of the temple in 1 Kings 8, with its abundant sacrifices and worship, foreshadows the ongoing worship practices described in 1 Kings 9."
   },
   {
+    "from": "instructions-regarding-timothy",
+    "to": "timothy-and-epaphroditus",
+    "type": "Character Connections",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Paul's commendation of Timothy and his plans to send him to the Philippians share similarities with the instructions in 1 Corinthians 16."
+  },
+  {
     "from": "census-of-kohathites",
     "to": "genealogy-of-moses-and-aaron",
     "type": "Character Connections",
@@ -55383,6 +57879,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Paul warns the Corinthian church about the serpent's deception of Eve, drawing a direct connection to the events in Genesis 3."
+  },
+  {
+    "from": "instructions-for-older-women",
+    "to": "qualifications-for-widows",
+    "type": "thematic-parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage in 1 Timothy also provides instructions for older women, emphasizing their role in teaching and training younger women, which is similar to the exhortation in Titus 2:3-5."
   },
   {
     "from": "jesus-heals-many",
@@ -55615,6 +58119,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 2,
     "description": "The four horsemen of the apocalypse in Revelation, bringing conquest, war, famine, and pestilence, may be a symbolic fulfillment of the judgments described by Ezekiel."
+  },
+  {
+    "from": "timothy-sent-to-strengthen-faith",
+    "to": "vicarious-atonement",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.85,
+    "level": 1,
+    "description": "Connection to 1 Thessalonians 3:1-5 (Note: This is a fallback response. Reason: Error calling Claude API: Claude API error: 502 - <html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>cloudflare</center>\r\n</body>\r\n</html>\r\n)"
   },
   {
     "from": "writing-on-the-wall",
@@ -56025,6 +58537,14 @@ export const allConnections = [
     "description": "Samson, a Nazirite, is also subject to the defilement procedures when he encounters a dead body."
   },
   {
+    "from": "pauls-personal-conviction",
+    "to": "glorifying-god-in-all-things",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "This passage reinforces the idea of considering the impact of one's actions on others, which relates to Paul's personal conviction."
+  },
+  {
     "from": "calling-the-disciples",
     "to": "miraculous-catch-of-fish",
     "type": "character-connections",
@@ -56159,6 +58679,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "Both passages depict the final judgment where the righteous are rewarded and the wicked are punished based on their actions."
+  },
+  {
+    "from": "elder-writing-to-gaius",
+    "to": "appeal-for-unity",
+    "type": "Character Connections",
+    "strength": 0.6,
+    "level": 2,
+    "description": "Another Gaius is mentioned in 1 Corinthians, who was baptized by Paul, which could potentially be the same Gaius addressed in 3 John."
   },
   {
     "from": "covering-offenses-promotes-love",
@@ -56335,6 +58863,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "Zephaniah's prophecy about the destruction of Assyria shares common themes and imagery with Isaiah 14:24-27."
+  },
+  {
+    "from": "varieties-of-roles",
+    "to": "using-spiritual-gifts",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages emphasize that the various roles and gifts within the church are to be used in service of one another, according to the grace given by God."
   },
   {
     "from": "levite-families-counted",
@@ -56529,6 +59065,14 @@ export const allConnections = [
     "description": "The prophet Habakkuk refers to the sun and moon standing still, likely alluding to the same miraculous event."
   },
   {
+    "from": "enduring-temptation-brings-blessing",
+    "to": "god-provides-ram",
+    "type": "Typological",
+    "strength": 0.8,
+    "level": 1,
+    "description": "The story of Abraham's willingness to sacrifice his son Isaac is a powerful example of enduring temptation and being blessed by God as a result."
+  },
+  {
     "from": "the-lords-prayer",
     "to": "related-1-0",
     "type": "Character Connections",
@@ -56721,6 +59265,14 @@ export const allConnections = [
     "description": "Connection to Revelation 3:7-10 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 64 (line 1 column 65))"
   },
   {
+    "from": "personal-instructions",
+    "to": "paul-meets-with-ephesian-elders",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages warn of the dangers of false teachers and the need for vigilance in the ministry."
+  },
+  {
     "from": "honoring-masters",
     "to": "vicarious-atonement",
     "type": "Prophetic Fulfillment",
@@ -56820,7 +59372,7 @@ export const allConnections = [
     "from": "feast-of-trumpets-offerings",
     "to": "feast-of-firstfruits",
     "type": "Thematic Parallels",
-    "strength": 1,
+    "strength": 0.0,
     "level": 1,
     "description": "The Feast of Trumpets offerings in Numbers 29 are directly connected to the instructions for the Feast of Trumpets in Leviticus 23."
   },
@@ -56903,6 +59455,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The Danites' theft and use of Micah's idols violates the commandments against idolatry, highlighting the moral decline of the Israelites during this period."
+  },
+  {
+    "from": "war-in-heaven",
+    "to": "the-seventy-return",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Jesus' statement about seeing Satan fall from heaven is fulfilled in the dragon's expulsion from heaven in Revelation 12."
   },
   {
     "from": "david-returns-to-philistine-land",
@@ -57047,6 +59607,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Manoah's encounter with the angel of the Lord, who appears in a theophany, is reminiscent of Moses' encounter with the burning bush, where God reveals himself in a supernatural way."
+  },
+  {
+    "from": "war-in-heaven",
+    "to": "put-on-armor-of-god",
+    "type": "Thematic Parallel",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The spiritual battle described in Revelation 12 reflects the ongoing cosmic conflict between God and the forces of evil."
   },
   {
     "from": "solomons-marriage-alliance",
@@ -57497,6 +60065,14 @@ export const allConnections = [
     "description": "Both passages emphasize God's sovereignty and the inability of humans to comprehend or judge His ways."
   },
   {
+    "from": "victory-over-death",
+    "to": "resurrection-of-believers",
+    "type": "Thematic Parallels",
+    "strength": 0.9,
+    "level": 1,
+    "description": "This earlier part of the same chapter also speaks of Christ's victory over all enemies, including the final enemy of death."
+  },
+  {
     "from": "qualifications-for-widows",
     "to": "remaining-unmarried",
     "type": "Thematic Parallels",
@@ -57577,6 +60153,14 @@ export const allConnections = [
     "description": "Paul's description of Christ's humble service and exaltation echoes the themes of God's chosen servant in Isaiah 41."
   },
   {
+    "from": "mixed-review-of-thyatira-church",
+    "to": "judgment-on-the-land",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The mixed review of the Thyatira church, with both commendation and rebuke, is thematically similar to God's message to Ezekiel about the righteous and the wicked within a community."
+  },
+  {
     "from": "thanksgiving-to-god",
     "to": "related-4-0",
     "type": "Thematic Parallels",
@@ -57623,6 +60207,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "The parallel account of the covenant renewal and the destruction of Baal worship in 2 Chronicles, highlighting the thematic connection of restoring the true worship of God."
+  },
+  {
+    "from": "one-body-many-members",
+    "to": "living-stones",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both texts describe the church as a living, spiritual building or temple, with believers as the individual stones or members that make up the whole."
   },
   {
     "from": "moses-final-instructions",
@@ -58087,6 +60679,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The vision of the Son of Man receiving an eternal kingdom from the Ancient of Days is fulfilled in Christ's ascension and heavenly reign."
+  },
+  {
+    "from": "no-more-delay",
+    "to": "time-times-half-a-time",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.8,
+    "level": 1,
+    "description": "The angel's oath in Daniel, swearing by the one who lives forever, is fulfilled in the angel's declaration of no more delay in Revelation."
   },
   {
     "from": "paul-persecuted-christians",
@@ -58809,6 +61409,14 @@ export const allConnections = [
     "description": "Connection to Mark 5:25-34 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 77 (line 1 column 78))"
   },
   {
+    "from": "gods-wisdom-vs-worlds-wisdom",
+    "to": "creation-of-heavens-and-earth",
+    "type": "Typological",
+    "strength": 0.75,
+    "level": 1,
+    "description": "Connection to 1 Corinthians 1:18-25 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 60 (line 1 column 61))"
+  },
+  {
     "from": "jesus-before-pilate",
     "to": "silent-submission",
     "type": "Prophetic Fulfillment",
@@ -58871,6 +61479,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Both passages show the Israelites facing defeat and oppression as a result of their sin, emphasizing the importance of obedience."
+  },
+  {
+    "from": "mystery-of-godliness",
+    "to": "gentiles-as-fellow-heirs",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages speak of the mystery of Christ, which was previously hidden but has now been revealed to the apostles and prophets."
   },
   {
     "from": "instructions-for-the-rich",
@@ -59129,6 +61745,14 @@ export const allConnections = [
     "description": "This passage, like 1 Thessalonians 1:2-3, expresses the author's thanksgiving for the recipient's faith and love."
   },
   {
+    "from": "israel-stumbles-over-the-stumbling-stone",
+    "to": "living-stones",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "This passage also discusses how Jesus is a stone of stumbling for those who do not believe, which is the same theme explored in Romans 9:31-33."
+  },
+  {
     "from": "women-learn-in-submission",
     "to": "creation-of-woman",
     "type": "Typological",
@@ -59281,6 +61905,14 @@ export const allConnections = [
     "description": "The return of the exiles from Babylon to Jerusalem, as described in Ezra, fulfills Jeremiah's prophecy."
   },
   {
+    "from": "varieties-of-roles",
+    "to": "unity-in-diversity",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "These texts share the theme of the diversity of spiritual gifts and roles within the church, all given by God for the common good."
+  },
+  {
     "from": "old-covenant-sacrifices",
     "to": "purpose-of-the-law",
     "type": "Thematic Parallels",
@@ -59372,9 +62004,17 @@ export const allConnections = [
     "from": "feast-of-tabernacles-offerings",
     "to": "feast-of-firstfruits",
     "type": "Thematic Parallels",
-    "strength": 1,
+    "strength": 0.0,
     "level": 1,
     "description": "The Feast of Tabernacles offerings in Numbers 29 are directly connected to the detailed instructions for the Feast of Tabernacles in Leviticus 23."
+  },
+  {
+    "from": "unclean-spirits-gather-kings",
+    "to": "living-waters-from-jerusalem",
+    "type": "thematic-parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Zechariah's prophecy of the nations gathering against Jerusalem is thematically connected to the gathering of the kings at Armageddon in Revelation 16:13-16."
   },
   {
     "from": "huldahs-prophecy",
@@ -59479,6 +62119,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The account of the fall of the Northern Kingdom in 2 Kings 17:7-23 shares similar themes of Israel's sin and God's judgment, as seen in Jeremiah 2:14-30."
+  },
+  {
+    "from": "gentiles-attain-righteousness-by-faith",
+    "to": "abrahamic-covenant",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages emphasize that righteousness comes through faith, not works, and that Gentiles are included in God's promise to Abraham."
   },
   {
     "from": "barren-woman-rejoicing",
@@ -59649,6 +62297,14 @@ export const allConnections = [
     "description": "This passage lists the exiles who returned to Jerusalem and Judah, providing context for the first inhabitants described in 1 Chronicles 9."
   },
   {
+    "from": "instructions-regarding-timothy",
+    "to": "pauls-apostleship-and-greeting",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The opening of Paul's letter to Timothy further highlights the close relationship between the two, which is reflected in the instructions in 1 Corinthians 16."
+  },
+  {
     "from": "results-of-levite-census",
     "to": "aarons-descendants-sanctified",
     "type": "Character Connections",
@@ -59711,6 +62367,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Jacob's later attempt to reconcile with Esau reflects the ongoing tension between the brothers."
+  },
+  {
+    "from": "commendation-of-ephesus-church",
+    "to": "dead-in-sin",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "The commendation of the Ephesian church's good works aligns with the theme of the church being built upon the foundation of Christ and the apostles, as described in Paul's letter to the Ephesians."
   },
   {
     "from": "jesus-clears-the-temple",
@@ -59833,6 +62497,22 @@ export const allConnections = [
     "description": "The failure of the Israelites to drive out the Canaanites, as described in Joshua, foreshadows the situation in 1 Kings 9 where Solomon uses the remaining non-Israelites as forced labor."
   },
   {
+    "from": "no-other-gospel",
+    "to": "circumcision-controversy",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages address the issue of false teachings and the need to preserve the purity of the gospel message."
+  },
+  {
+    "from": "dragon-persecutes-woman",
+    "to": "interpretation-of-the-vision",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The dragon's persecution of the woman and her child fulfills the prophecy of a powerful, persecuting kingdom that would rise up against God's people."
+  },
+  {
     "from": "sennacherib-threatens-jerusalem",
     "to": "assyria-threatens-jerusalem",
     "type": "character-connections",
@@ -59951,6 +62631,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "David's kindness towards Mephibosheth, Jonathan's son, reflects the lasting impact of their covenant."
+  },
+  {
+    "from": "rebuke-of-pergamum-church",
+    "to": "israelites-worship-baal-peor",
+    "type": "Typological",
+    "strength": 0.8,
+    "level": 1,
+    "description": "The rebuke of the Pergamum church for tolerating false teachings and immorality is connected to the incident in Numbers where the Israelites were led astray by the Moabites and engaged in sexual immorality and idolatry."
   },
   {
     "from": "isaiah-prophecies-deliverance",
@@ -60137,6 +62825,14 @@ export const allConnections = [
     "description": "This passage also describes Jesus as the agent of creation, through whom all things were made."
   },
   {
+    "from": "final-exhortations",
+    "to": "put-on-armor-of-god",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages encourage believers to stand firm in the faith and be vigilant, using similar language and imagery of spiritual warfare."
+  },
+  {
     "from": "train-up-a-child",
     "to": "the-shema",
     "type": "Thematic Parallels",
@@ -60215,6 +62911,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "This earlier passage also indicates that God will drive out the Canaanites gradually, rather than all at once, which connects to the promise in Deuteronomy."
+  },
+  {
+    "from": "continue-in-sound-doctrine",
+    "to": "falling-away-from-faith",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "1 Timothy 4 also exhorts Timothy to continue in the sound doctrine he has learned, as some will depart from the faith and follow deceiving spirits."
   },
   {
     "from": "treatment-of-neighbors",
@@ -60521,6 +63225,14 @@ export const allConnections = [
     "description": "Connection to Proverbs 14:34 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 67 (line 1 column 68))"
   },
   {
+    "from": "walk-by-faith",
+    "to": "future-glory",
+    "type": "thematic_parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage also speaks of the Christian's hope and the need to wait for it with patience, which is central to the walk of faith described in 2 Corinthians 5."
+  },
+  {
     "from": "seek-wisdom-and-understanding",
     "to": "pauls-struggle-for-the-church",
     "type": "Thematic Parallels",
@@ -60655,6 +63367,14 @@ export const allConnections = [
     "strength": 0.85,
     "level": 1,
     "description": "Connection to Revelation 5:1-4 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 65 (line 1 column 66))"
+  },
+  {
+    "from": "pauls-affection",
+    "to": "paul-as-spiritual-father",
+    "type": "Character Connections",
+    "strength": 0.8,
+    "level": 1,
+    "description": "This passage also highlights Paul's fatherly affection and care for the Corinthian believers, which is connected to the theme of his affection in 2 Corinthians 7:2-4."
   },
   {
     "from": "mephibosheth-introduced",
@@ -60809,6 +63529,14 @@ export const allConnections = [
     "description": "The proverb warns against the folly of self-reliance, similar to the message in Isaiah 50:11."
   },
   {
+    "from": "honoring-true-widows",
+    "to": "future-glory",
+    "type": "Covenantal Connections",
+    "strength": 0.9,
+    "level": 2,
+    "description": "Connection to 1 Timothy 5:3-8 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 68 (line 1 column 69))"
+  },
+  {
     "from": "shoot-from-jesse",
     "to": "promise-of-the-righteous-branch",
     "type": "Thematic Parallels",
@@ -60831,6 +63559,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 2,
     "description": "Connection to 1 Corinthians 9:15-18 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 68 (line 1 column 69))"
+  },
+  {
+    "from": "encouragement-to-smyrna-church",
+    "to": "run-the-race",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The encouragement to the Smyrna church to remain faithful despite persecution is thematically similar to the author of Hebrews' exhortation to believers to run the race of faith with endurance, fixing their eyes on Jesus."
   },
   {
     "from": "solomons-speech",
@@ -61121,6 +63857,14 @@ export const allConnections = [
     "description": "The vision of the new heaven and new earth in Revelation echoes the imagery of joy, peace, and the absence of sorrow and mourning found in Isaiah 55:12-13."
   },
   {
+    "from": "put-to-death-earthly-nature",
+    "to": "dead-to-sin-alive-in-christ",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages emphasize the need to put to death the old self and its sinful desires in order to live a new life in Christ."
+  },
+  {
     "from": "mercy-and-knowledge",
     "to": "seek-wisdom-and-understanding",
     "type": "thematic-parallels",
@@ -61391,6 +64135,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "This passage also addresses the exclusion of certain groups from the Israelite community based on their ancestry or behavior."
+  },
+  {
+    "from": "three-angels-messages",
+    "to": "no-other-gods",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The third angel's warning against worshiping the beast and its image connects to the Ten Commandments' prohibition of idolatry."
   },
   {
     "from": "boaz-shows-kindness-to-ruth",
@@ -61737,6 +64489,14 @@ export const allConnections = [
     "description": "The orderly arrangement of the tribes mirrors the procession of the Ark of the Covenant, signifying God's leadership and the people's unity."
   },
   {
+    "from": "commendation-of-ephesus-church",
+    "to": "chosen-before-creation",
+    "type": "Character Connections",
+    "strength": 0.8,
+    "level": 1,
+    "description": "The Ephesian church is commended for their good works, which is consistent with Paul's earlier commendation of the Ephesian believers' faith and love in his letter to the Ephesians."
+  },
+  {
     "from": "god-blesses-abraham",
     "to": "chosen-before-creation",
     "type": "Thematic Parallels",
@@ -61793,6 +64553,14 @@ export const allConnections = [
     "description": "The parallel passage in Isaiah 37 records the same prophetic message from Isaiah, highlighting the thematic connection between the two accounts."
   },
   {
+    "from": "no-more-delay",
+    "to": "christs-sacrifice-fulfills-gods-will",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The author of Hebrews encourages readers to endure, for the coming of the Lord is near, which connects to the angel's declaration of no more delay in Revelation."
+  },
+  {
     "from": "mary-anoints-jesus",
     "to": "sinful-woman-anoints-jesus",
     "type": "Character Connections",
@@ -61815,6 +64583,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The passage describes Hazael's reign and the harm he inflicts on Israel, as Elisha had predicted."
+  },
+  {
+    "from": "those-from-great-tribulation",
+    "to": "related-3-2",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The imagery of God wiping away tears and providing eternal rest for the multitude from the great tribulation in Revelation 7 is reminiscent of the comforting promises in Psalm 23."
   },
   {
     "from": "destruction-of-the-city",
@@ -62113,6 +64889,14 @@ export const allConnections = [
     "description": "This passage depicts the wicked facing the wrath of the Lamb (Christ) on the day of judgment, fulfilling the warnings of God's judgment."
   },
   {
+    "from": "restrainer-removed",
+    "to": "wickedness-of-man",
+    "type": "typological",
+    "strength": 0.6,
+    "level": 1,
+    "description": "God's statement that His Spirit will not always strive with man, and that man's days will be 120 years, can be seen as a type of the restrainer being removed in 2 Thessalonians 2."
+  },
+  {
     "from": "jerusalem-given-to-fire",
     "to": "way-of-life-and-death",
     "type": "Prophetic Fulfillment",
@@ -62321,6 +65105,14 @@ export const allConnections = [
     "description": "Hezekiah's prayer in the temple can be seen as part of the ongoing covenantal relationship between God and His people, as exemplified in Solomon's dedicatory prayer in 1 Kings 8."
   },
   {
+    "from": "christs-sacrifice-perfects-believers",
+    "to": "no-condemnation-in-christ",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Paul explains how Christ's sacrifice has freed believers from the law of sin and death, perfecting them through the Spirit."
+  },
+  {
     "from": "characteristics-of-righteousness",
     "to": "what-god-requires",
     "type": "thematic-parallels",
@@ -62335,6 +65127,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Jesus' teaching on inviting the poor, crippled, lame, and blind to one's banquet connects to the theme of providing for the needy in Deuteronomy 14."
+  },
+  {
+    "from": "pauls-testimony-of-gods-grace",
+    "to": "gospel-summary",
+    "type": "character-connections",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Paul also reflects on his unworthiness and God's grace in his life in this passage from 1 Corinthians."
   },
   {
     "from": "ahithophels-counsel",
@@ -62425,6 +65225,14 @@ export const allConnections = [
     "description": "This passage emphasizes the importance of compassion towards animals, which connects to the command to preserve bird nests in Deuteronomy 22:6-7."
   },
   {
+    "from": "praise-for-faithful-church",
+    "to": "living-hope-through-resurrection",
+    "type": "thematic-parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages emphasize the value of faith, endurance, and the promise of eternal reward for those who remain faithful."
+  },
+  {
     "from": "ephraim-joined-to-idols",
     "to": "gods-love-for-the-world",
     "type": "Thematic Parallels",
@@ -62495,6 +65303,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The agreement made by the tribes of Reuben, Gad, and half-Manasseh in Numbers 32 is later reaffirmed when they cross the Jordan in Joshua 1, demonstrating their commitment to the conditions of the land grant."
+  },
+  {
+    "from": "pauls-past-credentials",
+    "to": "pauls-circumstances-advance-gospel",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages contrast Paul's former status and achievements with his current focus on Christ and the gospel."
   },
   {
     "from": "nothing-new-under-the-sun",
@@ -62631,6 +65447,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Jesus teaches that true worship is not limited to a specific location, but in spirit and truth."
+  },
+  {
+    "from": "drying-of-euphrates",
+    "to": "yahweh-defeats-enemies",
+    "type": "prophetic-fulfillment",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Zechariah foretells the drying up of the sea of Egypt and the river of Assyria, which can be seen as a precursor to the drying of the Euphrates in Revelation 16:12."
   },
   {
     "from": "causing-others-to-sin",
@@ -62823,6 +65647,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "Solomon's prayer at the dedication of the temple touches on themes of sin, exile, and the need for God's forgiveness, which are also present in Daniel's prayer."
+  },
+  {
+    "from": "marks-of-christ",
+    "to": "vicarious-atonement",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This Old Testament passage prophesies about the Messiah bearing wounds and marks, which is fulfilled in the life and ministry of Jesus, as reflected in Galatians 6:17."
   },
   {
     "from": "parable-of-the-lost-sheep",
@@ -63265,6 +66097,14 @@ export const allConnections = [
     "description": "The prophet Micah references the practice of child sacrifice, condemning it as an unacceptable offering to God."
   },
   {
+    "from": "john-eats-the-little-book",
+    "to": "ezekiel-commissioned",
+    "type": "Typological",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Ezekiel is also commanded to eat a scroll, which is sweet in his mouth but bitter in his stomach, foreshadowing John's experience with the little book."
+  },
+  {
     "from": "monthly-offerings",
     "to": "sabbath-and-new-moon-offerings",
     "type": "Prophetic Fulfillment",
@@ -63601,6 +66441,14 @@ export const allConnections = [
     "description": "Paul emphasizes that in Christ, a new creation is what matters, aligning with the concept of being a new creation in Christ."
   },
   {
+    "from": "invitation-to-repent",
+    "to": "gods-ways-are-just",
+    "type": "thematic-parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages call for repentance and a change of heart, emphasizing God's desire for the wicked to turn from their ways and live."
+  },
+  {
     "from": "jerusalem-set-among-nations",
     "to": "solomons-wisdom",
     "type": "Character Connections",
@@ -63673,6 +66521,14 @@ export const allConnections = [
     "description": "The Psalm references the defeat of the Midianites under Gideon, highlighting the significance of this event in Israelite history."
   },
   {
+    "from": "mystery-of-godliness",
+    "to": "commendation-of-phoebe",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages refer to the mystery that was kept secret for long ages but has now been disclosed and made known to all nations."
+  },
+  {
     "from": "appointing-judges-in-judah",
     "to": "samuel-appoints-sons-as-judges",
     "type": "Character Connections",
@@ -63703,6 +66559,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The altar described in Ezekiel 41 is reminiscent of the bronze altar for burnt offerings described in Exodus 27, both serving as central places of worship and sacrifice."
+  },
+  {
+    "from": "glory-of-new-covenant",
+    "to": "righteousness-through-faith",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The new covenant of grace and the righteousness of God apart from the law is contrasted with the condemnation of the old covenant."
   },
   {
     "from": "be-a-vessel-of-honor-for-god",
@@ -64119,6 +66983,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "These passages in Joshua highlight the importance of tribal divisions and leadership in the conquest and settlement of the Promised Land, which is reflected in the 1 Chronicles account."
+  },
+  {
+    "from": "collection-for-the-saints",
+    "to": "christ-became-poor",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages discuss the collection of funds for the saints in Jerusalem, highlighting the importance of generosity and concern for the needs of fellow believers."
   },
   {
     "from": "new-thing-in-the-wilderness",
@@ -64593,6 +67465,14 @@ export const allConnections = [
     "description": "Both passages describe a powerful northern ruler who will invade the land of Israel in the end times."
   },
   {
+    "from": "finality-of-babylons-judgment",
+    "to": "princes-lament-tyre",
+    "type": "typological",
+    "strength": 0.6,
+    "level": 2,
+    "description": "The prophecy against Tyre in Ezekiel 26:15-21, which describes its complete and irreversible destruction, can be seen as a typological precursor to the finality of Babylon's judgment in Revelation 18:20-24."
+  },
+  {
     "from": "nobles-not-working",
     "to": "woe-to-complacent-israel",
     "type": "Thematic Parallels",
@@ -64753,6 +67633,14 @@ export const allConnections = [
     "description": "Connection to Numbers 1:45-46 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 60 (line 1 column 61))"
   },
   {
+    "from": "melchizedek-as-king-and-priest",
+    "to": "christ-appointed-as-high-priest",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage also refers to Jesus as a high priest in the order of Melchizedek, connecting to the significance of Melchizedek's dual roles."
+  },
+  {
     "from": "wild-donkey-and-ox",
     "to": "rights-of-apostles",
     "type": "Prophetic Fulfillment",
@@ -64855,6 +67743,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "The great multitude worshiping God in Revelation 7 may be the fulfillment of Zechariah's prophecy that the nations will go up to Jerusalem to worship the Lord."
+  },
+  {
+    "from": "falling-away",
+    "to": "related-1-0",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Connection to Hebrews 6:4-6 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 60 (line 1 column 61))"
   },
   {
     "from": "iron-sharpens-iron",
@@ -65185,6 +68081,14 @@ export const allConnections = [
     "description": "This passage describes the fulfillment of the covenant curses from Deuteronomy 28, as the Israelites are exiled from the Promised Land due to their disobedience."
   },
   {
+    "from": "promise-to-overcomers",
+    "to": "commendation-of-ephesus-church",
+    "type": "thematic-parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages promise eternal life and the right to eat from the tree of life for those who overcome."
+  },
+  {
     "from": "samuel-becomes-a-prophet",
     "to": "samuel-is-born",
     "type": "Character Connections",
@@ -65247,6 +68151,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Jacob's blessing of Pharaoh is reminiscent of the blessing Isaac gave to Jacob, where he is promised to be a ruler over his brothers."
+  },
+  {
+    "from": "charge-to-timothy",
+    "to": "entrust-teaching-to-faithful-men",
+    "type": "character-connections",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Paul charges Timothy to entrust the gospel to faithful men, continuing the mentorship relationship."
   },
   {
     "from": "jerusalem-as-unfaithful-wife",
@@ -65535,6 +68447,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "This passage emphasizes the importance of confessing our sins rather than denying or concealing them."
+  },
+  {
+    "from": "pauls-departure",
+    "to": "jesus-comforts-his-disciples",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages speak of the eternal home and reward that awaits believers in Christ."
   },
   {
     "from": "job-teaches-about-god",
@@ -66257,6 +69177,14 @@ export const allConnections = [
     "description": "Both passages warn against the love of money as the root of all kinds of evil."
   },
   {
+    "from": "promise-not-yet-received",
+    "to": "abrahamic-covenant",
+    "type": "Covenantal Connections",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages discuss the promise made to Abraham and his descendants, which was not fully realized in the Old Testament but found its fulfillment in Christ."
+  },
+  {
     "from": "gods-faithfulness-and-protection",
     "to": "related-1-2",
     "type": "Thematic Parallels",
@@ -66577,6 +69505,14 @@ export const allConnections = [
     "description": "Paul connects the remnant of Israel to the fulfillment of God's promises in the New Testament."
   },
   {
+    "from": "pauls-apostleship-and-greeting",
+    "to": "appointing-elders",
+    "type": "character-connections",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Paul's greeting to Titus also includes his claim to apostleship, connecting the Pastoral Epistles."
+  },
+  {
     "from": "salvation-of-gods-people",
     "to": "god-will-sanctify-his-name",
     "type": "thematic-parallels",
@@ -66639,6 +69575,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The ravens providing food for Elijah parallels God's instructions to Noah to build an ark, which would provide sustenance during the flood."
+  },
+  {
+    "from": "appeal-for-unity",
+    "to": "gods-love-for-the-world",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Connection to 1 Corinthians 1:10-17 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 60 (line 1 column 61))"
   },
   {
     "from": "gods-judgment-on-the-land",
@@ -66719,6 +69663,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "This psalm highlights God's covenant with David and his role as the chosen king, connecting to the events of his anointing."
+  },
+  {
+    "from": "victorious-saints",
+    "to": "creation-of-heavens-and-earth",
+    "type": "Typological",
+    "strength": 0.75,
+    "level": 1,
+    "description": "Connection to Revelation 15:2-4 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 66 (line 1 column 67))"
   },
   {
     "from": "holy-remnant",
@@ -66847,6 +69799,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "This psalm also expresses shame and confusion for those who worship idols, echoing the message in Isaiah 45:16-17."
+  },
+  {
+    "from": "allegory-of-hagar-and-sarah",
+    "to": "related-1-0",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Connection to Galatians 4:21-31 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 69 (line 1 column 70))"
   },
   {
     "from": "peter-and-john-heal-a-lame-man",
@@ -66999,6 +69959,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "These verses in 1 Samuel describe how the Lord makes poor and makes rich, brings low and exalts, which is reflected in the reversal of Mordecai's and Haman's fortunes."
+  },
+  {
+    "from": "earthly-tabernacle-a-shadow",
+    "to": "angels-from-the-temple",
+    "type": "typological",
+    "strength": 0.6,
+    "level": 2,
+    "description": "John's vision of the heavenly temple may be a symbolic representation of the true, heavenly tabernacle described in Hebrews."
   },
   {
     "from": "deception-and-malice",
@@ -67289,6 +70257,14 @@ export const allConnections = [
     "description": "Luke's parallel account of Jesus defining his true family as those who hear and do God's word"
   },
   {
+    "from": "marks-of-christ",
+    "to": "treasure-in-jars-of-clay",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "This passage also speaks of bearing the marks of Jesus in one's own body, connecting to the idea of Paul bearing the marks of Christ in Galatians 6:17."
+  },
+  {
     "from": "jacob-makes-a-vow",
     "to": "covenant-commitment",
     "type": "Covenantal Connections",
@@ -67481,6 +70457,14 @@ export const allConnections = [
     "description": "The author of Hebrews highlights Abraham's faith in God's promises, even when they seemed impossible."
   },
   {
+    "from": "rebuke-of-pergamum-church",
+    "to": "called-and-kept",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The rebuke of the Pergamum church for tolerating false teachings connects to Jude's warning about those who have gone the way of Balaam, a false prophet who led the Israelites into sin."
+  },
+  {
     "from": "spies-visit-micah",
     "to": "samuel-prophesies-sauls-defeat",
     "type": "Thematic Parallels",
@@ -67553,6 +70537,14 @@ export const allConnections = [
     "description": "The new heaven and new earth described in Revelation can be seen as the ultimate fulfillment of God's covenant with Noah to never again destroy the earth."
   },
   {
+    "from": "christs-heavenly-ministry",
+    "to": "gods-love-in-christ",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Christ's intercession for believers in heaven is connected to his heavenly ministry described in Hebrews 9."
+  },
+  {
     "from": "leaders-in-jerusalem",
     "to": "census-of-returned-exiles",
     "type": "Thematic Parallels",
@@ -67599,6 +70591,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Paul connects salvation through Christ's death and resurrection to the Thessalonians' experience, fulfilling the promise of salvation in earlier Pauline writings."
+  },
+  {
+    "from": "handle-gods-word-properly",
+    "to": "warning-against-deception",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The passages share the theme of guarding against empty and deceptive philosophies, and instead holding fast to the truth of the gospel."
   },
   {
     "from": "gideon-pursues-midian-kings",
@@ -67759,6 +70759,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The freewill offerings given by the returnees in Ezra 2 echo the freewill offerings commanded by God for the construction of the tabernacle in Exodus 25, both serving to fulfill God's covenant with his people."
+  },
+  {
+    "from": "gods-sovereign-choice",
+    "to": "israel-chosen-by-god",
+    "type": "Covenantal Connections",
+    "strength": 0.8,
+    "level": 1,
+    "description": "This passage emphasizes that God's choice of Israel was not based on their own merit, but on His sovereign love and grace, which is the same principle expressed in Romans 9."
   },
   {
     "from": "train-up-a-child",
@@ -67951,6 +70959,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "This passage emphasizes the importance of walking in humility, gentleness, and patience, which aligns with Paul's appeal to the Corinthians."
+  },
+  {
+    "from": "melchizedek-greater-than-abraham",
+    "to": "christ-appointed-as-high-priest",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage also connects Jesus' priesthood to the order of Melchizedek, building on the significance of Melchizedek's superiority to Abraham."
   },
   {
     "from": "restoring-wandering-believers",
@@ -68313,6 +71329,14 @@ export const allConnections = [
     "description": "The settlements and territories of Simeon's descendants in 1 Chronicles 4:24-43 are further detailed in the allotment of the tribe of Simeon's inheritance in the Promised Land, as recorded in Joshua 19:1-9."
   },
   {
+    "from": "warning-against-becoming-teachers",
+    "to": "woe-to-the-shepherds",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The prophet Ezekiel pronounces judgment on the shepherds (leaders) of Israel who have failed in their responsibilities, foreshadowing the warning in James."
+  },
+  {
     "from": "accusation-against-the-jews",
     "to": "haman-deceives-king",
     "type": "Thematic Parallels",
@@ -68625,6 +71649,14 @@ export const allConnections = [
     "description": "Both passages describe the rejection and exile of a brother by his own family members."
   },
   {
+    "from": "final-exhortations",
+    "to": "greeting-and-blessing",
+    "type": "Covenantal Connections",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages invoke the grace and peace of God, reflecting the covenantal relationship between God and believers."
+  },
+  {
     "from": "elishas-final-prophecy",
     "to": "elisha-predicts-hazaels-reign",
     "type": "Thematic Parallels",
@@ -68855,6 +71887,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "This passage immediately precedes the Jeremiah 19 account and establishes the imagery of the potter and the clay, which is then used in the breaking of the flask."
+  },
+  {
+    "from": "tychicus-and-onesimus-sent",
+    "to": "timothy-joins-paul",
+    "type": "Character Connections",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage introduces Tychicus as one of Paul's trusted companions and co-workers in the gospel."
   },
   {
     "from": "setting-up-memorial-stones",
@@ -69105,6 +72145,22 @@ export const allConnections = [
     "description": "The acceptance of the eastern tribes' explanation reflects the biblical theme of the blessing and goodness of unity among God's people."
   },
   {
+    "from": "paul-prisoner-of-christ",
+    "to": "ananias-heals-saul",
+    "type": "prophetic-fulfillment",
+    "strength": 0.7,
+    "level": 2,
+    "description": "God's plan for Paul to suffer for the sake of the gospel, as revealed in Acts, is fulfilled through Paul's imprisonment as a prisoner of Christ."
+  },
+  {
+    "from": "judging-others-condemns-self",
+    "to": "future-glory",
+    "type": "Covenantal Connections",
+    "strength": 0.9,
+    "level": 2,
+    "description": "Connection to Romans 2:1-3 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 67 (line 1 column 68))"
+  },
+  {
     "from": "banner-for-the-nations",
     "to": "abrahams-call",
     "type": "Covenantal Connections",
@@ -69167,6 +72223,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "This passage foretells Israel's future rebellion and breaking of the covenant, which is the theme of Hosea 8:1-3."
+  },
+  {
+    "from": "pauls-anguish-for-israel",
+    "to": "israels-zeal-without-knowledge",
+    "type": "Thematic Parallels",
+    "strength": 0.9,
+    "level": 1,
+    "description": "This passage continues Paul's expression of his heart's desire and prayer for the salvation of Israel, building on the themes introduced in Romans 9:1-5."
   },
   {
     "from": "true-circumcision-of-heart",
@@ -69345,12 +72409,28 @@ export const allConnections = [
     "description": "Nehemiah recounts Israel's history of disobedience and God's resulting judgments, foreshadowing the events in Lamentations."
   },
   {
+    "from": "comfort-through-titus",
+    "to": "paul-arrives-in-corinth",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage introduces Titus as a companion of Paul, which provides context for the comfort Paul received through Titus' visit in 2 Corinthians 7:5-7."
+  },
+  {
     "from": "rebuke-of-idolatry",
     "to": "vicarious-atonement",
     "type": "Prophetic Fulfillment",
     "strength": 0.85,
     "level": 1,
     "description": "Connection to Isaiah 57:3-13 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 70 (line 1 column 71))"
+  },
+  {
+    "from": "all-things-to-all-people",
+    "to": "paul-defends-his-apostleship",
+    "type": "Character Connections",
+    "strength": 0.9,
+    "level": 2,
+    "description": "Paul's assertion of his apostleship in the previous passage provides the context for his willingness to adapt his approach in this passage."
   },
   {
     "from": "seventy-years-of-desolation",
@@ -69511,6 +72591,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "This earlier passage also depicts David deceiving Achish, the king of Gath, showing a continuity in David's character and actions."
+  },
+  {
+    "from": "promise-to-overcomers",
+    "to": "born-of-god",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages highlight the importance of faith in overcoming the world and the promise of eternal life for those who believe."
   },
   {
     "from": "the-centurions-faith",
@@ -69991,6 +73079,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The vision of the life-giving river in Ezekiel 47 foreshadows the restoration of the wilderness in Isaiah 35:1-2."
+  },
+  {
+    "from": "pauls-apostleship-and-greeting",
+    "to": "pauls-apostleship",
+    "type": "character-connections",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Paul also identifies himself as an apostle in the opening of his letter to the Galatians."
   },
   {
     "from": "davids-fame-spreads",
@@ -70545,6 +73641,14 @@ export const allConnections = [
     "description": "Both passages prophesy the destruction of the Philistine cities, sharing a common theme of God's judgment against Israel's enemies."
   },
   {
+    "from": "plagues-on-earth",
+    "to": "signs-before-the-day-of-the-lord",
+    "type": "prophetic-fulfillment",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Joel's prophecy of signs and wonders in the heavens and on the earth can be seen as a precursor to the plagues described in Revelation 16."
+  },
+  {
     "from": "gods-wisdom-vs-worlds-wisdom",
     "to": "glory-in-knowing-god",
     "type": "Thematic Parallels",
@@ -70929,6 +74033,14 @@ export const allConnections = [
     "description": "This passage, like 1 Thessalonians 1:8-10, speaks of the importance of turning from one's former way of life to serve God."
   },
   {
+    "from": "merciful-high-priest",
+    "to": "vicarious-atonement",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.85,
+    "level": 1,
+    "description": "Connection to Hebrews 2:17-18 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 63 (line 1 column 64))"
+  },
+  {
     "from": "solomons-prayer",
     "to": "solomons-prayer-of-dedication",
     "type": "Thematic Parallels",
@@ -70993,6 +74105,14 @@ export const allConnections = [
     "description": "This passage in Galatians connects the curses of the law to Christ's redemption, which is thematically related to the blessings and curses in Deuteronomy 27."
   },
   {
+    "from": "greeting-to-scattered-believers",
+    "to": "related-1-0",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Connection to 1 Peter 1:1-2 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 63 (line 1 column 64))"
+  },
+  {
     "from": "gods-jealousy",
     "to": "aftermath-of-gogs-defeat",
     "type": "Thematic Parallels",
@@ -71015,6 +74135,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The New Testament affirms God's hand in Joseph's story, noting that he was delivered from his troubles and made ruler over Egypt, just as the earlier account describes."
+  },
+  {
+    "from": "warning-against-false-teachings",
+    "to": "itching-ears",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages warn against the dangers of false teachers and their deceptive doctrines."
   },
   {
     "from": "babylonian-invasion-of-egypt",
@@ -71417,6 +74545,14 @@ export const allConnections = [
     "description": "This passage in Romans speaks of the Holy Spirit interceding for believers, which can be seen as a spiritual fulfillment of Jeremiah's intercessory role."
   },
   {
+    "from": "servants-obey-masters",
+    "to": "creation-of-heavens-and-earth",
+    "type": "Typological",
+    "strength": 0.75,
+    "level": 1,
+    "description": "Connection to Ephesians 6:5-8 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 65 (line 1 column 66))"
+  },
+  {
     "from": "plague-of-boils",
     "to": "job-afflicted-with-sores",
     "type": "Character Connections",
@@ -71553,6 +74689,14 @@ export const allConnections = [
     "description": "Both passages warn against the dangers of drunkenness and encourage sobriety."
   },
   {
+    "from": "warning-against-deception",
+    "to": "deception-and-judgment",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage describes the coming of the lawless one and the deception that will lead many astray, which is similar to the warning against being taken captive by empty deceit in Colossians 2."
+  },
+  {
     "from": "life-or-death",
     "to": "choose-whom-you-will-serve",
     "type": "Thematic Parallels",
@@ -71639,6 +74783,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "The departure of Jacob's family from Laban's household mirrors the Israelites' Exodus from Egypt, with both events involving the departure of a family/nation from a foreign land."
+  },
+  {
+    "from": "resurrection-body",
+    "to": "wise-shine-like-stars",
+    "type": "Typological",
+    "strength": 0.6,
+    "level": 2,
+    "description": "This Old Testament passage foreshadows the resurrection of the righteous to everlasting life and the wicked to shame and everlasting contempt."
   },
   {
     "from": "worship-of-the-beast",
@@ -72353,6 +75505,14 @@ export const allConnections = [
     "description": "Both passages emphasize that obedience and reverence for God are more important than the mere offering of sacrifices."
   },
   {
+    "from": "greeting-and-blessing",
+    "to": "living-hope-through-resurrection",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage also begins with a blessing to God for his great mercy and new birth."
+  },
+  {
     "from": "remember-the-exodus",
     "to": "related-1-1",
     "type": "thematic-parallels",
@@ -72905,6 +76065,14 @@ export const allConnections = [
     "description": "God foretells that He will harden Pharaoh's heart, which is then repeatedly fulfilled throughout the plagues."
   },
   {
+    "from": "john-eats-the-little-book",
+    "to": "related-0-2",
+    "type": "Thematic Parallels",
+    "strength": 0.5,
+    "level": 1,
+    "description": "The psalmist expresses how God's words are sweeter than honey, similar to John's experience with the little book."
+  },
+  {
     "from": "noah-curses-and-blesses",
     "to": "curses-for-disobedience",
     "type": "Thematic Parallels",
@@ -73103,6 +76271,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Like Job, the author of Lamentations remembers God's past mercies and finds hope in them during times of suffering."
+  },
+  {
+    "from": "promise-not-yet-received",
+    "to": "christs-sacrifice-fulfills-gods-will",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage in Hebrews also speaks of the need for endurance and patience in order to receive God's promises, connecting to the theme in Hebrews 11:39-40."
   },
   {
     "from": "healing-at-bethesda",
@@ -73985,6 +77161,14 @@ export const allConnections = [
     "description": "Elijah feels overwhelmed by his prophetic burden and asks God to take his life, similar to Moses' request in Numbers 11."
   },
   {
+    "from": "resurrection-of-believers",
+    "to": "bones-represent-israel",
+    "type": "Typological",
+    "strength": 0.6,
+    "level": 2,
+    "description": "The vision of the dry bones being restored to life foreshadows the future resurrection of God's people."
+  },
+  {
     "from": "weak-conscience-defiled",
     "to": "glorifying-god-in-all-things",
     "type": "Thematic Parallels",
@@ -74153,6 +77337,14 @@ export const allConnections = [
     "description": "Connection to Mark 1:9-13 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 72 (line 1 column 73))"
   },
   {
+    "from": "qualifications-of-deacons",
+    "to": "unity-in-diversity",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages highlight the importance of service and practical ministry as key functions of deacons in the church."
+  },
+  {
     "from": "visions-of-locusts-and-fire",
     "to": "first-four-trumpets",
     "type": "Prophetic Fulfillment",
@@ -74271,6 +77463,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The New Testament passage refers to the day of the Lord as a time when the present heavens and earth will be destroyed and replaced with a new creation."
+  },
+  {
+    "from": "jesus-lower-than-angels",
+    "to": "related-1-0",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Connection to Hebrews 2:5-9 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 63 (line 1 column 64))"
   },
   {
     "from": "bildad-rebukes-job",
@@ -74591,6 +77791,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "This passage also affirms God's power and that nothing is too hard for Him, similar to the message in Genesis 18:14."
+  },
+  {
+    "from": "running-the-race-with-discipline",
+    "to": "pauls-departure",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Paul's metaphor of running the race with discipline is also reflected in his later exhortation to Timothy to fight the good fight and finish the race."
   },
   {
     "from": "hazael-threatens-jerusalem",
@@ -75073,6 +78281,14 @@ export const allConnections = [
     "description": "Connection to Leviticus 6:24-30 (Note: This is a fallback response. Reason: Error calling Claude API: Claude API error: 529 - {\"type\":\"error\",\"error\":{\"type\":\"overloaded_error\",\"message\":\"Overloaded\"}})"
   },
   {
+    "from": "all-things-to-all-people",
+    "to": "servants-of-god",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Paul's role as a servant who plants and waters, while God gives the growth, connects to his desire to become all things to all people for the sake of the gospel."
+  },
+  {
     "from": "destruction-of-philistine-cities",
     "to": "judgment-on-surrounding-nations",
     "type": "prophetic-fulfillment",
@@ -75177,6 +78393,14 @@ export const allConnections = [
     "description": "God's promise to magnify Joshua before the people in Joshua 3:7 is a continuation of the commissioning and encouragement He gave to Joshua in Deuteronomy 31:23."
   },
   {
+    "from": "eternal-heavenly-dwelling",
+    "to": "victory-over-death",
+    "type": "thematic_parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages speak of the believer's future transformation and the replacement of the perishable with the imperishable."
+  },
+  {
     "from": "tyres-wealth-dedicated-to-god",
     "to": "plague-on-jerusalems-attackers",
     "type": "thematic-parallels",
@@ -75207,6 +78431,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Both passages involve a disciple of a prophet (Gehazi/Ananias) who seeks personal gain through deception, leading to divine judgment and punishment."
+  },
+  {
+    "from": "gentiles-attain-righteousness-by-faith",
+    "to": "servant-as-light-to-nations",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.8,
+    "level": 2,
+    "description": "This passage from Isaiah prophesies that the Messiah will be a light to the Gentiles, which is fulfilled in the inclusion of Gentiles in God's plan of salvation as described in Romans 9."
   },
   {
     "from": "measuring-jerusalem",
@@ -75519,6 +78751,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The author of Hebrews draws connections between Moses' early life and faith, which aligns with Stephen's portrayal in Acts 7."
+  },
+  {
+    "from": "leaving-elementary-teachings",
+    "to": "vicarious-atonement",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.85,
+    "level": 1,
+    "description": "Connection to Hebrews 6:1-3 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 60 (line 1 column 61))"
   },
   {
     "from": "day-of-doom",
@@ -75881,6 +79121,14 @@ export const allConnections = [
     "description": "Paul's teaching on the wisdom of God and the foolishness of the world echoes the high value placed on wisdom and understanding in Proverbs 3."
   },
   {
+    "from": "the-gospel-of-jesus-christ",
+    "to": "related-1-0",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Connection to Romans 1:1-4, 16-17 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 66 (line 1 column 67))"
+  },
+  {
     "from": "samuel-is-born",
     "to": "hannahs-prayer-of-praise",
     "type": "Thematic Parallels",
@@ -76241,6 +79489,14 @@ export const allConnections = [
     "description": "Jesus compares his crucifixion to Moses lifting up the bronze serpent in the wilderness."
   },
   {
+    "from": "children-obey-parents",
+    "to": "gods-love-for-the-world",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Connection to Ephesians 6:1-3 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 65 (line 1 column 66))"
+  },
+  {
     "from": "hannah-prays-for-a-son",
     "to": "johns-birth-foretold",
     "type": "Thematic Parallels",
@@ -76319,6 +79575,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "Isaiah's prophecy about the destruction of Kedar's glory within a year aligns with Jeremiah's message."
+  },
+  {
+    "from": "mighty-angel-with-little-book",
+    "to": "time-times-half-a-time",
+    "type": "Typological",
+    "strength": 0.8,
+    "level": 1,
+    "description": "The mighty angel in Daniel's vision, who stands above the waters, is a precursor to the mighty angel in Revelation with the little book, both representing divine authority and revelation."
   },
   {
     "from": "desire-for-the-shulammite",
@@ -76463,6 +79727,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "Daniel's prayer acknowledges the people's sins and God's righteous judgment, similar to the themes in Lamentations 1."
+  },
+  {
+    "from": "paul-confronts-peter",
+    "to": "jesus-predicts-death-and-resurrection",
+    "type": "Character Connections",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Peter's vacillation and hypocrisy in Galatians 2 echoes his earlier impulsiveness and tendency to misunderstand Jesus' mission, as seen in Matthew 16 when Jesus rebukes him."
   },
   {
     "from": "jonathan-attacks-philistine-outpost",
@@ -76817,6 +80089,22 @@ export const allConnections = [
     "description": "The Levites' actions are affirmed as they are set apart for service and the priesthood, fulfilling their covenant role."
   },
   {
+    "from": "false-teachers-entice-others",
+    "to": "continue-in-sound-doctrine",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Paul warns that evil people and impostors will go from bad to worse, deceiving and being deceived, which reflects the false teachers in 2 Peter who entice others with their empty promises."
+  },
+  {
+    "from": "elder-writing-to-gaius",
+    "to": "final-greetings-and-blessing",
+    "type": "Character Connections",
+    "strength": 0.6,
+    "level": 2,
+    "description": "Gaius was a common name in the early church, and there may be a connection between the Gaius mentioned in 3 John and the Gaius mentioned in Romans 16:23 as a host and supporter of the church."
+  },
+  {
     "from": "other-examples-of-faith",
     "to": "elijah-fed-by-ravens",
     "type": "Character Connections",
@@ -77113,6 +80401,14 @@ export const allConnections = [
     "description": "Jesus' teaching about the joy that comes after sorrow connects to the theme of Zion's sudden deliverance and the transformation of her mourning into joy, as described in Isaiah 66."
   },
   {
+    "from": "christs-heavenly-ministry",
+    "to": "crowning-of-joshua",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The prophecy of the Messiah as a priest-king who will build the temple and reign on the throne is fulfilled in Christ's heavenly ministry."
+  },
+  {
     "from": "jacob-laban-covenant",
     "to": "covenant-renewal-at-shechem",
     "type": "Covenantal Connections",
@@ -77287,6 +80583,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "Loving God is demonstrated by keeping His commandments, which are not burdensome for those who have been born of God."
+  },
+  {
+    "from": "born-of-god",
+    "to": "living-hope-through-resurrection",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages emphasize the new birth and the inheritance of eternal life for those who are born of God."
   },
   {
     "from": "saul-preaches-christ",
@@ -77505,12 +80809,28 @@ export const allConnections = [
     "description": "The account of King Solomon's idolatry in 1 Kings 11:1-13 provides a historical precedent for the idolatry described in Jeremiah 2:9-13."
   },
   {
+    "from": "false-teachers-entice-others",
+    "to": "warning-against-divisive-people",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Paul instructs the Romans to watch out for those who create divisions and obstacles, which aligns with the false teachers in 2 Peter who entice others with their empty promises."
+  },
+  {
     "from": "incense",
     "to": "johns-birth-foretold",
     "type": "Thematic Parallels",
     "strength": 0.6,
     "level": 1,
     "description": "The story of Zechariah's vision in the temple includes the burning of incense, connecting it to the priestly duties described in Exodus 30."
+  },
+  {
+    "from": "promise-not-yet-received",
+    "to": "gods-patience-and-promise",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages emphasize that God's timing in fulfilling his promises may not align with human expectations or timelines."
   },
   {
     "from": "god-threatens-judgment",
@@ -77553,6 +80873,14 @@ export const allConnections = [
     "description": "Ezekiel's vision of the glory of the Lord returning to the temple shares a similar theme and imagery with the event described in 2 Chronicles 5:13-14."
   },
   {
+    "from": "criticism-of-ephesus-church",
+    "to": "gods-kindness-to-israel",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The criticism of the Ephesian church for losing their first love is thematically similar to God's rebuke of Israel for abandoning their initial devotion to Him."
+  },
+  {
     "from": "paul-commends-his-ministry",
     "to": "ananias-heals-saul",
     "type": "Prophetic Fulfillment",
@@ -77583,6 +80911,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "This passage describes how Yahweh strengthened Judah against the Assyrian threat, similar to the promise in Zechariah."
+  },
+  {
+    "from": "resurrection-of-christ",
+    "to": "angels-announce-resurrection",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage describes the actual historical event of Christ's resurrection, fulfilling the prophecies and teachings about it."
   },
   {
     "from": "judging-controversies",
@@ -77711,6 +81047,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 2,
     "description": "Jesus compares his crucifixion to Moses lifting up the bronze serpent in the wilderness."
+  },
+  {
+    "from": "one-new-man",
+    "to": "one-body-many-members",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage describes believers being baptized into one body, which is related to the theme of the one new man in Ephesians 2:14-18."
   },
   {
     "from": "tabernacle-dedication-offerings",
@@ -78105,6 +81449,14 @@ export const allConnections = [
     "description": "Both passages highlight how God's mercy and grace save sinners through Christ."
   },
   {
+    "from": "bearing-one-anothers-burdens",
+    "to": "bearing-others-weaknesses",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages emphasize the importance of bearing one another's burdens and supporting the weak."
+  },
+  {
     "from": "edoms-perpetual-hostility",
     "to": "judgment-on-edom",
     "type": "thematic-parallels",
@@ -78151,6 +81503,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "This passage echoes the same sentiment, that nothing is impossible for God, in the context of the announcement of Jesus' birth."
+  },
+  {
+    "from": "put-on-armor-of-god",
+    "to": "vicarious-atonement",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.85,
+    "level": 1,
+    "description": "Connection to Ephesians 6:10-17 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 65 (line 1 column 66))"
   },
   {
     "from": "the-word-became-flesh",
@@ -78417,6 +81777,14 @@ export const allConnections = [
     "description": "The instruction to avoid divisive people in Romans 16:17-20 shares similarities with the guidance in 2 Timothy 2:23-26 to avoid foolish and ignorant disputes."
   },
   {
+    "from": "god-appoints-members",
+    "to": "gifts-for-building-up",
+    "type": "Thematic Parallels",
+    "strength": 0.9,
+    "level": 1,
+    "description": "Both passages discuss how God appoints specific roles and gifts within the church, emphasizing the unity and diversity of the body of Christ."
+  },
+  {
     "from": "walking-in-the-light",
     "to": "jesus-came-to-save",
     "type": "thematic-parallels",
@@ -78447,6 +81815,22 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Pelatiah's death is reminiscent of the death of Abner, another prominent figure, which was also a significant event in the biblical narrative."
+  },
+  {
+    "from": "personal-convictions",
+    "to": "one-god-and-one-lord",
+    "type": "thematic-parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage discusses the need to respect the personal convictions of others, which is related to the message in Romans 14."
+  },
+  {
+    "from": "mighty-angel-with-little-book",
+    "to": "the-shepherd-god",
+    "type": "Thematic Parallels",
+    "strength": 0.5,
+    "level": 1,
+    "description": "The imagery of a mighty, yet gentle, figure bringing good news is reminiscent of the mighty angel in Revelation with the little book."
   },
   {
     "from": "god-sends-evil-spirit",
@@ -78641,6 +82025,14 @@ export const allConnections = [
     "description": "The people's willingness to bring offerings for the tabernacle is thematically parallel to the call for the people to bring their tithes and offerings to God."
   },
   {
+    "from": "honoring-elders",
+    "to": "related-1-0",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Connection to 1 Timothy 5:17-18 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 68 (line 1 column 69))"
+  },
+  {
     "from": "no-inheritance-for-levites",
     "to": "zadoks-descendants-minister",
     "type": "Prophetic Fulfillment",
@@ -78823,6 +82215,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Jehoahaz's evil reign is part of the larger narrative of Israel's eventual exile, as described in the prophecy of the northern kingdom's downfall."
+  },
+  {
+    "from": "contentment-and-trust-in-god",
+    "to": "do-not-worry",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Jesus' teaching on not worrying about material needs and trusting in God's provision aligns with the message of contentment and trust in Hebrews 13."
   },
   {
     "from": "job-despairs-of-life",
@@ -79039,6 +82439,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Like Moses, Amos is called by God to a prophetic ministry despite his humble background."
+  },
+  {
+    "from": "pauls-testimony-of-gods-grace",
+    "to": "pauls-testimony-of-gods-grace",
+    "type": "thematic-parallels",
+    "strength": 0.9,
+    "level": 2,
+    "description": "This verse within the same passage reiterates the theme of God's grace towards sinners."
   },
   {
     "from": "future-jerusalem",
@@ -79305,12 +82713,28 @@ export const allConnections = [
     "description": "The Danites' conquest of Laish connects to the broader theme of the Israelites' incomplete conquest of the land, as described in the book of Judges."
   },
   {
+    "from": "judging-within-the-church",
+    "to": "gods-love-for-the-world",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Connection to 1 Corinthians 5:12-13 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 69 (line 1 column 70))"
+  },
+  {
     "from": "genealogy-of-benjamin",
     "to": "jacobs-family-listed",
     "type": "Character Connections",
     "strength": 0.8,
     "level": 1,
     "description": "The genealogy of Benjamin in 1 Chronicles 7 connects back to the earlier listing of Benjamin's sons in Genesis 46 when Jacob's family went to Egypt."
+  },
+  {
+    "from": "judgment-of-immoral-behavior",
+    "to": "related-1-0",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Connection to 1 Corinthians 5:3-5 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 69 (line 1 column 70))"
   },
   {
     "from": "sennacherib-invades-judah",
@@ -79375,6 +82799,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "David's final charge to Solomon to obey God's commands and build the temple parallels his earlier charge to Solomon in 1 Kings 2:1-4."
+  },
+  {
+    "from": "sowing-and-reaping",
+    "to": "generosity-and-blessing",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "This proverb connects generous giving with receiving more, similar to the message in 2 Corinthians 9:6."
   },
   {
     "from": "teaching-gods-law",
@@ -79455,6 +82887,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The death and burial of Abraham, Isaac's father, is described in a similar manner, highlighting the continuity of the patriarchal line."
+  },
+  {
+    "from": "children-of-light",
+    "to": "chosen-people-of-god",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage describes believers as a chosen race, a royal priesthood, a holy nation, and a people for God's own possession, which is related to the idea of being children of light in Ephesians 5:8-14."
   },
   {
     "from": "cities-for-ephraim",
@@ -79679,6 +83119,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "2 Kings 15 also records the death of Jotham and the succession of his son Ahaz, providing additional details about the transition of power."
+  },
+  {
+    "from": "warning-against-divisive-people",
+    "to": "paul-meets-with-ephesian-elders",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages warn the believers about the dangers of false teachers and divisive individuals who seek to undermine the unity and integrity of the church."
   },
   {
     "from": "simeon-levi-kill-shechemites",
@@ -79921,6 +83369,14 @@ export const allConnections = [
     "description": "Paul's appeal to Caesar in Acts 25:11-12 sets the stage for his journey to Rome described in Acts 27:1-8."
   },
   {
+    "from": "old-testament-examples-of-faith",
+    "to": "pharaoh-orders-male-infanticide",
+    "type": "Typological",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The faith of Moses and the Israelites in the Exodus story prefigures and foreshadows the faith described in Hebrews 11."
+  },
+  {
     "from": "watchman-on-the-wall",
     "to": "future-glory",
     "type": "Covenantal Connections",
@@ -79959,6 +83415,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "This passage establishes Israel's unique status as God's treasured possession and a kingdom of priests, which is the basis for their separation from other nations in Leviticus 20."
+  },
+  {
+    "from": "bearing-one-anothers-burdens",
+    "to": "walk-worthy-of-calling",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage emphasizes the importance of unity, humility, and bearing with one another, which is connected to the theme of bearing one another's burdens."
   },
   {
     "from": "honoring-true-widows",
@@ -80073,6 +83537,22 @@ export const allConnections = [
     "description": "This passage also emphasizes the value of a good name or reputation over material wealth, echoing the message in Proverbs 22:1."
   },
   {
+    "from": "long-for-spiritual-milk",
+    "to": "israels-idolatry",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 2,
+    "description": "The metaphor of God as the fountain of living waters may connect to the idea of believers desiring the pure milk of the Word."
+  },
+  {
+    "from": "israel-stumbles-over-the-stumbling-stone",
+    "to": "jesus-presented-at-temple",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "In this passage, Simeon prophesies that Jesus will be a sign that is spoken against, which is connected to the idea of Jesus as a stumbling stone for Israel in Romans 9."
+  },
+  {
     "from": "syrians-flee-their-camp",
     "to": "judah-defeats-enemies",
     "type": "Thematic Parallels",
@@ -80177,6 +83657,14 @@ export const allConnections = [
     "description": "Both passages highlight God's intimate knowledge and complete understanding of His creation, emphasizing His sovereignty."
   },
   {
+    "from": "liberty-and-stumbling-blocks",
+    "to": "acting-in-faith",
+    "type": "Thematic Parallels",
+    "strength": 0.9,
+    "level": 1,
+    "description": "This passage also discusses the concept of not using one's liberty in a way that causes others to stumble."
+  },
+  {
     "from": "judgment-and-restoration-of-nations",
     "to": "judgment-on-moab-and-ammon",
     "type": "Thematic Parallels",
@@ -80233,6 +83721,14 @@ export const allConnections = [
     "description": "This passage highlights the close relationship between David and Jonathan, which is further developed in the context of Saul's pursuit of David."
   },
   {
+    "from": "warning-against-becoming-teachers",
+    "to": "be-ready-for-christs-return",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Jesus teaches that those who are given much will be held accountable for much, connecting to the warning in James about the strict judgment for teachers."
+  },
+  {
     "from": "pauls-confidence",
     "to": "new-covenant-of-the-spirit",
     "type": "Thematic Parallels",
@@ -80287,6 +83783,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Both passages emphasize the importance of being a vessel that is useful and prepared for God's work, in contrast to those who build with inferior materials."
+  },
+  {
+    "from": "freedom-from-law-through-christ",
+    "to": "one-new-man",
+    "type": "freedom-from-law-through-christ",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages speak of Christ's work in abolishing the law and bringing unity between Jews and Gentiles."
   },
   {
     "from": "yahweh-provides-rain",
@@ -80449,6 +83953,14 @@ export const allConnections = [
     "description": "Jeremiah's prophecy of destruction echoes earlier warnings given through the prophets."
   },
   {
+    "from": "paul-defends-his-apostleship",
+    "to": "pauls-gospel-from-revelation",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Paul recounts his calling and apostleship, which is relevant to his defense in 1 Corinthians 9."
+  },
+  {
     "from": "gods-patience-and-promise",
     "to": "gods-righteous-judgment",
     "type": "Thematic Parallels",
@@ -80471,6 +83983,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 2,
     "description": "Zacchaeus's promise to restore what he had taken unjustly connects to the people's promise in Nehemiah, highlighting the importance of repentance and restitution."
+  },
+  {
+    "from": "godly-sorrow-and-repentance",
+    "to": "paul-avoids-sorrowful-visit",
+    "type": "Thematic Parallels",
+    "strength": 0.9,
+    "level": 1,
+    "description": "This passage also speaks of Paul's sorrow and the purpose behind it, which is connected to the theme of godly sorrow and repentance in 2 Corinthians 7:8-11."
   },
   {
     "from": "gideon-called-by-god",
@@ -80591,6 +84111,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Paul cites Isaiah's prophecy of the remnant as being fulfilled in the salvation of a remnant of Israel."
+  },
+  {
+    "from": "instructions-for-holy-living",
+    "to": "call-to-holiness",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages emphasize the call to holiness and living in a way that pleases God."
   },
   {
     "from": "purification-from-corpse-contamination",
@@ -80735,6 +84263,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "This passage also addresses the importance of keeping vows and oaths made to God, echoing the themes in Numbers 30."
+  },
+  {
+    "from": "hypocrisy-of-religious-people",
+    "to": "related-1-0",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Connection to Romans 2:17-24 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 67 (line 1 column 68))"
   },
   {
     "from": "not-judging-others",
@@ -81137,6 +84673,14 @@ export const allConnections = [
     "description": "Both passages encourage believers to supplement their faith with virtues and qualities that lead to spiritual growth and maturity."
   },
   {
+    "from": "the-potters-right-over-the-clay",
+    "to": "enemies-like-dust",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "This passage also questions the right of the created to challenge the Creator, which is a similar theme to the one explored in Romans 9:14-24."
+  },
+  {
     "from": "abraham-intercedes-for-sodom",
     "to": "power-of-prayer",
     "type": "thematic-parallels",
@@ -81239,6 +84783,22 @@ export const allConnections = [
     "strength": 0.5,
     "level": 1,
     "description": "This passage describes another instance of God's deliverance of Israel from their enemies, highlighting the recurring theme of divine intervention in the nation's military conflicts."
+  },
+  {
+    "from": "abrahams-example",
+    "to": "gods-love-for-the-world",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Connection to Hebrews 6:13-20 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 60 (line 1 column 61))"
+  },
+  {
+    "from": "christs-superior-sacrifice",
+    "to": "redemption-through-christ",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The redemption and forgiveness of sins through Christ's blood is connected to the superior sacrifice described in Hebrews 9."
   },
   {
     "from": "bildad-questions-job",
@@ -81401,6 +84961,14 @@ export const allConnections = [
     "description": "Both passages emphasize the freedom and liberty that comes through faith in Christ, in contrast to bondage under the law."
   },
   {
+    "from": "pauls-greeting-to-timothy",
+    "to": "greeting-and-thanksgiving",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Paul's greeting to the Philippians, like his greeting to Timothy, highlights his apostleship and the believers' status as saints in Christ."
+  },
+  {
     "from": "canaanites-in-gezer",
     "to": "solomon-builds-cities",
     "type": "Thematic Parallels",
@@ -81535,6 +85103,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The betrayal of Jesus by Judas for thirty pieces of silver fulfills the prophecy in Zechariah about the worthless shepherd being betrayed for a small sum."
+  },
+  {
+    "from": "mixed-review-of-thyatira-church",
+    "to": "ahab-promotes-baal-worship",
+    "type": "Typological",
+    "strength": 0.8,
+    "level": 1,
+    "description": "The rebuke of the Thyatira church for tolerating the false prophetess Jezebel is typologically connected to the biblical account of the wicked Queen Jezebel, who led Israel into idolatry and immorality."
   },
   {
     "from": "asa-imprisons-hanani",
@@ -81727,6 +85303,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The suffering and trial of Jesus fulfills the prophecy in Isaiah about the Suffering Servant who is led like a lamb to the slaughter."
+  },
+  {
+    "from": "glorifying-god-in-all-things",
+    "to": "related-1-0",
+    "type": "Character Connections",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Connection to 1 Corinthians 10:23-33 (Note: This is a fallback response. Reason: Error calling Claude API: Claude API error: 529 - {\"type\":\"error\",\"error\":{\"type\":\"overloaded_error\",\"message\":\"Overloaded\"}})"
   },
   {
     "from": "laying-temple-foundation",
@@ -82153,6 +85737,14 @@ export const allConnections = [
     "description": "This passage also speaks of God's judgment on the nations that come against Jerusalem, connecting to the theme in Isaiah 17."
   },
   {
+    "from": "witnesses-killed-and-resurrected",
+    "to": "bones-represent-israel",
+    "type": "Typological",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Ezekiel's vision of the dry bones coming to life mirrors the resurrection of the two witnesses in Revelation."
+  },
+  {
     "from": "hallelujah-for-gods-judgments",
     "to": "related-2-0",
     "type": "Thematic Parallel",
@@ -82257,6 +85849,14 @@ export const allConnections = [
     "description": "The author of Hebrews emphasizes the immutability and permanence of God's covenant promise to Abraham, which is fulfilled in Christ."
   },
   {
+    "from": "slaves-to-righteousness",
+    "to": "false-teachers-entice-others",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This verse warns that people are slaves to whatever has mastered them, which connects to the concept of being slaves to righteousness in Romans 6."
+  },
+  {
     "from": "gideon-reduces-his-army",
     "to": "thorn-in-the-flesh",
     "type": "Thematic Parallels",
@@ -82337,6 +85937,14 @@ export const allConnections = [
     "description": "Ezekiel's prophecy of God restoring and renewing Israel is fulfilled in the salvation of all Israel."
   },
   {
+    "from": "christ-the-faithful-and-true",
+    "to": "shoot-from-jesse",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.8,
+    "level": 1,
+    "description": "The description of the Messiah in Isaiah 11 as one who will 'judge with righteousness' and 'strike the earth with the rod of his mouth' prefigures and finds fulfillment in the depiction of Christ as the faithful and true judge in Revelation 19."
+  },
+  {
     "from": "seductress-leads-to-death",
     "to": "folly-calls-the-simple",
     "type": "Thematic Parallels",
@@ -82351,6 +85959,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Esau's treachery against his brother Jacob is an earlier example of the kind of betrayal described in Malachi."
+  },
+  {
+    "from": "suffering-like-christ",
+    "to": "christs-example-of-humility",
+    "type": "character-connections",
+    "strength": 0.9,
+    "level": 1,
+    "description": "Both passages emphasize the importance of believers having the same mindset as Christ, who suffered for the sake of others."
   },
   {
     "from": "fulfillment-of-the-law",
@@ -82447,6 +86063,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Connection to Revelation 17:15-18 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 69 (line 1 column 70))"
+  },
+  {
+    "from": "suffering-and-deliverance",
+    "to": "related-3-2",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This psalm expresses the truth that the righteous face many afflictions, but the Lord delivers them from them all, which is connected to the theme of suffering and deliverance in 2 Corinthians 1:8-11."
   },
   {
     "from": "walk-in-christ",
@@ -82575,6 +86199,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Connection to Joshua 19:24-31 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 62 (line 1 column 63))"
+  },
+  {
+    "from": "restoring-fallen-believers",
+    "to": "woe-to-the-shepherds",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This Old Testament passage criticizes shepherds who have not strengthened the weak or healed the sick, which relates to the importance of restoring fallen believers as emphasized in Galatians 6:1."
   },
   {
     "from": "elisha-recovers-axe-head",
@@ -82719,6 +86351,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "The temple dedication fulfills the covenantal instructions regarding the centralization of worship in a single sanctuary."
+  },
+  {
+    "from": "righteousness-by-faith",
+    "to": "related-3-1",
+    "type": "thematic-parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "The prophet Habakkuk declares that the righteous shall live by faith, a concept that Paul builds upon in Romans 10."
   },
   {
     "from": "false-teachers-entice-others",
@@ -82953,6 +86593,14 @@ export const allConnections = [
     "description": "The concept of a remnant being spared from God's judgment is a recurring theme in the prophets, as seen in Isaiah's prophecy of a remnant of Israel returning to the Mighty God."
   },
   {
+    "from": "paul-seeks-titus",
+    "to": "personal-instructions",
+    "type": "Character Connections",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage shows Paul's longing for the companionship of his fellow workers, including Titus, who had departed for Dalmatia."
+  },
+  {
     "from": "earthly-tabernacle",
     "to": "offerings-for-the-sanctuary",
     "type": "Typological",
@@ -83031,6 +86679,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "David expresses confidence in God's power to deliver him from the Philistines, similar to Joshua's assurance of victory over the enemy armies."
+  },
+  {
+    "from": "contentment",
+    "to": "related-0-2",
+    "type": "thematic",
+    "strength": 0.6,
+    "level": 1,
+    "description": "The Psalmist expresses confidence in God's provision, which relates to the contentment described in Philippians 4:11-13."
   },
   {
     "from": "fasting-and-prayer-for-protection",
@@ -83135,6 +86791,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Jesus' promise of the Holy Spirit as a helper and comforter connects to the events of Pentecost in Acts 2."
+  },
+  {
+    "from": "lords-deliverance",
+    "to": "related-1-2",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages promise the Lord's protection and deliverance for those who trust in Him."
   },
   {
     "from": "children-of-god",
@@ -83393,6 +87057,14 @@ export const allConnections = [
     "description": "The presence of Levite musicians during the dedication of the temple in 2 Chronicles 5 echoes the role of musicians in the ark's procession in 1 Chronicles 15."
   },
   {
+    "from": "scriptures-give-hope",
+    "to": "rejoicing-in-sufferings",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage connects suffering, perseverance, and hope, which is related to the theme of the Scriptures providing hope through perseverance."
+  },
+  {
     "from": "eternity-in-mans-heart",
     "to": "related-2-1",
     "type": "Thematic Parallels",
@@ -83535,6 +87207,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "The preceding passage in 2 Chronicles 31 highlights Hezekiah's faithfulness and reforms, providing context for his subsequent prosperity."
+  },
+  {
+    "from": "rebuke-of-the-dead-church",
+    "to": "honoring-true-widows",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages warn against the danger of being spiritually dead while appearing to be alive."
   },
   {
     "from": "incomplete-conquest-of-canaan",
@@ -83695,6 +87375,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Both Job and the virtuous woman described in Proverbs 31 are depicted as respected leaders and counselors in their communities."
+  },
+  {
+    "from": "warning-against-false-teachers",
+    "to": "no-other-gospel",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages warn against those who would distort the true gospel message and lead believers astray."
   },
   {
     "from": "wisdom-over-riches",
@@ -84081,6 +87769,14 @@ export const allConnections = [
     "description": "Connection to Matthew 14:1-12 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 69 (line 1 column 70))"
   },
   {
+    "from": "instructions-regarding-timothy",
+    "to": "timothy-joins-paul",
+    "type": "Character Connections",
+    "strength": 0.8,
+    "level": 1,
+    "description": "This passage introduces Timothy and his relationship with Paul, providing context for the instructions in 1 Corinthians 16."
+  },
+  {
     "from": "philistines-dishonor-sauls-body",
     "to": "sauls-death-and-dishonor",
     "type": "Prophetic Fulfillment",
@@ -84161,6 +87857,14 @@ export const allConnections = [
     "description": "Connection between God creating light in Genesis and Jesus declaring Himself as the light of the world."
   },
   {
+    "from": "confession-and-forgiveness",
+    "to": "power-of-prayer",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Both passages encourage believers to confess their sins to one another and pray for forgiveness."
+  },
+  {
     "from": "enduring-temptation-brings-blessing",
     "to": "avoiding-pagan-practices",
     "type": "Thematic Parallels",
@@ -84175,6 +87879,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "This passage, like 1 Thessalonians 1:6-7, exhorts the recipients to join in imitating the author's example."
+  },
+  {
+    "from": "inheritance-of-gods-kingdom",
+    "to": "sheep-and-goats-judgment",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "Jesus' teaching on the separation of the righteous and unrighteous at the final judgment connects to the theme of inheriting God's kingdom."
   },
   {
     "from": "news-of-jerusalems-fall",
@@ -84337,6 +88049,14 @@ export const allConnections = [
     "description": "Connection to Genesis 10:21-31 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 57 (line 1 column 58))"
   },
   {
+    "from": "song-of-moses-and-the-lamb",
+    "to": "vicarious-atonement",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.85,
+    "level": 1,
+    "description": "Connection to Revelation 15:3-4 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 66 (line 1 column 67))"
+  },
+  {
     "from": "job-seeks-forgiveness",
     "to": "confession-and-forgiveness",
     "type": "Thematic Parallels",
@@ -84407,6 +88127,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "God's promise to Jacob to make him a great nation is fulfilled as Joseph invites his family to Egypt, where they will grow and thrive."
+  },
+  {
+    "from": "john-eats-the-little-book",
+    "to": "jeremiahs-joy-in-gods-word",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Jeremiah describes the word of God as being sweet in his mouth, like the little book for John, emphasizing the importance of internalizing and proclaiming God's message."
   },
   {
     "from": "tyres-beauty-and-trade",
@@ -84519,6 +88247,22 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "God prepares Jeremiah to face opposition and persecution for his prophetic ministry."
+  },
+  {
+    "from": "witnesses-killed-and-resurrected",
+    "to": "interpretation-of-the-vision",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Daniel's vision of the saints being overpowered and killed before God's judgment is echoed in the fate of the two witnesses."
+  },
+  {
+    "from": "guarding-the-truth",
+    "to": "guard-your-heart",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This proverb emphasizes the importance of guarding one's heart, which can be connected to the idea of guarding the truth in 2 Timothy 1:13-14."
   },
   {
     "from": "beauty-of-the-beloved",
@@ -84737,6 +88481,14 @@ export const allConnections = [
     "description": "The Psalmist expresses a similar sense of anguish and abandonment by God, echoing Job's cries."
   },
   {
+    "from": "paul-forgoes-his-rights",
+    "to": "christs-example-of-humility",
+    "type": "Thematic Parallels",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages emphasize the importance of self-sacrifice and forgoing one's rights for the sake of the gospel and the good of others."
+  },
+  {
     "from": "chosen-before-creation",
     "to": "gods-love-for-the-world",
     "type": "Thematic Parallels",
@@ -84879,6 +88631,14 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "This passage in Ephesians speaks of the spiritual armor and strength that God provides to believers, which connects to God's empowerment of David in battle."
+  },
+  {
+    "from": "praise-for-faithful-church",
+    "to": "definition-of-faith",
+    "type": "thematic-parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both passages highlight the importance of faith and the examples of those who have remained faithful despite trials and tribulations."
   },
   {
     "from": "works-of-god-revealed",
@@ -85135,6 +88895,22 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Ezekiel's prophecy about the removal of Judah's leadership under the Babylonian invasion connects to the events foretold in Isaiah 3."
+  },
+  {
+    "from": "honor-for-weaker-members",
+    "to": "sheep-and-goats-judgment",
+    "type": "Thematic Parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "These passages share the theme of valuing and serving the least of these, as Jesus identifies with the marginalized and vulnerable."
+  },
+  {
+    "from": "final-exhortations",
+    "to": "exhortation-to-worthy-conduct",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Paul's encouragement to the Corinthians to stand firm and be courageous is similar to his instructions to the Philippians, highlighting the importance of perseverance in the Christian life."
   },
   {
     "from": "jews-defend-themselves",
@@ -85463,6 +89239,14 @@ export const allConnections = [
     "strength": 0.7,
     "level": 1,
     "description": "Paul's teaching on the foolishness of God being wiser than human wisdom connects to the themes of God's wisdom and knowledge in Romans 11."
+  },
+  {
+    "from": "invitation-to-repent",
+    "to": "parable-of-the-prodigal-son",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The parable of the prodigal son shares the theme of God's invitation to repentance and the joy of restoration."
   },
   {
     "from": "joseph-accuses-brothers",
@@ -85905,12 +89689,28 @@ export const allConnections = [
     "description": "The parable of the rich man and Lazarus, which illustrates the consequences of rejecting the truth, as the religious leaders are doing in this passage."
   },
   {
+    "from": "male-child-born",
+    "to": "sign-of-immanuel",
+    "type": "Prophetic Fulfillment",
+    "strength": 0.8,
+    "level": 1,
+    "description": "The birth of the male child fulfills the prophecy of the virgin conceiving and bearing a son."
+  },
+  {
     "from": "the-lord-encourages-paul",
     "to": "lords-deliverance",
     "type": "Thematic Parallels",
     "strength": 0.6,
     "level": 2,
     "description": "This passage from Paul's later writings reflects a similar theme of the Lord standing by him and delivering him from danger, echoing the encouragement he received in Acts 23:11."
+  },
+  {
+    "from": "varieties-of-roles",
+    "to": "gifts-for-building-up",
+    "type": "Thematic Parallels",
+    "strength": 0.9,
+    "level": 1,
+    "description": "Both passages discuss the various roles and functions within the church, emphasizing how God has appointed them for the purpose of equipping the saints and building up the body of Christ."
   },
   {
     "from": "covenant-to-free-slaves",
@@ -85935,6 +89735,14 @@ export const allConnections = [
     "strength": 0.9,
     "level": 1,
     "description": "Both passages describe Jesus sending His disciples into the world to continue His mission and make disciples of all nations."
+  },
+  {
+    "from": "paul-commends-his-ministry",
+    "to": "remember-jesus-christ-risen",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Paul's endurance of hardships for the sake of the elect in 2 Timothy 2:10 parallels the commendation of his ministry in 2 Corinthians 6."
   },
   {
     "from": "wicked-men-abuse-concubine",
@@ -86055,6 +89863,22 @@ export const allConnections = [
     "strength": 0.6,
     "level": 1,
     "description": "The prophet Hosea also accuses the people of deceit and turning away from God."
+  },
+  {
+    "from": "grace-abounds-over-sin",
+    "to": "made-alive-in-christ",
+    "type": "thematic-parallels",
+    "strength": 0.9,
+    "level": 1,
+    "description": "Both passages emphasize that God's grace abounds and saves us from sin and death."
+  },
+  {
+    "from": "think-on-good",
+    "to": "guard-your-heart",
+    "type": "thematic",
+    "strength": 0.8,
+    "level": 1,
+    "description": "Both passages emphasize the importance of guarding one's heart and mind, and focusing on what is good and praiseworthy."
   },
   {
     "from": "tree-of-knowledge",
@@ -86295,6 +90119,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "Hushai's successful undermining of Ahithophel's counsel is a key part of David's strategy to counter Absalom's conspiracy."
+  },
+  {
+    "from": "paul-avoids-sorrowful-visit",
+    "to": "preach-the-word",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "This passage emphasizes the importance of preaching the word with patience and gentleness, even when it is difficult or unpopular."
   },
   {
     "from": "peter-filled-with-the-spirit",
@@ -86545,12 +90377,28 @@ export const allConnections = [
     "description": "Connection to Matthew 28:1-10 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 62 (line 1 column 63))"
   },
   {
+    "from": "israels-disobedience",
+    "to": "paul-preaches-in-rome",
+    "type": "thematic-parallels",
+    "strength": 0.7,
+    "level": 1,
+    "description": "The book of Acts describes a similar pattern of Jewish rejection of the gospel message, leading to its proclamation to the Gentiles."
+  },
+  {
     "from": "adam-to-noah",
     "to": "vicarious-atonement",
     "type": "Prophetic Fulfillment",
     "strength": 0.85,
     "level": 1,
     "description": "Connection to 1 Chronicles 1:1-4 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 60 (line 1 column 61))"
+  },
+  {
+    "from": "god-sent-his-son-to-redeem",
+    "to": "future-glory",
+    "type": "Covenantal Connections",
+    "strength": 0.9,
+    "level": 2,
+    "description": "Connection to Galatians 4:4-5 (Note: This is a fallback response. Reason: JSON repair failed: Expected ':' after property name in JSON at position 69 (line 1 column 70))"
   },
   {
     "from": "increased-workload-for-israelites",
@@ -86711,6 +90559,14 @@ export const allConnections = [
     "strength": 0.8,
     "level": 1,
     "description": "The passage identifies the sins of Sodom and Gomorrah as pride, excess of food, and neglect of the poor, which led to their destruction, paralleling the account in Genesis."
+  },
+  {
+    "from": "honor-for-weaker-members",
+    "to": "thorn-in-the-flesh",
+    "type": "Thematic Parallels",
+    "strength": 0.6,
+    "level": 1,
+    "description": "Both texts highlight how God's power and grace are made perfect in human weakness, emphasizing the importance of honoring the seemingly weaker members."
   },
   {
     "from": "god-curses-serpent",
