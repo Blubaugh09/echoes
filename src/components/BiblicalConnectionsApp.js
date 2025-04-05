@@ -3003,7 +3003,7 @@ const BibleBookConnections = () => {
                   onClick={() => setShowChapterSelector(!showChapterSelector)}
                   className="flex items-center space-x-2 py-2 px-4 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
                 >
-                  <span className="font-medium">Chapter {currentChapter}</span>
+                  <span className="font-medium">{currentChapter}</span>
                   <ChevronDown size={16} />
                 </button>
                 {showChapterSelector && (
