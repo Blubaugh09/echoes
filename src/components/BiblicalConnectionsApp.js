@@ -1205,34 +1205,30 @@ const BibleBookConnections = () => {
     }
     
     return (
-      <>
-        <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
-          <div className="p-2 flex items-center justify-between">
-            <div className="flex items-center space-x-2 overflow-x-auto scrollbar-hide flex-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              {availableConnectionsForChapter.map(passage => (
-                <button
-                  key={passage.id}
-                  onClick={() => handlePassageClick(passage)}
-                  className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg transition-colors group whitespace-nowrap
-                    ${selectedPassage && selectedPassage.id === passage.id 
-                      ? 'bg-indigo-100 text-indigo-700' 
-                      : 'bg-gray-50 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700'}`}
-                >
-                  <div 
-                    className="w-2 h-2 rounded-full"
-                    style={{ backgroundColor: passage.bookColor || '#6366f1' }}
-                  ></div>
-                  <div className="text-xs font-medium">
-                    {passage.title}
-                  </div>
-                </button>
-              ))}
-            </div>
+      <div className="mb-6 bg-white rounded-lg border border-gray-100 shadow-sm sticky top-0 z-30">
+        <div className="p-2 flex items-center justify-between">
+          <div className="flex items-center space-x-2 overflow-x-auto scrollbar-hide flex-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            {availableConnectionsForChapter.map(passage => (
+              <button
+                key={passage.id}
+                onClick={() => handlePassageClick(passage)}
+                className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg transition-colors group whitespace-nowrap
+                  ${selectedPassage && selectedPassage.id === passage.id 
+                    ? 'bg-indigo-100 text-indigo-700' 
+                    : 'bg-gray-50 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700'}`}
+              >
+                <div 
+                  className="w-2 h-2 rounded-full"
+                  style={{ backgroundColor: passage.bookColor || '#6366f1' }}
+                ></div>
+                <div className="text-xs font-medium">
+                  {passage.title}
+                </div>
+              </button>
+            ))}
           </div>
         </div>
-        {/* Spacer div to prevent content from being hidden under the fixed header */}
-        <div className="h-14 mb-2"></div>
-      </>
+      </div>
     );
   };
 
