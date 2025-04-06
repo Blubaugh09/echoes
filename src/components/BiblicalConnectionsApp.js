@@ -1657,7 +1657,19 @@ const BibleBookConnections = () => {
       });
     });
     return (
-      <div className={`bg-slate-50 w-full h-full relative overflow-hidden ${isExpanded ? 'fixed inset-0 z-50' : ''}`}>
+      <div className={`bg-slate-50 relative overflow-hidden ${isExpanded ? 'fixed top-0 left-0 w-screen h-screen z-[9999]' : 'w-full h-full'}`}>
+        {isExpanded && (
+          <div className="absolute top-4 right-4 z-50">
+            <button
+              onClick={() => setIsExpanded(false)}
+              className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
+              aria-label="Exit full screen"
+            >
+              <Minimize2 size={20} className="text-slate-700" />
+            </button>
+          </div>
+        )}
+        
         <div className="absolute top-4 left-4 z-10 flex flex-col space-y-2">
           <button 
             onClick={handleZoomIn}
@@ -1676,16 +1688,15 @@ const BibleBookConnections = () => {
         </div>
         
         <div className="absolute top-4 right-4 z-10 flex space-x-2">
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
-            aria-label={isExpanded ? "Exit full screen" : "Full screen"}
-          >
-            {isExpanded ? 
-              <Minimize2 size={20} className="text-slate-700" /> : 
+          {!isExpanded && (
+            <button
+              onClick={() => setIsExpanded(true)}
+              className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
+              aria-label="Full screen"
+            >
               <Maximize2 size={20} className="text-slate-700" />
-            }
-          </button>
+            </button>
+          )}
           
           <button
             onClick={() => setShowConnectionTypes(!showConnectionTypes)}
@@ -2690,187 +2701,6 @@ const BibleBookConnections = () => {
       <header className="p-4 bg-white shadow-sm border-b border-slate-200">
         <div className="max-w-7xl mx-auto">
           {/* Navigation History Section */}
-{/*           {breadcrumbs.length > 0 && (
-            <div className="mb-4 bg-white rounded-lg border border-gray-100 shadow-sm">
-              <div className="p-2 flex items-center justify-between">
-                <div className="flex items-center space-x-2 overflow-x-auto scrollbar-hide flex-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                  {breadcrumbs
-                    .filter(b => !b.isSessionMarker)
-                    .map((crumb, index) => {
-                      const crumbId = crumb.breadcrumbId || `${crumb.id}-${index}`;
-                      
-                      // Find book information to display
-                      let bookInfo = null;
-                      for (const section of Object.values(bibleStructure)) {
-                        const foundBook = section.books.find(b => b.id === crumb.book);
-                        if (foundBook) {
-                          bookInfo = foundBook;
-                          break;
-                        }
-                      }
-                      
-                      const bookColor = bookInfo?.color || crumb.bookColor || '#6366f1';
-                      const bookName = bookInfo?.title || crumb.bookName || 'Unknown';
-                      
-                      return (
-                        <button
-                          key={`breadcrumb-${crumbId}`}
-                          className="flex items-center space-x-2 px-3 py-1.5 bg-gray-50 rounded-lg hover:bg-indigo-50 transition-colors group whitespace-nowrap"
-                          onClick={() => handleBreadcrumbClick(crumb, breadcrumbs.indexOf(crumb))}
-                        >
-                          <div 
-                            className="w-2 h-2 rounded-full"
-                            style={{ backgroundColor: bookColor }}
-                          ></div>
-                          <div className="text-xs font-medium text-gray-700 group-hover:text-indigo-700">
-                            {crumb.title}
-                          </div>
-                        </button>
-                      );
-                    })
-                  }
-                </div>
-                <button
-                  onClick={clearBreadcrumbs}
-                  className="ml-2 p-1 text-gray-400 hover:text-red-500 rounded-full hover:bg-red-50 transition-colors"
-                  title="Clear history"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M3 6h18"></path>
-                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          )} */}
-
-          <div className="flex items-center justify-between gap-4 flex-wrap">
-            <div className="flex flex-1 items-center gap-3 justify-end">
-             
-            
-              {/* Book selector */}
-              <div className="relative">
-                <button
-                  onClick={() => setShowBookSelector(!showBookSelector)}
-                  className="flex items-center space-x-2 py-2 px-4 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
-                >
-                  <span className="font-medium">{currentBook}</span>
-                  <ChevronDown size={16} />
-                </button>
-                {showBookSelector && (
- <div className="absolute top-12 left-0 w-72 max-h-96 overflow-y-auto bg-white shadow-lg rounded-lg border border-gray-200 z-30">
-    <div className="p-3 border-b border-gray-200">
-      <div className="flex items-center space-x-2 px-2 py-1 bg-gray-100 rounded">
-        <Search size={16} className="text-gray-500" />
-        <input
-          type="text"
-          placeholder="Search books..."
-          value={bookSearch}
-          onChange={(e) => setBookSearch(e.target.value)}
-          className="w-full bg-transparent border-none outline-none text-sm"
-        />
-      </div>
-      <div className="flex space-x-1 mt-2">
-        <button
-          onClick={() => setActiveTestament("all")}
-          className={`text-xs px-2 py-1 rounded ${activeTestament === "all" ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-600"}`}
-        >
-          All
-        </button>
-        <button
-          onClick={() => setActiveTestament("old")}
-          className={`text-xs px-2 py-1 rounded ${activeTestament === "old" ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-600"}`}
-        >
-          Old Testament
-        </button>
-        <button
-          onClick={() => setActiveTestament("new")}
-          className={`text-xs px-2 py-1 rounded ${activeTestament === "new" ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-600"}`}
-        >
-          New Testament
-        </button>
-      </div>
-    </div>
-    <div className="p-2">
-      <div className="grid grid-cols-2 gap-1">
-        {bibleBooks
-          .filter(book => {
-            // First filter by search text
-            const matchesSearch = bookSearch ? 
-              book.toLowerCase().includes(bookSearch.toLowerCase()) : 
-              true;
-            
-            // Then filter by testament
-            let matchesTestament = true;
-            if (activeTestament === "old") {
-              matchesTestament = oldTestamentBooks.includes(book);
-            } else if (activeTestament === "new") {
-              matchesTestament = newTestamentBooks.includes(book);
-            }
-            
-            return matchesSearch && matchesTestament;
-          })
-          .map(book => (
-            <button
-              key={book}
-              onClick={() => {
-                console.log('*** Book selected:', book);
-                setCurrentBook(book);
-                setShowBookSelector(false);
-              }}
-              className={`px-3 py-2 block w-full text-left text-sm ${
-                currentBook === book 
-                  ? 'bg-indigo-50 text-indigo-600 font-medium' 
-                  : 'text-gray-700 hover:bg-gray-50'
-              }`}
-            >
-              {book}
-            </button>
-          ))}
-      </div>
-    </div>
-  </div>
-)}
-              </div>
-              
-              {/* Chapter selector */}
-              <div className="relative">
-                <button
-                  onClick={() => setShowChapterSelector(!showChapterSelector)}
-                  className="flex items-center space-x-2 py-2 px-4 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
-                >
-                  <span className="font-medium">{currentChapter}</span>
-                  <ChevronDown size={16} />
-                </button>
-                {showChapterSelector && (
-                  <div className="absolute top-12 right-0 w-72 max-h-96 overflow-y-auto bg-white shadow-lg rounded-lg border border-gray-200 z-30">
-                    <div className="p-2">
-                      <div className="grid grid-cols-5 gap-1">
-                        {Array.from({ length: chapterCount }, (_, i) => (
-                          <button
-                            key={i + 1}
-                            onClick={() => {
-                              console.log('*** Chapter selected:', i + 1);
-                              setCurrentChapter(i + 1);
-                              setShowChapterSelector(false);
-                            }}
-                            className={`p-2 text-center rounded ${
-                              currentChapter === i + 1
-                                ? 'bg-indigo-100 text-indigo-700 font-medium'
-                                : 'hover:bg-gray-50 text-gray-700'
-                            }`}
-                          >
-                            {i + 1}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-              
-              {/* Navigation buttons */}
 {/*               <div className="flex items-center">
                 <button 
                   className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-l-lg shadow-sm"
