@@ -169,6 +169,9 @@ const BibleBookConnections = () => {
   const textContainerRef = useRef(null);
   const sectionsContainerRef = useRef(null);
   
+  // *** NEW STATE FOR GRAPH MODAL ***
+  const [showGraphModal, setShowGraphModal] = useState(false);
+  
   // *** NEW STATE FOR RESIZING ***
   const [isResizing, setIsResizing] = useState(false);
   const [resizeStartPosition, setResizeStartPosition] = useState(0);
@@ -1202,30 +1205,34 @@ const BibleBookConnections = () => {
     }
     
     return (
-      <div className="mb-6 bg-white rounded-lg border border-gray-100 shadow-sm">
-        <div className="p-2 flex items-center justify-between">
-          <div className="flex items-center space-x-2 overflow-x-auto scrollbar-hide flex-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            {availableConnectionsForChapter.map(passage => (
-              <button
-                key={passage.id}
-                onClick={() => handlePassageClick(passage)}
-                className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg transition-colors group whitespace-nowrap
-                  ${selectedPassage && selectedPassage.id === passage.id 
-                    ? 'bg-indigo-100 text-indigo-700' 
-                    : 'bg-gray-50 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700'}`}
-              >
-                <div 
-                  className="w-2 h-2 rounded-full"
-                  style={{ backgroundColor: passage.bookColor || '#6366f1' }}
-                ></div>
-                <div className="text-xs font-medium">
-                  {passage.title}
-                </div>
-              </button>
-            ))}
+      <>
+        <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
+          <div className="p-2 flex items-center justify-between">
+            <div className="flex items-center space-x-2 overflow-x-auto scrollbar-hide flex-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              {availableConnectionsForChapter.map(passage => (
+                <button
+                  key={passage.id}
+                  onClick={() => handlePassageClick(passage)}
+                  className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg transition-colors group whitespace-nowrap
+                    ${selectedPassage && selectedPassage.id === passage.id 
+                      ? 'bg-indigo-100 text-indigo-700' 
+                      : 'bg-gray-50 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700'}`}
+                >
+                  <div 
+                    className="w-2 h-2 rounded-full"
+                    style={{ backgroundColor: passage.bookColor || '#6366f1' }}
+                  ></div>
+                  <div className="text-xs font-medium">
+                    {passage.title}
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+        {/* Spacer div to prevent content from being hidden under the fixed header */}
+        <div className="h-14 mb-2"></div>
+      </>
     );
   };
 
@@ -1657,9 +1664,9 @@ const BibleBookConnections = () => {
       });
     });
     
-    // Main visualization component
-    const graphComponent = (
-      <div className="bg-slate-50 w-full h-full relative overflow-hidden">
+    // Graph visualization content
+    const graphContent = (
+      <div className={`bg-slate-50 w-full h-full relative overflow-hidden ${showGraphModal ? 'rounded-lg' : ''}`}>
         <div className="absolute top-4 left-4 z-10 flex flex-col space-y-2">
           <button 
             onClick={handleZoomIn}
@@ -1678,15 +1685,13 @@ const BibleBookConnections = () => {
         </div>
         
         <div className="absolute top-4 right-4 z-10 flex space-x-2">
-          {!isExpanded && (
-            <button
-              onClick={() => setIsExpanded(true)}
-              className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
-              aria-label="Full screen"
-            >
-              <Maximize2 size={20} className="text-slate-700" />
-            </button>
-          )}
+          <button
+            onClick={() => setShowGraphModal(!showGraphModal)}
+            className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
+            aria-label={showGraphModal ? "Minimize graph" : "Maximize graph"}
+          >
+            {showGraphModal ? <Minimize2 size={20} className="text-slate-700" /> : <Maximize2 size={20} className="text-slate-700" />}
+          </button>
           
           <button
             onClick={() => setShowConnectionTypes(!showConnectionTypes)}
@@ -1695,7 +1700,20 @@ const BibleBookConnections = () => {
           >
             <Info size={20} className="text-slate-700" />
           </button>
+          
+          <button
+            onClick={() => setShowNodeList(!showNodeList)}
+            className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
+            aria-label="Node list"
+          >
+            <List size={20} className="text-slate-700" />
+          </button>
         </div>
+        
+        {/* Breadcrumbs Panel */}
+        {showBreadcrumbs && (
+          {/* Breadcrumbs Panel - Removed as requested */}
+        )}
         
         {showConnectionTypes && (
           <div className="absolute top-16 right-4 z-20 bg-white p-3 rounded-lg shadow-lg">
@@ -1716,6 +1734,161 @@ const BibleBookConnections = () => {
                   {type.name}
                 </button>
               ))}
+            </div>
+          </div>
+        )}
+        
+        {/* Node List Panel */}
+        {showNodeList && (
+          <div className="absolute top-16 left-4 z-20 bg-white p-3 rounded-lg shadow-lg max-h-80 overflow-y-auto w-72">
+            <div className="text-sm font-medium mb-2 text-gray-700">Passages by Book:</div>
+            <div className="flex flex-col space-y-1">
+              {(() => {
+                // Group nodes by book and chapter
+                const bookGroups = {};
+                
+                visData.nodes.forEach(node => {
+                  const passage = findPassage(node.id);
+                  if (!passage) return;
+                  
+                  // Extract book and chapter from reference
+                  const reference = passage.reference;
+                  const bookName = node.book;
+                  
+                  // Initialize expansion state for this book if not yet set
+                  if (bookExpansionState[bookName] === undefined) {
+                    // Update the book expansion state for new books
+                    setBookExpansionState(prev => ({
+                      ...prev,
+                      [bookName]: true // Default to expanded
+                    }));
+                  }
+                  
+                  // Get chapter from reference (assuming format like "Genesis 1:1-10")
+                  let chapter = "Unknown";
+                  const chapterMatch = reference.match(/\s(\d+):/);
+                  if (chapterMatch && chapterMatch[1]) {
+                    chapter = chapterMatch[1];
+                  }
+                  
+                  // Create book group if it doesn't exist
+                  if (!bookGroups[bookName]) {
+                    bookGroups[bookName] = {
+                      color: node.color,
+                      chapters: {}
+                    };
+                  }
+                  
+                  // Create chapter group if it doesn't exist
+                  if (!bookGroups[bookName].chapters[chapter]) {
+                    bookGroups[bookName].chapters[chapter] = [];
+                  }
+                  
+                  // Add node to chapter group
+                  bookGroups[bookName].chapters[chapter].push({
+                    node,
+                    passage
+                  });
+                });
+                
+                // Sort books alphabetically
+                const sortedBooks = Object.keys(bookGroups).sort();
+                
+                return (
+                  <>
+                    {sortedBooks.map(bookName => {
+                      const bookData = bookGroups[bookName];
+                      const bookColor = bookData.color;
+                      
+                      // Sort chapters numerically
+                      const sortedChapters = Object.keys(bookData.chapters)
+                        .sort((a, b) => parseInt(a) - parseInt(b));
+                      
+                      return (
+                        <div key={bookName} className="mb-2">
+                          {/* Book Header */}
+                          <button
+                            className="w-full text-left p-2 rounded flex items-center justify-between"
+                            style={{ backgroundColor: bookColor }}
+                            onClick={() => {
+                              setBookExpansionState(prev => ({
+                                ...prev,
+                                [bookName]: !prev[bookName]
+                              }));
+                            }}
+                          >
+                            <span className="font-medium text-white">{bookName}</span>
+                            <span className="text-white">
+                              {bookExpansionState[bookName] ? 
+                                <ChevronDown size={16} /> : 
+                                <ChevronRight size={16} />
+                              }
+                            </span>
+                          </button>
+                          
+                          {/* Chapters and Passages */}
+                          {bookExpansionState[bookName] && (
+                            <div className="ml-2 mt-1">
+                              {sortedChapters.map(chapter => (
+                                <div key={`${bookName}-${chapter}`} className="mt-1">
+                                  <div className="font-medium text-sm text-gray-700 pl-2">
+                                    Chapter {chapter}
+                                  </div>
+                                  
+                                  <div className="ml-2">
+                                    {bookData.chapters[chapter].map(({node, passage}) => (
+                                      <button
+                                        key={node.id}
+                                        className="flex items-center px-2 py-2 rounded text-sm text-white font-medium w-full mt-1"
+                                        style={{ backgroundColor: node.color, opacity: 0.9 }}
+                                        onClick={() => {
+                                          setFocusedNodeId(node.id === focusedNodeId ? null : node.id);
+                                          
+                                          const connection = filteredConnections.find(conn => 
+                                            conn.from === node.id || conn.to === node.id
+                                          );
+                                          
+                                          const nodePos = nodePositions[node.id] || { x: node.x, y: node.y };
+                                          
+                                          setSelectedNodeInfo({
+                                            ...node,
+                                            x: nodePos.x,
+                                            y: nodePos.y,
+                                            reference: passage.reference,
+                                            passage,
+                                            connection,
+                                            isSource: connection?.from === node.id,
+                                            connectedTo: connection?.from === node.id ? 
+                                              findPassage(connection.to)?.title : 
+                                              findPassage(connection.from)?.title
+                                          });
+                                        }}
+                                      >
+                                        <div className="flex flex-col w-full">
+                                          <div className="flex items-center">
+                                            <div 
+                                              className={`w-3 h-3 rounded-full mr-2 ${node.primary ? 'border-2 border-white' : 'border border-white'}`}
+                                              style={{ backgroundColor: '#ffffff', opacity: 0.9 }}
+                                            ></div>
+                                            <span>{node.label} {node.primary && '(Primary)'}</span>
+                                          </div>
+                                          <div className="text-xs opacity-80 mt-1 ml-5">
+                                            {passage.reference}
+                                          </div>
+                                        </div>
+                                      </button>
+                                    ))}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </>
+                );
+              })()}
             </div>
           </div>
         )}
@@ -1842,8 +2015,6 @@ const BibleBookConnections = () => {
         >
           <rect width="800" height="600" fill="#f8fafc" rx="8" ry="8" />
           <g transform={`translate(${panOffset.x}, ${panOffset.y})`}>
-            {/* Graph visualization content */}
-            {/* Book labels around the visualization */}
             {books.map((book, index) => {
               const bookAngle = (index / books.length) * Math.PI * 2;
               const labelRadius = radius + 30;
@@ -1885,69 +2056,83 @@ const BibleBookConnections = () => {
                 </g>
               );
             })}
-            
-            {/* Filter links when in focused mode */}
-            {visData.links.filter(link => {
-              // If no node is focused, show all links
-              if (!focusedNodeId) return true;
+            {visData.links.map((link, index) => {
+              const source = visData.nodes.find(n => n.id === link.source);
+              const target = visData.nodes.find(n => n.id === link.target);
+              if (!source || !target) return null;
+
+              // Get node positions with any custom positioning applied
+              const sourcePos = nodePositions[source.id] || { x: source.x, y: source.y };
+              const targetPos = nodePositions[target.id] || { x: target.x, y: target.y };
               
-              // Otherwise, only show links connected to the focused node
-              return link.source === focusedNodeId || link.target === focusedNodeId;
-            }).map(link => {
-              const sourceNode = visData.nodes.find(n => n.id === link.source);
-              const targetNode = visData.nodes.find(n => n.id === link.target);
-              
-              if (!sourceNode || !targetNode) return null;
-              
-              const sourcePos = nodePositions[sourceNode.id] || { x: sourceNode.x, y: sourceNode.y };
-              const targetPos = nodePositions[targetNode.id] || { x: targetNode.x, y: targetNode.y };
-              
-              // Calculate line path for link
               const dx = targetPos.x - sourcePos.x;
               const dy = targetPos.y - sourcePos.y;
-              const linkLength = Math.sqrt(dx * dx + dy * dy);
+              const dr = Math.sqrt(dx * dx + dy * dy) * 1.5;
               
-              // Adjust source and target points to be at the edge of the circles
-              const sourceRadius = sourceNode.primary ? 12 : 8;
-              const targetRadius = targetNode.primary ? 12 : 8;
+              // Calculate angle to determine if the text would be upside down
+              const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+              // If angle is between 90 and 270 degrees, the text would appear upside down
+              const textUpsideDown = (angle > 90 && angle < 270);
               
-              const offsetRatio = sourceRadius / linkLength;
-              const offsetX = dx * offsetRatio;
-              const offsetY = dy * offsetRatio;
-              
-              const targetOffsetRatio = targetRadius / linkLength;
-              const targetOffsetX = dx * targetOffsetRatio;
-              const targetOffsetY = dy * targetOffsetRatio;
-              
-              const adjustedSourceX = sourcePos.x + offsetX;
-              const adjustedSourceY = sourcePos.y + offsetY;
-              const adjustedTargetX = targetPos.x - targetOffsetX;
-              const adjustedTargetY = targetPos.y - targetOffsetY;
-              
-              // Create a unique ID for the path
-              const pathId = `path-${link.source}-${link.target}`;
+              // Set path direction based on text orientation
+              const pathData = textUpsideDown 
+                ? `M ${targetPos.x},${targetPos.y} A ${dr},${dr} 0 0,0 ${sourcePos.x},${sourcePos.y}` // Reversed
+                : `M ${sourcePos.x},${sourcePos.y} A ${dr},${dr} 0 0,1 ${targetPos.x},${targetPos.y}`;
               
               return (
-                <g key={`link-${link.source}-${link.target}`}>
+                <g key={`link-${index}`}>
                   <defs>
-                    <path 
-                      id={pathId} 
-                      d={`M${adjustedSourceX},${adjustedSourceY} L${adjustedTargetX},${adjustedTargetY}`}
-                    />
+                    <linearGradient 
+                      id={`link-gradient-${index}`} 
+                      x1="0%" 
+                      y1="0%" 
+                      x2="100%" 
+                      y2="0%"
+                      gradientUnits="userSpaceOnUse"
+                      gradientTransform={`rotate(${Math.atan2(dy, dx) * 180 / Math.PI}, ${sourcePos.x}, ${sourcePos.y})`}
+                    >
+                      <stop offset="0%" stopColor={source.color} stopOpacity="0.7" />
+                      <stop offset="100%" stopColor={target.color} stopOpacity="0.7" />
+                    </linearGradient>
                   </defs>
                   <path
-                    d={`M${adjustedSourceX},${adjustedSourceY} L${adjustedTargetX},${adjustedTargetY}`}
-                    stroke={getTypeColor(link.type)}
-                    strokeWidth={1 + link.strength * 2}
-                    opacity={0.7}
-                    strokeLinecap="round"
+                    id={`path-${index}`}
+                    d={pathData}
                     fill="none"
-                    markerEnd={`url(#${link.type}Marker)`}
-                  />
+                    stroke={`url(#link-gradient-${index})`}
+                    strokeWidth={link.strength * 4 + 1}
+                    strokeOpacity="0.6"
+                    strokeDasharray={link.type === 'prophetic' ? "5,5" : (link.type === 'commentary' ? "2,2" : "none")}
+                  >
+                    <title>{link.description}</title>
+                  </path>
+                  
+                  {/* Add visible edge label */}
                   {link.description && (
-                    <text dy={-3} className="connection-label">
-                      <textPath xlinkHref={`#${pathId}`} startOffset="50%" textAnchor="middle" fontSize="10" fill="#4b5563">
-                        <tspan>
+                    <text>
+                      <textPath 
+                        href={`#path-${index}`} 
+                        startOffset="50%" 
+                        textAnchor="middle"
+                        fontSize="11"
+                        fontWeight="500"
+                        side={textUpsideDown ? "right" : "left"}
+                      >
+                        <tspan
+                          dy="-5"
+                          fill="#ffffff"
+                          strokeWidth="3"
+                          stroke="#ffffff"
+                          paintOrder="stroke"
+                        >
+                          {link.description}
+                        </tspan>
+                        <tspan
+                          dy="-5"
+                          x="0"
+                          fill="#4a5568"
+                          strokeWidth="0"
+                        >
                           {link.description}
                         </tspan>
                       </textPath>
@@ -1956,26 +2141,7 @@ const BibleBookConnections = () => {
                 </g>
               );
             })}
-            
-            {/* Filter nodes when in focused mode */}
-            {visData.nodes.filter(node => {
-              // If no node is focused, show all nodes
-              if (!focusedNodeId) return true;
-              
-              // Always show the primary node
-              if (node.primary) return true;
-              
-              // Show the focused node
-              if (node.id === focusedNodeId) return true;
-              
-              // Show nodes directly connected to the focused node
-              const connectedToFocused = visData.links.some(link => 
-                (link.source === focusedNodeId && link.target === node.id) ||
-                (link.target === focusedNodeId && link.source === node.id)
-              );
-              
-              return connectedToFocused;
-            }).map(node => {
+            {visData.nodes.map(node => {
               const nodePos = nodePositions[node.id] || { x: node.x, y: node.y };
               
               return (
@@ -1992,50 +2158,36 @@ const BibleBookConnections = () => {
                     setDragStartTime(Date.now());
                     setDraggedNodeId(node.id);
                     setDragStart({ x: e.clientX, y: e.clientY });
-                    
-                    // Only set isDraggingNode to true if the mouse moves a certain distance
-                    // This will be handled in the onMouseMove handler
-                    
-                    // Add mouse move and mouse up handlers to document
-                    const handleMouseMove = (e) => {
-                      // Only begin dragging after a small movement to differentiate from clicks
-                      if (draggedNodeId === node.id) {
-                        const dx = e.clientX - dragStart.x;
-                        const dy = e.clientY - dragStart.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        
-                        if (distance > 5 && !isDraggingNode) {
-                          setIsDraggingNode(true);
-                        }
-                      }
-                    };
-                    
-                    // Add these handlers to document so drags continue outside the node
-                    document.addEventListener('mousemove', handleMouseMove);
-                    document.addEventListener('mouseup', () => {
-                      document.removeEventListener('mousemove', handleMouseMove);
-                    }, { once: true });
                   }}
                   onMouseMove={(e) => {
-                    // Only handle drag if this is the dragged node
-                    if (draggedNodeId === node.id && isDraggingNode) {
+                    // If we're dragging this node
+                    if (draggedNodeId === node.id) {
+                      console.log('Node dragging');
                       e.stopPropagation();
                       
-                      // Calculate the new position
+                      // Only set dragging after a small movement to differentiate from clicks
                       const dx = e.clientX - dragStart.x;
                       const dy = e.clientY - dragStart.y;
+                      const distance = Math.sqrt(dx * dx + dy * dy);
                       
-                      // Update node position
-                      setNodePositions(prev => ({
-                        ...prev,
-                        [node.id]: {
+                      if (distance > 5) {
+                        setIsDraggingNode(true);
+                        
+                        // Calculate new position accounting for zoom level
+                        const newPos = {
                           x: nodePos.x + dx / zoomLevel,
                           y: nodePos.y + dy / zoomLevel
-                        }
-                      }));
-                      
-                      // Update drag start for next movement
-                      setDragStart({ x: e.clientX, y: e.clientY });
+                        };
+                        
+                        // Update node position
+                        setNodePositions(prev => ({
+                          ...prev,
+                          [node.id]: newPos
+                        }));
+                        
+                        // Update drag start for next movement
+                        setDragStart({ x: e.clientX, y: e.clientY });
+                      }
                     }
                   }}
                   onMouseUp={(e) => {
@@ -2055,16 +2207,13 @@ const BibleBookConnections = () => {
                           conn.from === node.id || conn.to === node.id
                         );
                         
-                        // Clean the connection data to fix corrupted descriptions
-                        const formattedConnection = cleanConnection(connection);
-                        
                         setSelectedNodeInfo({
                           ...node,
                           x: nodePos.x,
                           y: nodePos.y,
                           reference: passage.reference,
                           passage,
-                          connection: formattedConnection,
+                          connection,
                           isSource: connection?.from === node.id,
                           connectedTo: connection?.from === node.id ? 
                             findPassage(connection.to)?.title : 
@@ -2132,96 +2281,50 @@ const BibleBookConnections = () => {
       </div>
     );
     
-    // Render either the standard view or the full-screen modal
+    // Modal component for the graph
+    const graphModal = (
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-2" onClick={() => setShowGraphModal(false)}>
+        <div className="bg-white rounded-lg shadow-2xl w-[95vw] h-[95vh] overflow-hidden" onClick={e => e.stopPropagation()}>
+          <div className="flex items-center justify-between p-4 border-b">
+            <h2 className="text-xl font-semibold text-gray-800">Connections for {selectedPassage.reference}</h2>
+            <button 
+              onClick={() => setShowGraphModal(false)}
+              className="p-2 rounded-full hover:bg-gray-100"
+              aria-label="Close modal"
+            >
+              <X size={20} className="text-gray-600" />
+            </button>
+          </div>
+          <div className="h-[calc(100%-4rem)]">
+            {graphContent}
+          </div>
+        </div>
+      </div>
+    );
+    
+    // Show graph button component for small screens
+    const showGraphButton = (
+      <div className="p-4 flex justify-center">
+        <button
+          onClick={() => setShowGraphModal(true)}
+          className="flex items-center space-x-2 py-3 px-4 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition-colors"
+        >
+          <BookOpen size={20} />
+          <span>Show Connections Graph</span>
+        </button>
+      </div>
+    );
+    
     return (
       <>
-        {/* Regular view */}
-        {!isExpanded && graphComponent}
+        {/* On large screens, show graph if showGraph is true */}
+        {isLargeScreen && showGraph && !showGraphModal && graphContent}
         
-        {/* Full-screen modal */}
-        {isExpanded && (
-          <div className="fixed inset-0 bg-black bg-opacity-80 z-[9999] flex flex-col items-center justify-center">
-            <div className="absolute top-4 right-4 z-50">
-              <button
-                onClick={() => setIsExpanded(false)}
-                className="p-3 bg-white rounded-full shadow-md hover:bg-red-100 transition-colors duration-200"
-                aria-label="Close full screen"
-              >
-                <X size={24} className="text-gray-700" />
-              </button>
-            </div>
-            
-            {/* Restore header content */}
-            <div className="w-[95vw] bg-white rounded-t-xl shadow-md mb-1 p-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="flex items-center space-x-2">
-                    <button
-                      onClick={prevChapter}
-                      className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-l-lg shadow-sm"
-                    >
-                      <ArrowLeft size={18} />
-                    </button>
-                    <button
-                      onClick={nextChapter}
-                      className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-r-lg shadow-sm border-l border-white/20"
-                    >
-                      <ArrowRight size={18} />
-                    </button>
-                  </div>
-                  
-                  <div className="flex items-center">
-                    <span className="text-lg font-medium text-gray-700">
-                      {currentBook} {currentChapter}
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-2">
-                  <button
-                    className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg"
-                    onClick={toggleGraphVisibility}
-                    title={showGraph ? "Hide connections" : "Show connections"}
-                  >
-                    {showGraph ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
-                  
-                  <button
-                    className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg"
-                    onClick={() => setShowInfo(!showInfo)}
-                    title="Show Information"
-                  >
-                    <Info size={18} />
-                  </button>
-                  
-                  <div className="relative">
-                    <button
-                      onClick={() => setShowBookSelector(!showBookSelector)}
-                      className="flex items-center space-x-2 py-2 px-4 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
-                    >
-                      <span className="font-medium">Book</span>
-                      <ChevronDown size={16} />
-                    </button>
-                  </div>
-                  
-                  <div className="relative">
-                    <button
-                      onClick={() => setShowChapterSelector(!showChapterSelector)}
-                      className="flex items-center space-x-2 py-2 px-4 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
-                    >
-                      <span className="font-medium">Chapter</span>
-                      <ChevronDown size={16} />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="w-[95vw] h-[85vh] bg-white rounded-xl shadow-2xl overflow-hidden">
-              {graphComponent}
-            </div>
-          </div>
-        )}
+        {/* On small screens, show a button to open the graph modal */}
+        {!isLargeScreen && !showGraphModal && showGraphButton}
+        
+        {/* Show modal if showGraphModal is true */}
+        {showGraphModal && graphModal}
       </>
     );
   };
@@ -2770,19 +2873,326 @@ const BibleBookConnections = () => {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
   
+  // Add useEffect to initialize showGraph based on screen size
+  useEffect(() => {
+    // On small screens, hide the graph by default
+    setShowGraph(isLargeScreen);
+  }, [isLargeScreen]);
+  
   // Updated return statement with resize functionality
   return (
     <div className="flex flex-col h-screen bg-slate-50 text-slate-800 font-sans" style={containerStyle}>
-      <div className="p-4 bg-white shadow-sm border-b border-slate-200">
+      <header className="p-4 bg-white shadow-sm border-b border-slate-200">
         <div className="max-w-7xl mx-auto">
           {/* Navigation History Section */}
+{/*           {breadcrumbs.length > 0 && (
+            <div className="mb-4 bg-white rounded-lg border border-gray-100 shadow-sm">
+              <div className="p-2 flex items-center justify-between">
+                <div className="flex items-center space-x-2 overflow-x-auto scrollbar-hide flex-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                  {breadcrumbs
+                    .filter(b => !b.isSessionMarker)
+                    .map((crumb, index) => {
+                      const crumbId = crumb.breadcrumbId || `${crumb.id}-${index}`;
+                      
+                      // Find book information to display
+                      let bookInfo = null;
+                      for (const section of Object.values(bibleStructure)) {
+                        const foundBook = section.books.find(b => b.id === crumb.book);
+                        if (foundBook) {
+                          bookInfo = foundBook;
+                          break;
+                        }
+                      }
+                      
+                      const bookColor = bookInfo?.color || crumb.bookColor || '#6366f1';
+                      const bookName = bookInfo?.title || crumb.bookName || 'Unknown';
+                      
+                      return (
+                        <button
+                          key={`breadcrumb-${crumbId}`}
+                          className="flex items-center space-x-2 px-3 py-1.5 bg-gray-50 rounded-lg hover:bg-indigo-50 transition-colors group whitespace-nowrap"
+                          onClick={() => handleBreadcrumbClick(crumb, breadcrumbs.indexOf(crumb))}
+                        >
+                          <div 
+                            className="w-2 h-2 rounded-full"
+                            style={{ backgroundColor: bookColor }}
+                          ></div>
+                          <div className="text-xs font-medium text-gray-700 group-hover:text-indigo-700">
+                            {crumb.title}
+                          </div>
+                        </button>
+                      );
+                    })
+                  }
+                </div>
+                <button
+                  onClick={clearBreadcrumbs}
+                  className="ml-2 p-1 text-gray-400 hover:text-red-500 rounded-full hover:bg-red-50 transition-colors"
+                  title="Clear history"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 6h18"></path>
+                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          )} */}
+
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div className="flex flex-1 items-center gap-3 justify-end">
-              {/* Any content here */}
+             
+            
+              {/* Book selector */}
+              <div className="relative">
+                <button
+                  onClick={() => setShowBookSelector(!showBookSelector)}
+                  className="flex items-center space-x-2 py-2 px-4 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
+                >
+                  <span className="font-medium">{currentBook}</span>
+                  <ChevronDown size={16} />
+                </button>
+                {showBookSelector && (
+ <div className="absolute top-12 left-0 w-72 max-h-96 overflow-y-auto bg-white shadow-lg rounded-lg border border-gray-200 z-30">
+    <div className="p-3 border-b border-gray-200">
+      <div className="flex items-center space-x-2 px-2 py-1 bg-gray-100 rounded">
+        <Search size={16} className="text-gray-500" />
+        <input
+          type="text"
+          placeholder="Search books..."
+          value={bookSearch}
+          onChange={(e) => setBookSearch(e.target.value)}
+          className="w-full bg-transparent border-none outline-none text-sm"
+        />
+      </div>
+      <div className="flex space-x-1 mt-2">
+        <button
+          onClick={() => setActiveTestament("all")}
+          className={`text-xs px-2 py-1 rounded ${activeTestament === "all" ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-600"}`}
+        >
+          All
+        </button>
+        <button
+          onClick={() => setActiveTestament("old")}
+          className={`text-xs px-2 py-1 rounded ${activeTestament === "old" ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-600"}`}
+        >
+          Old Testament
+        </button>
+        <button
+          onClick={() => setActiveTestament("new")}
+          className={`text-xs px-2 py-1 rounded ${activeTestament === "new" ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-600"}`}
+        >
+          New Testament
+        </button>
+      </div>
+    </div>
+    <div className="p-2">
+      <div className="grid grid-cols-2 gap-1">
+        {bibleBooks
+          .filter(book => {
+            // First filter by search text
+            const matchesSearch = bookSearch ? 
+              book.toLowerCase().includes(bookSearch.toLowerCase()) : 
+              true;
+            
+            // Then filter by testament
+            let matchesTestament = true;
+            if (activeTestament === "old") {
+              matchesTestament = oldTestamentBooks.includes(book);
+            } else if (activeTestament === "new") {
+              matchesTestament = newTestamentBooks.includes(book);
+            }
+            
+            return matchesSearch && matchesTestament;
+          })
+          .map(book => (
+            <button
+              key={book}
+              onClick={() => {
+                console.log('*** Book selected:', book);
+                setCurrentBook(book);
+                setShowBookSelector(false);
+              }}
+              className={`px-3 py-2 block w-full text-left text-sm ${
+                currentBook === book 
+                  ? 'bg-indigo-50 text-indigo-600 font-medium' 
+                  : 'text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              {book}
+            </button>
+          ))}
+      </div>
+    </div>
+  </div>
+)}
+              </div>
+              
+              {/* Chapter selector */}
+              <div className="relative">
+                <button
+                  onClick={() => setShowChapterSelector(prev => !prev)}
+                  className="flex items-center space-x-2 py-2 px-3 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
+                >
+                  <span className="font-medium">{currentChapter}</span>
+                  <ChevronDown size={16} />
+                </button>
+                {showChapterSelector && (
+                  <>
+                    {isLargeScreen ? (
+                      // Desktop dropdown
+                      <div className="absolute top-12 left-0 w-64 max-h-80 overflow-y-auto bg-white shadow-lg rounded-lg border border-gray-200 z-30">
+                        <div className="p-2">
+                          <div className="grid grid-cols-5 gap-1">
+                            {Array.from({ length: chapterCount }, (_, i) => (
+                              <button
+                                key={`chapter-${i + 1}`}
+                                onClick={() => {
+                                  setCurrentChapter(i + 1);
+                                  setShowChapterSelector(false);
+                                }}
+                                className={`h-10 w-10 text-sm rounded-full flex items-center justify-center ${
+                                  currentChapter === i + 1 ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                }`}
+                              >
+                                {i + 1}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      // Mobile modal
+                      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" onClick={() => setShowChapterSelector(false)}>
+                        <div className="bg-white rounded-lg shadow-xl w-5/6 max-w-sm max-h-[80vh] overflow-hidden" onClick={e => e.stopPropagation()}>
+                          <div className="flex items-center justify-between p-4 border-b">
+                            <h3 className="font-medium text-gray-800">Select Chapter</h3>
+                            <button 
+                              onClick={() => setShowChapterSelector(false)}
+                              className="p-1 rounded-full hover:bg-gray-100"
+                            >
+                              <X size={18} className="text-gray-600" />
+                            </button>
+                          </div>
+                          <div className="p-4 overflow-y-auto max-h-[60vh]">
+                            <div className="grid grid-cols-5 gap-2">
+                              {Array.from({ length: chapterCount }, (_, i) => (
+                                <button
+                                  key={`chapter-${i + 1}`}
+                                  onClick={() => {
+                                    setCurrentChapter(i + 1);
+                                    setShowChapterSelector(false);
+                                  }}
+                                  className={`h-12 w-12 text-sm rounded-full flex items-center justify-center ${
+                                    currentChapter === i + 1 ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                  }`}
+                                >
+                                  {i + 1}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+              
+              {/* Navigation buttons */}
+{/*               <div className="flex items-center">
+                <button 
+                  className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-l-lg shadow-sm"
+                  onClick={prevChapter}
+                >
+                  <ArrowLeft size={18} />
+                </button>
+                <button 
+                  className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-r-lg shadow-sm border-l border-white/20"
+                  onClick={nextChapter}
+                >
+                  <ArrowRight size={18} />
+                </button>
+              </div> */}
+              
+              {/* Action buttons */}
+              <div className="flex items-center gap-2">
+                
+                <button
+                  className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg"
+                  onClick={toggleGraphVisibility}
+                  title={showGraph ? "Hide connections" : "Show connections"}
+                >
+                  {showGraph ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+               {/*  <button
+                  className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg"
+                  onClick={() => setShowInfo(!showInfo)}
+                  title="Show Information"
+                >
+                  <Info size={18} />
+                </button> */}
+              </div>
+              <AppSettings className="mr-2" />
+
+               {/* Search sections button with slide-out */}
+              <div className="relative">
+                <button
+                  onClick={() => {
+                    setIsSearchOpen(!isSearchOpen);
+                    if (!isSearchOpen) {
+                      setTimeout(() => {
+                        const searchInput = document.getElementById('section-search-input');
+                        if (searchInput) {
+                          searchInput.focus();
+                        }
+                      }, 50);
+                    }
+                  }}
+                  className="flex items-center py-2 px-3 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
+                  title="Search sections"
+                >
+                  <Search size={16} />
+                </button>
+                
+                {/* Search input dropdown */}
+                <div 
+                  className={`absolute top-full right-0 mt-1 transform transition-all duration-300 ease-in-out bg-white border border-gray-200 rounded-lg shadow-md z-50 ${
+                    isSearchOpen ? 'opacity-100 w-64 scale-100' : 'opacity-0 w-0 scale-95 pointer-events-none'
+                  }`}
+                >
+                  <div className="relative flex items-center w-full">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                    <input
+                      id="section-search-input"
+                      type="text"
+                      placeholder="Search sections..."
+                      value={sectionSearchTerm}
+                      onChange={(e) => setSectionSearchTerm(e.target.value)}
+                      onBlur={() => {
+                        if (!sectionSearchTerm) {
+                          setTimeout(() => setIsSearchOpen(false), 200);
+                        }
+                      }}
+                      className="w-full pl-10 pr-10 py-2 rounded-lg focus:outline-none text-sm"
+                    />
+                    <button
+                      onClick={() => {
+                        setSectionSearchTerm('');
+                        document.getElementById('section-search-input')?.focus();
+                      }}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </header>
       
       {/* Main content area with resize capabilities */}
       <div 
