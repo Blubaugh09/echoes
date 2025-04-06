@@ -2140,7 +2140,7 @@ const BibleBookConnections = () => {
         
         {/* Full-screen modal */}
         {isExpanded && (
-          <div className="fixed inset-0 bg-black bg-opacity-80 z-[9999] flex items-center justify-center">
+          <div className="fixed inset-0 bg-black bg-opacity-80 z-[9999] flex flex-col items-center justify-center">
             <div className="absolute top-4 right-4 z-50">
               <button
                 onClick={() => setIsExpanded(false)}
@@ -2150,7 +2150,74 @@ const BibleBookConnections = () => {
                 <X size={24} className="text-gray-700" />
               </button>
             </div>
-            <div className="w-[95vw] h-[90vh] bg-white rounded-xl shadow-2xl overflow-hidden">
+            
+            {/* Restore header content */}
+            <div className="w-[95vw] bg-white rounded-t-xl shadow-md mb-1 p-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={prevChapter}
+                      className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-l-lg shadow-sm"
+                    >
+                      <ArrowLeft size={18} />
+                    </button>
+                    <button
+                      onClick={nextChapter}
+                      className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-r-lg shadow-sm border-l border-white/20"
+                    >
+                      <ArrowRight size={18} />
+                    </button>
+                  </div>
+                  
+                  <div className="flex items-center">
+                    <span className="text-lg font-medium text-gray-700">
+                      {currentBook} {currentChapter}
+                    </span>
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-2">
+                  <button
+                    className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg"
+                    onClick={toggleGraphVisibility}
+                    title={showGraph ? "Hide connections" : "Show connections"}
+                  >
+                    {showGraph ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                  
+                  <button
+                    className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg"
+                    onClick={() => setShowInfo(!showInfo)}
+                    title="Show Information"
+                  >
+                    <Info size={18} />
+                  </button>
+                  
+                  <div className="relative">
+                    <button
+                      onClick={() => setShowBookSelector(!showBookSelector)}
+                      className="flex items-center space-x-2 py-2 px-4 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
+                    >
+                      <span className="font-medium">Book</span>
+                      <ChevronDown size={16} />
+                    </button>
+                  </div>
+                  
+                  <div className="relative">
+                    <button
+                      onClick={() => setShowChapterSelector(!showChapterSelector)}
+                      className="flex items-center space-x-2 py-2 px-4 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
+                    >
+                      <span className="font-medium">Chapter</span>
+                      <ChevronDown size={16} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="w-[95vw] h-[85vh] bg-white rounded-xl shadow-2xl overflow-hidden">
               {graphComponent}
             </div>
           </div>
