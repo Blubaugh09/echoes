@@ -1605,10 +1605,6 @@ const BibleBookConnections = () => {
   // All other render functions like renderConnectionsVisualization stay the same
   const renderConnectionsVisualization = () => {
     if (!selectedPassage) return null;
-    // Define svg dimensions
-    const svgWidth = 800;
-    const svgHeight = 600;
-    
     const visData = { nodes: [], links: [] };
     visData.nodes.push({
       id: selectedPassage.id,
@@ -1635,6 +1631,7 @@ const BibleBookConnections = () => {
           target: connection.to,
           type: connection.type,
           strength: connection.strength,
+          description: connection.description
         });
       }
     });
@@ -1659,646 +1656,486 @@ const BibleBookConnections = () => {
         node.y = node.primary ? centerY : centerY + Math.sin(nodeAngle) * nodeRadius;
       });
     });
-
     return (
-      <div className="flex w-full h-full">
-        {/* Visualization Area */}
-        <div className="flex-1 bg-slate-50 relative overflow-hidden">
-          <div className="absolute top-4 left-4 z-10 flex flex-col space-y-2">
-            <button 
-              onClick={handleZoomIn}
-              className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
-              aria-label="Zoom in"
-            >
-              <ZoomIn size={20} className="text-slate-700" />
-            </button>
-            <button 
-              onClick={handleZoomOut}
-              className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
-              aria-label="Zoom out"
-            >
-              <ZoomOut size={20} className="text-slate-700" />
-            </button>
-          </div>
+      <div className={`bg-slate-50 w-full h-full relative overflow-hidden ${isExpanded ? 'fixed inset-0 z-50' : ''}`}>
+        <div className="absolute top-4 left-4 z-10 flex flex-col space-y-2">
+          <button 
+            onClick={handleZoomIn}
+            className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
+            aria-label="Zoom in"
+          >
+            <ZoomIn size={20} className="text-slate-700" />
+          </button>
+          <button 
+            onClick={handleZoomOut}
+            className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
+            aria-label="Zoom out"
+          >
+            <ZoomOut size={20} className="text-slate-700" />
+          </button>
+        </div>
+        
+        <div className="absolute top-4 right-4 z-10 flex space-x-2">
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
+            aria-label={isExpanded ? "Exit full screen" : "Full screen"}
+          >
+            {isExpanded ? 
+              <Minimize2 size={20} className="text-slate-700" /> : 
+              <Maximize2 size={20} className="text-slate-700" />
+            }
+          </button>
           
-          <div className="absolute top-4 right-4 z-10 flex space-x-2">
-            <button
-              onClick={() => setShowConnectionTypes(!showConnectionTypes)}
-              className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
-              aria-label="Connection types"
-            >
-              <Info size={20} className="text-slate-700" />
-            </button>
-            
-            <button
-              onClick={() => setShowNodeList(!showNodeList)}
-              className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
-              aria-label="Node list"
-            >
-              <List size={20} className="text-slate-700" />
-            </button>
-          </div>
-          
-          {/* Breadcrumbs Panel */}
-          {showBreadcrumbs && (
-            /* Breadcrumbs Panel - Removed as requested */
-            <div></div>
-          )}
-          
-          {showConnectionTypes && (
-            <div className="absolute top-16 right-4 z-20 bg-white p-3 rounded-lg shadow-lg">
-              <div className="text-sm font-medium mb-2 text-gray-700">Connection Types:</div>
-              <div className="flex flex-col space-y-1">
-                {connectionTypes.map(type => (
-                  <button
-                    key={type.id}
-                    className={`flex items-center px-2 py-1 rounded text-sm ${filterType === type.id ? 'bg-indigo-100 text-indigo-800' : 'hover:bg-gray-100'}`}
-                    onClick={() => setFilterType(type.id)}
-                  >
-                    {type.id !== 'all' && (
-                      <div 
-                        className="w-3 h-3 rounded-full mr-2"
-                        style={{ backgroundColor: getTypeColor(type.id) }}
-                      ></div>
-                    )}
-                    {type.name}
-                  </button>
-                ))}
-              </div>
+          <button
+            onClick={() => setShowConnectionTypes(!showConnectionTypes)}
+            className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
+            aria-label="Connection types"
+          >
+            <Info size={20} className="text-slate-700" />
+          </button>
+        </div>
+        
+        {/* Breadcrumbs Panel */}
+        {showBreadcrumbs && (
+          {/* Breadcrumbs Panel - Removed as requested */}
+        )}
+        
+        {showConnectionTypes && (
+          <div className="absolute top-16 right-4 z-20 bg-white p-3 rounded-lg shadow-lg">
+            <div className="text-sm font-medium mb-2 text-gray-700">Connection Types:</div>
+            <div className="flex flex-col space-y-1">
+              {connectionTypes.map(type => (
+                <button
+                  key={type.id}
+                  className={`flex items-center px-2 py-1 rounded text-sm ${filterType === type.id ? 'bg-indigo-100 text-indigo-800' : 'hover:bg-gray-100'}`}
+                  onClick={() => setFilterType(type.id)}
+                >
+                  {type.id !== 'all' && (
+                    <div 
+                      className="w-3 h-3 rounded-full mr-2"
+                      style={{ backgroundColor: getTypeColor(type.id) }}
+                    ></div>
+                  )}
+                  {type.name}
+                </button>
+              ))}
             </div>
-          )}
-          
-          {/* Node List Panel */}
-          {showNodeList && (
-            <div className="absolute top-16 left-4 z-20 bg-white p-3 rounded-lg shadow-lg max-h-80 overflow-y-auto w-72">
-              <div className="text-sm font-medium mb-2 text-gray-700">Passages by Book:</div>
-              <div className="flex flex-col space-y-1">
-                {(() => {
-                  // Group nodes by book and chapter
-                  const bookGroups = {};
-                  
-                  visData.nodes.forEach(node => {
-                    const passage = findPassage(node.id);
-                    if (!passage) return;
-                    
-                    // Extract book and chapter from reference
-                    const reference = passage.reference;
-                    const bookName = node.book;
-                    
-                    // Initialize expansion state for this book if not yet set
-                    if (bookExpansionState[bookName] === undefined) {
-                      // Update the book expansion state for new books
-                      setBookExpansionState(prev => ({
-                        ...prev,
-                        [bookName]: true // Default to expanded
-                      }));
-                    }
-                    
-                    // Get chapter from reference (assuming format like "Genesis 1:1-10")
-                    let chapter = "Unknown";
-                    const chapterMatch = reference.match(/\s(\d+):/);
-                    if (chapterMatch && chapterMatch[1]) {
-                      chapter = chapterMatch[1];
-                    }
-                    
-                    // Create book group if it doesn't exist
-                    if (!bookGroups[bookName]) {
-                      bookGroups[bookName] = {
-                        color: node.color,
-                        chapters: {}
-                      };
-                    }
-                    
-                    // Create chapter group if it doesn't exist
-                    if (!bookGroups[bookName].chapters[chapter]) {
-                      bookGroups[bookName].chapters[chapter] = [];
-                    }
-                    
-                    // Add node to chapter group
-                    bookGroups[bookName].chapters[chapter].push({
-                      node,
-                      passage
-                    });
-                  });
-                  
-                  // Sort books alphabetically
-                  const sortedBooks = Object.keys(bookGroups).sort();
-                  
-                  return (
-                    <>
-                      {sortedBooks.map(bookName => {
-                        const bookData = bookGroups[bookName];
-                        const bookColor = bookData.color;
-                        
-                        // Sort chapters numerically
-                        const sortedChapters = Object.keys(bookData.chapters)
-                          .sort((a, b) => parseInt(a) - parseInt(b));
-                        
-                        return (
-                          <div key={bookName} className="mb-2">
-                            {/* Book Header */}
-                            <button
-                              className="w-full text-left p-2 rounded flex items-center justify-between"
-                              style={{ backgroundColor: bookColor }}
-                              onClick={() => {
-                                setBookExpansionState(prev => ({
-                                  ...prev,
-                                  [bookName]: !prev[bookName]
-                                }));
-                              }}
-                            >
-                              <span className="font-medium text-white">{bookName}</span>
-                              <span className="text-white">
-                                {bookExpansionState[bookName] ? 
-                                  <ChevronDown size={16} /> : 
-                                  <ChevronRight size={16} />
-                                }
-                              </span>
-                            </button>
-                            
-                            {/* Chapters and Passages */}
-                            {bookExpansionState[bookName] && (
-                              <div className="ml-2 mt-1">
-                                {sortedChapters.map(chapter => (
-                                  <div key={`${bookName}-${chapter}`} className="mt-1">
-                                    <div className="font-medium text-sm text-gray-700 pl-2">
-                                      Chapter {chapter}
-                                    </div>
-                                    
-                                    <div className="ml-2">
-                                      {bookData.chapters[chapter].map(({node, passage}) => (
-                                        <button
-                                          key={node.id}
-                                          className="flex items-center px-2 py-2 rounded text-sm text-white font-medium w-full mt-1"
-                                          style={{ backgroundColor: node.color, opacity: 0.9 }}
-                                          onClick={() => {
-                                            setFocusedNodeId(node.id === focusedNodeId ? null : node.id);
-                                            
-                                            const connection = filteredConnections.find(conn => 
-                                              conn.from === node.id || conn.to === node.id
-                                            );
-                                            const formattedConnection = cleanConnection(connection);
-                                            const nodePos = nodePositions[node.id] || { x: node.x, y: node.y };
-                                            
-                                            setSelectedNodeInfo({
-                                              ...node,
-                                              x: nodePos.x,
-                                              y: nodePos.y,
-                                              reference: passage.reference,
-                                              passage,
-                                              connection: formattedConnection,
-                                              isSource: connection?.from === node.id,
-                                              connectedTo: connection?.from === node.id ? 
-                                                findPassage(connection.to)?.title : 
-                                                findPassage(connection.from)?.title
-                                            });
-                                          }}
-                                        >
-                                          <div className="flex flex-col w-full">
-                                            <div className="flex items-center">
-                                              <div 
-                                                className={`w-3 h-3 rounded-full mr-2 ${node.primary ? 'border-2 border-white' : 'border border-white'}`}
-                                                style={{ backgroundColor: '#ffffff', opacity: 0.9 }}
-                                              ></div>
-                                              <span>{node.label} {node.primary && '(Primary)'}</span>
-                                            </div>
-                                            <div className="text-xs opacity-80 mt-1 ml-5">
-                                              {passage.reference}
-                                            </div>
-                                          </div>
-                                        </button>
-                                      ))}
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </>
-                  );
-                })()}
-              </div>
-            </div>
-          )}
-          
-          <svg 
-            width="100%" 
-            height="100%" 
-            viewBox="0 0 800 600"
-            style={{ 
-              transform: `scale(${zoomLevel})`, 
-              transformOrigin: 'center',
-              cursor: isDragging ? 'grabbing' : 'grab',
-              touchAction: 'none' // Prevent browser handling of touch gestures
-            }}
-            className="transition-transform duration-200"
-            onClick={clearNodeFocus}
-            onMouseDown={(e) => {
-              if (e.button === 0) { // Only handle left mouse button
-                setIsDragging(true);
-                setDragStart({ x: e.clientX, y: e.clientY });
-              }
-            }}
-            onMouseMove={(e) => {
-              if (isDragging) {
-                const dx = e.clientX - dragStart.x;
-                const dy = e.clientY - dragStart.y;
-                setPanOffset({
-                  x: panOffset.x + dx/zoomLevel,
-                  y: panOffset.y + dy/zoomLevel
-                });
-                setDragStart({ x: e.clientX, y: e.clientY });
-              }
-            }}
-            onMouseUp={() => {
+          </div>
+        )}
+        
+        <svg 
+          width="100%" 
+          height="100%" 
+          style={{ 
+            transform: `scale(${zoomLevel})`, 
+            transformOrigin: 'center',
+            cursor: isDragging ? 'grabbing' : 'grab',
+            touchAction: 'none' // Prevent browser handling of touch gestures
+          }}
+          viewBox="0 0 800 600"
+          className="transition-transform duration-200"
+          onMouseDown={(e) => {
+            if (e.button === 0) { // Only handle left mouse button
+              setIsDragging(true);
+              setDragStart({ x: e.clientX, y: e.clientY });
+            }
+          }}
+          onMouseMove={(e) => {
+            if (isDragging) {
+              const dx = e.clientX - dragStart.x;
+              const dy = e.clientY - dragStart.y;
+              setPanOffset({
+                x: panOffset.x + dx/zoomLevel,
+                y: panOffset.y + dy/zoomLevel
+              });
+              setDragStart({ x: e.clientX, y: e.clientY });
+            }
+          }}
+          onMouseUp={() => {
+            setIsDragging(false);
+          }}
+          onMouseLeave={() => {
+            setIsDragging(false);
+          }}
+          onTouchStart={(e) => {
+            e.preventDefault(); // Prevent default touch actions
+            if (e.touches.length === 1) {
+              // Single touch = panning
+              setIsDragging(true);
+              setDragStart({ 
+                x: e.touches[0].clientX, 
+                y: e.touches[0].clientY 
+              });
+              setTouchDistance(null);
+              setTouchCenter(null);
+            } else if (e.touches.length === 2) {
+              // Double touch = potential zoom gesture
+              setTouchDistance(getTouchDistance(e.touches));
+              setTouchCenter(getTouchCenter(e.touches));
               setIsDragging(false);
-            }}
-            onMouseLeave={() => {
-              setIsDragging(false);
-            }}
-            onTouchStart={(e) => {
-              e.preventDefault(); // Prevent default touch actions
-              if (e.touches.length === 1) {
-                // Single touch = panning
-                setIsDragging(true);
-                setDragStart({ 
-                  x: e.touches[0].clientX, 
-                  y: e.touches[0].clientY 
-                });
-                setTouchDistance(null);
-                setTouchCenter(null);
-              } else if (e.touches.length === 2) {
-                // Double touch = potential zoom gesture
-                setTouchDistance(getTouchDistance(e.touches));
-                setTouchCenter(getTouchCenter(e.touches));
-                setIsDragging(false);
-              }
-            }}
-            onTouchMove={(e) => {
-              e.preventDefault(); // Prevent default touch actions
-              if (e.touches.length === 1 && isDragging) {
-                // Single touch = panning
-                const dx = e.touches[0].clientX - dragStart.x;
-                const dy = e.touches[0].clientY - dragStart.y;
-                setPanOffset({
-                  x: panOffset.x + dx/zoomLevel,
-                  y: panOffset.y + dy/zoomLevel
-                });
-                setDragStart({ 
-                  x: e.touches[0].clientX, 
-                  y: e.touches[0].clientY 
-                });
-              } else if (e.touches.length === 2 && touchDistance) {
-                // Handle pinch zoom
-                const newDistance = getTouchDistance(e.touches);
-                const newCenter = getTouchCenter(e.touches);
+            }
+          }}
+          onTouchMove={(e) => {
+            e.preventDefault(); // Prevent default touch actions
+            if (e.touches.length === 1 && isDragging) {
+              // Single touch = panning
+              const dx = e.touches[0].clientX - dragStart.x;
+              const dy = e.touches[0].clientY - dragStart.y;
+              setPanOffset({
+                x: panOffset.x + dx/zoomLevel,
+                y: panOffset.y + dy/zoomLevel
+              });
+              setDragStart({ 
+                x: e.touches[0].clientX, 
+                y: e.touches[0].clientY 
+              });
+            } else if (e.touches.length === 2 && touchDistance) {
+              // Handle pinch zoom
+              const newDistance = getTouchDistance(e.touches);
+              const newCenter = getTouchCenter(e.touches);
+              
+              if (newDistance && touchDistance) {
+                // Calculate zoom factor
+                const zoomDelta = newDistance / touchDistance;
+                const newZoomLevel = Math.min(Math.max(zoomLevel * zoomDelta, 0.5), 2);
                 
-                if (newDistance && touchDistance) {
-                  // Calculate zoom factor
-                  const zoomDelta = newDistance / touchDistance;
-                  const newZoomLevel = Math.min(Math.max(zoomLevel * zoomDelta, 0.5), 2);
+                // Update zoom
+                setZoomLevel(newZoomLevel);
+                
+                // Calculate pan adjustment for zoom around pinch center
+                if (touchCenter && newCenter) {
+                  const centerDeltaX = newCenter.x - touchCenter.x;
+                  const centerDeltaY = newCenter.y - touchCenter.y;
                   
-                  // Update zoom
-                  setZoomLevel(newZoomLevel);
-                  
-                  // Calculate pan adjustment for zoom around pinch center
-                  if (touchCenter && newCenter) {
-                    const centerDeltaX = newCenter.x - touchCenter.x;
-                    const centerDeltaY = newCenter.y - touchCenter.y;
-                    
-                    // Adjust pan offset
-                    setPanOffset({
-                      x: panOffset.x + centerDeltaX/newZoomLevel,
-                      y: panOffset.y + centerDeltaY/newZoomLevel
-                    });
-                  }
-                  
-                  // Update touch state
-                  setTouchDistance(newDistance);
-                  setTouchCenter(newCenter);
+                  // Adjust pan offset
+                  setPanOffset({
+                    x: panOffset.x + centerDeltaX/newZoomLevel,
+                    y: panOffset.y + centerDeltaY/newZoomLevel
+                  });
                 }
+                
+                // Update touch state
+                setTouchDistance(newDistance);
+                setTouchCenter(newCenter);
               }
-            }}
-            onTouchEnd={(e) => {
-              // Reset touch states if no touches left
-              if (e.touches.length === 0) {
-                setIsDragging(false);
-                setTouchDistance(null);
-                setTouchCenter(null);
-              } else if (e.touches.length === 1) {
-                // Switched from pinch zoom to pan
-                setIsDragging(true);
-                setDragStart({ 
-                  x: e.touches[0].clientX, 
-                  y: e.touches[0].clientY 
-                });
-                setTouchDistance(null);
-                setTouchCenter(null);
-              }
-            }}
-            onTouchCancel={() => {
+            }
+          }}
+          onTouchEnd={(e) => {
+            // Reset touch states if no touches left
+            if (e.touches.length === 0) {
               setIsDragging(false);
               setTouchDistance(null);
               setTouchCenter(null);
-            }}
-          >
-            <g>
-              <rect width="800" height="600" fill="#f8fafc" rx="8" ry="8" />
-            </g>
-            <g transform={`translate(${panOffset.x}, ${panOffset.y})`}>
-              {/* Book labels around the visualization */}
-              {books.map((book, index) => {
-                const bookAngle = (index / books.length) * Math.PI * 2;
-                const labelRadius = radius + 30;
-                const labelX = centerX + Math.cos(bookAngle) * labelRadius;
-                const labelY = centerY + Math.sin(bookAngle) * labelRadius;
-                let bookData = null;
-                for (const section of Object.values(bibleStructure)) {
-                  const foundBook = section.books.find(b => b.id === book);
-                  if (foundBook) {
-                    bookData = foundBook;
-                    break;
-                  }
+            } else if (e.touches.length === 1) {
+              // Switched from pinch zoom to pan
+              setIsDragging(true);
+              setDragStart({ 
+                x: e.touches[0].clientX, 
+                y: e.touches[0].clientY 
+              });
+              setTouchDistance(null);
+              setTouchCenter(null);
+            }
+          }}
+          onTouchCancel={() => {
+            setIsDragging(false);
+            setTouchDistance(null);
+            setTouchCenter(null);
+          }}
+        >
+          <g>
+            <rect width="800" height="600" fill="#f8fafc" rx="8" ry="8" />
+          </g>
+          <g transform={`translate(${panOffset.x}, ${panOffset.y})`}>
+            {/* Book labels around the visualization */}
+            {books.map((book, index) => {
+              const bookAngle = (index / books.length) * Math.PI * 2;
+              const labelRadius = radius + 30;
+              const labelX = centerX + Math.cos(bookAngle) * labelRadius;
+              const labelY = centerY + Math.sin(bookAngle) * labelRadius;
+              let bookData = null;
+              for (const section of Object.values(bibleStructure)) {
+                const foundBook = section.books.find(b => b.id === book);
+                if (foundBook) {
+                  bookData = foundBook;
+                  break;
                 }
-                if (!bookData) return null;
-                return (
-                  <g key={`book-${book}`} className="cursor-pointer" onClick={() => handleBookClick(book)}>
-                    <text
-                      x={labelX}
-                      y={labelY}
-                      textAnchor="middle"
-                      alignmentBaseline="middle"
-                      fontSize="14"
-                      fontWeight="bold"
-                      fill={bookData.color}
-                      stroke="#ffffff"
-                      strokeWidth="4"
-                      paintOrder="stroke"
-                    >
-                      {bookData.title}
-                    </text>
-                    <circle 
-                      cx={labelX}
-                      cy={labelY - 20}
-                      r="6"
-                      fill={bookData.color}
-                      stroke="#ffffff"
-                      strokeWidth="2"
-                    />
-                  </g>
-                );
-              })}
+              }
+              if (!bookData) return null;
+              return (
+                <g key={`book-${book}`} className="cursor-pointer" onClick={() => handleBookClick(book)}>
+                  <text
+                    x={labelX}
+                    y={labelY}
+                    textAnchor="middle"
+                    alignmentBaseline="middle"
+                    fontSize="14"
+                    fontWeight="bold"
+                    fill={bookData.color}
+                    stroke="#ffffff"
+                    strokeWidth="4"
+                    paintOrder="stroke"
+                  >
+                    {bookData.title}
+                  </text>
+                  <circle 
+                    cx={labelX}
+                    cy={labelY - 20}
+                    r="6"
+                    fill={bookData.color}
+                    stroke="#ffffff"
+                    strokeWidth="2"
+                  />
+                </g>
+              );
+            })}
+            
+            {/* Filter links when in focused mode */}
+            {visData.links.filter(link => {
+              // If no node is focused, show all links
+              if (!focusedNodeId) return true;
               
-              {/* Filter links when in focused mode */}
-              {visData.links.filter(link => {
-                // If no node is focused, show all links
-                if (!focusedNodeId) return true;
-                
-                // Otherwise, only show links connected to the focused node
-                return link.source === focusedNodeId || link.target === focusedNodeId;
-              }).map(link => {
-                const sourceNode = visData.nodes.find(n => n.id === link.source);
-                const targetNode = visData.nodes.find(n => n.id === link.target);
-                
-                if (!sourceNode || !targetNode) return null;
-                
-                const sourcePos = nodePositions[sourceNode.id] || { x: sourceNode.x, y: sourceNode.y };
-                const targetPos = nodePositions[targetNode.id] || { x: targetNode.x, y: targetNode.y };
-                
-                // Calculate line path for link
-                const dx = targetPos.x - sourcePos.x;
-                const dy = targetPos.y - sourcePos.y;
-                const linkLength = Math.sqrt(dx * dx + dy * dy);
-                
-                // Adjust source and target points to be at the edge of the circles
-                const sourceRadius = sourceNode.primary ? 12 : 8;
-                const targetRadius = targetNode.primary ? 12 : 8;
-                
-                const offsetRatio = sourceRadius / linkLength;
-                const offsetX = dx * offsetRatio;
-                const offsetY = dy * offsetRatio;
-                
-                const targetOffsetRatio = targetRadius / linkLength;
-                const targetOffsetX = dx * targetOffsetRatio;
-                const targetOffsetY = dy * targetOffsetRatio;
-                
-                const adjustedSourceX = sourcePos.x + offsetX;
-                const adjustedSourceY = sourcePos.y + offsetY;
-                const adjustedTargetX = targetPos.x - targetOffsetX;
-                const adjustedTargetY = targetPos.y - targetOffsetY;
-                
-                // Create a unique ID for the path
-                const pathId = `path-${link.source}-${link.target}`;
-                
-                return (
-                  <g key={`link-${link.source}-${link.target}`}>
-                    <defs>
-                      <path 
-                        id={pathId} 
-                        d={`M${adjustedSourceX},${adjustedSourceY} L${adjustedTargetX},${adjustedTargetY}`}
-                      />
-                    </defs>
-                    <path
+              // Otherwise, only show links connected to the focused node
+              return link.source === focusedNodeId || link.target === focusedNodeId;
+            }).map(link => {
+              const sourceNode = visData.nodes.find(n => n.id === link.source);
+              const targetNode = visData.nodes.find(n => n.id === link.target);
+              
+              if (!sourceNode || !targetNode) return null;
+              
+              const sourcePos = nodePositions[sourceNode.id] || { x: sourceNode.x, y: sourceNode.y };
+              const targetPos = nodePositions[targetNode.id] || { x: targetNode.x, y: targetNode.y };
+              
+              // Calculate line path for link
+              const dx = targetPos.x - sourcePos.x;
+              const dy = targetPos.y - sourcePos.y;
+              const linkLength = Math.sqrt(dx * dx + dy * dy);
+              
+              // Adjust source and target points to be at the edge of the circles
+              const sourceRadius = sourceNode.primary ? 12 : 8;
+              const targetRadius = targetNode.primary ? 12 : 8;
+              
+              const offsetRatio = sourceRadius / linkLength;
+              const offsetX = dx * offsetRatio;
+              const offsetY = dy * offsetRatio;
+              
+              const targetOffsetRatio = targetRadius / linkLength;
+              const targetOffsetX = dx * targetOffsetRatio;
+              const targetOffsetY = dy * targetOffsetRatio;
+              
+              const adjustedSourceX = sourcePos.x + offsetX;
+              const adjustedSourceY = sourcePos.y + offsetY;
+              const adjustedTargetX = targetPos.x - targetOffsetX;
+              const adjustedTargetY = targetPos.y - targetOffsetY;
+              
+              // Create a unique ID for the path
+              const pathId = `path-${link.source}-${link.target}`;
+              
+              return (
+                <g key={`link-${link.source}-${link.target}`}>
+                  <defs>
+                    <path 
+                      id={pathId} 
                       d={`M${adjustedSourceX},${adjustedSourceY} L${adjustedTargetX},${adjustedTargetY}`}
-                      stroke={getTypeColor(link.type)}
-                      strokeWidth={1 + link.strength * 2}
-                      opacity={0.7}
-                      strokeLinecap="round"
-                      fill="none"
-                      markerEnd={`url(#${link.type}Marker)`}
                     />
-                    {link.description && (
-                      <text dy={-3} className="connection-label">
-                        <textPath xlinkHref={`#${pathId}`} startOffset="50%" textAnchor="middle" fontSize="10" fill="#4b5563">
-                          <tspan>
-                            {link.description}
-                          </tspan>
-                        </textPath>
-                      </text>
-                    )}
-                  </g>
-                );
-              })}
+                  </defs>
+                  <path
+                    d={`M${adjustedSourceX},${adjustedSourceY} L${adjustedTargetX},${adjustedTargetY}`}
+                    stroke={getTypeColor(link.type)}
+                    strokeWidth={1 + link.strength * 2}
+                    opacity={0.7}
+                    strokeLinecap="round"
+                    fill="none"
+                    markerEnd={`url(#${link.type}Marker)`}
+                  />
+                  {link.description && (
+                    <text dy={-3} className="connection-label">
+                      <textPath xlinkHref={`#${pathId}`} startOffset="50%" textAnchor="middle" fontSize="10" fill="#4b5563">
+                        <tspan>
+                          {link.description}
+                        </tspan>
+                      </textPath>
+                    </text>
+                  )}
+                </g>
+              );
+            })}
+            
+            {/* Filter nodes when in focused mode */}
+            {visData.nodes.filter(node => {
+              // If no node is focused, show all nodes
+              if (!focusedNodeId) return true;
               
-              {/* Filter nodes when in focused mode */}
-              {visData.nodes.filter(node => {
-                // If no node is focused, show all nodes
-                if (!focusedNodeId) return true;
-                
-                // Always show the primary node
-                if (node.primary) return true;
-                
-                // Show the focused node
-                if (node.id === focusedNodeId) return true;
-                
-                // Show nodes directly connected to the focused node
-                const connectedToFocused = visData.links.some(link => 
-                  (link.source === focusedNodeId && link.target === node.id) ||
-                  (link.target === focusedNodeId && link.source === node.id)
-                );
-                
-                return connectedToFocused;
-              }).map(node => {
-                const nodePos = nodePositions[node.id] || { x: node.x, y: node.y };
-                
-                return (
-                  <g 
-                    key={`node-${node.id}`}
-                    transform={`translate(${nodePos.x}, ${nodePos.y})`}
-                    className={`${isDraggingNode && draggedNodeId === node.id ? 'cursor-grabbing' : 'cursor-pointer'}`}
-                    onMouseDown={(e) => {
-                      console.log('Node mouseDown');
-                      // Don't interfere with the main svg panning
-                      e.stopPropagation();
-                      
-                      // Set the start time to detect click vs drag
-                      setDragStartTime(Date.now());
-                      setDraggedNodeId(node.id);
-                      setDragStart({ x: e.clientX, y: e.clientY });
-                      
-                      // Only set isDraggingNode to true if the mouse moves a certain distance
-                      // This will be handled in the onMouseMove handler
-                      
-                      // Add mouse move and mouse up handlers to document
-                      const handleMouseMove = (e) => {
-                        // Only begin dragging after a small movement to differentiate from clicks
-                        if (draggedNodeId === node.id) {
-                          const dx = e.clientX - dragStart.x;
-                          const dy = e.clientY - dragStart.y;
-                          const distance = Math.sqrt(dx * dx + dy * dy);
-                          
-                          if (distance > 5 && !isDraggingNode) {
-                            setIsDraggingNode(true);
-                          }
-                        }
-                      };
-                      
-                      // Add these handlers to document so drags continue outside the node
-                      document.addEventListener('mousemove', handleMouseMove);
-                      document.addEventListener('mouseup', () => {
-                        document.removeEventListener('mousemove', handleMouseMove);
-                      }, { once: true });
-                    }}
-                    onMouseMove={(e) => {
-                      // Only handle drag if this is the dragged node
-                      if (draggedNodeId === node.id && isDraggingNode) {
-                        e.stopPropagation();
-                        
-                        // Calculate the new position
+              // Always show the primary node
+              if (node.primary) return true;
+              
+              // Show the focused node
+              if (node.id === focusedNodeId) return true;
+              
+              // Show nodes directly connected to the focused node
+              const connectedToFocused = visData.links.some(link => 
+                (link.source === focusedNodeId && link.target === node.id) ||
+                (link.target === focusedNodeId && link.source === node.id)
+              );
+              
+              return connectedToFocused;
+            }).map(node => {
+              const nodePos = nodePositions[node.id] || { x: node.x, y: node.y };
+              
+              return (
+                <g 
+                  key={`node-${node.id}`}
+                  transform={`translate(${nodePos.x}, ${nodePos.y})`}
+                  className={`${isDraggingNode && draggedNodeId === node.id ? 'cursor-grabbing' : 'cursor-pointer'}`}
+                  onMouseDown={(e) => {
+                    console.log('Node mouseDown');
+                    // Don't interfere with the main svg panning
+                    e.stopPropagation();
+                    
+                    // Set the start time to detect click vs drag
+                    setDragStartTime(Date.now());
+                    setDraggedNodeId(node.id);
+                    setDragStart({ x: e.clientX, y: e.clientY });
+                    
+                    // Only set isDraggingNode to true if the mouse moves a certain distance
+                    // This will be handled in the onMouseMove handler
+                    
+                    // Add mouse move and mouse up handlers to document
+                    const handleMouseMove = (e) => {
+                      // Only begin dragging after a small movement to differentiate from clicks
+                      if (draggedNodeId === node.id) {
                         const dx = e.clientX - dragStart.x;
                         const dy = e.clientY - dragStart.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
                         
-                        // Update node position
-                        setNodePositions(prev => ({
-                          ...prev,
-                          [node.id]: {
-                            x: nodePos.x + dx / zoomLevel,
-                            y: nodePos.y + dy / zoomLevel
-                          }
-                        }));
-                        
-                        // Update drag start for next movement
-                        setDragStart({ x: e.clientX, y: e.clientY });
-                      }
-                    }}
-                    onMouseUp={(e) => {
-                      console.log('Node mouseUp');
-                      e.stopPropagation();
-                      
-                      const dragDuration = Date.now() - dragStartTime;
-                      console.log('Drag duration:', dragDuration);
-                      console.log('isDraggingNode:', isDraggingNode);
-                      
-                      if (!isDraggingNode && dragDuration < 200) {
-                        console.log('Treating as click - showing node info');
-                        const passage = findPassage(node.id);
-                        if (passage) {
-                          // Find the connection information for this node
-                          const connection = filteredConnections.find(conn => 
-                            conn.from === node.id || conn.to === node.id
-                          );
-                          
-                          // Clean the connection data to fix corrupted descriptions
-                          const formattedConnection = cleanConnection(connection);
-                          
-                          setSelectedNodeInfo({
-                            ...node,
-                            x: nodePos.x,
-                            y: nodePos.y,
-                            reference: passage.reference,
-                            passage,
-                            connection: formattedConnection,
-                            isSource: connection?.from === node.id,
-                            connectedTo: connection?.from === node.id ? 
-                              findPassage(connection.to)?.title : 
-                              findPassage(connection.from)?.title
-                          });
-                          return;
+                        if (distance > 5 && !isDraggingNode) {
+                          setIsDraggingNode(true);
                         }
                       }
+                    };
+                    
+                    // Add these handlers to document so drags continue outside the node
+                    document.addEventListener('mousemove', handleMouseMove);
+                    document.addEventListener('mouseup', () => {
+                      document.removeEventListener('mousemove', handleMouseMove);
+                    }, { once: true });
+                  }}
+                  onMouseMove={(e) => {
+                    // Only handle drag if this is the dragged node
+                    if (draggedNodeId === node.id && isDraggingNode) {
+                      e.stopPropagation();
                       
-                      // Reset dragging state
+                      // Calculate the new position
+                      const dx = e.clientX - dragStart.x;
+                      const dy = e.clientY - dragStart.y;
+                      
+                      // Update node position
+                      setNodePositions(prev => ({
+                        ...prev,
+                        [node.id]: {
+                          x: nodePos.x + dx / zoomLevel,
+                          y: nodePos.y + dy / zoomLevel
+                        }
+                      }));
+                      
+                      // Update drag start for next movement
+                      setDragStart({ x: e.clientX, y: e.clientY });
+                    }
+                  }}
+                  onMouseUp={(e) => {
+                    console.log('Node mouseUp');
+                    e.stopPropagation();
+                    
+                    const dragDuration = Date.now() - dragStartTime;
+                    console.log('Drag duration:', dragDuration);
+                    console.log('isDraggingNode:', isDraggingNode);
+                    
+                    if (!isDraggingNode && dragDuration < 200) {
+                      console.log('Treating as click - showing node info');
+                      const passage = findPassage(node.id);
+                      if (passage) {
+                        // Find the connection information for this node
+                        const connection = filteredConnections.find(conn => 
+                          conn.from === node.id || conn.to === node.id
+                        );
+                        
+                        // Clean the connection data to fix corrupted descriptions
+                        const formattedConnection = cleanConnection(connection);
+                        
+                        setSelectedNodeInfo({
+                          ...node,
+                          x: nodePos.x,
+                          y: nodePos.y,
+                          reference: passage.reference,
+                          passage,
+                          connection: formattedConnection,
+                          isSource: connection?.from === node.id,
+                          connectedTo: connection?.from === node.id ? 
+                            findPassage(connection.to)?.title : 
+                            findPassage(connection.from)?.title
+                        });
+                        return;
+                      }
+                    }
+                    
+                    // Reset dragging state
+                    setIsDraggingNode(false);
+                    setDraggedNodeId(null);
+                  }}
+                  onMouseLeave={() => {
+                    console.log('Node mouseLeave');
+                    // Reset if mouse leaves while dragging
+                    if (draggedNodeId === node.id) {
                       setIsDraggingNode(false);
                       setDraggedNodeId(null);
-                    }}
-                    onMouseLeave={() => {
-                      console.log('Node mouseLeave');
-                      // Reset if mouse leaves while dragging
-                      if (draggedNodeId === node.id) {
-                        setIsDraggingNode(false);
-                        setDraggedNodeId(null);
-                      }
-                    }}
-                  >
-                    {node.primary && (
-                      <circle
-                        r="25"
-                        fill={node.color}
-                        opacity="0.2"
-                      >
-                        
-                      </circle>
-                    )}
+                    }
+                  }}
+                >
+                  {node.primary && (
                     <circle
-                      r={node.primary ? 12 : 8}
+                      r="25"
                       fill={node.color}
-                      stroke={node.primary ? "#ffffff" : "#ffffff"}
-                      strokeWidth="2"
-                      className={isDraggingNode && draggedNodeId === node.id ? 'cursor-grabbing' : ''}
+                      opacity="0.2"
                     >
-                     
+                      
                     </circle>
-                    <text
-                      y={node.primary ? 30 : 20}
-                      textAnchor="middle"
-                      fontSize={node.primary ? 14 : 12}
-                      fontWeight={node.primary ? "bold" : "normal"}
-                      fill="#1e293b"
-                      stroke="#ffffff"
-                      strokeWidth="4"
-                      paintOrder="stroke"
-                    >
-                      {node.label}
-                    </text>
-                  </g>
-                );
-              })}
-            </g>
-          </svg>
-          
-          {/* Bottom bar with breadcrumb trail indicator */}
-          <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
-            <div className="p-3 bg-white rounded-lg shadow-lg">
-              <h3 className="font-medium text-indigo-800 text-sm">{selectedPassage.reference}</h3>
-            </div>
-
-                            {/* Breadcrumb journey indicator with visual trail - Removed as requested */}
-          </div>
-        </div>
-
+                  )}
+                  <circle
+                    r={node.primary ? 12 : 8}
+                    fill={node.color}
+                    stroke={node.primary ? "#ffffff" : "#ffffff"}
+                    strokeWidth="2"
+                    className={isDraggingNode && draggedNodeId === node.id ? 'cursor-grabbing' : ''}
+                  >
+                   
+                  </circle>
+                  <text
+                    y={node.primary ? 30 : 20}
+                    textAnchor="middle"
+                    fontSize={node.primary ? 14 : 12}
+                    fontWeight={node.primary ? "bold" : "normal"}
+                    fill="#1e293b"
+                    stroke="#ffffff"
+                    strokeWidth="4"
+                    paintOrder="stroke"
+                  >
+                    {node.label}
+                  </text>
+                </g>
+              );
+            })}
+          </g>
+        </svg>
         
+        {/* Bottom bar with breadcrumb trail indicator */}
+        <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
+          <div className="p-3 bg-white rounded-lg shadow-lg">
+            <h3 className="font-medium text-indigo-800 text-sm">{selectedPassage.reference}</h3>
+          </div>
+
+                          {/* Breadcrumb journey indicator with visual trail - Removed as requested */}
+        </div>
       </div>
     );
   };
