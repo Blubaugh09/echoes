@@ -1656,20 +1656,10 @@ const BibleBookConnections = () => {
         node.y = node.primary ? centerY : centerY + Math.sin(nodeAngle) * nodeRadius;
       });
     });
-    return (
-      <div className={`bg-slate-50 relative overflow-hidden ${isExpanded ? 'fixed top-0 left-0 w-screen h-screen z-[9999]' : 'w-full h-full'}`}>
-        {isExpanded && (
-          <div className="absolute top-4 right-4 z-50">
-            <button
-              onClick={() => setIsExpanded(false)}
-              className="p-2 bg-white rounded-full shadow-md hover:bg-slate-100"
-              aria-label="Exit full screen"
-            >
-              <Minimize2 size={20} className="text-slate-700" />
-            </button>
-          </div>
-        )}
-        
+    
+    // Main visualization component
+    const graphComponent = (
+      <div className="bg-slate-50 w-full h-full relative overflow-hidden">
         <div className="absolute top-4 left-4 z-10 flex flex-col space-y-2">
           <button 
             onClick={handleZoomIn}
@@ -1706,11 +1696,6 @@ const BibleBookConnections = () => {
             <Info size={20} className="text-slate-700" />
           </button>
         </div>
-        
-        {/* Breadcrumbs Panel */}
-        {showBreadcrumbs && (
-          {/* Breadcrumbs Panel - Removed as requested */}
-        )}
         
         {showConnectionTypes && (
           <div className="absolute top-16 right-4 z-20 bg-white p-3 rounded-lg shadow-lg">
@@ -1855,10 +1840,9 @@ const BibleBookConnections = () => {
             setTouchCenter(null);
           }}
         >
-          <g>
-            <rect width="800" height="600" fill="#f8fafc" rx="8" ry="8" />
-          </g>
+          <rect width="800" height="600" fill="#f8fafc" rx="8" ry="8" />
           <g transform={`translate(${panOffset.x}, ${panOffset.y})`}>
+            {/* Graph visualization content */}
             {/* Book labels around the visualization */}
             {books.map((book, index) => {
               const bookAngle = (index / books.length) * Math.PI * 2;
@@ -2144,10 +2128,34 @@ const BibleBookConnections = () => {
           <div className="p-3 bg-white rounded-lg shadow-lg">
             <h3 className="font-medium text-indigo-800 text-sm">{selectedPassage.reference}</h3>
           </div>
-
-                          {/* Breadcrumb journey indicator with visual trail - Removed as requested */}
         </div>
       </div>
+    );
+    
+    // Render either the standard view or the full-screen modal
+    return (
+      <>
+        {/* Regular view */}
+        {!isExpanded && graphComponent}
+        
+        {/* Full-screen modal */}
+        {isExpanded && (
+          <div className="fixed inset-0 bg-black bg-opacity-80 z-[9999] flex items-center justify-center">
+            <div className="absolute top-4 right-4 z-50">
+              <button
+                onClick={() => setIsExpanded(false)}
+                className="p-3 bg-white rounded-full shadow-md hover:bg-red-100 transition-colors duration-200"
+                aria-label="Close full screen"
+              >
+                <X size={24} className="text-gray-700" />
+              </button>
+            </div>
+            <div className="w-[95vw] h-[90vh] bg-white rounded-xl shadow-2xl overflow-hidden">
+              {graphComponent}
+            </div>
+          </div>
+        )}
+      </>
     );
   };
 
