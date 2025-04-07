@@ -845,8 +845,9 @@ const BibleBookConnections = () => {
     } else {
       // On small screens, directly open the modal
       console.log("Should open modal");
-      setShowGraph(true); // Make sure graph is visible
-      setShowGraphModal(true); // Open the modal
+      // We don't need to set showGraph(true) for small screens
+      // since the graph will be rendered inside the modal
+      setShowGraphModal(true);
     }
   };
 
@@ -2310,7 +2311,7 @@ const BibleBookConnections = () => {
     
     return (
       <>
-        {/* On large screens, show graph if showGraph is true */}
+        {/* Only show graph on large screens if showGraph is true */}
         {isLargeScreen && showGraph && !showGraphModal && graphContent}
         
         {/* Show modal if showGraphModal is true */}
@@ -2867,6 +2868,11 @@ const BibleBookConnections = () => {
   useEffect(() => {
     // On small screens, hide the graph by default
     setShowGraph(isLargeScreen);
+    
+    // Reset modal state when screen size changes
+    if (!isLargeScreen) {
+      setShowGraphModal(false);
+    }
   }, [isLargeScreen]);
   
   // Updated return statement with resize functionality
