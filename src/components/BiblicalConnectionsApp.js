@@ -1695,10 +1695,44 @@ const BibleBookConnections = () => {
     isLargeScreen
   });
 
+  // Add event listener to debug clicks
+  useEffect(() => {
+    const debugClickHandler = (e) => {
+      // Log all click events to help debug
+      console.log("Document click detected", {
+        target: e.target.tagName,
+        classes: e.target.className,
+        path: e.composedPath().map(el => el.tagName).join(' > ')
+      });
+    };
+
+    document.addEventListener('click', debugClickHandler);
+    return () => document.removeEventListener('click', debugClickHandler);
+  }, []);
+
   // Main component render
   return (
     <div className="min-h-screen max-h-screen flex flex-col bg-slate-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100">
-      {/* ... header content ... */}
+      {/* Alternative eye toggle button at the top of the page */}
+      <div className="absolute top-4 right-4 z-50">
+        <button
+          className="p-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg"
+          onClick={() => {
+            console.log("Alternative eye button clicked");
+            if (isLargeScreen) {
+              setShowGraph(prev => !prev);
+            } else {
+              setShowGraphModal(prev => {
+                console.log(`Setting modal from ${prev} to ${!prev}`);
+                return !prev;
+              });
+            }
+          }}
+          title={showGraph ? "Hide connections" : "Show connections"}
+        >
+          {showGraph ? <EyeOff size={18} /> : <Eye size={18} />}
+        </button>
+      </div>
       
       {/* Main content area */}
       <div className={`flex-1 relative ${isLargeScreen ? 'flex flex-row' : 'flex flex-col'} overflow-hidden`} ref={containerRef}>
