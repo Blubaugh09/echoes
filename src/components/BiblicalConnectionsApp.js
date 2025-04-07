@@ -837,12 +837,16 @@ const BibleBookConnections = () => {
   };
   
   const toggleGraphVisibility = () => {
+    console.log("Toggle graph visibility called", { isLargeScreen });
+    
     if (isLargeScreen) {
       // On large screens, toggle the graph visibility as before
       setShowGraph(prev => !prev);
     } else {
       // On small screens, directly open the modal
-      setShowGraphModal(true);
+      console.log("Should open modal");
+      setShowGraph(true); // Make sure graph is visible
+      setShowGraphModal(true); // Open the modal
     }
   };
 
