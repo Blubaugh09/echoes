@@ -1205,7 +1205,7 @@ const BibleBookConnections = () => {
     }
     
     return (
-      <div className="mb-6 bg-white rounded-lg border border-gray-100 shadow-sm sticky top-0 z-30">
+      <div className="mb-6 bg-white rounded-lg border border-gray-100 shadow-sm sticky top-[50px] z-30">
         <div className="p-2 flex items-center justify-between">
           <div className="flex items-center space-x-2 overflow-x-auto scrollbar-hide flex-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             {availableConnectionsForChapter.map(passage => (
