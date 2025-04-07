@@ -2283,12 +2283,24 @@ const BibleBookConnections = () => {
     
     // Modal component for the graph
     const graphModal = (
-      <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-0" onClick={() => setShowGraphModal(false)}>
+      <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-0" onClick={() => {
+        setShowGraphModal(false);
+        // Hide the graph when modal is closed on small screens
+        if (!isLargeScreen) {
+          setShowGraph(false);
+        }
+      }}>
         <div className="bg-white w-full h-full overflow-hidden" onClick={e => e.stopPropagation()}>
           <div className="flex items-center justify-between p-4 border-b">
             <h2 className="text-xl font-semibold text-gray-800">Connections for {selectedPassage.reference}</h2>
             <button 
-              onClick={() => setShowGraphModal(false)}
+              onClick={() => {
+                setShowGraphModal(false);
+                // Hide the graph when modal is closed on small screens
+                if (!isLargeScreen) {
+                  setShowGraph(false);
+                }
+              }}
               className="p-2 rounded-full hover:bg-gray-100"
               aria-label="Close modal"
             >
