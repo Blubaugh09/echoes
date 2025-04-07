@@ -837,17 +837,20 @@ const BibleBookConnections = () => {
   };
   
   const toggleGraphVisibility = () => {
-    console.log("Toggle graph visibility called", { isLargeScreen });
+    console.log("Toggle graph visibility called", { isLargeScreen, showGraph, showGraphModal });
     
     if (isLargeScreen) {
       // On large screens, toggle the graph visibility as before
       setShowGraph(prev => !prev);
     } else {
       // On small screens, directly open the modal
-      console.log("Should open modal");
-      // We don't need to set showGraph(true) for small screens
-      // since the graph will be rendered inside the modal
+      console.log("Opening modal on small screen");
       setShowGraphModal(true);
+      
+      // Force a re-render by setting a timeout
+      setTimeout(() => {
+        console.log("Modal state after timeout:", showGraphModal);
+      }, 100);
     }
   };
 
@@ -1619,6 +1622,8 @@ const BibleBookConnections = () => {
   // All other render functions like renderConnectionsVisualization stay the same
   const renderConnectionsVisualization = () => {
     if (!selectedPassage) return null;
+    console.log("Rendering connections visualization", { showGraphModal });
+    
     const visData = { nodes: [], links: [] };
     visData.nodes.push({
       id: selectedPassage.id,
@@ -2288,14 +2293,22 @@ const BibleBookConnections = () => {
       </div>
     );
     
-    // Modal component for the graph
+    // Graph modal component
     const graphModal = (
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-2" onClick={() => setShowGraphModal(false)}>
-        <div className="bg-white rounded-lg shadow-2xl w-[95vw] h-[95vh] overflow-hidden" onClick={e => e.stopPropagation()}>
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-2" 
+           onClick={() => {
+             console.log("Closing modal");
+             setShowGraphModal(false);
+           }}>
+        <div className="bg-white rounded-lg shadow-2xl w-[95vw] h-[95vh] overflow-hidden" 
+             onClick={e => e.stopPropagation()}>
           <div className="flex items-center justify-between p-4 border-b">
             <h2 className="text-xl font-semibold text-gray-800">Connections for {selectedPassage.reference}</h2>
             <button 
-              onClick={() => setShowGraphModal(false)}
+              onClick={() => {
+                console.log("Close button clicked");
+                setShowGraphModal(false);
+              }}
               className="p-2 rounded-full hover:bg-gray-100"
               aria-label="Close modal"
             >
@@ -2309,13 +2322,17 @@ const BibleBookConnections = () => {
       </div>
     );
     
+    // Check if we should show the modal
+    const shouldShowModal = showGraphModal && selectedPassage;
+    console.log("Should show modal:", shouldShowModal);
+    
     return (
       <>
         {/* Only show graph on large screens if showGraph is true */}
         {isLargeScreen && showGraph && !showGraphModal && graphContent}
         
         {/* Show modal if showGraphModal is true */}
-        {showGraphModal && graphModal}
+        {shouldShowModal && graphModal}
       </>
     );
   };
@@ -2875,6 +2892,11 @@ const BibleBookConnections = () => {
     }
   }, [isLargeScreen]);
   
+  // Add this useEffect to monitor state changes
+  useEffect(() => {
+    console.log("State changed:", { showGraph, showGraphModal, isLargeScreen });
+  }, [showGraph, showGraphModal, isLargeScreen]);
+  
   // Updated return statement with resize functionality
   return (
     <div className="flex flex-col h-screen bg-slate-50 text-slate-800 font-sans" style={containerStyle}>
@@ -3117,7 +3139,11 @@ const BibleBookConnections = () => {
                 
                 <button
                   className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg"
-                  onClick={toggleGraphVisibility}
+                  onClick={(e) => {
+                    console.log("Toggle button clicked");
+                    e.preventDefault();
+                    toggleGraphVisibility();
+                  }}
                   title={showGraph ? "Hide connections" : "Show connections"}
                 >
                   {showGraph ? <EyeOff size={18} /> : <Eye size={18} />}
