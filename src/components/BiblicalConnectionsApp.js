@@ -1734,19 +1734,222 @@ const BibleBookConnections = () => {
         </button>
       </div>
       
+      {/* App Header */}
+      <header className={`flex justify-between items-center p-4 bg-white shadow-sm z-20 transition-all duration-200 ${showHeader ? 'translate-y-0' : '-translate-y-full'}`}>
+        <div className="flex items-center">
+          <BookOpen className="mr-2 text-indigo-700" size={24} />
+          <h1 className="text-xl font-semibold text-indigo-900">Biblical Connections</h1>
+        </div>
+        
+        <div className="flex items-center space-x-2">
+          <button
+            className="p-2 rounded-lg text-indigo-700 hover:bg-indigo-50"
+            onClick={() => setShowNavigator(!showNavigator)}
+            title="Browse passages"
+          >
+            <Book size={20} />
+          </button>
+          
+          <button
+            className="p-2 rounded-lg text-indigo-700 hover:bg-indigo-50"
+            onClick={() => setShowBreadcrumbs(!showBreadcrumbs)}
+            title="Navigation history"
+          >
+            <History size={20} />
+          </button>
+        </div>
+      </header>
+      
       {/* Main content area */}
       <div className={`flex-1 relative ${isLargeScreen ? 'flex flex-row' : 'flex flex-col'} overflow-hidden`} ref={containerRef}>
-        {/* Other UI components */}
+        {/* Bible text pane - always show on large screens, conditionally on small */}
+        <div 
+          className={`
+            ${isLargeScreen ? (showGraph ? 'w-1/2' : 'w-full') : (showReadingPane ? 'h-[60%]' : 'h-full')}
+            bg-white overflow-hidden flex flex-col relative transition-all duration-300
+          `}
+          style={isLargeScreen ? {} : { height: showReadingPane ? `${panelSize}%` : '0%' }}
+        >
+          {/* Bible navigation controls */}
+          <div className="flex-shrink-0 bg-white border-b">
+            <div className="flex items-center justify-between p-2 flex-wrap gap-y-2">
+              <div className="relative">
+                <button
+                  onClick={() => setShowBookSelector(!showBookSelector)}
+                  className="flex items-center space-x-2 py-2 px-4 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
+                >
+                  <span className="font-medium">{currentBook}</span>
+                  <ChevronDown size={16} />
+                </button>
+              </div>
+              
+              <div className="relative">
+                <button
+                  onClick={() => setShowChapterSelector(!showChapterSelector)}
+                  className="flex items-center space-x-2 py-2 px-4 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
+                >
+                  <span className="font-medium">Chapter {currentChapter}</span>
+                  <ChevronDown size={16} />
+                </button>
+              </div>
+              
+              {/* Navigation buttons */}
+              <div className="flex items-center">
+                <button 
+                  className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-l-lg shadow-sm"
+                  onClick={prevChapter}
+                >
+                  <ArrowLeft size={18} />
+                </button>
+                <button 
+                  className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-r-lg shadow-sm border-l border-white/20"
+                  onClick={nextChapter}
+                >
+                  <ArrowRight size={18} />
+                </button>
+              </div>
+              
+              {/* Action buttons */}
+              <div className="flex items-center gap-2">
+                <button
+                  className="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg"
+                  onClick={toggleGraphVisibility}
+                  title={showGraph ? "Hide connections" : "Show connections"}
+                >
+                  {showGraph ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+               
+              {/* Search sections button with slide-out */}
+              <div className="relative">
+                <button
+                  onClick={() => {
+                    setIsSearchOpen(!isSearchOpen);
+                    if (!isSearchOpen) {
+                      setTimeout(() => {
+                        const searchInput = document.getElementById('section-search-input');
+                        if (searchInput) {
+                          searchInput.focus();
+                        }
+                      }, 50);
+                    }
+                  }}
+                  className="flex items-center py-2 px-3 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition-colors shadow-sm"
+                  title="Search sections"
+                >
+                  <Search size={16} />
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          {/* Bible text content */}
+          <div 
+            className="flex-1 overflow-y-auto p-6 pb-24"
+            ref={textContainerRef}
+          >
+            {isLoadingBibleText ? (
+              <div className="flex items-center justify-center h-full">
+                <div className="loader"></div>
+                <p className="ml-3 text-gray-600">Loading passage...</p>
+              </div>
+            ) : (
+              <>
+                {renderConnectionSwitcher()}
+                <h2 className="text-2xl font-semibold text-indigo-900 mb-4">{currentBibleReference}</h2>
+                <div className="prose prose-indigo max-w-none">
+                  {highlightBibleText(bibleText)}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
         
         {/* Graph visualization for large screens */}
         {isLargeScreen && showGraph && graphData && (
-          <div className="bg-slate-50 w-full h-full relative overflow-hidden">
+          <div className="bg-slate-50 w-1/2 h-full relative overflow-hidden">
             {/* Graph content here */}
-            {/* ... */}
+            <div className="w-full h-full bg-slate-100">
+              {/* This is a placeholder for the graph visualization */}
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center p-6">
+                  <h3 className="text-xl font-semibold text-indigo-800">
+                    {selectedPassage ? `Connections for ${selectedPassage.title}` : 'No passage selected'}
+                  </h3>
+                  <p className="text-gray-600 mt-2">
+                    {connections.length} connection{connections.length !== 1 ? 's' : ''} found
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         )}
         
-        {/* ... other UI components ... */}
+        {/* Navigator panel */}
+        {showNavigator && (
+          <div className="fixed inset-0 z-30 flex bg-black bg-opacity-30" onClick={() => setShowNavigator(false)}>
+            <div 
+              className="bg-white w-full max-w-md h-full overflow-y-auto shadow-xl"
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="p-4 flex justify-between items-center border-b">
+                <h2 className="text-lg font-semibold text-indigo-900">Browse Passages</h2>
+                <button 
+                  className="p-1 hover:bg-indigo-50 rounded" 
+                  onClick={() => setShowNavigator(false)}
+                >
+                  <X size={20} className="text-gray-600" />
+                </button>
+              </div>
+              
+              <div className="p-4">
+                {/* Bible browsing interface */}
+                <div className="mb-4">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Search passages..."
+                      className="w-full p-3 pl-10 rounded-lg border border-gray-200 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                      value={searchTerm}
+                      onChange={e => setSearchTerm(e.target.value)}
+                    />
+                    <Search size={18} className="absolute left-3 top-3.5 text-gray-400" />
+                  </div>
+                </div>
+                
+                {searchTerm ? (
+                  <div className="mt-4 space-y-2">
+                    <h3 className="font-medium text-gray-700">Search Results</h3>
+                    {filteredPassages.length > 0 ? (
+                      <div className="space-y-3">
+                        {filteredPassages.map(passage => (
+                          <div 
+                            key={passage.id}
+                            className="p-3 bg-white border border-gray-100 rounded-lg hover:bg-indigo-50 cursor-pointer transition-colors"
+                            onClick={() => {
+                              handlePassageClick(passage);
+                              setSearchTerm('');
+                              setShowNavigator(false);
+                            }}
+                          >
+                            <div className="font-medium text-indigo-900">{passage.title}</div>
+                            <div className="text-sm text-indigo-500">{passage.reference}</div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-gray-500">No matches found.</p>
+                    )}
+                  </div>
+                ) : (
+                  <div className="space-y-6">
+                    {renderBibleSections()}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       
       {/* Modal - Placed at the root level outside the main layout flow */}
