@@ -2283,8 +2283,8 @@ const BibleBookConnections = () => {
     
     // Modal component for the graph
     const graphModal = (
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-2" onClick={() => setShowGraphModal(false)}>
-        <div className="bg-white rounded-lg shadow-2xl w-[95vw] h-[95vh] overflow-hidden" onClick={e => e.stopPropagation()}>
+      <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-0" onClick={() => setShowGraphModal(false)}>
+        <div className="bg-white w-full h-full overflow-hidden" onClick={e => e.stopPropagation()}>
           <div className="flex items-center justify-between p-4 border-b">
             <h2 className="text-xl font-semibold text-gray-800">Connections for {selectedPassage.reference}</h2>
             <button 
