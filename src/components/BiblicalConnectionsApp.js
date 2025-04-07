@@ -837,7 +837,13 @@ const BibleBookConnections = () => {
   };
   
   const toggleGraphVisibility = () => {
-    setShowGraph(!showGraph);
+    if (isLargeScreen) {
+      // On large screens, toggle the graph visibility as before
+      setShowGraph(prev => !prev);
+    } else {
+      // On small screens, directly open the modal
+      setShowGraphModal(true);
+    }
   };
 
   const handleZoomIn = () => setZoomLevel(Math.min(zoomLevel + 0.2, 2));
@@ -2298,26 +2304,10 @@ const BibleBookConnections = () => {
       </div>
     );
     
-    // Show graph button component for small screens
-    const showGraphButton = (
-      <div className="p-4 flex justify-center">
-        <button
-          onClick={() => setShowGraphModal(true)}
-          className="flex items-center space-x-2 py-3 px-4 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition-colors"
-        >
-          <BookOpen size={20} />
-          <span>Show Connections Graph</span>
-        </button>
-      </div>
-    );
-    
     return (
       <>
         {/* On large screens, show graph if showGraph is true */}
         {isLargeScreen && showGraph && !showGraphModal && graphContent}
-        
-        {/* On small screens, show a button to open the graph modal */}
-        {!isLargeScreen && !showGraphModal && showGraphButton}
         
         {/* Show modal if showGraphModal is true */}
         {showGraphModal && graphModal}
